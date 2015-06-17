@@ -1,4 +1,4 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day as day in data.days\" id={{::apdDayId}} class=\"apd_select_day apd_select {{::apdDayClasses}}\"></select></div>");}]);
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" id={{::apdDayId}} class=\"apd_select_day apd_select {{::apdDayClasses}}\"></select><div ng-bind=data.selected.dayOfWeek class=apd_day_of_week></div><select ng-model=data.selected.month ng-options=\"month for month in data.month\" id={{::apdMonthId}} class=\"apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" id={{::apdYearId}} class=\"apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 
 
 //module apd.main {
