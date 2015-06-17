@@ -1,23 +1,44 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.day ng-options=data.days id={{::apdDayId}} class=\"apd_select {{::apdDayClasses}}\"></select><div ng-bind=data.dayOfWeek class=apd_day_of_week></div></div>");}]);
-angular.module('angular-pd.datepicker', [
-    'angular-pd.popup',
-    'angular-pd.data',
-    'angular-pd.templates'
-]).directive('bdatepicker', function () {
-    return {
-        restrict: 'E',
-        replace: true,
-        templateUrl: 'apd.html',
-        scope: {
-            some: '='
-        },
-        controller: ['$scope', function ($scope) {
-        }],
-        link: function (scope, elem) {
-        }
-    };
-});
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day as day in data.days\" id={{::apdDayId}} class=\"apd_select_day apd_select {{::apdDayClasses}}\"></select></div>");}]);
 
-angular.module('angular-pd', ['bdate.datepicker']).constant('MESSAGES', {
+
+//module apd.main {
+//    'use strict';
+angular.module('angular-pd', ['angular-pd.datepicker']).constant('MESSAGES', {
     invalidParams: 'Invalid params'
 });
+//} 
+
+/// <reference path="interfaces.ts" />
+/// <reference path="main.ts" />
+//TODO (S.Panfilov)  is this references necessary?
+var apd;
+(function (apd) {
+    var directive;
+    (function (directive) {
+        'use strict';
+        angular.module('angular-pd.datepicker', [
+            'angular-pd.templates'
+        ]).directive('pureDatepicker', function () {
+            return {
+                restrict: 'E',
+                replace: true,
+                templateUrl: 'apd.html',
+                scope: {
+                    apdDayId: '@?',
+                    apdMonthId: '@?',
+                    apdYearId: '@?',
+                    apdDayClasses: '@?',
+                    apdMonthClasses: '@?',
+                    apdYearClasses: '@?'
+                },
+                controller: ['$scope', function ($scope) {
+                    $scope.data = {
+                        selected: {}
+                    };
+                }],
+                link: function (scope, elem) {
+                }
+            };
+        });
+    })(directive = apd.directive || (apd.directive = {}));
+})(apd || (apd = {}));

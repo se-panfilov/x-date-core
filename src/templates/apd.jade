@@ -1,3 +1,5 @@
 .apd_root
-    select.apd_select(ng-model="data.day", ng-options="data.days", id="{{::apdDayId}}", class="{{::apdDayClasses}}")
-    .apd_day_of_week(ng-bind="data.dayOfWeek")
+    select.apd_select_day.apd_select(ng-model="data.selected.day", ng-options="day as day in data.days", id="{{::apdDayId}}", class="{{::apdDayClasses}}")
+    //.apd_day_of_week(ng-bind="data.selected.dayOfWeek")
+    //select.apd_select_month.apd_select(ng-model="data.selected.month", ng-options="month in data.month", id="{{::apdMonthId}}", class="{{::apdMonthClasses}}")
+    //select.apd_select_year.apd_select(ng-model="data.selected.year", ng-options="year in data.years", id="{{::apdYearId}}", class="{{::apdYearClasses}}")

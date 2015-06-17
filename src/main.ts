@@ -1,7 +1,13 @@
-declare var angular: any;
+//module apd.main {
+//    'use strict';
 
-angular.module('angular-pd', ['bdate.datepicker'])
+declare
+var angular:any;
+
+angular.module('angular-pd', ['angular-pd.datepicker'])
 
     .constant('MESSAGES', {
         invalidParams: 'Invalid params'
     });
+
+//}
