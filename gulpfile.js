@@ -11,7 +11,7 @@ var stylus = require('gulp-stylus');
 var nib = require('nib');
 var minifyHTML = require('gulp-minify-html');
 var minifyCss = require('gulp-minify-css');
-var typescript = require('gulp-typescript');
+var ts = require('gulp-typescript');
 var templateCache = require('gulp-angular-templatecache');
 var mergeStream = require('merge-stream');
 var cssBase64 = require('gulp-css-base64');
@@ -22,7 +22,7 @@ var src = {
     jade: ['src/templates/**/*.jade'],
     html: ['src/templates/**/*.html'],
     js: ['src/**/*.js'],
-    typescript: ['src/**/*.ts']
+    ts: ['src/**/*.ts']
 };
 
 var dest = {
@@ -33,7 +33,7 @@ var dest = {
 
 //gulp.task('lint', function () {
 //TODO (S.Panfilov) typescript lint?
-//    gulp.src(src.typescript)
+//    gulp.src(src.ts)
 //        .pipe(coffeelint({
 //            max_line_length: false
 //        }))
@@ -50,44 +50,44 @@ function makeJade() {
             spare: true
         }))
         .pipe(templateCache({
-            module: 'bdate.templates',
+            module: 'angular-pd.templates',
             standalone: true
         }))
 }
 
 function makeTypeScript() {
-    return gulp.src(src.typescript)
-        .pipe(typescript({bare: true}))
+    return gulp.src(src.ts)
+        .pipe(ts({bare: true}))
         .on('error', console.log)
-        .pipe(concat('bdate.js'))
+        .pipe(concat('angular-pure-datepicker.js'))
         .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
 }
 
 function mergeJS (templates, mainJs) {
     return mergeStream(templates, mainJs)
-        .pipe(concat('bdate.js'))
+        .pipe(concat('angular-pure-datepicker.js'))
         .pipe(gulp.dest(dest.dist))
         .pipe(sourcemaps.init())
         .pipe(uglify())
-        .pipe(rename({basename: 'bdate.min'}))
+        .pipe(rename({basename: 'angular-pure-datepicker.min'}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(dest.dist))
 }
 
-function buildJS() {
+function buildTS() {
     var templates = makeJade();
     var mainJs = makeTypeScript();
     return mergeJS(templates, mainJs);
 }
 
 
-gulp.task('typescript', function () {
-    return buildJS();
+gulp.task('ts', function () {
+    return buildTS();
 });
 
 gulp.task('stylus', function () {
     return gulp.src(src.styles, {base: 'src'})
-        .pipe(concat('bdate.styl'))
+        .pipe(concat('angular-pure-datepicker.styl'))
         .pipe(stylus({use: [nib()], compress: true}))
         .pipe(cssBase64({
             baseDir: "img"
@@ -98,14 +98,14 @@ gulp.task('stylus', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch(src.jade, ['typescript']);
+    gulp.watch(src.jade, ['ts']);
     gulp.watch(src.styles, ['stylus']);
-    gulp.watch(src.typescript, ['typescript']);
+    gulp.watch(src.ts, ['ts']);
 });
 
 gulp.task('build', function () {
     gulp.start('stylus');
-    gulp.start('typescript');
+    gulp.start('ts');
 });
 
 gulp.task('default', function () {
