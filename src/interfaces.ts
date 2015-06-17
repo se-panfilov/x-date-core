@@ -8,4 +8,11 @@ module apd.interfaces {
         datetime: number;
     }
 
+    export class Data {
+        selected: DateModel;
+        days: Array<number>;
+        month: Array<number>;
+        years: Array<number>;
+    }
+
 }
