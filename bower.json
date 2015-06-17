@@ -1,0 +1,31 @@
+{
+  "name": "angular-pure-date",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Light241/angular-pure-date",
+  "authors": [
+    "S.Panfilov <se-panfilov@ya.ru>"
+  ],
+  "description": "Angular pure datepicker",
+  "main": "angular-pure-date.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Light241/angular-pure-date.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Light241/angular-pure-date/issues"
+  },
+  "keywords": [
+    "datepicker",
+    "pure",
+    "Angular",
+    "angularjs",
+    "Angular.js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
