@@ -41,7 +41,7 @@ module apd.directive {
         'angular-pd.templates'
     ])
 
-        .directive('pureDatepicker', function () {
+        .directive('pureDatepicker', function (MESSAGES) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -74,14 +74,19 @@ module apd.directive {
                     });
 
                     function getIntArr(length:number) {
+                        if (!length) return console.error(MESSAGES.invalidParams);
+
                         return length ? getIntArr(length - 1).concat(length) : [];
                     }
 
                     function reloadDaysCount(month:number, year:number) {
+                        if (!month || !year) return console.error(MESSAGES.invalidParams);
+
                         $scope.data.days = getIntArr(new Date(year, month, 0).getDate());
                     }
 
                     function reloadSelectedDay(year, month, day) {
+                        if (!year || !month || day) return console.error(MESSAGES.invalidParams);
                         var date = new Date(year, month, day);
 
                         $scope.data.selected.dayOfWeek = date.getDay();

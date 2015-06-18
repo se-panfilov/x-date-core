@@ -31,7 +31,7 @@ var apd;
         })();
         angular.module('angular-pd.datepicker', [
             'angular-pd.templates'
-        ]).directive('pureDatepicker', function () {
+        ]).directive('pureDatepicker', ['MESSAGES', function (MESSAGES) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -59,12 +59,18 @@ var apd;
                         reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
                     });
                     function getIntArr(length) {
+                        if (!length)
+                            return console.error(MESSAGES.invalidParams);
                         return length ? getIntArr(length - 1).concat(length) : [];
                     }
                     function reloadDaysCount(month, year) {
+                        if (!month || !year)
+                            return console.error(MESSAGES.invalidParams);
                         $scope.data.days = getIntArr(new Date(year, month, 0).getDate());
                     }
                     function reloadSelectedDay(year, month, day) {
+                        if (!year || !month || day)
+                            return console.error(MESSAGES.invalidParams);
                         var date = new Date(year, month, day);
                         $scope.data.selected.dayOfWeek = date.getDay();
                         $scope.data.selected.datetime = date.getTime() * 1000;
@@ -73,6 +79,6 @@ var apd;
                 link: function (scope, elem) {
                 }
             };
-        });
+        }]);
     })(directive = apd.directive || (apd.directive = {}));
 })(apd || (apd = {}));
