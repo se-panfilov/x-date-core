@@ -58,6 +58,7 @@ module apd.directive {
 
                     $scope.data = new DataClass();
                     $scope.data.selected = new DateModelClass();
+                    $scope.data.years = getDefaultYear();
 
                     $scope.$watch('data.selected.day', function () {
                         reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
@@ -92,6 +93,12 @@ module apd.directive {
                         $scope.data.selected.dayOfWeek = date.getDay();
                         $scope.data.selected.datetime = date.getTime() * 1000;
                     }
+
+                    function getDefaultYear () {
+                        //TODO (S.Panfilov) fix for case with date limits
+                        return (new Date()).getFullYear();
+                    }
+
 
 
                 },
