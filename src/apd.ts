@@ -1,4 +1,3 @@
-/// <reference path="interfaces.ts" />
 /// <reference path="main.ts" />
 
 //TODO (S.Panfilov)  is this references necessary?
@@ -6,7 +5,22 @@
 module apd.directive {
     'use strict';
 
-    class DateModel implements apd.interfaces.DateModel {
+    interface DateModelInterface {
+        day: number;
+        dayOfWeek: number;
+        month: number;
+        year: number;
+        datetime: number;
+    }
+
+    interface DataInterface {
+        selected:DateModelInterface;
+        days:Array<number>;
+        month:Array<number>;
+        years:Array<number>;
+    }
+
+    class DateModelClass implements DateModelInterface {
         day = null;
         dayOfWeek = null;
         month = null;
@@ -14,8 +28,8 @@ module apd.directive {
         datetime = null;
     }
 
-    class Data implements apd.interfaces.Data {
-        selected:apd.interfaces.DateModel;
+    class DataClass implements DataInterface {
+        selected:DateModelInterface;
         days:Array<number>;
         month:Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
         years:Array<number>;
@@ -42,15 +56,21 @@ module apd.directive {
                 },
                 controller: function ($scope) {
 
-                    $scope.data = new Data();
-                    $scope.data.selected = new DateModel();
+                    $scope.data = new DataClass();
+                    $scope.data.selected = new DateModelClass();
+
+                    $scope.$watch('data.selected.day', function () {
+                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                    });
 
                     $scope.$watch('data.selected.month', function () {
                         reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
+                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
                     });
 
                     $scope.$watch('data.selected.year', function () {
                         reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
+                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
                     });
 
                     function getIntArr(length:number) {
@@ -59,6 +79,13 @@ module apd.directive {
 
                     function reloadDaysCount(month:number, year:number) {
                         $scope.data.days = getIntArr(new Date(year, month, 0).getDate());
+                    }
+
+                    function reloadSelectedDay(year, month, day) {
+                        var date = new Date(year, month, day);
+
+                        $scope.data.selected.dayOfWeek = date.getDay();
+                        $scope.data.selected.datetime = date.getTime() * 1000;
                     }
 
 
