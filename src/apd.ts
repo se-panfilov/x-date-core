@@ -5,23 +5,7 @@
 module apd.directive {
     'use strict';
 
-    interface DateModelInterface {
-        day: number;
-        dayOfWeek: number;
-        month: number;
-        year: number;
-        datetime: number;
-        timezone: number;
-    }
-
-    interface DataInterface {
-        selected:DateModelInterface;
-        days:Array<number>;
-        month:Array<number>;
-        years:Array<number>;
-    }
-
-    class DateModelClass implements DateModelInterface {
+    class DateModelClass {
         day = null;
         dayOfWeek = null;
         month = null;
@@ -29,7 +13,7 @@ module apd.directive {
         datetime = null;
         timezone = null;
 
-        constructor(day:number, dayOfWeek:number, month:number, year:number, datetime:number, timezone: number) {
+        constructor(day:number, dayOfWeek:number, month:number, year:number, datetime:number, timezone:number) {
             this.day = day;
             this.dayOfWeek = dayOfWeek;
             this.month = month;
@@ -39,11 +23,17 @@ module apd.directive {
         }
     }
 
-    class DataClass implements DataInterface {
-        selected:DateModelInterface;
+    class DataClass {
+        selected:DateModelClass;
         days:Array<number>;
-        month:Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        month:Array<number>;
         years:Array<number>;
+
+        constructor(selected:DateModelClass, years) {
+            this.selected = selected;
+            this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+            this.years = years;
+        }
     }
 
     class DayOfWeek {
@@ -111,10 +101,9 @@ module apd.directive {
                     apdYearClasses: '@?'
                 },
                 controller: function ($scope) {
-
-                    $scope.data = new DataClass();
-                    $scope.data.selected = getDefaultSelectedDate;
-                    $scope.data.years = getDefaultYear();
+                    var selectedDate = getDefaultSelectedDate();
+                    var years = getDefaultYear();
+                    $scope.data = new DataClass(selectedDate, years);
 
                     function getDefaultSelectedDate() {
                         //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges

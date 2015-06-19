@@ -1,3 +1,4 @@
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" id={{::apdDayId}} class=\"apd_select_day apd_select {{::apdDayClasses}}\"></select><div ng-bind=getDayOfWeekName(data.selected.dayOfWeek) class=apd_day_of_week></div><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" id={{::apdMonthId}} class=\"apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" id={{::apdYearId}} class=\"apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 //module apd.main {
 //    'use strict';
 angular.module('angular-pd', ['angular-pd.datepicker']).constant('MESSAGES', {
@@ -30,8 +31,10 @@ var apd;
             return DateModelClass;
         })();
         var DataClass = (function () {
-            function DataClass() {
+            function DataClass(selected, years) {
+                this.selected = selected;
                 this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+                this.years = years;
             }
             return DataClass;
         })();
@@ -86,9 +89,9 @@ var apd;
                     apdYearClasses: '@?'
                 },
                 controller: ['$scope', function ($scope) {
-                    $scope.data = new DataClass();
-                    $scope.data.selected = getDefaultSelectedDate;
-                    $scope.data.years = getDefaultYear();
+                    var selectedDate = getDefaultSelectedDate();
+                    var years = getDefaultYear();
+                    $scope.data = new DataClass(selectedDate, years);
                     function getDefaultSelectedDate() {
                         //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
                         var date = new Date();
@@ -148,5 +151,3 @@ var apd;
         }]);
     })(directive = apd.directive || (apd.directive = {}));
 })(apd || (apd = {}));
-
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" id={{::apdDayId}} class=\"apd_select_day apd_select {{::apdDayClasses}}\"></select><div ng-bind=getDayOfWeekName(data.selected.dayOfWeek) class=apd_day_of_week></div><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" id={{::apdMonthId}} class=\"apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" id={{::apdYearId}} class=\"apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
