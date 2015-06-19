@@ -31,8 +31,9 @@ var apd;
             return DateModelClass;
         })();
         var DataClass = (function () {
-            function DataClass(selected, years) {
+            function DataClass(selected, days, years) {
                 this.selected = selected;
+                this.days = days;
                 this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
                 this.years = years;
             }
@@ -90,8 +91,9 @@ var apd;
                 },
                 controller: ['$scope', function ($scope) {
                     var selectedDate = getDefaultSelectedDate();
-                    var years = getDefaultYear();
-                    $scope.data = new DataClass(selectedDate, years);
+                    var years = getDefaultYearsList();
+                    var days = getDaysCount(selectedDate.month, selectedDate.year);
+                    $scope.data = new DataClass(selectedDate, days, years);
                     function getDefaultSelectedDate() {
                         //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
                         var date = new Date();
@@ -103,32 +105,43 @@ var apd;
                         var timezone = date.getTimezoneOffset();
                         return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
                     }
-                    $scope.$watch('data.selected.day', function (day) {
-                        if (!day)
-                            return;
-                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
-                    });
-                    $scope.$watch('data.selected.month', function (month) {
-                        if (!month)
-                            return;
-                        reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
-                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
-                    });
-                    $scope.$watch('data.selected.year', function (year) {
-                        if (!year)
-                            return;
-                        reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
-                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
-                    });
+                    function getDefaultYearsList() {
+                        //TODO (S.Panfilov) fix for case with date limits
+                        return [
+                            (new Date()).getFullYear() - 1,
+                            (new Date()).getFullYear()
+                        ];
+                    }
+                    function getDaysCount(month, year) {
+                        if (!month || !year)
+                            return console.error(MESSAGES.invalidParams);
+                        return getIntArr(new Date(year, month, 0).getDate());
+                    }
+                    //$scope.$watch('data.selected.day', function (day) {
+                    //    if (!day) return;
+                    //    reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                    //});
+                    //
+                    //$scope.$watch('data.selected.month', function (month) {
+                    //    if (!month) return;
+                    //    reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
+                    //    reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                    //});
+                    //
+                    //$scope.$watch('data.selected.year', function (year) {
+                    //    if (!year) return;
+                    //    reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
+                    //    reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                    //});
                     function getIntArr(length) {
-                        if (!length)
+                        if (!length && length !== 0)
                             return console.error(MESSAGES.invalidParams);
                         return length ? getIntArr(length - 1).concat(length) : [];
                     }
                     function reloadDaysCount(month, year) {
                         if (!month || !year)
                             return console.error(MESSAGES.invalidParams);
-                        $scope.data.days = getIntArr(new Date(year, month, 0).getDate());
+                        $scope.data.days = getDaysCount(month, year);
                     }
                     function reloadSelectedDay(year, month, day) {
                         if (!year || !month || day)
@@ -136,10 +149,6 @@ var apd;
                         var date = new Date(year, month, day);
                         $scope.data.selected.dayOfWeek = date.getDay();
                         $scope.data.selected.datetime = date.getTime() * 1000;
-                    }
-                    function getDefaultYear() {
-                        //TODO (S.Panfilov) fix for case with date limits
-                        return (new Date()).getFullYear();
                     }
                     $scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
                     (function init() {
