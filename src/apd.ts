@@ -11,6 +11,7 @@ module apd.directive {
         month: number;
         year: number;
         datetime: number;
+        timezone: number;
     }
 
     interface DataInterface {
@@ -26,6 +27,16 @@ module apd.directive {
         month = null;
         year = null;
         datetime = null;
+        timezone = null;
+
+        constructor(day:number, dayOfWeek:number, month:number, year:number, datetime:number, timezone: number) {
+            this.day = day;
+            this.dayOfWeek = dayOfWeek;
+            this.month = month;
+            this.year = year;
+            this.datetime = datetime;
+            this.timezone = timezone;
+        }
     }
 
     class DataClass implements DataInterface {
@@ -34,6 +45,51 @@ module apd.directive {
         month:Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
         years:Array<number>;
     }
+
+    class DayOfWeek {
+        name:string;
+        short:string;
+
+        constructor(name:string, short:string) {
+            this.name = name;
+            this.short = short;
+        }
+    }
+
+    class DaysOfWeek {
+        list:Array<DayOfWeek>;
+        shorts:Array<string>;
+
+        constructor(days:Array<DayOfWeek>) {
+            this.list = days;
+            this.shorts = this.getListOfShorts();
+        }
+
+        private getListOfShorts = () => {
+            var result = [];
+
+            for (var i = 0; i < this.list.length; i++) {
+                var dayOfWeek = this.list[i];
+                result.push(dayOfWeek.short);
+            }
+
+            return result;
+        };
+
+        getDayOfWeekName = (dayNum:number) => {
+            return this.shorts[dayNum];
+        }
+    }
+
+    var daysOfWeek = new DaysOfWeek([
+        new DayOfWeek('Sunday', 'Sun'),
+        new DayOfWeek('Monday', 'Mon'),
+        new DayOfWeek('Tuesday', 'Tue'),
+        new DayOfWeek('Wednesday', 'Wed'),
+        new DayOfWeek('Thursday', 'Thu'),
+        new DayOfWeek('Friday', 'Fri'),
+        new DayOfWeek('Saturday', 'Sat')
+    ]);
 
     angular.module('angular-pd.datepicker', [
         //'angular-pd.popup',
@@ -57,19 +113,35 @@ module apd.directive {
                 controller: function ($scope) {
 
                     $scope.data = new DataClass();
-                    $scope.data.selected = new DateModelClass();
+                    $scope.data.selected = getDefaultSelectedDate;
                     $scope.data.years = getDefaultYear();
 
-                    $scope.$watch('data.selected.day', function () {
+                    function getDefaultSelectedDate() {
+                        //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth();
+                        var year = date.getFullYear();
+                        var dateTime = date.getTime();
+                        var dayOfWeek = date.getDay();
+                        var timezone = date.getTimezoneOffset();
+
+                        return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
+                    }
+
+                    $scope.$watch('data.selected.day', function (day) {
+                        if (!day) return;
                         reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
                     });
 
-                    $scope.$watch('data.selected.month', function () {
+                    $scope.$watch('data.selected.month', function (month) {
+                        if (!month) return;
                         reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
                         reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
                     });
 
-                    $scope.$watch('data.selected.year', function () {
+                    $scope.$watch('data.selected.year', function (year) {
+                        if (!year) return;
                         reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
                         reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
                     });
@@ -94,11 +166,16 @@ module apd.directive {
                         $scope.data.selected.datetime = date.getTime() * 1000;
                     }
 
-                    function getDefaultYear () {
+                    function getDefaultYear() {
                         //TODO (S.Panfilov) fix for case with date limits
                         return (new Date()).getFullYear();
                     }
 
+                    $scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
+
+                    (function init() {
+
+                    })();
 
 
                 },

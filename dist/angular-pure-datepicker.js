@@ -1,4 +1,3 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" id={{::apdDayId}} class=\"apd_select_day apd_select {{::apdDayClasses}}\"></select><div ng-bind=data.selected.dayOfWeek class=apd_day_of_week></div><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" id={{::apdMonthId}} class=\"apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" id={{::apdYearId}} class=\"apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 //module apd.main {
 //    'use strict';
 angular.module('angular-pd', ['angular-pd.datepicker']).constant('MESSAGES', {
@@ -14,12 +13,19 @@ var apd;
     (function (directive) {
         'use strict';
         var DateModelClass = (function () {
-            function DateModelClass() {
+            function DateModelClass(day, dayOfWeek, month, year, datetime, timezone) {
                 this.day = null;
                 this.dayOfWeek = null;
                 this.month = null;
                 this.year = null;
                 this.datetime = null;
+                this.timezone = null;
+                this.day = day;
+                this.dayOfWeek = dayOfWeek;
+                this.month = month;
+                this.year = year;
+                this.datetime = datetime;
+                this.timezone = timezone;
             }
             return DateModelClass;
         })();
@@ -29,6 +35,41 @@ var apd;
             }
             return DataClass;
         })();
+        var DayOfWeek = (function () {
+            function DayOfWeek(name, short) {
+                this.name = name;
+                this.short = short;
+            }
+            return DayOfWeek;
+        })();
+        var DaysOfWeek = (function () {
+            function DaysOfWeek(days) {
+                var _this = this;
+                this.getListOfShorts = function () {
+                    var result = [];
+                    for (var i = 0; i < _this.list.length; i++) {
+                        var dayOfWeek = _this.list[i];
+                        result.push(dayOfWeek.short);
+                    }
+                    return result;
+                };
+                this.getDayOfWeekName = function (dayNum) {
+                    return _this.shorts[dayNum];
+                };
+                this.list = days;
+                this.shorts = this.getListOfShorts();
+            }
+            return DaysOfWeek;
+        })();
+        var daysOfWeek = new DaysOfWeek([
+            new DayOfWeek('Sunday', 'Sun'),
+            new DayOfWeek('Monday', 'Mon'),
+            new DayOfWeek('Tuesday', 'Tue'),
+            new DayOfWeek('Wednesday', 'Wed'),
+            new DayOfWeek('Thursday', 'Thu'),
+            new DayOfWeek('Friday', 'Fri'),
+            new DayOfWeek('Saturday', 'Sat')
+        ]);
         angular.module('angular-pd.datepicker', [
             'angular-pd.templates'
         ]).directive('pureDatepicker', ['MESSAGES', function (MESSAGES) {
@@ -46,16 +87,33 @@ var apd;
                 },
                 controller: ['$scope', function ($scope) {
                     $scope.data = new DataClass();
-                    $scope.data.selected = new DateModelClass();
+                    $scope.data.selected = getDefaultSelectedDate;
                     $scope.data.years = getDefaultYear();
-                    $scope.$watch('data.selected.day', function () {
+                    function getDefaultSelectedDate() {
+                        //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth();
+                        var year = date.getFullYear();
+                        var dateTime = date.getTime();
+                        var dayOfWeek = date.getDay();
+                        var timezone = date.getTimezoneOffset();
+                        return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
+                    }
+                    $scope.$watch('data.selected.day', function (day) {
+                        if (!day)
+                            return;
                         reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
                     });
-                    $scope.$watch('data.selected.month', function () {
+                    $scope.$watch('data.selected.month', function (month) {
+                        if (!month)
+                            return;
                         reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
                         reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
                     });
-                    $scope.$watch('data.selected.year', function () {
+                    $scope.$watch('data.selected.year', function (year) {
+                        if (!year)
+                            return;
                         reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
                         reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
                     });
@@ -80,6 +138,9 @@ var apd;
                         //TODO (S.Panfilov) fix for case with date limits
                         return (new Date()).getFullYear();
                     }
+                    $scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
+                    (function init() {
+                    })();
                 }],
                 link: function (scope, elem) {
                 }
@@ -87,3 +148,5 @@ var apd;
         }]);
     })(directive = apd.directive || (apd.directive = {}));
 })(apd || (apd = {}));
+
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" id={{::apdDayId}} class=\"apd_select_day apd_select {{::apdDayClasses}}\"></select><div ng-bind=getDayOfWeekName(data.selected.dayOfWeek) class=apd_day_of_week></div><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" id={{::apdMonthId}} class=\"apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" id={{::apdYearId}} class=\"apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
