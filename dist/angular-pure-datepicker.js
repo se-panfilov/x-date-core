@@ -108,14 +108,19 @@ var apd;
                     function getDefaultYearsList() {
                         //TODO (S.Panfilov) fix for case with date limits
                         return [
+                            (new Date()).getFullYear() - 3,
+                            (new Date()).getFullYear() - 2,
                             (new Date()).getFullYear() - 1,
                             (new Date()).getFullYear()
                         ];
                     }
+                    function getDaysInMonth(month, year) {
+                        return new Date(year, month + 1, 0).getDate();
+                    }
                     function getDaysCount(month, year) {
                         if ((!month && month !== 0) || !year)
                             return console.error(MESSAGES.invalidParams);
-                        return getIntArr(new Date(year, month, 0).getDate());
+                        return getIntArr(getDaysInMonth(month, year));
                     }
                     $scope.$watch('data.selected.day', function (day) {
                         if (!day)
@@ -148,6 +153,10 @@ var apd;
                         if (!year || (!month && month !== 0) || !day)
                             return console.error(MESSAGES.invalidParams);
                         var date = new Date(year, month, day);
+                        var daysInSelectedMonth = getDaysInMonth(month, year);
+                        if ($scope.data.selected.day > daysInSelectedMonth) {
+                            $scope.data.selected.day = daysInSelectedMonth;
+                        }
                         $scope.data.selected.dayOfWeek = date.getDay();
                         $scope.data.selected.datetime = date.getTime() * 1000;
                     }
