@@ -18,7 +18,7 @@ var cssBase64 = require('gulp-css-base64');
 //var typescriptlint = require('gulp-typescriptlint');
 
 var src = {
-    styles: ['src/styles/**/*.styl'],
+    styles: ['src/templates/**/*.styl'],
     jade: ['src/templates/**/*.jade'],
     html: ['src/templates/**/*.html'],
     js: ['src/**/*.js'],

@@ -100,11 +100,11 @@ module apd.directive {
                     apdMonthClasses: '@?',
                     apdYearClasses: '@?'
                 },
-                controller: function ($scope) {
+                link: function (scope, elem) {
                     var selectedDate = getDefaultSelectedDate();
                     var years = getDefaultYearsList();
                     var days = getDaysCount(selectedDate.month, selectedDate.year);
-                    $scope.data = new DataClass(selectedDate, days, years);
+                    scope.data = new DataClass(selectedDate, days, years);
 
                     function getDefaultSelectedDate() {
                         //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
@@ -139,21 +139,21 @@ module apd.directive {
                         return getIntArr(getDaysInMonth(month, year));
                     }
 
-                    $scope.$watch('data.selected.day', function (day) {
+                    scope.$watch('data.selected.day', function (day) {
                         if (!day) return;
-                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                        reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
                     });
 
-                    $scope.$watch('data.selected.month', function (month) {
+                    scope.$watch('data.selected.month', function (month) {
                         if (!month && month !== 0) return;
-                        reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
-                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                        reloadDaysCount(scope.data.selected.month, scope.data.selected.year);
+                        reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
                     });
 
-                    $scope.$watch('data.selected.year', function (year) {
+                    scope.$watch('data.selected.year', function (year) {
                         if (!year) return;
-                        reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
-                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                        reloadDaysCount(scope.data.selected.month, scope.data.selected.year);
+                        reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
                     });
 
                     function getIntArr(length:number) {
@@ -165,7 +165,7 @@ module apd.directive {
                     function reloadDaysCount(month:number, year:number) {
                         if ((!month && month !== 0) || !year) return console.error(MESSAGES.invalidParams);
 
-                        $scope.data.days = getDaysCount(month, year);
+                        scope.data.days = getDaysCount(month, year);
                     }
 
                     function reloadSelectedDay(year, month, day) {
@@ -174,24 +174,19 @@ module apd.directive {
 
 
                         var daysInSelectedMonth = getDaysInMonth(month, year);
-                        if ($scope.data.selected.day > daysInSelectedMonth) {
-                            $scope.data.selected.day = daysInSelectedMonth;
+                        if (scope.data.selected.day > daysInSelectedMonth) {
+                            scope.data.selected.day = daysInSelectedMonth;
                         }
 
-                        $scope.data.selected.dayOfWeek = date.getDay();
-                        $scope.data.selected.datetime = date.getTime() * 1000;
+                        scope.data.selected.dayOfWeek = date.getDay();
+                        scope.data.selected.datetime = date.getTime() * 1000;
                     }
 
-                    $scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
+                    scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
 
                     (function init() {
 
                     })();
-
-
-                },
-                link: function (scope, elem) {
-
                 }
             }
         });
