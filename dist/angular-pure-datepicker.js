@@ -113,38 +113,39 @@ var apd;
                         ];
                     }
                     function getDaysCount(month, year) {
-                        if (!month || !year)
+                        if ((!month && month !== 0) || !year)
                             return console.error(MESSAGES.invalidParams);
                         return getIntArr(new Date(year, month, 0).getDate());
                     }
-                    //$scope.$watch('data.selected.day', function (day) {
-                    //    if (!day) return;
-                    //    reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
-                    //});
-                    //
-                    //$scope.$watch('data.selected.month', function (month) {
-                    //    if (!month) return;
-                    //    reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
-                    //    reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
-                    //});
-                    //
-                    //$scope.$watch('data.selected.year', function (year) {
-                    //    if (!year) return;
-                    //    reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
-                    //    reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
-                    //});
+                    $scope.$watch('data.selected.day', function (day) {
+                        if (!day)
+                            return;
+                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                    });
+                    $scope.$watch('data.selected.month', function (month) {
+                        if (!month && month !== 0)
+                            return;
+                        reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
+                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                    });
+                    $scope.$watch('data.selected.year', function (year) {
+                        if (!year)
+                            return;
+                        reloadDaysCount($scope.data.selected.month, $scope.data.selected.year);
+                        reloadSelectedDay($scope.data.selected.year, $scope.data.selected.month, $scope.data.selected.day);
+                    });
                     function getIntArr(length) {
                         if (!length && length !== 0)
                             return console.error(MESSAGES.invalidParams);
                         return length ? getIntArr(length - 1).concat(length) : [];
                     }
                     function reloadDaysCount(month, year) {
-                        if (!month || !year)
+                        if ((!month && month !== 0) || !year)
                             return console.error(MESSAGES.invalidParams);
                         $scope.data.days = getDaysCount(month, year);
                     }
                     function reloadSelectedDay(year, month, day) {
-                        if (!year || !month || day)
+                        if (!year || (!month && month !== 0) || !day)
                             return console.error(MESSAGES.invalidParams);
                         var date = new Date(year, month, day);
                         $scope.data.selected.dayOfWeek = date.getDay();
