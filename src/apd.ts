@@ -49,11 +49,13 @@ module apd.directive {
 
     class DaysOfWeek {
         list:Array<DayOfWeek>;
+        names:Array<string>;
         shorts:Array<string>;
 
         constructor(days:Array<DayOfWeek>) {
             this.list = days;
             this.shorts = this.getListOfShorts();
+            this.names = this.getListOfNames();
         }
 
         private getListOfShorts = () => {
@@ -67,9 +69,24 @@ module apd.directive {
             return result;
         };
 
-        getDayOfWeekName = (dayNum:number) => {
+        private getListOfNames = () => {
+            var result = [];
+
+            for (var i = 0; i < this.list.length; i++) {
+                var dayOfWeek = this.list[i];
+                result.push(dayOfWeek.name);
+            }
+
+            return result;
+        };
+
+        getDayOfWeekShortName = (dayNum:number) => {
             return this.shorts[dayNum];
-        }
+        };
+
+        getDayOfWeekName = (dayNum:number) => {
+            return this.names[dayNum];
+        };
     }
 
     var daysOfWeek = new DaysOfWeek([
@@ -182,6 +199,7 @@ module apd.directive {
                         scope.data.selected.datetime = date.getTime() * 1000;
                     }
 
+                    scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
                     scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
 
                     (function init() {

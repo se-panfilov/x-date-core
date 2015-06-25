@@ -16,6 +16,7 @@ var templateCache = require('gulp-angular-templatecache');
 var mergeStream = require('merge-stream');
 var cssBase64 = require('gulp-css-base64');
 //var typescriptlint = require('gulp-typescriptlint');
+var size = require('gulp-filesize');
 
 var src = {
     styles: ['src/templates/**/*.styl'],
@@ -39,6 +40,14 @@ var dest = {
 //        }))
 //        .pipe(coffeelint.reporter())
 //});
+
+
+gulp.task('sizes_dist', function () {
+    return gulp.src([
+        'static/dist/**/*.js',
+        'static/dist/**/*.css'
+    ]).pipe(size());
+});
 
 function makeJade() {
     return gulp.src(src.jade)

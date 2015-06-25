@@ -1,3 +1,4 @@
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span title={{getDayOfWeekName(data.selected.dayOfWeek)}} ng-bind=getDayOfWeekShortName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 //module apd.main {
 //    'use strict';
 angular.module('angular-pd', ['angular-pd.datepicker']).constant('MESSAGES', {
@@ -56,11 +57,23 @@ var apd;
                     }
                     return result;
                 };
-                this.getDayOfWeekName = function (dayNum) {
+                this.getListOfNames = function () {
+                    var result = [];
+                    for (var i = 0; i < _this.list.length; i++) {
+                        var dayOfWeek = _this.list[i];
+                        result.push(dayOfWeek.name);
+                    }
+                    return result;
+                };
+                this.getDayOfWeekShortName = function (dayNum) {
                     return _this.shorts[dayNum];
+                };
+                this.getDayOfWeekName = function (dayNum) {
+                    return _this.names[dayNum];
                 };
                 this.list = days;
                 this.shorts = this.getListOfShorts();
+                this.names = this.getListOfNames();
             }
             return DaysOfWeek;
         })();
@@ -159,6 +172,7 @@ var apd;
                         scope.data.selected.dayOfWeek = date.getDay();
                         scope.data.selected.datetime = date.getTime() * 1000;
                     }
+                    scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
                     scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
                     (function init() {
                     })();
@@ -167,5 +181,3 @@ var apd;
         }]);
     })(directive = apd.directive || (apd.directive = {}));
 })(apd || (apd = {}));
-
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><div ng-bind=getDayOfWeekName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></div><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
