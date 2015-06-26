@@ -109,13 +109,33 @@ var apd;
                     var days = getDaysCount(selectedDate.month, selectedDate.year);
                     scope.data = new DataClass(selectedDate, days, years);
                     function validateModel(model) {
+                        //console.log(model instanceof DateModelClass);
                         if (!model.day)
+                            return false;
+                        if (!model.dayOfWeek && model.dayOfWeek !== 0)
                             return false;
                         if (!model.month && model.month !== 0)
                             return false;
+                        if (!model.year)
+                            return false;
+                        if (!model.datetime)
+                            return false;
+                        if (!model.timezone && model.timezone !== 0)
+                            return false;
                         return true;
                     }
+                    function preserveModelValues(model) {
+                        for (var value in model) {
+                            if (model.hasOwnProperty(value)) {
+                                model[value] = +model[value];
+                            }
+                        }
+                        return model;
+                    }
                     function getDefaultSelectedDate() {
+                        //TODO (S.Panfilov) work point
+                        var isValidModel = validateModel(scope.ngModel);
+                        var model = preserveModelValues(scope.ngModel);
                         //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
                         var date = new Date();
                         var day = date.getDate();
