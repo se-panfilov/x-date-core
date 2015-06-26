@@ -110,6 +110,7 @@ module apd.directive {
                 replace: true,
                 templateUrl: 'apd.html',
                 scope: {
+                    ngModel: '=',
                     apdDayId: '@?',
                     apdMonthId: '@?',
                     apdYearId: '@?',
@@ -117,11 +118,21 @@ module apd.directive {
                     apdMonthClasses: '@?',
                     apdYearClasses: '@?'
                 },
-                link: function (scope, elem) {
+                link: function (scope) {
+
+                    console.log(scope.ngModel);
+
                     var selectedDate = getDefaultSelectedDate();
                     var years = getDefaultYearsList();
                     var days = getDaysCount(selectedDate.month, selectedDate.year);
                     scope.data = new DataClass(selectedDate, days, years);
+
+                    function validateModel(model) {//TODO (S.Panfilov) add developers errors
+                        if (!model.day) return false;
+                        if (!model.month && model.month !== 0) return false;
+
+                        return true;
+                    }
 
                     function getDefaultSelectedDate() {
                         //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
