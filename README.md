@@ -7,3 +7,7 @@
 
 
 # angular-pure-date
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/se-panfilov/angular-pure-datepicker/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
