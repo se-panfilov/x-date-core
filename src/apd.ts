@@ -6,12 +6,12 @@ module apd.directive {
     'use strict';
 
     class DateModelClass {
-        day = null;
-        dayOfWeek = null;
-        month = null;
-        year = null;
-        datetime = null;
-        timezone = null;
+        day:number;
+        dayOfWeek:number;
+        month:number;
+        year:number;
+        datetime:number;
+        timezone:number;
 
         constructor(day:number, dayOfWeek:number, month:number, year:number, datetime:number, timezone:number) {
             this.day = day;
@@ -127,15 +127,57 @@ module apd.directive {
                     var days = getDaysCount(selectedDate.month, selectedDate.year);
                     scope.data = new DataClass(selectedDate, days, years);
 
-                    function validateModel(model:DateModelClass) {//TODO (S.Panfilov) add developers errors
-                        //console.log(model instanceof DateModelClass);
+                    var _messages = {
+                        invalidParams: 'Invalid params',
+                        invalidDateModel: 'Invalid date model'
+                    };
 
-                        if (!model.day) return false;
-                        if (!model.dayOfWeek && model.dayOfWeek !== 0) return false;
-                        if (!model.month && model.month !== 0) return false;
-                        if (!model.year) return false;
-                        if (!model.datetime) return false;
-                        if (!model.timezone && model.timezone !== 0) return false;
+                    function throwDeveloperError(message:string) {
+                        console.error(message);
+                    }
+
+                    function throwModelValidationMessage(field:string) {
+                        throwDeveloperError(_messages.invalidDateModel + ': error on field \"' + field + "+\"");
+                    }
+
+                    function validateModel(model:DateModelClass) {
+
+                        //TODO (S.Panfilov) not all fields should be mandatory.
+                        //TODO (S.Panfilov) we may need only day month and year
+                        //TODO (S.Panfilov) or a dateTime
+                        var modelMandatoryFields = {
+                            day: 'day',
+                            dayOfWeek: 'dayOfWeek',
+                            month: 'month',
+                            year: 'year',
+                            datetime: 'datetime',
+                            timezone: 'timezone'
+                        };
+
+                        if (!model[modelMandatoryFields.day]) {
+                            throwModelValidationMessage(modelMandatoryFields.day);
+                            return false;
+                        }
+                        if (!model[modelMandatoryFields.dayOfWeek] && model[modelMandatoryFields.dayOfWeek] !== 0) {
+                            throwModelValidationMessage(modelMandatoryFields.dayOfWeek);
+                            return false;
+                        }
+                        if (!model[modelMandatoryFields.month] && model[modelMandatoryFields.month] !== 0) {
+                            throwModelValidationMessage(modelMandatoryFields.month);
+                            return false;
+                        }
+                        if (!model[modelMandatoryFields.year]) {
+                            throwModelValidationMessage(modelMandatoryFields.year);
+                            return false;
+                        }
+                        if (!model[modelMandatoryFields.datetime]) {
+                            throwModelValidationMessage(modelMandatoryFields.datetime);
+                            return false;
+                        }
+                        if (!model[modelMandatoryFields.timezone] && model[modelMandatoryFields.timezone] !== 0) {
+                            throwModelValidationMessage(modelMandatoryFields.timezone);
+                            return false;
+                        }
 
                         return true;
                     }
@@ -148,7 +190,7 @@ module apd.directive {
                             }
                         }
 
-                        return model;
+                        return <DateModelClass>model;
                     }
 
                     function getDefaultSelectedDate() {
@@ -156,6 +198,14 @@ module apd.directive {
                         var isValidModel = validateModel(scope.ngModel);
                         var model = preserveModelValues(scope.ngModel);
 
+                        if (isValidModel) {
+                            var day = model.day;
+                            var month = model.month;
+                            var year = model.year;
+                            var dateTime = model.datetime;
+                            var dayOfWeek =model.dayOfWeek;
+                            var timezone = model.timezone;
+                        }
 
                         //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
                         var date = new Date();

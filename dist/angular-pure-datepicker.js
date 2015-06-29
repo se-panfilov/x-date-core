@@ -15,12 +15,6 @@ var apd;
         'use strict';
         var DateModelClass = (function () {
             function DateModelClass(day, dayOfWeek, month, year, datetime, timezone) {
-                this.day = null;
-                this.dayOfWeek = null;
-                this.month = null;
-                this.year = null;
-                this.datetime = null;
-                this.timezone = null;
                 this.day = day;
                 this.dayOfWeek = dayOfWeek;
                 this.month = month;
@@ -108,20 +102,52 @@ var apd;
                     var years = getDefaultYearsList();
                     var days = getDaysCount(selectedDate.month, selectedDate.year);
                     scope.data = new DataClass(selectedDate, days, years);
+                    var _messages = {
+                        invalidParams: 'Invalid params',
+                        invalidDateModel: 'Invalid date model'
+                    };
+                    function throwDeveloperError(message) {
+                        console.error(message);
+                    }
+                    function throwModelValidationMessage(field) {
+                        throwDeveloperError(_messages.invalidDateModel + ': error on field \"' + field + "+\"");
+                    }
                     function validateModel(model) {
-                        //console.log(model instanceof DateModelClass);
-                        if (!model.day)
+                        //TODO (S.Panfilov) not all fields should be mandatory.
+                        //TODO (S.Panfilov) we may need only day month and year
+                        //TODO (S.Panfilov) or a dateTime
+                        var modelMandatoryFields = {
+                            day: 'day',
+                            dayOfWeek: 'dayOfWeek',
+                            month: 'month',
+                            year: 'year',
+                            datetime: 'datetime',
+                            timezone: 'timezone'
+                        };
+                        if (!model[modelMandatoryFields.day]) {
+                            throwModelValidationMessage(modelMandatoryFields.day);
                             return false;
-                        if (!model.dayOfWeek && model.dayOfWeek !== 0)
+                        }
+                        if (!model[modelMandatoryFields.dayOfWeek] && model[modelMandatoryFields.dayOfWeek] !== 0) {
+                            throwModelValidationMessage(modelMandatoryFields.dayOfWeek);
                             return false;
-                        if (!model.month && model.month !== 0)
+                        }
+                        if (!model[modelMandatoryFields.month] && model[modelMandatoryFields.month] !== 0) {
+                            throwModelValidationMessage(modelMandatoryFields.month);
                             return false;
-                        if (!model.year)
+                        }
+                        if (!model[modelMandatoryFields.year]) {
+                            throwModelValidationMessage(modelMandatoryFields.year);
                             return false;
-                        if (!model.datetime)
+                        }
+                        if (!model[modelMandatoryFields.datetime]) {
+                            throwModelValidationMessage(modelMandatoryFields.datetime);
                             return false;
-                        if (!model.timezone && model.timezone !== 0)
+                        }
+                        if (!model[modelMandatoryFields.timezone] && model[modelMandatoryFields.timezone] !== 0) {
+                            throwModelValidationMessage(modelMandatoryFields.timezone);
                             return false;
+                        }
                         return true;
                     }
                     function preserveModelValues(model) {
@@ -136,6 +162,14 @@ var apd;
                         //TODO (S.Panfilov) work point
                         var isValidModel = validateModel(scope.ngModel);
                         var model = preserveModelValues(scope.ngModel);
+                        if (isValidModel) {
+                            var day = model.day;
+                            var month = model.month;
+                            var year = model.year;
+                            var dateTime = model.datetime;
+                            var dayOfWeek = model.dayOfWeek;
+                            var timezone = model.timezone;
+                        }
                         //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
                         var date = new Date();
                         var day = date.getDate();
