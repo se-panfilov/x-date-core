@@ -6,11 +6,8 @@ var angular:any;
 
 angular.module('angular-pd', [
     'angular-pd.datepicker',
-    'angular-pd.date_utils'
-])
-
-    .constant('MESSAGES', {
-        invalidParams: 'Invalid params'
-    });
+    'angular-pd.date_utils',
+    'angular-pd.messages'
+]);
 
 //}
