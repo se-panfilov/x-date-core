@@ -30,4 +30,22 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             label.control-label(for="apd_1") Date
                             pure-datepicker#apd_1(ng-model="resultModel")
                     div
-                        span(ng-bind="resultModel")
+                        span Day:
+                        | &nbsp;
+                        span(ng-bind="resultModel.day")
+                    div
+                        span Month:
+                        | &nbsp;
+                        span(ng-bind="resultModel.month")
+                    div
+                        span Year:
+                        | &nbsp;
+                        span(ng-bind="resultModel.year")
+                    div
+                        span Datetime:
+                        | &nbsp;
+                        span(ng-bind="resultModel.datetime")
+                    div
+                        span timezone:
+                        | &nbsp;
+                        span(ng-bind="resultModel.timezone")
