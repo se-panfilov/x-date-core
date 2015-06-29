@@ -159,26 +159,20 @@ var apd;
                         return model;
                     }
                     function getDefaultSelectedDate() {
-                        //TODO (S.Panfilov) work point
                         var isValidModel = validateModel(scope.ngModel);
-                        var model = preserveModelValues(scope.ngModel);
                         if (isValidModel) {
-                            var day = model.day;
-                            var month = model.month;
-                            var year = model.year;
-                            var dateTime = model.datetime;
-                            var dayOfWeek = model.dayOfWeek;
-                            var timezone = model.timezone;
+                            return preserveModelValues(scope.ngModel);
                         }
-                        //TODO (S.Panfilov) now set current date, but should resolve in case of preset model and limited date ranges
-                        var date = new Date();
-                        var day = date.getDate();
-                        var month = date.getMonth();
-                        var year = date.getFullYear();
-                        var dateTime = date.getTime();
-                        var dayOfWeek = date.getDay();
-                        var timezone = date.getTimezoneOffset();
-                        return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
+                        else {
+                            var date = new Date();
+                            var day = date.getDate();
+                            var month = date.getMonth();
+                            var year = date.getFullYear();
+                            var dateTime = date.getTime();
+                            var dayOfWeek = date.getDay();
+                            var timezone = date.getTimezoneOffset();
+                            return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
+                        }
                     }
                     function getDefaultYearsList() {
                         //TODO (S.Panfilov) fix for case with date limits
