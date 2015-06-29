@@ -53,6 +53,11 @@ module apd.dateUtils {
         .factory('DateUtilsFactory', function (MessgesFactory) {
 
             var modelFields:modelFieldsClass = {
+                //This is mandatory model fields
+                //There can be "mandatory groups"
+                //Here required "day", "month" and "year" (mandatory group 1)
+                //Or only "timezone" (mandatory group 2)
+                //Fields in common not mandatory at all
                 mandatory: [
                     {
                         day: new DateModelFieldClass('day', false),
@@ -110,19 +115,38 @@ module apd.dateUtils {
                 },
                 validateModel: function (model:DateModelClass) {
 
-                    //TODO (S.Panfilov) not all fields should be mandatory.
-                    //TODO (S.Panfilov) we may need only day month and year
-                    //TODO (S.Panfilov) or a dateTime
+                    //TODO (S.Panfilov) check with invalid params
+                    var mandatoryGroupsCount = modelFields.mandatory.length;
+                    var groupResults = {};
 
                     for (var i = 0; i < modelFields.mandatory.length; i++) {
-                        var field:DateModelFieldClass = <DateModelFieldClass>modelFields.mandatory[i];
-                        var isVald:boolean = _validateField(model, field.name, field.isZeroAllowed);
+                        var mandatoryGroup:Object = modelFields.mandatory[i];
+                        for (var fieldName:string in mandatoryGroup) {
+                            if (mandatoryGroup.hasOwnProperty(fieldName)) {
+                                //var field:DateModelFieldClass = <DateModelFieldClass>modelFields.mandatory[i];
+                                var isValid:boolean = _validateField(model, fieldName, mandatoryGroup[fieldName].isZeroAllowed);
+                                groupResults[fieldName] = isValid;
+                                if (!isValid) {
+                                    break; //shoul up to one loop level
+                                }
+                            }
+                        }
 
-                        if (!isVald) {
-                            MessgesFactory.throwModelValidationMessage(field.name);
-                            return false;
+                    }
+                    for (var resName:string in groupResults) {
+                        if (groupResults.hasOwnProperty(resName)) {
+                            if (!resName){
+                                MessgesFactory.throwModelValidationMessage(resName);
+                                return false;
+                            }
+
                         }
                     }
+
+                    //if (!isValid) {
+                    //    MessgesFactory.throwModelValidationMessage(field.name);
+                    //    return false;
+                    //}
 
                     return true;
                 },

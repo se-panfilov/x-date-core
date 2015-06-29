@@ -3,10 +3,9 @@ angular.module("angular-pd.templates", []).run(["$templateCache", function($temp
 //    'use strict';
 angular.module('angular-pd', [
     'angular-pd.datepicker',
-    'angular-pd.date_utils'
-]).constant('MESSAGES', {
-    invalidParams: 'Invalid params'
-});
+    'angular-pd.date_utils',
+    'angular-pd.messages'
+]);
 //} 
 
 /// <reference path="main.ts" />
@@ -16,26 +15,6 @@ var apd;
     var directive;
     (function (directive) {
         'use strict';
-        var DateModelClass = (function () {
-            function DateModelClass(day, dayOfWeek, month, year, datetime, timezone) {
-                this.day = day;
-                this.dayOfWeek = dayOfWeek;
-                this.month = month;
-                this.year = year;
-                this.datetime = datetime;
-                this.timezone = timezone;
-            }
-            return DateModelClass;
-        })();
-        var DataClass = (function () {
-            function DataClass(selected, days, years) {
-                this.selected = selected;
-                this.days = days;
-                this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-                this.years = years;
-            }
-            return DataClass;
-        })();
         var DayOfWeek = (function () {
             function DayOfWeek(name, short) {
                 this.name = name;
@@ -85,7 +64,7 @@ var apd;
         ]);
         angular.module('angular-pd.datepicker', [
             'angular-pd.templates'
-        ]).directive('pureDatepicker', ['MESSAGES', function (MESSAGES) {
+        ]).directive('pureDatepicker', ['DateUtilsFactory', 'MessgesFactory', function (DateUtilsFactory, MessgesFactory) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -100,62 +79,10 @@ var apd;
                     apdYearClasses: '@?'
                 },
                 link: function (scope) {
-                    console.log(scope.ngModel);
-                    var selectedDate = getDefaultSelectedDate();
-                    var years = getDefaultYearsList();
-                    var days = getDaysCount(selectedDate.month, selectedDate.year);
-                    scope.data = new DataClass(selectedDate, days, years);
-                    var _messages = {
-                        invalidParams: 'Invalid params',
-                        invalidDateModel: 'Invalid date model'
-                    };
-                    function throwDeveloperError(message) {
-                        console.error(message);
-                    }
-                    function throwModelValidationMessage(field) {
-                        throwDeveloperError(_messages.invalidDateModel + ': error on field \"' + field + "+\"");
-                    }
-                    function preserveModelValues(model) {
-                        for (var value in model) {
-                            if (model.hasOwnProperty(value)) {
-                                model[value] = +model[value];
-                            }
-                        }
-                        return model;
-                    }
-                    function getDefaultSelectedDate() {
-                        var isValidModel = validateModel(scope.ngModel);
-                        if (isValidModel) {
-                            return preserveModelValues(scope.ngModel);
-                        }
-                        else {
-                            var date = new Date();
-                            var day = date.getDate();
-                            var month = date.getMonth();
-                            var year = date.getFullYear();
-                            var dateTime = date.getTime();
-                            var dayOfWeek = date.getDay();
-                            var timezone = date.getTimezoneOffset();
-                            return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
-                        }
-                    }
-                    function getDefaultYearsList() {
-                        //TODO (S.Panfilov) fix for case with date limits
-                        return [
-                            (new Date()).getFullYear() - 3,
-                            (new Date()).getFullYear() - 2,
-                            (new Date()).getFullYear() - 1,
-                            (new Date()).getFullYear()
-                        ];
-                    }
-                    function getDaysInMonth(month, year) {
-                        return new Date(year, month + 1, 0).getDate();
-                    }
-                    function getDaysCount(month, year) {
-                        if ((!month && month !== 0) || !year)
-                            return console.error(MESSAGES.invalidParams);
-                        return getIntArr(getDaysInMonth(month, year));
-                    }
+                    var selectedDate = DateUtilsFactory.getDefaultSelectedDate(scope.ngModel);
+                    var years = DateUtilsFactory.getDefaultYearsList();
+                    var days = DateUtilsFactory.getDaysCount(selectedDate.month, selectedDate.year);
+                    scope.data = DateUtilsFactory.createData(selectedDate, days, years);
                     scope.$watch('data.selected.day', function (day) {
                         if (!day)
                             return;
@@ -174,21 +101,20 @@ var apd;
                         reloadDaysCount(scope.data.selected.month, scope.data.selected.year);
                         reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
                     });
-                    function getIntArr(length) {
-                        if (!length && length !== 0)
-                            return console.error(MESSAGES.invalidParams);
-                        return length ? getIntArr(length - 1).concat(length) : [];
-                    }
                     function reloadDaysCount(month, year) {
-                        if ((!month && month !== 0) || !year)
-                            return console.error(MESSAGES.invalidParams);
-                        scope.data.days = getDaysCount(month, year);
+                        if ((!month && month !== 0) || !year) {
+                            MessgesFactory.throwInvalidParamsMessage();
+                            return false;
+                        }
+                        scope.data.days = DateUtilsFactory.getDaysCount(month, year);
                     }
                     function reloadSelectedDay(year, month, day) {
-                        if (!year || (!month && month !== 0) || !day)
-                            return console.error(MESSAGES.invalidParams);
+                        if (!year || (!month && month !== 0) || !day) {
+                            MessgesFactory.throwInvalidParamsMessage();
+                            return false;
+                        }
                         var date = new Date(year, month, day);
-                        var daysInSelectedMonth = getDaysInMonth(month, year);
+                        var daysInSelectedMonth = DateUtilsFactory.getDaysInMonth(month, year);
                         if (scope.data.selected.day > daysInSelectedMonth) {
                             scope.data.selected.day = daysInSelectedMonth;
                         }
@@ -197,8 +123,6 @@ var apd;
                     }
                     scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
                     scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
-                    (function init() {
-                    })();
                 }
             };
         }]);
@@ -210,6 +134,26 @@ var apd;
     var dateUtils;
     (function (dateUtils) {
         'use strict';
+        var DateModelClass = (function () {
+            function DateModelClass(day, dayOfWeek, month, year, datetime, timezone) {
+                this.day = day;
+                this.dayOfWeek = dayOfWeek;
+                this.month = month;
+                this.year = year;
+                this.datetime = datetime;
+                this.timezone = timezone;
+            }
+            return DateModelClass;
+        })();
+        var DataClass = (function () {
+            function DataClass(selected, days, years) {
+                this.selected = selected;
+                this.days = days;
+                this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+                this.years = years;
+            }
+            return DataClass;
+        })();
         var DateModelFieldClass = (function () {
             function DateModelFieldClass(name, allowZero) {
                 this.name = name;
@@ -222,8 +166,13 @@ var apd;
             }
             return modelFieldsClass;
         })();
-        angular.module('angular-pd.date_utils', []).factory('DateUtils', function () {
+        angular.module('angular-pd.date_utils', []).factory('DateUtilsFactory', ['MessgesFactory', function (MessgesFactory) {
             var modelFields = {
+                //This is mandatory model fields
+                //There can be "mandatory groups"
+                //Here required "day", "month" and "year" (mandatory group 1)
+                //Or only "timezone" (mandatory group 2)
+                //Fields in common not mandatory at all
                 mandatory: [
                     {
                         day: new DateModelFieldClass('day', false),
@@ -249,23 +198,119 @@ var apd;
                 }
                 return true;
             }
+            function preserveModelValues(model) {
+                for (var value in model) {
+                    if (model.hasOwnProperty(value)) {
+                        model[value] = +model[value];
+                    }
+                }
+                return model;
+            }
+            function _getIntArr(length) {
+                if (!length && length !== 0) {
+                    MessgesFactory.throwInvalidParamsMessage();
+                    return false;
+                }
+                return length ? _getIntArr(length - 1).concat(length) : [];
+            }
             var exports = {
+                createData: function (selected, days, years) {
+                    return new DataClass(selected, days, years);
+                },
                 validateModel: function (model) {
-                    //TODO (S.Panfilov) not all fields should be mandatory.
-                    //TODO (S.Panfilov) we may need only day month and year
-                    //TODO (S.Panfilov) or a dateTime
+                    //TODO (S.Panfilov) check with invalid params
+                    var mandatoryGroupsCount = modelFields.mandatory.length;
+                    var groupResults = {};
                     for (var i = 0; i < modelFields.mandatory.length; i++) {
-                        var field = modelFields.mandatory[i];
-                        var isVald = _validateField(model, field.name, field.isZeroAllowed);
-                        if (!isVald) {
-                            throwModelValidationMessage(field.name);
-                            return false;
+                        var mandatoryGroup = modelFields.mandatory[i];
+                        for (var fieldName in mandatoryGroup) {
+                            if (mandatoryGroup.hasOwnProperty(fieldName)) {
+                                //var field:DateModelFieldClass = <DateModelFieldClass>modelFields.mandatory[i];
+                                var isValid = _validateField(model, fieldName, mandatoryGroup[fieldName].isZeroAllowed);
+                                groupResults[fieldName] = isValid;
+                                if (!isValid) {
+                                    break;
+                                }
+                            }
                         }
                     }
+                    for (var resName in groupResults) {
+                        if (groupResults.hasOwnProperty(resName)) {
+                            if (!resName) {
+                                MessgesFactory.throwModelValidationMessage(resName);
+                                return false;
+                            }
+                        }
+                    }
+                    //if (!isValid) {
+                    //    MessgesFactory.throwModelValidationMessage(field.name);
+                    //    return false;
+                    //}
                     return true;
+                },
+                getDaysCount: function (month, year) {
+                    if ((!month && month !== 0) || !year) {
+                        MessgesFactory.throwInvalidParamsMessage();
+                        return false;
+                    }
+                    return _getIntArr(exports.getDaysInMonth(month, year));
+                },
+                getDaysInMonth: function (month, year) {
+                    return new Date(year, month + 1, 0).getDate();
+                },
+                getDefaultSelectedDate: function (model) {
+                    var isValidModel = exports.validateModel(model);
+                    if (isValidModel) {
+                        return preserveModelValues(model);
+                    }
+                    else {
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth();
+                        var year = date.getFullYear();
+                        var dateTime = date.getTime();
+                        var dayOfWeek = date.getDay();
+                        var timezone = date.getTimezoneOffset();
+                        return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
+                    }
+                },
+                getDefaultYearsList: function () {
+                    //TODO (S.Panfilov) fix for case with date limits
+                    return [
+                        (new Date()).getFullYear() - 3,
+                        (new Date()).getFullYear() - 2,
+                        (new Date()).getFullYear() - 1,
+                        (new Date()).getFullYear()
+                    ];
+                }
+            };
+            return exports;
+        }]);
+    })(dateUtils = apd.dateUtils || (apd.dateUtils = {}));
+})(apd || (apd = {}));
+
+var apd;
+(function (apd) {
+    var messages;
+    (function (messages) {
+        'use strict';
+        angular.module('angular-pd.messages', []).factory('MessgesFactory', function () {
+            var _messages = {
+                invalidParams: 'Invalid params',
+                invalidDateModel: 'Invalid date model'
+            };
+            var exports = {
+                throwDeveloperError: function (message) {
+                    console.error(message);
+                },
+                throwModelValidationMessage: function (field) {
+                    exports.throwDeveloperError(_messages.invalidDateModel + ': error on field \"' + field + "+\"");
+                },
+                throwInvalidParamsMessage: function () {
+                    exports.throwDeveloperError(_messages.invalidParams);
                 }
             };
             return exports;
         });
-    })(dateUtils = apd.dateUtils || (apd.dateUtils = {}));
+    })(messages = apd.messages || (apd.messages = {}));
 })(apd || (apd = {}));
