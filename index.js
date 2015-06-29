@@ -16,23 +16,13 @@ angular.module('demo', [
             {name: 'Воскресенье', short: 'Вс'}
         ];
 
-        $scope.localizedMonth = {
-            1: {name: 'Январь', short: 'Янв'},
-            2: {name: 'Февраль', short: 'Фев'},
-            3: {name: 'Март', short: 'Март'},
-            4: {name: 'Апрель', short: 'Май'},
-            5: {name: 'Май', short: 'Май'},
-            6: {name: 'Июнь', short: 'Июнь'},
-            7: {name: 'Июль', short: 'Июль'},
-            8: {name: 'Август', short: 'Авг'},
-            9: {name: 'Сентябрь', short: 'Сент'},
-            10: {name: 'Октябрь', short: 'Окт'},
-            11: {name: 'Ноябрь', short: 'Ноя'},
-            12: {name: 'Декабрь', short: 'Дек'}
+        $scope.resultModel = {
+            day: 26,
+            dayOfWeek: 6,
+            month: 6,
+            year: 2015,
+            datetime: 1435315214948,
+            timezone: -480
         };
-
-        $scope.resultModel = '';
-        $scope.resultDelayedModel = '';
-        $scope.resultLinkedModel = '';
     })
 ;
