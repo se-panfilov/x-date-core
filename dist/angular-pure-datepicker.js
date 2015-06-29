@@ -1,7 +1,10 @@
 angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span title={{getDayOfWeekName(data.selected.dayOfWeek)}} ng-bind=getDayOfWeekShortName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 //module apd.main {
 //    'use strict';
-angular.module('angular-pd', ['angular-pd.datepicker']).constant('MESSAGES', {
+angular.module('angular-pd', [
+    'angular-pd.datepicker',
+    'angular-pd.date_utils'
+]).constant('MESSAGES', {
     invalidParams: 'Invalid params'
 });
 //} 
@@ -112,44 +115,6 @@ var apd;
                     function throwModelValidationMessage(field) {
                         throwDeveloperError(_messages.invalidDateModel + ': error on field \"' + field + "+\"");
                     }
-                    function validateModel(model) {
-                        //TODO (S.Panfilov) not all fields should be mandatory.
-                        //TODO (S.Panfilov) we may need only day month and year
-                        //TODO (S.Panfilov) or a dateTime
-                        var modelMandatoryFields = {
-                            day: 'day',
-                            dayOfWeek: 'dayOfWeek',
-                            month: 'month',
-                            year: 'year',
-                            datetime: 'datetime',
-                            timezone: 'timezone'
-                        };
-                        if (!model[modelMandatoryFields.day]) {
-                            throwModelValidationMessage(modelMandatoryFields.day);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.dayOfWeek] && model[modelMandatoryFields.dayOfWeek] !== 0) {
-                            throwModelValidationMessage(modelMandatoryFields.dayOfWeek);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.month] && model[modelMandatoryFields.month] !== 0) {
-                            throwModelValidationMessage(modelMandatoryFields.month);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.year]) {
-                            throwModelValidationMessage(modelMandatoryFields.year);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.datetime]) {
-                            throwModelValidationMessage(modelMandatoryFields.datetime);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.timezone] && model[modelMandatoryFields.timezone] !== 0) {
-                            throwModelValidationMessage(modelMandatoryFields.timezone);
-                            return false;
-                        }
-                        return true;
-                    }
                     function preserveModelValues(model) {
                         for (var value in model) {
                             if (model.hasOwnProperty(value)) {
@@ -203,6 +168,7 @@ var apd;
                         reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
                     });
                     scope.$watch('data.selected.year', function (year) {
+                        //TODO (S.Panfilov) may be we should watch also timezone and datetime - those fields may be changed externally
                         if (!year)
                             return;
                         reloadDaysCount(scope.data.selected.month, scope.data.selected.year);
@@ -237,4 +203,69 @@ var apd;
             };
         }]);
     })(directive = apd.directive || (apd.directive = {}));
+})(apd || (apd = {}));
+
+var apd;
+(function (apd) {
+    var dateUtils;
+    (function (dateUtils) {
+        'use strict';
+        var DateModelFieldClass = (function () {
+            function DateModelFieldClass(name, allowZero) {
+                this.name = name;
+                this.isZeroAllowed = allowZero;
+            }
+            return DateModelFieldClass;
+        })();
+        var modelFieldsClass = (function () {
+            function modelFieldsClass() {
+            }
+            return modelFieldsClass;
+        })();
+        angular.module('angular-pd.date_utils', []).factory('DateUtils', function () {
+            var modelFields = {
+                mandatory: [
+                    {
+                        day: new DateModelFieldClass('day', false),
+                        month: new DateModelFieldClass('month', true),
+                        year: new DateModelFieldClass('year', false)
+                    },
+                    {
+                        timezone: new DateModelFieldClass('timezone', true)
+                    }
+                ],
+                common: {
+                    dayOfWeek: new DateModelFieldClass('dayOfWeek', true),
+                    datetime: new DateModelFieldClass('datetime', true)
+                }
+            };
+            function _validateField(model, fieldName, isZeroAllowed) {
+                var isZero = (model[fieldName] === 0);
+                if (isZero && !isZeroAllowed) {
+                    return false;
+                }
+                if (!model[fieldName]) {
+                    return false;
+                }
+                return true;
+            }
+            var exports = {
+                validateModel: function (model) {
+                    //TODO (S.Panfilov) not all fields should be mandatory.
+                    //TODO (S.Panfilov) we may need only day month and year
+                    //TODO (S.Panfilov) or a dateTime
+                    for (var i = 0; i < modelFields.mandatory.length; i++) {
+                        var field = modelFields.mandatory[i];
+                        var isVald = _validateField(model, field.name, field.isZeroAllowed);
+                        if (!isVald) {
+                            throwModelValidationMessage(field.name);
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            };
+            return exports;
+        });
+    })(dateUtils = apd.dateUtils || (apd.dateUtils = {}));
 })(apd || (apd = {}));

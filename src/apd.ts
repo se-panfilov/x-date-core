@@ -140,47 +140,7 @@ module apd.directive {
                         throwDeveloperError(_messages.invalidDateModel + ': error on field \"' + field + "+\"");
                     }
 
-                    function validateModel(model:DateModelClass) {
 
-                        //TODO (S.Panfilov) not all fields should be mandatory.
-                        //TODO (S.Panfilov) we may need only day month and year
-                        //TODO (S.Panfilov) or a dateTime
-                        var modelMandatoryFields = {
-                            day: 'day',
-                            dayOfWeek: 'dayOfWeek',
-                            month: 'month',
-                            year: 'year',
-                            datetime: 'datetime',
-                            timezone: 'timezone'
-                        };
-
-                        if (!model[modelMandatoryFields.day]) {
-                            throwModelValidationMessage(modelMandatoryFields.day);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.dayOfWeek] && model[modelMandatoryFields.dayOfWeek] !== 0) {
-                            throwModelValidationMessage(modelMandatoryFields.dayOfWeek);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.month] && model[modelMandatoryFields.month] !== 0) {
-                            throwModelValidationMessage(modelMandatoryFields.month);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.year]) {
-                            throwModelValidationMessage(modelMandatoryFields.year);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.datetime]) {
-                            throwModelValidationMessage(modelMandatoryFields.datetime);
-                            return false;
-                        }
-                        if (!model[modelMandatoryFields.timezone] && model[modelMandatoryFields.timezone] !== 0) {
-                            throwModelValidationMessage(modelMandatoryFields.timezone);
-                            return false;
-                        }
-
-                        return true;
-                    }
 
                     function preserveModelValues(model:Object) {
                         //TODO (S.Panfilov)
@@ -243,6 +203,7 @@ module apd.directive {
                     });
 
                     scope.$watch('data.selected.year', function (year) {
+                        //TODO (S.Panfilov) may be we should watch also timezone and datetime - those fields may be changed externally
                         if (!year) return;
                         reloadDaysCount(scope.data.selected.month, scope.data.selected.year);
                         reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
