@@ -18,7 +18,7 @@ module apd.messages {
                 throwModelValidationMessage: function (field:string) {
                     exports.throwDeveloperError(_messages.invalidDateModel + ': error on field \"' + field + "+\"");
                 },
-                throwInvalidParamsMessage: function (field:string) {
+                throwInvalidParamsMessage: function () {
                     exports.throwDeveloperError(_messages.invalidParams);
                 }
             };

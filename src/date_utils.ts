@@ -86,7 +86,6 @@ module apd.dateUtils {
             }
 
             function preserveModelValues(model:Object) {
-                //TODO (S.Panfilov)
                 for (var value in model) {
                     if (model.hasOwnProperty(value)) {
                         model[value] = +model[value]
@@ -96,46 +95,19 @@ module apd.dateUtils {
                 return <DateModelClass>model;
             }
 
-            function getDefaultSelectedDate() {
-                var isValidModel = validateModel(scope.ngModel);
-
-                if (isValidModel) {
-                    return preserveModelValues(scope.ngModel);
-                } else {
-                    var date = new Date();
-                    var day = date.getDate();
-                    var month = date.getMonth();
-                    var year = date.getFullYear();
-                    var dateTime = date.getTime();
-                    var dayOfWeek = date.getDay();
-                    var timezone = date.getTimezoneOffset();
-
-                    return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
-                }
-            }
-
-
-            function getDefaultYearsList() {
-                //TODO (S.Panfilov) fix for case with date limits
-                return [
-                    (new Date()).getFullYear() - 3,
-                    (new Date()).getFullYear() - 2,
-                    (new Date()).getFullYear() - 1,
-                    (new Date()).getFullYear() //2015
-                ];
-            }
-
-            function getDaysInMonth(month:number, year:number) {
-                return new Date(year, month + 1, 0).getDate();
-            }
-
             function _getIntArr(length:number) {
-                if (!length && length !== 0) return console.error(MESSAGES.invalidParams);
+                if (!length && length !== 0) {
+                    MessgesFactory.throwInvalidParamsMessage();
+                    return false;
+                }
 
-                return length ? getIntArr(length - 1).concat(length) : [];
+                return length ? _getIntArr(length - 1).concat(length) : [];
             }
 
             var exports = {
+                createData: function (selected:DateModelClass, days:Array<number>, years:Array<number>) {
+                    return new DataClass(selected, days, years);
+                },
                 validateModel: function (model:DateModelClass) {
 
                     //TODO (S.Panfilov) not all fields should be mandatory.
@@ -159,7 +131,36 @@ module apd.dateUtils {
                         MessgesFactory.throwInvalidParamsMessage();
                         return false;
                     }
-                    return _getIntArr(getDaysInMonth(month, year));
+                    return _getIntArr(exports.getDaysInMonth(month, year));
+                },
+                getDaysInMonth: function (month:number, year:number) {
+                    return new Date(year, month + 1, 0).getDate();
+                },
+                getDefaultSelectedDate: function (model) {
+                    var isValidModel = exports.validateModel(model);
+
+                    if (isValidModel) {
+                        return preserveModelValues(model);
+                    } else {
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth();
+                        var year = date.getFullYear();
+                        var dateTime = date.getTime();
+                        var dayOfWeek = date.getDay();
+                        var timezone = date.getTimezoneOffset();
+
+                        return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
+                    }
+                },
+                getDefaultYearsList: function () {
+                    //TODO (S.Panfilov) fix for case with date limits
+                    return [
+                        (new Date()).getFullYear() - 3,
+                        (new Date()).getFullYear() - 2,
+                        (new Date()).getFullYear() - 1,
+                        (new Date()).getFullYear() //2015
+                    ];
                 }
             };
 

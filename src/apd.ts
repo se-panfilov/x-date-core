@@ -72,7 +72,7 @@ module apd.directive {
         'angular-pd.templates'
     ])
 
-        .directive('pureDatepicker', function (MessgesFactory) {
+        .directive('pureDatepicker', function (DateUtilsFactory, MessgesFactory) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -88,12 +88,10 @@ module apd.directive {
                 },
                 link: function (scope) {
 
-                    console.log(scope.ngModel);
-
-                    var selectedDate = getDefaultSelectedDate();
-                    var years = getDefaultYearsList();
-                    var days = getDaysCount(selectedDate.month, selectedDate.year);
-                    scope.data = new DataClass(selectedDate, days, years);
+                    var selectedDate = DateUtilsFactory.getDefaultSelectedDate(scope.ngModel);
+                    var years = DateUtilsFactory.getDefaultYearsList();
+                    var days = DateUtilsFactory.getDaysCount(selectedDate.month, selectedDate.year);
+                    scope.data = DateUtilsFactory.createData(selectedDate, days, years);
 
 
                     scope.$watch('data.selected.day', function (day) {
@@ -114,15 +112,13 @@ module apd.directive {
                         reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
                     });
 
-
-
                     function reloadDaysCount(month:number, year:number) {
                         if ((!month && month !== 0) || !year) {
                             MessgesFactory.throwInvalidParamsMessage();
                             return false;
                         }
 
-                        scope.data.days = getDaysCount(month, year);
+                        scope.data.days = DateUtilsFactory.getDaysCount(month, year);
                     }
 
                     function reloadSelectedDay(year, month, day) {
@@ -133,7 +129,7 @@ module apd.directive {
                         var date = new Date(year, month, day);
 
 
-                        var daysInSelectedMonth = getDaysInMonth(month, year);
+                        var daysInSelectedMonth = DateUtilsFactory.getDaysInMonth(month, year);
                         if (scope.data.selected.day > daysInSelectedMonth) {
                             scope.data.selected.day = daysInSelectedMonth;
                         }
@@ -144,10 +140,6 @@ module apd.directive {
 
                     scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
                     scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
-
-                    (function init() {
-
-                    })();
                 }
             }
         });
