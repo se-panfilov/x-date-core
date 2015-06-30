@@ -18,6 +18,27 @@ module apd.dateUtils {
             this.timezone = timezone;
         }
 
+        private _getIntArr = function (length:number) {
+            if (!length && length !== 0) {
+                MessagesFactory.throwInvalidParamsMessage();
+                return false;
+            }
+
+            return length ? this._getIntArr(length - 1).concat(length) : [];
+        };
+
+        getDaysCount = (month:number, year:number) => {
+            if ((!month && month !== 0) || !year) {
+                MessagesFactory.throwInvalidParamsMessage();
+                return false;
+            }
+            return this._getIntArr(this.getDaysInMonth(month, year));
+        };
+
+        getDaysInMonth = (month:number, year:number) => {
+            return new Date(year, month + 1, 0).getDate();
+        };
+
     }
 
     class DateModelValidatorClass {
@@ -54,7 +75,7 @@ module apd.dateUtils {
             return true;
         };
 
-        validate = (model:DateModelClass) => {
+        isValid = (model:DateModelClass) => {
             var validator = this;
             for (var fieldName:string in validator) {
                 if (validator.hasOwnProperty(fieldName)) {
@@ -117,7 +138,7 @@ module apd.dateUtils {
 
     angular.module('angular-pd.date_utils', [])
 
-        .factory('DateUtilsFactory', function (MessgesFactory) {
+        .factory('DateUtilsFactory', function (MessagesFactory) {
 
             var dateModelValidatorConfig = new DateModelValidatorConfigClass({
                 day: {name: 'day', isZeroAllowed: false, isRequired: false},
@@ -140,27 +161,16 @@ module apd.dateUtils {
                 return <DateModelClass>model;
             }
 
-            function _getIntArr(length:number) {
-                if (!length && length !== 0) {
-                    MessgesFactory.throwInvalidParamsMessage();
-                    return false;
-                }
-
-                return length ? _getIntArr(length - 1).concat(length) : [];
-            }
-
             var exports = {
                 createData: function (selected:DateModelClass, days:Array<number>, years:Array<number>) {
                     return new DataClass(selected, days, years);
                 },
                 validateModel: function (model:DateModelClass) {
-                    //TODO (S.Panfilov)  may be we should extract this logic to the classes
-                    var groupResults = getMandatoryGroupsResilts(modelFields, model);
-                    return checkMandatoryValidsInGroups(groupResults);
+                    return dateModelValidator.isValid(model);
                 },
                 getDaysCount: function (month:number, year:number) {
                     if ((!month && month !== 0) || !year) {
-                        MessgesFactory.throwInvalidParamsMessage();
+                        MessagesFactory.throwInvalidParamsMessage();
                         return false;
                     }
                     return _getIntArr(exports.getDaysInMonth(month, year));

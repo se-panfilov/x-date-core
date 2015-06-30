@@ -1,30 +1,29 @@
 module apd.messages {
     'use strict';
 
+    class MessagesFactoryClass {
+        messages:Object = {
+            invalidParams: 'Invalid params',
+            invalidDateModel: 'Invalid date model'
+        };
+
+        static throwDeveloperError = (message:string) => {
+            console.error(message);
+        };
+
+        static throwModelValidationMessage = function (field:string) => {
+            this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + "+\"");
+        };
+
+        static throwInvalidParamsMessage = function ()  => {
+            this.throwDeveloperError(this.messages.invalidParams);
+        }
+    }
+
     angular.module('angular-pd.messages', [])
 
-        .factory('MessgesFactory', function () {
-
-            var _messages = {
-                invalidParams: 'Invalid params',
-                invalidDateModel: 'Invalid date model'
-            };
-
-
-            var exports = {
-                throwDeveloperError: function (message:string) {
-                    console.error(message);
-                },
-                throwModelValidationMessage: function (field:string) {
-                    exports.throwDeveloperError(_messages.invalidDateModel + ': error on field \"' + field + "+\"");
-                },
-                throwInvalidParamsMessage: function () {
-                    exports.throwDeveloperError(_messages.invalidParams);
-                }
-            };
-
-            return exports;
-
+        .factory('MessagesFactory', function () {
+            return new MessagesFactoryClass();
         }
     )
     ;

@@ -72,7 +72,7 @@ module apd.directive {
         'angular-pd.templates'
     ])
 
-        .directive('pureDatepicker', function (DateUtilsFactory, MessgesFactory) {
+        .directive('pureDatepicker', function (DateUtilsFactory, MessagesFactory) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -114,7 +114,7 @@ module apd.directive {
 
                     function reloadDaysCount(month:number, year:number) {
                         if ((!month && month !== 0) || !year) {
-                            MessgesFactory.throwInvalidParamsMessage();
+                            MessagesFactory.throwInvalidParamsMessage();
                             return false;
                         }
 
@@ -123,7 +123,7 @@ module apd.directive {
 
                     function reloadSelectedDay(year, month, day) {
                         if (!year || (!month && month !== 0) || !day) {
-                            MessgesFactory.throwInvalidParamsMessage();
+                            MessagesFactory.throwInvalidParamsMessage();
                             return false;
                         }
                         var date = new Date(year, month, day);
