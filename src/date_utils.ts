@@ -1,3 +1,5 @@
+/// <reference path="messages.ts" />
+
 module apd.dateUtils {
     'use strict';
 
@@ -20,7 +22,7 @@ module apd.dateUtils {
 
         private _getIntArr = function (length:number) {
             if (!length && length !== 0) {
-                MessagesFactory.throwInvalidParamsMessage();
+                //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
                 return false;
             }
 
@@ -29,7 +31,7 @@ module apd.dateUtils {
 
         getDaysCount = (month:number, year:number) => {
             if ((!month && month !== 0) || !year) {
-                MessagesFactory.throwInvalidParamsMessage();
+                //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
                 return false;
             }
             return this._getIntArr(this.getDaysInMonth(month, year));
@@ -77,7 +79,7 @@ module apd.dateUtils {
 
         isValid = (model:DateModelClass) => {
             var validator = this;
-            for (var fieldName:string in validator) {
+            for (var fieldName in validator) {
                 if (validator.hasOwnProperty(fieldName)) {
                     if (validator[fieldName].isRequired) {
                         var isFieldValid = validator.isFieldExist(model, fieldName);
@@ -167,16 +169,6 @@ module apd.dateUtils {
                 },
                 validateModel: function (model:DateModelClass) {
                     return dateModelValidator.isValid(model);
-                },
-                getDaysCount: function (month:number, year:number) {
-                    if ((!month && month !== 0) || !year) {
-                        MessagesFactory.throwInvalidParamsMessage();
-                        return false;
-                    }
-                    return _getIntArr(exports.getDaysInMonth(month, year));
-                },
-                getDaysInMonth: function (month:number, year:number) {
-                    return new Date(year, month + 1, 0).getDate();
                 },
                 getDefaultSelectedDate: function (model) {
                     var isValidModel = exports.validateModel(model);
