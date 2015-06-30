@@ -20,27 +20,6 @@ module apd.dateUtils {
             this.timezone = timezone;
         }
 
-        private _getIntArr = function (length:number) {
-            if (!length && length !== 0) {
-                //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
-                return false;
-            }
-
-            return length ? this._getIntArr(length - 1).concat(length) : [];
-        };
-
-        getDaysCount = (month:number, year:number) => {
-            if ((!month && month !== 0) || !year) {
-                //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
-                return false;
-            }
-            return this._getIntArr(this.getDaysInMonth(month, year));
-        };
-
-        getDaysInMonth = (month:number, year:number) => {
-            return new Date(year, month + 1, 0).getDate();
-        };
-
     }
 
     class DateModelValidatorClass {
@@ -118,12 +97,34 @@ module apd.dateUtils {
         month:Array<number>;
         years:Array<number>;
 
-        constructor(selected:DateModelClass, days:Array<number>, years:Array<number>) {
+        constructor(selected:DateModelClass, years:Array<number>) {
             this.selected = selected;
-            this.days = days;
+            this.days = <Array<number>> this.getDaysNumberArr(this.selected.month, this.selected.year);
             this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
             this.years = years;
         }
+
+        private _getIntArr = function (length:number) {
+            if (!length && length !== 0) {
+                //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
+                return false;
+            }
+
+            return length ? this._getIntArr(length - 1).concat(length) : [];
+        };
+
+        getDaysNumberArr = (month:number, year:number) => {
+            if ((!month && month !== 0) || !year) {
+                //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
+                return false;
+            }
+            return this._getIntArr(this.getDaysInMonth(month, year));
+        };
+
+        getDaysInMonth = (month:number, year:number) => {
+            return new Date(year, month + 1, 0).getDate();
+        };
+
     }
 
     class DateModelFieldClass {
@@ -164,8 +165,8 @@ module apd.dateUtils {
             }
 
             var exports = {
-                createData: function (selected:DateModelClass, days:Array<number>, years:Array<number>) {
-                    return new DataClass(selected, days, years);
+                createData: function (selected:DateModelClass, years:Array<number>) {
+                    return new DataClass(selected, years);
                 },
                 validateModel: function (model:DateModelClass) {
                     return dateModelValidator.isValid(model);

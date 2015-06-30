@@ -81,8 +81,7 @@ var apd;
                 link: function (scope) {
                     var selectedDate = DateUtilsFactory.getDefaultSelectedDate(scope.ngModel);
                     var years = DateUtilsFactory.getDefaultYearsList();
-                    var days = DateUtilsFactory.getDaysCount(selectedDate.month, selectedDate.year);
-                    scope.data = DateUtilsFactory.createData(selectedDate, days, years);
+                    scope.data = DateUtilsFactory.createData(selectedDate, years);
                     scope.$watch('data.selected.day', function (day) {
                         if (!day)
                             return;
@@ -106,7 +105,7 @@ var apd;
                             MessagesFactory.throwInvalidParamsMessage();
                             return false;
                         }
-                        scope.data.days = DateUtilsFactory.getDaysCount(month, year);
+                        scope.data.days = scope.data.getDaysNumberArr(month, year);
                     }
                     function reloadSelectedDay(year, month, day) {
                         if (!year || (!month && month !== 0) || !day) {
@@ -114,7 +113,7 @@ var apd;
                             return false;
                         }
                         var date = new Date(year, month, day);
-                        var daysInSelectedMonth = DateUtilsFactory.getDaysInMonth(month, year);
+                        var daysInSelectedMonth = scope.data.getDaysInMonth(month, year);
                         if (scope.data.selected.day > daysInSelectedMonth) {
                             scope.data.selected.day = daysInSelectedMonth;
                         }
@@ -168,24 +167,6 @@ var apd;
         'use strict';
         var DateModelClass = (function () {
             function DateModelClass(day, dayOfWeek, month, year, datetime, timezone) {
-                var _this = this;
-                this._getIntArr = function (length) {
-                    if (!length && length !== 0) {
-                        //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
-                        return false;
-                    }
-                    return length ? this._getIntArr(length - 1).concat(length) : [];
-                };
-                this.getDaysCount = function (month, year) {
-                    if ((!month && month !== 0) || !year) {
-                        //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
-                        return false;
-                    }
-                    return _this._getIntArr(_this.getDaysInMonth(month, year));
-                };
-                this.getDaysInMonth = function (month, year) {
-                    return new Date(year, month + 1, 0).getDate();
-                };
                 this.day = day;
                 this.dayOfWeek = dayOfWeek;
                 this.month = month;
@@ -245,9 +226,27 @@ var apd;
             return DateModelValidatorConfigClass;
         })();
         var DataClass = (function () {
-            function DataClass(selected, days, years) {
+            function DataClass(selected, years) {
+                var _this = this;
+                this._getIntArr = function (length) {
+                    if (!length && length !== 0) {
+                        //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
+                        return false;
+                    }
+                    return length ? this._getIntArr(length - 1).concat(length) : [];
+                };
+                this.getDaysNumberArr = function (month, year) {
+                    if ((!month && month !== 0) || !year) {
+                        //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
+                        return false;
+                    }
+                    return _this._getIntArr(_this.getDaysInMonth(month, year));
+                };
+                this.getDaysInMonth = function (month, year) {
+                    return new Date(year, month + 1, 0).getDate();
+                };
                 this.selected = selected;
-                this.days = days;
+                this.days = this.getDaysNumberArr(this.selected.month, this.selected.year);
                 this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
                 this.years = years;
             }
@@ -280,8 +279,8 @@ var apd;
                 return model;
             }
             var exports = {
-                createData: function (selected, days, years) {
-                    return new DataClass(selected, days, years);
+                createData: function (selected, years) {
+                    return new DataClass(selected, years);
                 },
                 validateModel: function (model) {
                     return dateModelValidator.isValid(model);

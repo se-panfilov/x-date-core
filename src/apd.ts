@@ -90,8 +90,7 @@ module apd.directive {
 
                     var selectedDate = DateUtilsFactory.getDefaultSelectedDate(scope.ngModel);
                     var years = DateUtilsFactory.getDefaultYearsList();
-                    var days = DateUtilsFactory.getDaysCount(selectedDate.month, selectedDate.year);
-                    scope.data = DateUtilsFactory.createData(selectedDate, days, years);
+                    scope.data = DateUtilsFactory.createData(selectedDate, years);
 
 
                     scope.$watch('data.selected.day', function (day) {
@@ -118,7 +117,7 @@ module apd.directive {
                             return false;
                         }
 
-                        scope.data.days = DateUtilsFactory.getDaysCount(month, year);
+                        scope.data.days = scope.data.getDaysNumberArr(month, year);
                     }
 
                     function reloadSelectedDay(year, month, day) {
@@ -129,7 +128,7 @@ module apd.directive {
                         var date = new Date(year, month, day);
 
 
-                        var daysInSelectedMonth = DateUtilsFactory.getDaysInMonth(month, year);
+                        var daysInSelectedMonth = scope.data.getDaysInMonth(month, year);
                         if (scope.data.selected.day > daysInSelectedMonth) {
                             scope.data.selected.day = daysInSelectedMonth;
                         }
