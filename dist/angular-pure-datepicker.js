@@ -145,6 +145,55 @@ var apd;
             }
             return DateModelClass;
         })();
+        var DateModelValidatorClass = (function () {
+            function DateModelValidatorClass(config) {
+                var _this = this;
+                this.isFieldExist = function (model, fieldName) {
+                    var validator = _this;
+                    var isZero = (model[fieldName] === 0);
+                    var isZeroAllowed = validator[fieldName].isZeroAllowed;
+                    if (isZero && !isZeroAllowed) {
+                        return false;
+                    }
+                    if (!model[fieldName]) {
+                        return false;
+                    }
+                    return true;
+                };
+                this.validate = function (model) {
+                    var validator = _this;
+                    for (var fieldName in validator) {
+                        if (validator.hasOwnProperty(fieldName)) {
+                            if (validator[fieldName].isRequired) {
+                                var isFieldValid = validator.isFieldExist(model, fieldName);
+                                if (!isFieldValid) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                };
+                this.day = new DateModelFieldClass(config.day.name, config.day.isZeroAllowed, config.day.isRequired);
+                this.dayOfWeek = new DateModelFieldClass(config.dayOfWeek.name, config.dayOfWeek.isZeroAllowed, config.dayOfWeek.isRequired);
+                this.month = new DateModelFieldClass(config.month.name, config.month.isZeroAllowed, config.month.isRequired);
+                this.year = new DateModelFieldClass(config.year.name, config.year.isZeroAllowed, config.year.isRequired);
+                this.datetime = new DateModelFieldClass(config.datetime.name, config.datetime.isZeroAllowed, config.datetime.isRequired);
+                this.timezone = new DateModelFieldClass(config.timezone.name, config.timezone.isZeroAllowed, config.timezone.isRequired);
+            }
+            return DateModelValidatorClass;
+        })();
+        var DateModelValidatorConfigClass = (function () {
+            //TODO (S.Panfilov) any?
+            function DateModelValidatorConfigClass(object) {
+                this.day = object.day;
+                this.dayOfWeek = object.dayOfWeek;
+                this.month = object.month;
+                this.year = object.year;
+                this.datetime = object.datetime;
+                this.timezone = object.timezone;
+            }
+            return DateModelValidatorConfigClass;
+        })();
         var DataClass = (function () {
             function DataClass(selected, days, years) {
                 this.selected = selected;
@@ -155,49 +204,23 @@ var apd;
             return DataClass;
         })();
         var DateModelFieldClass = (function () {
-            function DateModelFieldClass(name, allowZero) {
+            function DateModelFieldClass(name, allowZero, isRequired) {
                 this.name = name;
                 this.isZeroAllowed = allowZero;
+                this.isRequired = isRequired;
             }
             return DateModelFieldClass;
         })();
-        var modelFieldsClass = (function () {
-            function modelFieldsClass() {
-            }
-            return modelFieldsClass;
-        })();
         angular.module('angular-pd.date_utils', []).factory('DateUtilsFactory', ['MessgesFactory', function (MessgesFactory) {
-            var modelFields = {
-                //This is mandatory model fields
-                //There can be "mandatory groups"
-                //Here required "day", "month" and "year" (mandatory group 1)
-                //Or only "timezone" (mandatory group 2)
-                //Fields in common not mandatory at all
-                mandatory: [
-                    {
-                        day: new DateModelFieldClass('day', false),
-                        month: new DateModelFieldClass('month', true),
-                        year: new DateModelFieldClass('year', false)
-                    },
-                    {
-                        timezone: new DateModelFieldClass('timezone', true)
-                    }
-                ],
-                common: {
-                    dayOfWeek: new DateModelFieldClass('dayOfWeek', true),
-                    datetime: new DateModelFieldClass('datetime', true)
-                }
-            };
-            function _validateField(model, fieldName, isZeroAllowed) {
-                var isZero = (model[fieldName] === 0);
-                if (isZero && !isZeroAllowed) {
-                    return false;
-                }
-                if (!model[fieldName]) {
-                    return false;
-                }
-                return true;
-            }
+            var dateModelValidatorConfig = new DateModelValidatorConfigClass({
+                day: { name: 'day', isZeroAllowed: false, isRequired: false },
+                dayOfWeek: { name: 'day', isZeroAllowed: false, isRequired: false },
+                month: { name: 'day', isZeroAllowed: true, isRequired: false },
+                year: { name: 'day', isZeroAllowed: false, isRequired: false },
+                datetime: { name: 'day', isZeroAllowed: true, isRequired: true },
+                timezone: { name: 'day', isZeroAllowed: true, isRequired: false }
+            });
+            var dateModelValidator = new DateModelValidatorClass(dateModelValidatorConfig);
             function preserveModelValues(model) {
                 for (var value in model) {
                     if (model.hasOwnProperty(value)) {
@@ -212,35 +235,6 @@ var apd;
                     return false;
                 }
                 return length ? _getIntArr(length - 1).concat(length) : [];
-            }
-            function getMandatoryGroupsResilts(modelFields, model) {
-                var groupResults = {};
-                for (var i = 0; i < modelFields.mandatory.length; i++) {
-                    var mandatoryGroupNum = i;
-                    var mandatoryGroup = modelFields.mandatory[i];
-                    groupResults[mandatoryGroupNum] = [];
-                    for (var fieldName in mandatoryGroup) {
-                        if (mandatoryGroup.hasOwnProperty(fieldName)) {
-                            var isValid = _validateField(model, fieldName, mandatoryGroup[fieldName].isZeroAllowed);
-                            groupResults[mandatoryGroupNum].push({ name: fieldName, isValid: isValid });
-                        }
-                    }
-                }
-            }
-            function checkMandatoryValidsInGroups(groupResults) {
-                for (var mandatoryGroupName in groupResults) {
-                    if (groupResults.hasOwnProperty(mandatoryGroupName)) {
-                        var mandatoryGroup = groupResults[mandatoryGroupName];
-                        for (var i = 0; i < mandatoryGroup.length; i++) {
-                            var mandatoryObj = mandatoryGroup[i];
-                            if (!mandatoryObj.isValid) {
-                                MessgesFactory.throwModelValidationMessage(mandatoryObj.name);
-                                return false;
-                            }
-                        }
-                    }
-                }
-                return true;
             }
             var exports = {
                 createData: function (selected, days, years) {

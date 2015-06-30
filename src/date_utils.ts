@@ -17,6 +17,76 @@ module apd.dateUtils {
             this.datetime = datetime;
             this.timezone = timezone;
         }
+
+    }
+
+    class DateModelValidatorClass {
+        day:DateModelFieldClass;
+        dayOfWeek:DateModelFieldClass;
+        month:DateModelFieldClass;
+        year:DateModelFieldClass;
+        datetime:DateModelFieldClass;
+        timezone:DateModelFieldClass;
+
+        constructor(config:DateModelValidatorConfigClass) {
+            this.day = new DateModelFieldClass(config.day.name, config.day.isZeroAllowed, config.day.isRequired);
+            this.dayOfWeek = new DateModelFieldClass(config.dayOfWeek.name, config.dayOfWeek.isZeroAllowed, config.dayOfWeek.isRequired);
+            this.month = new DateModelFieldClass(config.month.name, config.month.isZeroAllowed, config.month.isRequired);
+            this.year = new DateModelFieldClass(config.year.name, config.year.isZeroAllowed, config.year.isRequired);
+            this.datetime = new DateModelFieldClass(config.datetime.name, config.datetime.isZeroAllowed, config.datetime.isRequired);
+            this.timezone = new DateModelFieldClass(config.timezone.name, config.timezone.isZeroAllowed, config.timezone.isRequired);
+        }
+
+        isFieldExist = (model:DateModelClass, fieldName:string) => {
+            var validator = this;
+
+            var isZero = (model[fieldName] === 0);
+            var isZeroAllowed = validator[fieldName].isZeroAllowed;
+
+            if (isZero && !isZeroAllowed) {
+                return false;
+            }
+
+            if (!model[fieldName]) {
+                return false;
+            }
+
+            return true;
+        };
+
+        validate = (model:DateModelClass) => {
+            var validator = this;
+            for (var fieldName:string in validator) {
+                if (validator.hasOwnProperty(fieldName)) {
+                    if (validator[fieldName].isRequired) {
+                        var isFieldValid = validator.isFieldExist(model, fieldName);
+                        if (!isFieldValid) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+
+    class DateModelValidatorConfigClass {
+        day:DateModelFieldClass;
+        dayOfWeek:DateModelFieldClass;
+        month:DateModelFieldClass;
+        year:DateModelFieldClass;
+        datetime:DateModelFieldClass;
+        timezone:DateModelFieldClass;
+
+        //TODO (S.Panfilov) any?
+        constructor(object:any) {
+            this.day = object.day;
+            this.dayOfWeek = object.dayOfWeek;
+            this.month = object.month;
+            this.year = object.year;
+            this.datetime = object.datetime;
+            this.timezone = object.timezone;
+        }
     }
 
     class DataClass {
@@ -36,59 +106,29 @@ module apd.dateUtils {
     class DateModelFieldClass {
         name:string;
         isZeroAllowed:boolean;
+        isRequired:boolean;
 
-        constructor(name:string, allowZero:boolean) {
+        constructor(name:string, allowZero:boolean, isRequired:boolean) {
             this.name = name;
             this.isZeroAllowed = allowZero;
+            this.isRequired = isRequired;
         }
-    }
-
-    class modelFieldsClass {
-        mandatory:Array<Object>;
-        common:Object;
     }
 
     angular.module('angular-pd.date_utils', [])
 
         .factory('DateUtilsFactory', function (MessgesFactory) {
 
-            var modelFields:modelFieldsClass = {
-                //This is mandatory model fields
-                //There can be "mandatory groups"
-                //Here required "day", "month" and "year" (mandatory group 1)
-                //Or only "timezone" (mandatory group 2)
-                //Fields in common not mandatory at all
-                mandatory: [
-                    {
-                        day: new DateModelFieldClass('day', false),
-                        month: new DateModelFieldClass('month', true),
-                        year: new DateModelFieldClass('year', false)
-                    },
-                    {
-                        timezone: new DateModelFieldClass('timezone', true)
-                    }
+            var dateModelValidatorConfig = new DateModelValidatorConfigClass({
+                day: {name: 'day', isZeroAllowed: false, isRequired: false},
+                dayOfWeek: {name: 'day', isZeroAllowed: false, isRequired: false},
+                month: {name: 'day', isZeroAllowed: true, isRequired: false},
+                year: {name: 'day', isZeroAllowed: false, isRequired: false},
+                datetime: {name: 'day', isZeroAllowed: true, isRequired: true},
+                timezone: {name: 'day', isZeroAllowed: true, isRequired: false}
+            });
 
-                ],
-                common: {
-                    dayOfWeek: new DateModelFieldClass('dayOfWeek', true),
-                    datetime: new DateModelFieldClass('datetime', true)
-                }
-            };
-
-
-            function _validateField(model:DateModelClass, fieldName:string, isZeroAllowed:boolean) {
-                var isZero = (model[fieldName] === 0);
-
-                if (isZero && !isZeroAllowed) {
-                    return false;
-                }
-
-                if (!model[fieldName]) {
-                    return false;
-                }
-
-                return true;
-            }
+            var dateModelValidator = new DateModelValidatorClass(dateModelValidatorConfig);
 
             function preserveModelValues(model:Object) {
                 for (var value in model) {
@@ -108,41 +148,6 @@ module apd.dateUtils {
 
                 return length ? _getIntArr(length - 1).concat(length) : [];
             }
-
-            function getMandatoryGroupsResilts(modelFields:modelFieldsClass, model:DateModelClass) {
-                var groupResults:Object = {};
-                for (var i = 0; i < modelFields.mandatory.length; i++) {
-                    var mandatoryGroupNum = i;
-                    var mandatoryGroup:Object = modelFields.mandatory[i];
-                    groupResults[mandatoryGroupNum] = [];
-
-                    for (var fieldName:string in mandatoryGroup) {
-                        if (mandatoryGroup.hasOwnProperty(fieldName)) {
-                            var isValid:boolean = _validateField(model, fieldName, mandatoryGroup[fieldName].isZeroAllowed);
-                            groupResults[mandatoryGroupNum].push({name: fieldName, isValid: isValid});
-                        }
-                    }
-                }
-            }
-
-            function checkMandatoryValidsInGroups(groupResults:Object) {
-                for (var mandatoryGroupName:string in groupResults) {
-                    if (groupResults.hasOwnProperty(mandatoryGroupName)) {
-                        var mandatoryGroup = groupResults[mandatoryGroupName];
-                        for (var i = 0; i < mandatoryGroup.length; i++) {
-                            var mandatoryObj = mandatoryGroup[i];
-
-                            if (!mandatoryObj.isValid) {
-                                MessgesFactory.throwModelValidationMessage(mandatoryObj.name);
-                                return false;
-                            }
-                        }
-
-                    }
-                }
-                return true;
-            }
-
 
             var exports = {
                 createData: function (selected:DateModelClass, days:Array<number>, years:Array<number>) {
