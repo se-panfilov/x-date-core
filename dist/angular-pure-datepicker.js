@@ -213,40 +213,43 @@ var apd;
                 }
                 return length ? _getIntArr(length - 1).concat(length) : [];
             }
+            function getMandatoryGroupsResilts(modelFields, model) {
+                var groupResults = {};
+                for (var i = 0; i < modelFields.mandatory.length; i++) {
+                    var mandatoryGroupNum = i;
+                    var mandatoryGroup = modelFields.mandatory[i];
+                    groupResults[mandatoryGroupNum] = [];
+                    for (var fieldName in mandatoryGroup) {
+                        if (mandatoryGroup.hasOwnProperty(fieldName)) {
+                            var isValid = _validateField(model, fieldName, mandatoryGroup[fieldName].isZeroAllowed);
+                            groupResults[mandatoryGroupNum].push({ name: fieldName, isValid: isValid });
+                        }
+                    }
+                }
+            }
+            function checkMandatoryValidsInGroups(groupResults) {
+                for (var mandatoryGroupName in groupResults) {
+                    if (groupResults.hasOwnProperty(mandatoryGroupName)) {
+                        var mandatoryGroup = groupResults[mandatoryGroupName];
+                        for (var i = 0; i < mandatoryGroup.length; i++) {
+                            var mandatoryObj = mandatoryGroup[i];
+                            if (!mandatoryObj.isValid) {
+                                MessgesFactory.throwModelValidationMessage(mandatoryObj.name);
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
             var exports = {
                 createData: function (selected, days, years) {
                     return new DataClass(selected, days, years);
                 },
                 validateModel: function (model) {
-                    //TODO (S.Panfilov) check with invalid params
-                    var mandatoryGroupsCount = modelFields.mandatory.length;
-                    var groupResults = {};
-                    for (var i = 0; i < modelFields.mandatory.length; i++) {
-                        var mandatoryGroup = modelFields.mandatory[i];
-                        for (var fieldName in mandatoryGroup) {
-                            if (mandatoryGroup.hasOwnProperty(fieldName)) {
-                                //var field:DateModelFieldClass = <DateModelFieldClass>modelFields.mandatory[i];
-                                var isValid = _validateField(model, fieldName, mandatoryGroup[fieldName].isZeroAllowed);
-                                groupResults[fieldName] = isValid;
-                                if (!isValid) {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    for (var resName in groupResults) {
-                        if (groupResults.hasOwnProperty(resName)) {
-                            if (!resName) {
-                                MessgesFactory.throwModelValidationMessage(resName);
-                                return false;
-                            }
-                        }
-                    }
-                    //if (!isValid) {
-                    //    MessgesFactory.throwModelValidationMessage(field.name);
-                    //    return false;
-                    //}
-                    return true;
+                    //TODO (S.Panfilov)  may be we should extract this logic to the classes
+                    var groupResults = getMandatoryGroupsResilts(modelFields, model);
+                    return checkMandatoryValidsInGroups(groupResults);
                 },
                 getDaysCount: function (month, year) {
                     if ((!month && month !== 0) || !year) {
