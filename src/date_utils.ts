@@ -97,10 +97,15 @@ module apd.dateUtils {
         years:Array<number>;
 
         constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
-            this.selected = selected;
-            this.days = <Array<number>> this.getDaysNumberArr(this.selected.month, this.selected.year);
-            this.month = this._getNumList(startDateTime, endDateTime, this._getMonth);
-            this.years = this._getNumList(startDateTime, endDateTime, this._getFullYear);
+            var self = this;
+            self.selected = selected;
+            self.days = <Array<number>> self.getDaysNumberArr(self.selected.month, self.selected.year);
+            self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, function () {
+                return self._getArrayOfNumbers(0, 11);
+            });
+            self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, function () {
+                return [new Date().getFullYear()];
+            });
         }
 
         private _getArrayOfNumbers = function (start:number, end:number) {
@@ -121,10 +126,10 @@ module apd.dateUtils {
             return date.getMonth();
         };
 
-        private _getNumList = function (startDateTime:number, endDateTime:number, timeFunc:any) {
+        //TODO (S.Panfilov) not any, byt functions types
+        private _getNumList = function (startDateTime:number, endDateTime:number, timeFunc:any, callback: any) {
             var result:Array<number> = [];
 
-            var nowDateTime:number = new Date().getTime();
             var now:number;
             var start:number;
             var end:number;
@@ -167,8 +172,7 @@ module apd.dateUtils {
 
             //start = null, end = null
             else if (!startDateTime && !endDateTime) {
-                now = timeFunc(new Date(nowDateTime));
-                result = this._getArrayOfNumbers(now, now);
+                if (callback) return callback(timeFunc);
             }
 
             return result;

@@ -245,9 +245,9 @@ var apd;
                 this._getMonth = function (date) {
                     return date.getMonth();
                 };
-                this._getNumList = function (startDateTime, endDateTime, timeFunc) {
+                //TODO (S.Panfilov) not any, byt functions types
+                this._getNumList = function (startDateTime, endDateTime, timeFunc, callback) {
                     var result = [];
-                    var nowDateTime = new Date().getTime();
                     var now;
                     var start;
                     var end;
@@ -277,8 +277,8 @@ var apd;
                         result = this._getArrayOfNumbers(end, end);
                     }
                     else if (!startDateTime && !endDateTime) {
-                        now = timeFunc(new Date(nowDateTime));
-                        result = this._getArrayOfNumbers(now, now);
+                        if (callback)
+                            return callback(timeFunc);
                     }
                     return result;
                 };
@@ -299,10 +299,15 @@ var apd;
                 this.getDaysInMonth = function (month, year) {
                     return new Date(year, month + 1, 0).getDate();
                 };
-                this.selected = selected;
-                this.days = this.getDaysNumberArr(this.selected.month, this.selected.year);
-                this.month = this._getNumList(startDateTime, endDateTime, this._getMonth);
-                this.years = this._getNumList(startDateTime, endDateTime, this._getFullYear);
+                var self = this;
+                self.selected = selected;
+                self.days = self.getDaysNumberArr(self.selected.month, self.selected.year);
+                self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, function () {
+                    return self._getArrayOfNumbers(0, 11);
+                });
+                self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, function () {
+                    return [new Date().getFullYear()];
+                });
             }
             return DataClass;
         })();
