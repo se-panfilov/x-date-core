@@ -71,7 +71,6 @@ module apd.dateUtils {
         };
     }
 
-
     class DateModelValidatorConfigClass {
         day:DateModelFieldClass;
         dayOfWeek:DateModelFieldClass;
@@ -97,12 +96,20 @@ module apd.dateUtils {
         month:Array<number>;
         years:Array<number>;
 
-        constructor(selected:DateModelClass, years:Array<number>) {
+        constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
             this.selected = selected;
             this.days = <Array<number>> this.getDaysNumberArr(this.selected.month, this.selected.year);
             this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-            this.years = years;
+            this.years = this.getYearsList(startDateTime, endDateTime);
         }
+
+        private getYearsList = function (startDateTime:number, endDateTime:number) {
+            var result:Array<number> = [];
+            //TODO (S.Panfilov)
+
+
+            return result;
+        };
 
         private _getIntArr = function (length:number) {
             if (!length && length !== 0) {
@@ -165,13 +172,13 @@ module apd.dateUtils {
             }
 
             var exports = {
-                createData: function (selected:DateModelClass, years:Array<number>) {
-                    return new DataClass(selected, years);
+                createData: function (selected:DateModelClass, startDateTime:number, endDateTime:number) {
+                    return new DataClass(selected, startDateTime, endDateTime);
                 },
                 validateModel: function (model:DateModelClass) {
                     return dateModelValidator.isValid(model);
                 },
-                getDefaultSelectedDate: function (model) {
+                getInitDate: function (model) {
                     var isValidModel = exports.validateModel(model);
 
                     if (isValidModel) {
@@ -187,15 +194,6 @@ module apd.dateUtils {
 
                         return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
                     }
-                },
-                getDefaultYearsList: function () {
-                    //TODO (S.Panfilov) fix for case with date limits
-                    return [
-                        (new Date()).getFullYear() - 3,
-                        (new Date()).getFullYear() - 2,
-                        (new Date()).getFullYear() - 1,
-                        (new Date()).getFullYear() //2015
-                    ];
                 }
             };
 

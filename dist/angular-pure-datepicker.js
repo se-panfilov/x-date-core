@@ -71,6 +71,8 @@ var apd;
                 templateUrl: 'apd.html',
                 scope: {
                     ngModel: '=',
+                    apdStart: '@?',
+                    apdEnd: '@?',
                     apdDayId: '@?',
                     apdMonthId: '@?',
                     apdYearId: '@?',
@@ -79,9 +81,8 @@ var apd;
                     apdYearClasses: '@?'
                 },
                 link: function (scope) {
-                    var selectedDate = DateUtilsFactory.getDefaultSelectedDate(scope.ngModel);
-                    var years = DateUtilsFactory.getDefaultYearsList();
-                    scope.data = DateUtilsFactory.createData(selectedDate, years);
+                    var initDate = DateUtilsFactory.getInitDate(scope.ngModel);
+                    scope.data = DateUtilsFactory.createData(initDate, +scope.apdStart, +scope.apdEnd);
                     scope.$watch('data.selected.day', function (day) {
                         if (!day)
                             return;
@@ -226,8 +227,13 @@ var apd;
             return DateModelValidatorConfigClass;
         })();
         var DataClass = (function () {
-            function DataClass(selected, years) {
+            function DataClass(selected, startDateTime, endDateTime) {
                 var _this = this;
+                this.getYearsList = function (startDateTime, endDateTime) {
+                    var result = [];
+                    //TODO (S.Panfilov)
+                    return result;
+                };
                 this._getIntArr = function (length) {
                     if (!length && length !== 0) {
                         //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
@@ -248,7 +254,7 @@ var apd;
                 this.selected = selected;
                 this.days = this.getDaysNumberArr(this.selected.month, this.selected.year);
                 this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-                this.years = years;
+                this.years = this.getYearsList(startDateTime, endDateTime);
             }
             return DataClass;
         })();
@@ -279,13 +285,13 @@ var apd;
                 return model;
             }
             var exports = {
-                createData: function (selected, years) {
-                    return new DataClass(selected, years);
+                createData: function (selected, startDateTime, endDateTime) {
+                    return new DataClass(selected, startDateTime, endDateTime);
                 },
                 validateModel: function (model) {
                     return dateModelValidator.isValid(model);
                 },
-                getDefaultSelectedDate: function (model) {
+                getInitDate: function (model) {
                     var isValidModel = exports.validateModel(model);
                     if (isValidModel) {
                         return preserveModelValues(model);
@@ -300,15 +306,6 @@ var apd;
                         var timezone = date.getTimezoneOffset();
                         return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
                     }
-                },
-                getDefaultYearsList: function () {
-                    //TODO (S.Panfilov) fix for case with date limits
-                    return [
-                        (new Date()).getFullYear() - 3,
-                        (new Date()).getFullYear() - 2,
-                        (new Date()).getFullYear() - 1,
-                        (new Date()).getFullYear()
-                    ];
                 }
             };
             return exports;

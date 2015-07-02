@@ -79,6 +79,8 @@ module apd.directive {
                 templateUrl: 'apd.html',
                 scope: {
                     ngModel: '=',
+                    apdStart: '@?',
+                    apdEnd: '@?',
                     apdDayId: '@?',
                     apdMonthId: '@?',
                     apdYearId: '@?',
@@ -88,9 +90,8 @@ module apd.directive {
                 },
                 link: function (scope) {
 
-                    var selectedDate = DateUtilsFactory.getDefaultSelectedDate(scope.ngModel);
-                    var years = DateUtilsFactory.getDefaultYearsList();
-                    scope.data = DateUtilsFactory.createData(selectedDate, years);
+                    var initDate = DateUtilsFactory.getInitDate(scope.ngModel);
+                    scope.data = DateUtilsFactory.createData(initDate, +scope.apdStart, +scope.apdEnd);
 
 
                     scope.$watch('data.selected.day', function (day) {
@@ -125,6 +126,7 @@ module apd.directive {
                             MessagesFactory.throwInvalidParamsMessage();
                             return false;
                         }
+
                         var date = new Date(year, month, day);
 
 
