@@ -99,8 +99,8 @@ module apd.dateUtils {
         constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
             this.selected = selected;
             this.days = <Array<number>> this.getDaysNumberArr(this.selected.month, this.selected.year);
-            this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-            this.years = this._getYearsList(startDateTime, endDateTime);
+            this.month = this._getNumList(startDateTime, endDateTime, this._getMonth);
+            this.years = this._getNumList(startDateTime, endDateTime, this._getFullYear);
         }
 
         private _getArrayOfNumbers = function (start:number, end:number) {
@@ -113,58 +113,67 @@ module apd.dateUtils {
             return result;
         };
 
-        private _getYearsList = function (startDateTime:number, endDateTime:number) {
+        private _getFullYear = function (date:Date) {
+            return date.getFullYear();
+        };
+
+        private _getMonth = function (date:Date) {
+            return date.getMonth();
+        };
+
+        private _getNumList = function (startDateTime:number, endDateTime:number, timeFunc:any) {
             var result:Array<number> = [];
 
             var nowDateTime:number = new Date().getTime();
-            var nowYear:number;
-            var startYear:number;
-            var endYear:number;
+            var now:number;
+            var start:number;
+            var end:number;
 
             //start = 2011, end = 2014
             if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                startYear = new Date(startDateTime).getFullYear();
-                endYear = new Date(endDateTime).getFullYear();
-                result = this._getArrayOfNumbers(startYear, endYear);
+                start = timeFunc(new Date(startDateTime));
+                end = timeFunc(new Date(endDateTime));
+                result = this._getArrayOfNumbers(start, end);
             }
 
             //start = 2014, end = 2011
             else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
-                startYear = new Date(endDateTime).getFullYear();
-                endYear = new Date(startDateTime).getFullYear();
+                start = timeFunc(new Date(endDateTime));
+                end = timeFunc(new Date(startDateTime));
                 //TODO (S.Panfilov) throw warning here, that dates inverted
                 //apd.messages.MessagesFactoryClass.throwMessage('asdsadasd');
 
-                result = this._getArrayOfNumbers(startYear, endYear);
+                result = this._getArrayOfNumbers(start, end);
             }
 
             //start = 2011, end = 2011
             else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                startYear = new Date(startDateTime).getFullYear();
-                result = this._getArrayOfNumbers(startYear, startYear);
+                start = timeFunc(new Date(startDateTime));
+                result = this._getArrayOfNumbers(start, start);
             }
 
             //start = 2014, end = null
             else if (startDateTime && !endDateTime) {
-                startYear = new Date(startDateTime).getFullYear();
-                result = this._getArrayOfNumbers(startYear, startYear);
+                start = timeFunc(new Date(startDateTime));
+                result = this._getArrayOfNumbers(start, start);
             }
 
 
             //start = null, end = 2014
             else if (!startDateTime && endDateTime) {
-                endYear = new Date(endDateTime).getFullYear();
-                result = this._getArrayOfNumbers(endYear, endYear);
+                end = timeFunc(new Date(endDateTime));
+                result = this._getArrayOfNumbers(end, end);
             }
 
             //start = null, end = null
             else if (!startDateTime && !endDateTime) {
-                nowYear = new Date(nowDateTime).getFullYear();
-                result = this._getArrayOfNumbers(nowYear, nowYear);
+                now = timeFunc(new Date(nowDateTime));
+                result = this._getArrayOfNumbers(now, now);
             }
 
             return result;
         };
+
 
         private _getIntArr = function (length:number) {
             if (!length && length !== 0) {

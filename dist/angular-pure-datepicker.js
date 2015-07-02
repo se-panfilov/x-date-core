@@ -239,40 +239,46 @@ var apd;
                     }
                     return result;
                 };
-                this._getYearsList = function (startDateTime, endDateTime) {
+                this._getFullYear = function (date) {
+                    return date.getFullYear();
+                };
+                this._getMonth = function (date) {
+                    return date.getMonth();
+                };
+                this._getNumList = function (startDateTime, endDateTime, timeFunc) {
                     var result = [];
                     var nowDateTime = new Date().getTime();
-                    var nowYear;
-                    var startYear;
-                    var endYear;
+                    var now;
+                    var start;
+                    var end;
                     //start = 2011, end = 2014
                     if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                        startYear = new Date(startDateTime).getFullYear();
-                        endYear = new Date(endDateTime).getFullYear();
-                        result = this._getArrayOfNumbers(startYear, endYear);
+                        start = timeFunc(new Date(startDateTime));
+                        end = timeFunc(new Date(endDateTime));
+                        result = this._getArrayOfNumbers(start, end);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
-                        startYear = new Date(endDateTime).getFullYear();
-                        endYear = new Date(startDateTime).getFullYear();
+                        start = timeFunc(new Date(endDateTime));
+                        end = timeFunc(new Date(startDateTime));
                         //TODO (S.Panfilov) throw warning here, that dates inverted
                         //apd.messages.MessagesFactoryClass.throwMessage('asdsadasd');
-                        result = this._getArrayOfNumbers(startYear, endYear);
+                        result = this._getArrayOfNumbers(start, end);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                        startYear = new Date(startDateTime).getFullYear();
-                        result = this._getArrayOfNumbers(startYear, startYear);
+                        start = timeFunc(new Date(startDateTime));
+                        result = this._getArrayOfNumbers(start, start);
                     }
                     else if (startDateTime && !endDateTime) {
-                        startYear = new Date(startDateTime).getFullYear();
-                        result = this._getArrayOfNumbers(startYear, startYear);
+                        start = timeFunc(new Date(startDateTime));
+                        result = this._getArrayOfNumbers(start, start);
                     }
                     else if (!startDateTime && endDateTime) {
-                        endYear = new Date(endDateTime).getFullYear();
-                        result = this._getArrayOfNumbers(endYear, endYear);
+                        end = timeFunc(new Date(endDateTime));
+                        result = this._getArrayOfNumbers(end, end);
                     }
                     else if (!startDateTime && !endDateTime) {
-                        nowYear = new Date(nowDateTime).getFullYear();
-                        result = this._getArrayOfNumbers(nowYear, nowYear);
+                        now = timeFunc(new Date(nowDateTime));
+                        result = this._getArrayOfNumbers(now, now);
                     }
                     return result;
                 };
@@ -295,8 +301,8 @@ var apd;
                 };
                 this.selected = selected;
                 this.days = this.getDaysNumberArr(this.selected.month, this.selected.year);
-                this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-                this.years = this._getYearsList(startDateTime, endDateTime);
+                this.month = this._getNumList(startDateTime, endDateTime, this._getMonth);
+                this.years = this._getNumList(startDateTime, endDateTime, this._getFullYear);
             }
             return DataClass;
         })();
