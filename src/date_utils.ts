@@ -99,7 +99,10 @@ module apd.dateUtils {
         constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
             var self = this;
             self.selected = selected;
-            self.days = <Array<number>> self.getDaysNumberArr(self.selected.month, self.selected.year);
+            self.days = self._getNumList(startDateTime, endDateTime, self._getDaysCount, function () {
+                var daysCount = self._getDaysCount(new Date());
+                return self._getIntArr(daysCount);
+            });
             self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, function () {
                 return self._getArrayOfNumbers(0, 11);
             });
@@ -124,6 +127,10 @@ module apd.dateUtils {
 
         private _getMonth = function (date:Date) {
             return date.getMonth();
+        };
+
+        private _getDaysCount = function (date:Date) {
+            return date.getDate();
         };
 
         //TODO (S.Panfilov) not any, byt functions types

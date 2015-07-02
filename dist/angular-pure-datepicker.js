@@ -245,6 +245,9 @@ var apd;
                 this._getMonth = function (date) {
                     return date.getMonth();
                 };
+                this._getDaysCount = function (date) {
+                    return date.getDate();
+                };
                 //TODO (S.Panfilov) not any, byt functions types
                 this._getNumList = function (startDateTime, endDateTime, timeFunc, callback) {
                     var result = [];
@@ -301,7 +304,10 @@ var apd;
                 };
                 var self = this;
                 self.selected = selected;
-                self.days = self.getDaysNumberArr(self.selected.month, self.selected.year);
+                self.days = self._getNumList(startDateTime, endDateTime, self._getDaysCount, function () {
+                    var daysCount = self._getDaysCount(new Date());
+                    return self._getIntArr(daysCount);
+                });
                 self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, function () {
                     return self._getArrayOfNumbers(0, 11);
                 });
