@@ -100,13 +100,86 @@ module apd.dateUtils {
             this.selected = selected;
             this.days = <Array<number>> this.getDaysNumberArr(this.selected.month, this.selected.year);
             this.month = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-            this.years = this.getYearsList(startDateTime, endDateTime);
+            this.years = this._getYearsList(startDateTime, endDateTime);
         }
 
-        private getYearsList = function (startDateTime:number, endDateTime:number) {
+        private _getArrayOfNumbers = function (start:number, end:number) {
             var result:Array<number> = [];
-            //TODO (S.Panfilov)
 
+            for (var i = start; i <= end; i++) {
+                result.push(i);
+            }
+
+            return result;
+        };
+
+        private _getYearsList = function (startDateTime:number, endDateTime:number) {
+            var result:Array<number> = [];
+
+            var nowDateTime:number = new Date().getTime();
+            var nowYear:number;
+            var startYear:number;
+            var endYear:number;
+
+            //start = 2011, end = 2014
+            if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
+                startYear = new Date(startDateTime).getFullYear();
+                endYear = new Date(endDateTime).getFullYear();
+                result = this._getArrayOfNumbers(startYear, endYear);
+            }
+
+            //start = 2014, end = 2011
+            if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
+                startYear = new Date(endDateTime).getFullYear();
+                endYear = new Date(startDateTime).getFullYear();
+                //TODO (S.Panfilov) throw warning here, that dates inverted
+                result = this._getArrayOfNumbers(startYear, endYear);
+            }
+
+            //start = 2011, end = 2011
+            if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
+                startYear = new Date(startDateTime).getFullYear();
+                result = this._getArrayOfNumbers(startYear, startYear);
+            }
+
+            //start = 2014, end = null, and now = 2011
+            if ((startDateTime && !endDateTime) && (startDateTime < nowDateTime)) {
+                startYear = new Date(startDateTime).getFullYear();
+                nowYear = new Date(nowDateTime).getFullYear();
+                //TODO (S.Panfilov) throw warning here, that dates inverted
+                result = this._getArrayOfNumbers(nowYear, startYear);
+            }
+
+            //start = 2014, end = null, and now = 2014
+            if ((startDateTime && !endDateTime) && (startDateTime === nowDateTime)) {
+                startYear = new Date(startDateTime).getFullYear();
+                result = this._getArrayOfNumbers(startYear, startYear);
+            }
+
+            //start = 2014, end = null, and now = 2015
+            if ((startDateTime && !endDateTime) && (startDateTime > nowDateTime)) {
+                startYear = new Date(startDateTime).getFullYear();
+                nowYear = new Date(nowDateTime).getFullYear();
+                result = this._getArrayOfNumbers(startYear, nowYear);
+            }
+
+            //start = null, end = 2014, and now = 2015
+            if ((!startDateTime && endDateTime) && (endDateTime < nowDateTime)) {
+                endYear = new Date(endDateTime).getFullYear();
+                nowYear = new Date(nowDateTime).getFullYear();
+                //TODO (S.Panfilov) throw warning here, that dates inverted
+                result = this._getArrayOfNumbers(endYear, nowYear);
+            }
+
+            //start = null, end = 2014
+            if (!startDateTime && endDateTime) {
+
+            }
+
+            //start = null, end = null
+            if (!startDateTime && !endDateTime) {
+
+            }
 
             return result;
         };
