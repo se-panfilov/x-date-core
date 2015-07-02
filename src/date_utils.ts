@@ -133,7 +133,7 @@ module apd.dateUtils {
             return date.getDate();
         };
 
-        //TODO (S.Panfilov) not any, byt functions types
+        //TODO (S.Panfilov) not any, but functions types
         private _getNumList = function (startDateTime:number, endDateTime:number, timeFunc:any, callback: any) {
             var result:Array<number> = [];
 

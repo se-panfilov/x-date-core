@@ -248,7 +248,7 @@ var apd;
                 this._getDaysCount = function (date) {
                     return date.getDate();
                 };
-                //TODO (S.Panfilov) not any, byt functions types
+                //TODO (S.Panfilov) not any, but functions types
                 this._getNumList = function (startDateTime, endDateTime, timeFunc, callback) {
                     var result = [];
                     var now;
