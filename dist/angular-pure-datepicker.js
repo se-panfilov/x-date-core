@@ -85,7 +85,7 @@ var apd;
                     var startDateTime = (scope.apdStart) ? +scope.apdStart : null;
                     var endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
                     scope.data = DateUtilsFactory.createData(initDate, startDateTime, endDateTime);
-                    scope.ngModel = scope.data;
+                    scope.ngModel = scope.data.selected;
                     scope.$watch('data.selected.day', function (day) {
                         if (!day)
                             return;
