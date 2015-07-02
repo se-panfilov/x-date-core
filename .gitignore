@@ -1,3 +1,10 @@
+*.json
+*.js
+*.ts
+*.css
+*.html
+*.jade
 bower_components
 node_modules
 *.log
+.gitignore

@@ -16,6 +16,10 @@ angular.module('demo', [
             {name: 'Воскресенье', short: 'Вс'}
         ];
 
+        $scope.startDate = 1435315214948;
+        $scope.endDate = new Date(2016, 6, 21).getTime();
+
+
         $scope.resultModel = {
             day: 26,
             dayOfWeek: 6,

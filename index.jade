@@ -28,7 +28,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                     form#demo_simple_form(name="demo_simple_form")
                         .form-group
                             label.control-label(for="apd_1") Date
-                            pure-datepicker#apd_1(ng-model="resultModel")
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-start="startDate", apd-end="endDate")
                     div
                         span Day:
                         | &nbsp;
