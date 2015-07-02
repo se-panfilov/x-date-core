@@ -16,8 +16,10 @@ angular.module('demo', [
             {name: 'Воскресенье', short: 'Вс'}
         ];
 
+        //$scope.startDate = null;
+        //$scope.endDate = null;
         $scope.startDate = 1435315214948;
-        $scope.endDate = new Date(2016, 6, 21).getTime();
+        $scope.endDate = new Date(2020, 6, 21).getTime();
 
 
         $scope.resultModel = {

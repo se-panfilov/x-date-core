@@ -19,33 +19,491 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
     body
         #content_view.container
             #demo_page(ng-controller="DemoPageCtrl")
-                section#common_case
+                section
                     hgroup
                         h1 Common case
-                        h3 ---------------
                     .case_description
-                        | ---------------
+                        ul
+                            li Valid ngModel
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Both-sided limits and valid model
+                    .case_description
+                        ul
+                            li Valid ngModel
+                            li Start date
+                            li End date
                     form#demo_simple_form(name="demo_simple_form")
                         .form-group
                             label.control-label(for="apd_1") Date
                             pure-datepicker#apd_1(ng-model="resultModel", apd-start="startDate", apd-end="endDate")
-                    div
-                        span Day:
-                        | &nbsp;
-                        span(ng-bind="resultModel.day")
-                    div
-                        span Month:
-                        | &nbsp;
-                        span(ng-bind="resultModel.month")
-                    div
-                        span Year:
-                        | &nbsp;
-                        span(ng-bind="resultModel.year")
-                    div
-                        span Datetime:
-                        | &nbsp;
-                        span(ng-bind="resultModel.datetime")
-                    div
-                        span timezone:
-                        | &nbsp;
-                        span(ng-bind="resultModel.timezone")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Left-side limit and valid model
+                    .case_description
+                        ul
+                            li Valid ngModel
+                            li Start date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-end="endDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Right-side limit and valid model
+                    .case_description
+                        ul
+                            li Valid ngModel
+                            li Start date
+                            li End date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-end="endDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Right-side limit and valid model (but model out of limits)
+                    .case_description
+                        ul
+                            li Valid ngModel
+                            li End date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-end="endDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Left-side limit and valid model (but model out of limits)
+                    .case_description
+                        ul
+                            li Valid ngModel
+                            li Start date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-start="startDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 No model
+                    .case_description
+                        ul
+                            li no ngModel
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Empty model
+                    .case_description
+                        ul
+                            li Empty ngModel
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Empty model and left-side limit
+                    .case_description
+                        ul
+                            li Empty ngModel
+                            li Start date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-start="startDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Empty model and right-side limit
+                    .case_description
+                        ul
+                            li Empty ngModel
+                            li End date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-end="endDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Invalid left-side limit
+                    .case_description
+                        ul
+                            li Invalid Start date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-start="startDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Invalid right-side limit
+                    .case_description
+                        ul
+                            li Invalid End date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-end="endDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Linked Dates
+                    .case_description
+                        ul
+                            li Linked Dates
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Linked Dates with same both-side limit
+                    .case_description
+                        ul
+                            li Linked Dates
+                            li Start Date
+                            li End Date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-start="startDate", apd-end="endDate")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-start="startDate", apd-end="endDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
+                section
+                    hgroup
+                        h1 Linked Dates with different both-side limit
+                    .case_description
+                        ul
+                            li Linked Dates
+                            li Different Limits
+                            li Start Date
+                            li End Date
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-start="startDate", apd-end="endDate")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="resultModel", apd-start="startDate", apd-end="endDate")
+                    section.well
+                        div
+                            span Day:
+                            | &nbsp;
+                            span(ng-bind="resultModel.day")
+                        div
+                            span Month:
+                            | &nbsp;
+                            span(ng-bind="resultModel.month")
+                        div
+                            span Year:
+                            | &nbsp;
+                            span(ng-bind="resultModel.year")
+                        div
+                            span Datetime:
+                            | &nbsp;
+                            span(ng-bind="resultModel.datetime")
+                        div
+                            span timezone:
+                            | &nbsp;
+                            span(ng-bind="resultModel.timezone")
