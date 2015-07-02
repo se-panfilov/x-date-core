@@ -71,8 +71,8 @@ var apd;
                 templateUrl: 'apd.html',
                 scope: {
                     ngModel: '=',
-                    apdStart: '@?',
-                    apdEnd: '@?',
+                    apdStart: '=?',
+                    apdEnd: '=?',
                     apdDayId: '@?',
                     apdMonthId: '@?',
                     apdYearId: '@?',
@@ -82,7 +82,10 @@ var apd;
                 },
                 link: function (scope) {
                     var initDate = DateUtilsFactory.getInitDate(scope.ngModel);
-                    scope.data = DateUtilsFactory.createData(initDate, +scope.apdStart, +scope.apdEnd);
+                    var startDateTime = (scope.apdStart) ? +scope.apdStart : null;
+                    var endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                    scope.data = DateUtilsFactory.createData(initDate, startDateTime, endDateTime);
+                    scope.ngModel = scope.data;
                     scope.$watch('data.selected.day', function (day) {
                         if (!day)
                             return;
@@ -252,6 +255,7 @@ var apd;
                         startYear = new Date(endDateTime).getFullYear();
                         endYear = new Date(startDateTime).getFullYear();
                         //TODO (S.Panfilov) throw warning here, that dates inverted
+                        //apd.messages.MessagesFactoryClass.throwMessage('asdsadasd');
                         result = this._getArrayOfNumbers(startYear, endYear);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {

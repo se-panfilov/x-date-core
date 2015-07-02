@@ -133,6 +133,8 @@ module apd.dateUtils {
                 startYear = new Date(endDateTime).getFullYear();
                 endYear = new Date(startDateTime).getFullYear();
                 //TODO (S.Panfilov) throw warning here, that dates inverted
+                //apd.messages.MessagesFactoryClass.throwMessage('asdsadasd');
+
                 result = this._getArrayOfNumbers(startYear, endYear);
             }
 
