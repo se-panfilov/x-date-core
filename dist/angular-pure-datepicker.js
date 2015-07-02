@@ -248,48 +248,27 @@ var apd;
                         endYear = new Date(endDateTime).getFullYear();
                         result = this._getArrayOfNumbers(startYear, endYear);
                     }
-                    //start = 2014, end = 2011
-                    if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
+                    else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
                         startYear = new Date(endDateTime).getFullYear();
                         endYear = new Date(startDateTime).getFullYear();
                         //TODO (S.Panfilov) throw warning here, that dates inverted
                         result = this._getArrayOfNumbers(startYear, endYear);
                     }
-                    //start = 2011, end = 2011
-                    if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
+                    else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
                         startYear = new Date(startDateTime).getFullYear();
                         result = this._getArrayOfNumbers(startYear, startYear);
                     }
-                    //start = 2014, end = null, and now = 2011
-                    if ((startDateTime && !endDateTime) && (startDateTime < nowDateTime)) {
-                        startYear = new Date(startDateTime).getFullYear();
-                        nowYear = new Date(nowDateTime).getFullYear();
-                        //TODO (S.Panfilov) throw warning here, that dates inverted
-                        result = this._getArrayOfNumbers(nowYear, startYear);
-                    }
-                    //start = 2014, end = null, and now = 2014
-                    if ((startDateTime && !endDateTime) && (startDateTime === nowDateTime)) {
+                    else if (startDateTime && !endDateTime) {
                         startYear = new Date(startDateTime).getFullYear();
                         result = this._getArrayOfNumbers(startYear, startYear);
                     }
-                    //start = 2014, end = null, and now = 2015
-                    if ((startDateTime && !endDateTime) && (startDateTime > nowDateTime)) {
-                        startYear = new Date(startDateTime).getFullYear();
-                        nowYear = new Date(nowDateTime).getFullYear();
-                        result = this._getArrayOfNumbers(startYear, nowYear);
-                    }
-                    //start = null, end = 2014, and now = 2015
-                    if ((!startDateTime && endDateTime) && (endDateTime < nowDateTime)) {
+                    else if (!startDateTime && endDateTime) {
                         endYear = new Date(endDateTime).getFullYear();
+                        result = this._getArrayOfNumbers(endYear, endYear);
+                    }
+                    else if (!startDateTime && !endDateTime) {
                         nowYear = new Date(nowDateTime).getFullYear();
-                        //TODO (S.Panfilov) throw warning here, that dates inverted
-                        result = this._getArrayOfNumbers(endYear, nowYear);
-                    }
-                    //start = null, end = 2014
-                    if (!startDateTime && endDateTime) {
-                    }
-                    //start = null, end = null
-                    if (!startDateTime && !endDateTime) {
+                        result = this._getArrayOfNumbers(nowYear, nowYear);
                     }
                     return result;
                 };
