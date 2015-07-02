@@ -68,7 +68,6 @@ module apd.directive {
     ]);
 
     angular.module('angular-pd.datepicker', [
-        //'angular-pd.data',
         'angular-pd.templates'
     ])
 

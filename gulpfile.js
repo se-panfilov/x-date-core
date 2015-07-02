@@ -44,8 +44,8 @@ var dest = {
 
 gulp.task('sizes_dist', function () {
     return gulp.src([
-        'static/dist/**/*.js',
-        'static/dist/**/*.css'
+        'dist/**/*.js',
+        'dist/**/*.css'
     ]).pipe(size());
 });
 
