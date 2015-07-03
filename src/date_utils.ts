@@ -156,13 +156,13 @@ module apd.dateUtils {
             }
 
             var exports = {
-                createData: function (selected:DateModelClass, startDateTime:number, endDateTime:number) {
+                getData: function (selected:DateModelClass, startDateTime:number, endDateTime:number) {
                     return new DataClass(selected, startDateTime, endDateTime);
                 },
                 validateModel: function (model:DateModelClass) {
                     return (model && model.datetime);
                 },
-                getInitDate: function (model) {
+                getDateModel: function (model) {
                     var isValidModel = exports.validateModel(model);
 
                     if (isValidModel) {

@@ -93,10 +93,10 @@ module apd.directive {
                     var isReInitializing = false;
 
                     function init() {
-                        var initDate = DateUtilsFactory.getInitDate(scope.ngModel);
+                        var initDateModel = DateUtilsFactory.getDateModel(scope.ngModel);
                         var startDateTime = (scope.apdStart) ? +scope.apdStart : null;
                         var endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
-                        scope.data = DateUtilsFactory.createData(initDate, startDateTime, endDateTime);
+                        scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                         isInitialized = true;
                     }

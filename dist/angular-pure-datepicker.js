@@ -84,10 +84,10 @@ var apd;
                     var isInitialized = false;
                     var isReInitializing = false;
                     function init() {
-                        var initDate = DateUtilsFactory.getInitDate(scope.ngModel);
+                        var initDateModel = DateUtilsFactory.getDateModel(scope.ngModel);
                         var startDateTime = (scope.apdStart) ? +scope.apdStart : null;
                         var endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
-                        scope.data = DateUtilsFactory.createData(initDate, startDateTime, endDateTime);
+                        scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                         isInitialized = true;
                     }
@@ -183,67 +183,16 @@ var apd;
     (function (dateUtils) {
         'use strict';
         var DateModelClass = (function () {
-            function DateModelClass(day, dayOfWeek, month, year, datetime, timezone) {
-                this.day = day;
-                this.dayOfWeek = dayOfWeek;
-                this.month = month;
-                this.year = year;
+            function DateModelClass(datetime) {
+                var date = new Date();
+                this.day = date.getDate();
+                this.dayOfWeek = date.getDay();
+                this.month = date.getMonth();
+                this.year = date.getFullYear();
                 this.datetime = datetime;
-                this.timezone = timezone;
+                this.timezone = date.getTimezoneOffset();
             }
             return DateModelClass;
-        })();
-        var DateModelValidatorClass = (function () {
-            function DateModelValidatorClass(config) {
-                var _this = this;
-                this.isFieldExist = function (model, fieldName) {
-                    var validator = _this;
-                    var isZero = (model[fieldName] === 0);
-                    var isZeroAllowed = validator[fieldName].isZeroAllowed;
-                    if (isZero && !isZeroAllowed) {
-                        return false;
-                    }
-                    if (!model[fieldName]) {
-                        return false;
-                    }
-                    return true;
-                };
-                this.isValid = function (model) {
-                    var validator = _this;
-                    if (!model)
-                        return false;
-                    for (var fieldName in validator) {
-                        if (validator.hasOwnProperty(fieldName)) {
-                            if (validator[fieldName].isRequired) {
-                                var isFieldValid = validator.isFieldExist(model, fieldName);
-                                if (!isFieldValid) {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                    return true;
-                };
-                this.day = new DateModelFieldClass(config.day.name, config.day.isZeroAllowed, config.day.isRequired);
-                this.dayOfWeek = new DateModelFieldClass(config.dayOfWeek.name, config.dayOfWeek.isZeroAllowed, config.dayOfWeek.isRequired);
-                this.month = new DateModelFieldClass(config.month.name, config.month.isZeroAllowed, config.month.isRequired);
-                this.year = new DateModelFieldClass(config.year.name, config.year.isZeroAllowed, config.year.isRequired);
-                this.datetime = new DateModelFieldClass(config.datetime.name, config.datetime.isZeroAllowed, config.datetime.isRequired);
-                this.timezone = new DateModelFieldClass(config.timezone.name, config.timezone.isZeroAllowed, config.timezone.isRequired);
-            }
-            return DateModelValidatorClass;
-        })();
-        var DateModelValidatorConfigClass = (function () {
-            //TODO (S.Panfilov) any?
-            function DateModelValidatorConfigClass(object) {
-                this.day = object.day;
-                this.dayOfWeek = object.dayOfWeek;
-                this.month = object.month;
-                this.year = object.year;
-                this.datetime = object.datetime;
-                this.timezone = object.timezone;
-            }
-            return DateModelValidatorConfigClass;
         })();
         var DataClass = (function () {
             function DataClass(selected, startDateTime, endDateTime) {
@@ -267,7 +216,6 @@ var apd;
                 //TODO (S.Panfilov) not any, but functions types
                 this._getNumList = function (startDateTime, endDateTime, timeFunc, callback) {
                     var result = [];
-                    var now;
                     var start;
                     var end;
                     //start = 2011, end = 2014
@@ -333,24 +281,7 @@ var apd;
             }
             return DataClass;
         })();
-        var DateModelFieldClass = (function () {
-            function DateModelFieldClass(name, allowZero, isRequired) {
-                this.name = name;
-                this.isZeroAllowed = allowZero;
-                this.isRequired = isRequired;
-            }
-            return DateModelFieldClass;
-        })();
-        angular.module('angular-pd.date_utils', []).factory('DateUtilsFactory', ['MessagesFactory', function (MessagesFactory) {
-            var dateModelValidatorConfig = new DateModelValidatorConfigClass({
-                day: { name: 'day', isZeroAllowed: false, isRequired: false },
-                dayOfWeek: { name: 'day', isZeroAllowed: false, isRequired: false },
-                month: { name: 'day', isZeroAllowed: true, isRequired: false },
-                year: { name: 'day', isZeroAllowed: false, isRequired: false },
-                datetime: { name: 'day', isZeroAllowed: true, isRequired: true },
-                timezone: { name: 'day', isZeroAllowed: true, isRequired: false }
-            });
-            var dateModelValidator = new DateModelValidatorClass(dateModelValidatorConfig);
+        angular.module('angular-pd.date_utils', []).factory('DateUtilsFactory', function () {
             function preserveModelValues(model) {
                 for (var value in model) {
                     if (model.hasOwnProperty(value)) {
@@ -360,30 +291,23 @@ var apd;
                 return model;
             }
             var exports = {
-                createData: function (selected, startDateTime, endDateTime) {
+                getData: function (selected, startDateTime, endDateTime) {
                     return new DataClass(selected, startDateTime, endDateTime);
                 },
                 validateModel: function (model) {
-                    return dateModelValidator.isValid(model);
+                    return (model && model.datetime);
                 },
-                getInitDate: function (model) {
+                getDateModel: function (model) {
                     var isValidModel = exports.validateModel(model);
                     if (isValidModel) {
-                        return preserveModelValues(model);
+                        return new DateModelClass(model.datetime);
                     }
                     else {
-                        var date = new Date();
-                        var day = date.getDate();
-                        var month = date.getMonth();
-                        var year = date.getFullYear();
-                        var dateTime = date.getTime();
-                        var dayOfWeek = date.getDay();
-                        var timezone = date.getTimezoneOffset();
-                        return new DateModelClass(day, dayOfWeek, month, year, dateTime, timezone);
+                        return new DateModelClass(new Date().getTime());
                     }
                 }
             };
             return exports;
-        }]);
+        });
     })(dateUtils = apd.dateUtils || (apd.dateUtils = {}));
 })(apd || (apd = {}));
