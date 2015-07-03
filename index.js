@@ -9,7 +9,7 @@ angular.module('demo', [
             restrict: 'E',
             replace: true,
             scope: {
-                caseModel:'='
+                caseModel: '='
             },
             template: '<section class=well>' +
             '<div><span>Day:</span>&nbsp;<span ng-bind=caseModel.model.day></span></div>' +
@@ -21,7 +21,7 @@ angular.module('demo', [
             '<div><span>End limit:</span>&nbsp;<span ng-bind=caseModel.model.endDate></span></div>' +
             '</section>',
             link: function (scope) {
-                console.log(scope.caseModel);
+                //console.log(scope.caseModel);
             }
         };
     })
@@ -37,6 +37,30 @@ angular.module('demo', [
             {name: 'Суббота', short: 'Сб'},
             {name: 'Воскресенье', short: 'Вс'}
         ];
+
+        $scope.plusOneMonth = function (caseModel) {
+            var date = new Date(caseModel.model.datetime);
+            if (date.getMonth() === 11) {
+                date.setMonth(0);
+                date.setFullYear(date.getFullYear() + 1)
+            } else {
+                date.setMonth(date.getMonth() + 1);
+            }
+
+            caseModel.model.datetime = date.getTime()
+        };
+
+        $scope.minusOneMonth = function (caseModel) {
+            var date = new Date(caseModel.model.datetime);
+            if (date.getMonth() === 0) {
+                date.setMonth(11);
+                date.setFullYear(date.getFullYear() - 1)
+            } else {
+                date.setMonth(date.getMonth() - 1);
+            }
+
+            caseModel.model.datetime = date.getTime()
+        };
 
         $scope.commonCase = {
             model: {

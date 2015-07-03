@@ -248,6 +248,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="externalChangeCase.model")
+                                button(type="button", ng-click="plusOneMonth(externalChangeCase)") +1 month
                                 model-well(case-model="externalChangeCase")
                         li
                             section
@@ -262,6 +263,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="externalChangeLeftLimitCase.model", apd-start="externalChangeLeftLimitCase.startDate")
+                                button(type="button", ng-click="minusOneMonth(externalChangeLeftLimitCase)") -1 month
                                 model-well(case-model="externalChangeLeftLimitCase")
                         li
                             section
@@ -276,4 +278,5 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="externalChangeRightLimitCase.model", apd-start="externalChangeRightLimitCase.endDate")
+                                button(type="button", ng-click="plusOneMonth(externalChangeRightLimitCase)") +1 month
                                 model-well(case-model="externalChangeRightLimitCase")
