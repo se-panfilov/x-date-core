@@ -58,6 +58,9 @@ module apd.dateUtils {
 
         isValid = (model:DateModelClass) => {
             var validator = this;
+
+            if (!model) return false;
+
             for (var fieldName in validator) {
                 if (validator.hasOwnProperty(fieldName)) {
                     if (validator[fieldName].isRequired) {

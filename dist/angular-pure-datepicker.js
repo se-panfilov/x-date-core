@@ -197,6 +197,8 @@ var apd;
                 };
                 this.isValid = function (model) {
                     var validator = _this;
+                    if (!model)
+                        return false;
                     for (var fieldName in validator) {
                         if (validator.hasOwnProperty(fieldName)) {
                             if (validator[fieldName].isRequired) {
