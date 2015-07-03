@@ -22,8 +22,14 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
+            }
+        };
+
+        $scope.onlyDatetimeCase = {
+            model: {
+                datetime: new Date(2015, 6, 26).getTime()
             }
         };
 
@@ -33,11 +39,11 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
             },
-            startDate: 1435315214948,
-            endDate: new Date(2020, 6, 21).getTime()
+            startDate: new Date(2015, 6, 21).getTime(),
+            endDate: new Date(2020, 6, 27).getTime()
         };
 
         $scope.leftLimitsCase = {
@@ -49,7 +55,7 @@ angular.module('demo', [
                 datetime: 1435315214948,
                 timezone: -480
             },
-            startDate: 1435315214948
+            startDate: new Date(2015, 5, 1).getTime()
         };
 
         $scope.rightLimitsCase = {
@@ -58,10 +64,10 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
             },
-            endDate: 1435315214948
+            endDate: new Date(2015, 7, 31).getTime()
         };
 
         $scope.outOfRightLimitCase = {
@@ -70,10 +76,10 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
             },
-            endDate: 1435000000000
+            endDate: new Date(2015, 6, 21).getTime()
         };
 
         $scope.outOfLeftLimitCase = {
@@ -82,10 +88,10 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
             },
-            startDate: 1435000000000
+            startDate: new Date(2015, 6, 27).getTime()
         };
 
         $scope.emptyModelCase = {
@@ -94,12 +100,12 @@ angular.module('demo', [
 
         $scope.emptyModelLeftLimitCase = {
             model: null,
-            startDate: 1435000000000
+            startDate: new Date(2015, 6, 26).getTime()
         };
 
         $scope.emptyModelRightLimitCase = {
             model: null,
-            endDate: 1435000000000
+            endDate: new Date(2015, 6, 26).getTime()
         };
 
         $scope.invalidLeftLimitCase = {
@@ -108,7 +114,7 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
             },
             startDate: 'invalid'
@@ -120,7 +126,7 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
             },
             endDate: Infinity
@@ -132,7 +138,7 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
             }
         };
@@ -143,11 +149,11 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
             },
-            startDate: 1435315210000,
-            endDate: 1435315214948
+            startDate: new Date(2015, 6, 25).getTime(),
+            endDate: new Date(2015, 6, 27).getTime()
         };
 
         $scope.linkedModelBothDifferentLimitsCase = {
@@ -156,13 +162,48 @@ angular.module('demo', [
                 dayOfWeek: 6,
                 month: 6,
                 year: 2015,
-                datetime: 1435315214948,
+                datetime: new Date(2015, 6, 26).getTime(),
                 timezone: -480
             },
-            startDate_one: 1435315210000,
-            endDate_one: 1435315214948,
-            startDate_two: 1435300000000,
-            endDate_two: 1435315200000
+            startDate_one: new Date(2015, 5, 1).getTime(),
+            endDate_one: new Date(2015, 7, 31).getTime(),
+            startDate_two: new Date(2015, 6, 20).getTime(),
+            endDate_two: new Date(2015, 8, 31).getTime()
+        };
+
+        $scope.externalChangeCase = {
+            model: {
+                day: 26,
+                dayOfWeek: 6,
+                month: 6,
+                year: 2015,
+                datetime: new Date(2015, 6, 26).getTime(),
+                timezone: -480
+            }
+        };
+
+        $scope.externalChangeLeftLimitCase = {
+            model: {
+                day: 26,
+                dayOfWeek: 6,
+                month: 6,
+                year: 2015,
+                datetime: new Date(2015, 6, 26).getTime(),
+                timezone: -480
+            },
+            startDate: new Date(2015, 6, 25).getTime()
+        };
+
+        $scope.externalChangeRightLimitCase = {
+            model: {
+                day: 26,
+                dayOfWeek: 6,
+                month: 6,
+                year: 2015,
+                datetime: new Date(2015, 6, 26).getTime(),
+                timezone: -480
+            },
+            endDate: new Date(2015, 6, 27).getTime()
         };
     })
 ;
