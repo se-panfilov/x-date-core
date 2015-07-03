@@ -81,43 +81,56 @@ var apd;
                     apdYearClasses: '@?'
                 },
                 link: function (scope) {
-                    var initDate = DateUtilsFactory.getInitDate(scope.ngModel);
-                    var startDateTime = (scope.apdStart) ? +scope.apdStart : null;
-                    var endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
-                    scope.data = DateUtilsFactory.createData(initDate, startDateTime, endDateTime);
-                    scope.ngModel = scope.data.selected;
-                    scope.$watch('data.selected.day', function (day) {
-                        if (!day)
+                    var isInitialized = false;
+                    var isReInitializing = false;
+                    function init() {
+                        var initDate = DateUtilsFactory.getInitDate(scope.ngModel);
+                        var startDateTime = (scope.apdStart) ? +scope.apdStart : null;
+                        var endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                        scope.data = DateUtilsFactory.createData(initDate, startDateTime, endDateTime);
+                        scope.ngModel = scope.data.selected;
+                        isInitialized = true;
+                    }
+                    scope.$watch('ngModel.datetime', function (value, oldValue) {
+                        if (isInitialized && (value === oldValue)) {
                             return;
-                        reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
+                        }
+                        isReInitializing = true;
+                        init();
+                        isReInitializing = false;
+                    }, true);
+                    scope.$watch('data.selected.day', function (day) {
+                        if (!day && !isReInitializing)
+                            return;
+                        reloadSelectedDay(scope.data.selected.datetime);
                     });
                     scope.$watch('data.selected.month', function (month) {
-                        if (!month && month !== 0)
+                        if (!month && month !== 0 && !isReInitializing)
                             return;
-                        reloadDaysCount(scope.data.selected.month, scope.data.selected.year);
-                        reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
+                        reloadDaysCount(scope.data.selected.datetime);
+                        reloadSelectedDay(scope.data.selected.datetime);
                     });
                     scope.$watch('data.selected.year', function (year) {
-                        //TODO (S.Panfilov) may be we should watch also timezone and datetime - those fields may be changed externally
-                        if (!year)
+                        if (!year && !isReInitializing)
                             return;
-                        reloadDaysCount(scope.data.selected.month, scope.data.selected.year);
-                        reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
+                        reloadDaysCount(scope.data.selected.datetime);
+                        reloadSelectedDay(scope.data.selected.datetime);
                     });
-                    function reloadDaysCount(month, year) {
-                        if ((!month && month !== 0) || !year) {
+                    function reloadDaysCount(datetime) {
+                        if (!datetime && datetime !== 0) {
                             MessagesFactory.throwInvalidParamsMessage();
                             return false;
                         }
-                        scope.data.days = scope.data.getDaysNumberArr(month, year);
+                        var date = new Date(datetime);
+                        scope.data.days = scope.data.getDaysNumberArr(date.getMonth(), date.getFullYear());
                     }
-                    function reloadSelectedDay(year, month, day) {
-                        if (!year || (!month && month !== 0) || !day) {
+                    function reloadSelectedDay(datetime) {
+                        if (!datetime && datetime !== 0) {
                             MessagesFactory.throwInvalidParamsMessage();
                             return false;
                         }
-                        var date = new Date(year, month, day);
-                        var daysInSelectedMonth = scope.data.getDaysInMonth(month, year);
+                        var date = new Date(datetime);
+                        var daysInSelectedMonth = scope.data.getDaysInMonth(date.getMonth(), date.getFullYear());
                         if (scope.data.selected.day > daysInSelectedMonth) {
                             scope.data.selected.day = daysInSelectedMonth;
                         }
@@ -209,6 +222,7 @@ var apd;
                             }
                         }
                     }
+                    return true;
                 };
                 this.day = new DateModelFieldClass(config.day.name, config.day.isZeroAllowed, config.day.isRequired);
                 this.dayOfWeek = new DateModelFieldClass(config.dayOfWeek.name, config.dayOfWeek.isZeroAllowed, config.dayOfWeek.isRequired);

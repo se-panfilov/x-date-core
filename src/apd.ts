@@ -89,49 +89,63 @@ module apd.directive {
                 },
                 link: function (scope) {
 
-                    var initDate = DateUtilsFactory.getInitDate(scope.ngModel);
-                    var startDateTime = (scope.apdStart) ? +scope.apdStart : null;
-                    var endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
-                    scope.data = DateUtilsFactory.createData(initDate, startDateTime,endDateTime);
-                    scope.ngModel = scope.data.selected;
+                    var isInitialized = false;
+                    var isReInitializing = false;
+
+                    function init() {
+                        var initDate = DateUtilsFactory.getInitDate(scope.ngModel);
+                        var startDateTime = (scope.apdStart) ? +scope.apdStart : null;
+                        var endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                        scope.data = DateUtilsFactory.createData(initDate, startDateTime, endDateTime);
+                        scope.ngModel = scope.data.selected;
+                        isInitialized = true;
+                    }
+
+                    scope.$watch('ngModel.datetime', function (value, oldValue) {
+                        if (isInitialized && (value === oldValue)) {
+                            return;
+                        }
+                        isReInitializing = true;
+                        init();
+                        isReInitializing = false;
+                    }, true);
 
                     scope.$watch('data.selected.day', function (day) {
-                        if (!day) return;
-                        reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
+                        if (!day && !isReInitializing) return;
+                        reloadSelectedDay(scope.data.selected.datetime);
                     });
 
                     scope.$watch('data.selected.month', function (month) {
-                        if (!month && month !== 0) return;
-                        reloadDaysCount(scope.data.selected.month, scope.data.selected.year);
-                        reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
+                        if (!month && month !== 0 && !isReInitializing) return;
+                        reloadDaysCount(scope.data.selected.datetime);
+                        reloadSelectedDay(scope.data.selected.datetime);
                     });
 
                     scope.$watch('data.selected.year', function (year) {
-                        //TODO (S.Panfilov) may be we should watch also timezone and datetime - those fields may be changed externally
-                        if (!year) return;
-                        reloadDaysCount(scope.data.selected.month, scope.data.selected.year);
-                        reloadSelectedDay(scope.data.selected.year, scope.data.selected.month, scope.data.selected.day);
+                        if (!year && !isReInitializing) return;
+                        reloadDaysCount(scope.data.selected.datetime);
+                        reloadSelectedDay(scope.data.selected.datetime);
                     });
 
-                    function reloadDaysCount(month:number, year:number) {
-                        if ((!month && month !== 0) || !year) {
+                    function reloadDaysCount(datetime:number) {
+                        if (!datetime && datetime !== 0) {
                             MessagesFactory.throwInvalidParamsMessage();
                             return false;
                         }
 
-                        scope.data.days = scope.data.getDaysNumberArr(month, year);
+                        var date = new Date(datetime);
+                        scope.data.days = scope.data.getDaysNumberArr(date.getMonth(), date.getFullYear());
                     }
 
-                    function reloadSelectedDay(year, month, day) {
-                        if (!year || (!month && month !== 0) || !day) {
+                    function reloadSelectedDay(datetime:number) {
+                        if (!datetime && datetime !== 0) {
                             MessagesFactory.throwInvalidParamsMessage();
                             return false;
                         }
 
-                        var date = new Date(year, month, day);
+                        var date = new Date(datetime);
+                        var daysInSelectedMonth = scope.data.getDaysInMonth(date.getMonth(), date.getFullYear());
 
-
-                        var daysInSelectedMonth = scope.data.getDaysInMonth(month, year);
                         if (scope.data.selected.day > daysInSelectedMonth) {
                             scope.data.selected.day = daysInSelectedMonth;
                         }

@@ -71,6 +71,8 @@ module apd.dateUtils {
                     }
                 }
             }
+
+            return true;
         };
     }
 
