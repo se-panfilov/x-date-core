@@ -4,6 +4,28 @@ angular.module('demo', [
     'angular-pd'
 ])
 
+    .directive('modelWell', function () {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                caseModel:'='
+            },
+            template: '<section class=well>' +
+            '<div><span>Day:</span>&nbsp;<span ng-bind=caseModel.model.day></span></div>' +
+            '<div><span>Month:</span>&nbsp;<span ng-bind=caseModel.model.month></span></div>' +
+            '<div><span>Year:</span>&nbsp;<span ng-bind=caseModel.model.year></span></div>' +
+            '<div><span>Datetime:</span>&nbsp;<span ng-bind=caseModel.model.datetime></span></div>' +
+            '<div><span>Timezone:</span>&nbsp;<span ng-bind=caseModel.model.timezone></span></div>' +
+            '<div><span>Start limit:</span>&nbsp;<span ng-bind=caseModel.model.startDate></span></div>' +
+            '<div><span>End limit:</span>&nbsp;<span ng-bind=caseModel.model.endDate></span></div>' +
+            '</section>',
+            link: function (scope) {
+                console.log(scope.caseModel);
+            }
+        };
+    })
+
     .controller('DemoPageCtrl', function ($scope) {
 
         $scope.localizedDays = [

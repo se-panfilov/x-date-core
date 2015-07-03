@@ -31,27 +31,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="commonCase.model")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="commonCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="commonCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="commonCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="commonCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="commonCase.model.timezone")
+                            model-well(case-model="commonCase")
                     li
                         section
                             hgroup
@@ -64,27 +44,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="onlyDatetimeCase.model")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="onlyDatetimeCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="onlyDatetimeCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="onlyDatetimeCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="onlyDatetimeCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="onlyDatetimeCase.model.timezone")
+                            model-well(case-model="onlyDatetimeCase")
                     li
                         section
                             hgroup
@@ -98,27 +58,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="limitsCase.model", apd-start="limitsCase.startDate", apd-end="limitsCase.endDate")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="limitsCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="limitsCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="limitsCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="limitsCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="limitsCase.model.timezone")
+                            model-well(case-model="limitsCase")
                     li
                         section
                             hgroup
@@ -131,27 +71,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="leftLimitsCase.model", apd-end="leftLimitsCase.endDate")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="leftLimitsCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="leftLimitsCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="leftLimitsCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="leftLimitsCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="leftLimitsCase.model.timezone")
+                            model-well(case-model="leftLimitsCase")
                     li
                         section
                             hgroup
@@ -165,27 +85,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="rightLimitsCase.model", apd-end="rightLimitsCase.endDate")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="rightLimitsCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="rightLimitsCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="rightLimitsCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="rightLimitsCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="rightLimitsCase.model.timezone")
+                            model-well(case-model="rightLimitsCase")
                     li
                         section
                             hgroup
@@ -198,27 +98,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="outOfRightLimitCase.model", apd-end="outOfRightLimitCase.endDate")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="outOfRightLimitCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="outOfRightLimitCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="outOfRightLimitCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="outOfRightLimitCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="outOfRightLimitCase.model.timezone")
+                            model-well(case-model="outOfRightLimitCase")
                     li
                         section
                             hgroup
@@ -231,27 +111,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="outOfLeftLimitCase.model", apd-start="outOfLeftLimitCase.startDate")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="outOfLeftLimitCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="outOfLeftLimitCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="outOfLeftLimitCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="outOfLeftLimitCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="outOfLeftLimitCase.model.timezone")
+                            model-well(case-model="outOfLeftLimitCase")
                     li
                         section
                             hgroup
@@ -276,27 +136,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="emptyModelCase.model")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelCase.model.timezone")
+                            model-well(case-model="emptyModelCase")
                     li
                         section
                             hgroup
@@ -309,27 +149,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="emptyModelLeftLimitCase.model", apd-start="emptyModelLeftLimitCase.startDate")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelLeftLimitCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelLeftLimitCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelLeftLimitCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelLeftLimitCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelLeftLimitCase.model.timezone")
+                            model-well(case-model="emptyModelLeftLimitCase")
                         section
                             hgroup
                                 h3 Empty model and right-side limit
@@ -341,27 +161,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 .form-group
                                     label.control-label(for="apd_1") Date
                                     pure-datepicker#apd_1(ng-model="emptyModelRightLimitCase.model", apd-end="emptyModelRightLimitCase.endDate")
-                            section.well
-                                div
-                                    span Day:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelRightLimitCase.model.day")
-                                div
-                                    span Month:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelRightLimitCase.model.month")
-                                div
-                                    span Year:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelRightLimitCase.model.year")
-                                div
-                                    span Datetime:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelRightLimitCase.model.datetime")
-                                div
-                                    span timezone:
-                                    | &nbsp;
-                                    span(ng-bind="emptyModelRightLimitCase.model.timezone")
+                            model-well(case-model="emptyModelRightLimitCase")
                         li
                             section
                                 hgroup
@@ -373,27 +173,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="invalidLeftLimitCase.model", apd-start="invalidLeftLimitCase.startDate")
-                                section.well
-                                    div
-                                        span Day:
-                                        | &nbsp;
-                                        span(ng-bind="invalidLeftLimitCase.model.day")
-                                    div
-                                        span Month:
-                                        | &nbsp;
-                                        span(ng-bind="invalidLeftLimitCase.model.month")
-                                    div
-                                        span Year:
-                                        | &nbsp;
-                                        span(ng-bind="invalidLeftLimitCase.model.year")
-                                    div
-                                        span Datetime:
-                                        | &nbsp;
-                                        span(ng-bind="invalidLeftLimitCase.model.datetime")
-                                    div
-                                        span timezone:
-                                        | &nbsp;
-                                        span(ng-bind="invalidLeftLimitCase.model.timezone")
+                                model-well(case-model="invalidLeftLimitCase")
                         li
                             section
                                 hgroup
@@ -405,27 +185,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="invalidRightLimitCase.model", apd-end="invalidRightLimitCase.endDate")
-                                section.well
-                                    div
-                                        span Day:
-                                        | &nbsp;
-                                        span(ng-bind="invalidRightLimitCase.model.day")
-                                    div
-                                        span Month:
-                                        | &nbsp;
-                                        span(ng-bind="invalidRightLimitCase.model.month")
-                                    div
-                                        span Year:
-                                        | &nbsp;
-                                        span(ng-bind="invalidRightLimitCase.model.year")
-                                    div
-                                        span Datetime:
-                                        | &nbsp;
-                                        span(ng-bind="invalidRightLimitCase.model.datetime")
-                                    div
-                                        span timezone:
-                                        | &nbsp;
-                                        span(ng-bind="invalidRightLimitCase.model.timezone")
+                                model-well(case-model="invalidRightLimitCase")
                         li
                             section
                                 hgroup
@@ -440,27 +200,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="linkedModelCase.model")
-                                section.well
-                                    div
-                                        span Day:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelCase.model.day")
-                                    div
-                                        span Month:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelCase.model.month")
-                                    div
-                                        span Year:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelCase.model.year")
-                                    div
-                                        span Datetime:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelCase.model.datetime")
-                                    div
-                                        span timezone:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelCase.model.timezone")
+                                model-well(case-model="linkedModelCase")
                         li
                             section
                                 hgroup
@@ -477,27 +217,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="linkedModelBothLimitsCase.model", apd-start="linkedModelBothLimitsCase.startDate", apd-end="linkedModelBothLimitsCase.endDate")
-                                section.well
-                                    div
-                                        span Day:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothLimitsCase.model.day")
-                                    div
-                                        span Month:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothLimitsCase.model.month")
-                                    div
-                                        span Year:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothLimitsCase.model.year")
-                                    div
-                                        span Datetime:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothLimitsCase.model.datetime")
-                                    div
-                                        span timezone:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothLimitsCase.model.timezone")
+                                model-well(case-model="linkedModelBothLimitsCase")
                         li
                             section
                                 hgroup
@@ -515,27 +235,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="linkedModelBothDifferentLimitsCase.model", apd-start="linkedModelBothDifferentLimitsCase.startDate_two", apd-end="linkedModelBothDifferentLimitsCase.endDate_two")
-                                section.well
-                                    div
-                                        span Day:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothDifferentLimitsCase.model.day")
-                                    div
-                                        span Month:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothDifferentLimitsCase.model.month")
-                                    div
-                                        span Year:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothDifferentLimitsCase.model.year")
-                                    div
-                                        span Datetime:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothDifferentLimitsCase.model.datetime")
-                                    div
-                                        span timezone:
-                                        | &nbsp;
-                                        span(ng-bind="linkedModelBothDifferentLimitsCase.model.timezone")
+                                model-well(case-model="linkedModelBothDifferentLimitsCase")
                         li
                             section
                                 hgroup
@@ -548,27 +248,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="externalChangeCase.model")
-                                section.well
-                                    div
-                                        span Day:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeCase.model.day")
-                                    div
-                                        span Month:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeCase.model.month")
-                                    div
-                                        span Year:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeCase.model.year")
-                                    div
-                                        span Datetime:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeCase.model.datetime")
-                                    div
-                                        span timezone:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeCase.model.timezone")
+                                model-well(case-model="externalChangeCase")
                         li
                             section
                                 hgroup
@@ -582,27 +262,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="externalChangeLeftLimitCase.model", apd-start="externalChangeLeftLimitCase.startDate")
-                                section.well
-                                    div
-                                        span Day:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeLeftLimitCase.model.day")
-                                    div
-                                        span Month:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeLeftLimitCase.model.month")
-                                    div
-                                        span Year:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeLeftLimitCase.model.year")
-                                    div
-                                        span Datetime:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeLeftLimitCase.model.datetime")
-                                    div
-                                        span timezone:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeLeftLimitCase.model.timezone")
+                                model-well(case-model="externalChangeLeftLimitCase")
                         li
                             section
                                 hgroup
@@ -616,24 +276,4 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     .form-group
                                         label.control-label(for="apd_1") Date
                                         pure-datepicker#apd_1(ng-model="externalChangeRightLimitCase.model", apd-start="externalChangeRightLimitCase.endDate")
-                                section.well
-                                    div
-                                        span Day:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeRightLimitCase.model.day")
-                                    div
-                                        span Month:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeRightLimitCase.model.month")
-                                    div
-                                        span Year:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeRightLimitCase.model.year")
-                                    div
-                                        span Datetime:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeRightLimitCase.model.datetime")
-                                    div
-                                        span timezone:
-                                        | &nbsp;
-                                        span(ng-bind="externalChangeRightLimitCase.model.timezone")
+                                model-well(case-model="externalChangeRightLimitCase")
