@@ -91,12 +91,13 @@ var apd;
                         scope.ngModel = scope.data.selected;
                         isInitialized = true;
                     }
-                    scope.$watch('ngModel.datetime', function (value, oldValue) {
-                        if (isInitialized && (value === oldValue)) {
-                            return;
-                        }
-                        init();
-                    }, true);
+                    init();
+                    //scope.$watch('ngModel.datetime', function (value, oldValue) {
+                    //    if (isInitialized && (value === oldValue)) {
+                    //        return;
+                    //    }
+                    //    init();
+                    //}, true);
                     //
                     //scope.$watch('data.selected.day', function (day) {
                     //    if (!day && !isReInitializing) return;
@@ -320,7 +321,7 @@ var apd;
                 self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, self._getDefaultMonthList.bind(self));
                 self.selected = self._getSelected(selected, startDateTime, endDateTime);
                 self.days = self._getNumList(startDateTime, endDateTime, self._getDay, function () {
-                    self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
+                    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
                 });
             }
             return DataClass;

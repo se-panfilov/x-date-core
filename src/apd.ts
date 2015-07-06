@@ -101,12 +101,14 @@ module apd.directive {
                         isInitialized = true;
                     }
 
-                    scope.$watch('ngModel.datetime', function (value, oldValue) {
-                        if (isInitialized && (value === oldValue)) {
-                            return;
-                        }
-                        init();
-                    }, true);
+                    init();
+
+                    //scope.$watch('ngModel.datetime', function (value, oldValue) {
+                    //    if (isInitialized && (value === oldValue)) {
+                    //        return;
+                    //    }
+                    //    init();
+                    //}, true);
                     //
                     //scope.$watch('data.selected.day', function (day) {
                     //    if (!day && !isReInitializing) return;

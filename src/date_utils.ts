@@ -40,7 +40,7 @@ module apd.dateUtils {
             self.selected = self._getSelected(selected, startDateTime, endDateTime);
 
             self.days = self._getNumList(startDateTime, endDateTime, self._getDay, function () {
-                self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
+                return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
             });
         }
 
