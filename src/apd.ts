@@ -89,16 +89,17 @@ module apd.directive {
                 },
                 link: function (scope) {
 
-                    var isInitialized = false;
-                    var isReInitializing = false;
+                    var settings = {
+                        initDateModel: null,
+                        startDateTime: null,
+                        endDateTime: null
+                    };
 
                     function init() {
-                        var initDateModel = DateUtilsFactory.getDateModel(scope.ngModel);
-                        var startDateTime = (scope.apdStart) ? +scope.apdStart : null;
-                        var endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
-                        scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
-                        scope.ngModel = scope.data.selected;
-                        isInitialized = true;
+                        settings.initDateModel = DateUtilsFactory.getDateModel(scope.ngModel);
+                        settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
+                        settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                        _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
 
                         scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
                         scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
@@ -110,19 +111,24 @@ module apd.directive {
 
                     init();
 
-                    function updateModel(datetime:number) {
-                        scope.data.selected =  DateUtilsFactory.getDateModel(datetime);
+                    //TODO (S.Panfilov) missed type checking for a apd.dateUtils.DateModel
+                    function _initData (initDateModel, startDateTime:number, endDateTime:number) {
+                        scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
+                        scope.ngModel = scope.data.selected;
                     }
 
+                    function updateModel(datetime:number) {
+                        scope.data.selected =  DateUtilsFactory.getDateModel(datetime);
+                        scope.ngModel = scope.data.selected;
+                    }
 
-                    //TODO (S.Panfilov) fix external model change
                     //scope.$watch('ngModel.datetime', function (value, oldValue) {
-                    //    if (isInitialized && (value === oldValue)) {
+                    //    if (value === oldValue) {
                     //        return;
                     //    }
-                    //    init();
-                    //}, true);
                     //
+                    //    _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
+                    //}, true);
 
                     function startWatchDay() {
                         scope.$watch('data.selected.day', function (day:number, oldValue:number) {
@@ -183,26 +189,6 @@ module apd.directive {
 
                         return day <= daysInMonth;
                     }
-
-
-
-                    function reloadSelectedDay(datetime:number) {
-                        if (!datetime && datetime !== 0) {
-                            MessagesFactory.throwInvalidParamsMessage();
-                            return false;
-                        }
-
-                        var date = new Date(datetime);
-                        var daysInSelectedMonth = scope.data.getDaysInMonth(date.getMonth(), date.getFullYear());
-
-                        if (scope.data.selected.day > daysInSelectedMonth) {
-                            scope.data.selected.day = daysInSelectedMonth;
-                        }
-
-                        scope.data.selected.dayOfWeek = date.getDay();
-                        scope.data.selected.datetime = date.getTime();
-                    }
-
 
                 }
             }
