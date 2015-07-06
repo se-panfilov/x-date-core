@@ -91,8 +91,13 @@ var apd;
                         scope.ngModel = scope.data.selected;
                         isInitialized = true;
                         startWatchDay();
+                        startWatchMonth();
+                        startWatchYear();
                     }
                     init();
+                    function updateModel(datetime) {
+                    }
+                    //TODO (S.Panfilov) fix external model change
                     //scope.$watch('ngModel.datetime', function (value, oldValue) {
                     //    if (isInitialized && (value === oldValue)) {
                     //        return;
@@ -107,7 +112,7 @@ var apd;
                             if (day === oldValue)
                                 return;
                             var datetime = getDateTime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
-                            reloadSelectedDay(datetime);
+                            updateModel(datetime);
                         });
                     }
                     function startWatchMonth() {
@@ -116,9 +121,30 @@ var apd;
                                 return;
                             if (month === oldValue)
                                 return;
-                            var datetime = getDateTime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
-                            reloadDaysCount(scope.data.selected.datetime);
-                            reloadSelectedDay(scope.data.selected.datetime);
+                            var datetime;
+                            var year = scope.data.selected.year;
+                            var day = scope.data.selected.day;
+                            if (!isCorrectDay(day, month, year)) {
+                                day = scope.data.getDaysInMonth(month, year);
+                            }
+                            datetime = getDateTime(day, month, year);
+                            updateModel(datetime);
+                        });
+                    }
+                    function startWatchYear() {
+                        scope.$watch('data.selected.year', function (year, oldValue) {
+                            if (!year && year !== 0)
+                                return;
+                            if (year === oldValue)
+                                return;
+                            var datetime;
+                            var month = scope.data.selected.month;
+                            var day = scope.data.selected.day;
+                            if (!isCorrectDay(day, month, year)) {
+                                day = scope.data.getDaysInMonth(year, year);
+                            }
+                            datetime = getDateTime(day, month, year);
+                            updateModel(datetime);
                         });
                     }
                     function getDateTime(day, month, year) {
@@ -127,20 +153,9 @@ var apd;
                         }
                         return new Date(year, month, day).getTime();
                     }
-                    //
-                    //
-                    //scope.$watch('data.selected.year', function (year) {
-                    //    if (!year && !isReInitializing) return;
-                    //    reloadDaysCount(scope.data.selected.datetime);
-                    //    reloadSelectedDay(scope.data.selected.datetime);
-                    //});
-                    function reloadDaysCount(datetime) {
-                        if (!datetime && datetime !== 0) {
-                            MessagesFactory.throwInvalidParamsMessage();
-                            return false;
-                        }
-                        var date = new Date(datetime);
-                        scope.data.days = scope.data.getDaysNumberArr(date.getMonth(), date.getFullYear());
+                    function isCorrectDay(day, month, year) {
+                        var daysInMonth = scope.data.getDaysInMonth(month, year);
+                        return day <= daysInMonth;
                     }
                     function reloadSelectedDay(datetime) {
                         if (!datetime && datetime !== 0) {
