@@ -72,7 +72,7 @@ module apd.dateUtils {
             return result;
         };
 
-        private _getDefaultDaysList = function (month: number, year: number) {
+        private _getDefaultDaysList = function (month:number, year:number) {
             var daysCount = this.getDaysInMonth(month, year);
             return this._getIntArr(daysCount);
         };
@@ -80,8 +80,28 @@ module apd.dateUtils {
         private _getDefaultMonthList = function () {
             return this._getArrayOfNumbers(0, 11);
         };
+
         private _getDefaultYearsList = function () {
-            return [new Date().getFullYear()];
+            var yearsCount = 20;
+            var curYear = new Date().getFullYear();
+            var direction = 'desc';
+            return this._intArraySort(this._getArrayOfNumbers(curYear - yearsCount, curYear), direction);
+        };
+
+        private _intArraySort = function (arr:Array<number>, direction:string = 'asc') {
+            function desc(a, b) {
+                return b - a;
+            }
+
+            //"string" == typeof direction && direction.toLowerCase();
+            switch (direction) {
+                default:
+                    return arr.sort(function (a, b) {
+                        return a - b;
+                    });
+                case "desc":
+                    return arr.sort(desc);
+            }
         };
 
         private _getArrayOfNumbers = function (start:number, end:number) {

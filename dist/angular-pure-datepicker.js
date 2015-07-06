@@ -227,7 +227,24 @@ var apd;
                     return this._getArrayOfNumbers(0, 11);
                 };
                 this._getDefaultYearsList = function () {
-                    return [new Date().getFullYear()];
+                    var yearsCount = 20;
+                    var curYear = new Date().getFullYear();
+                    var direction = 'desc';
+                    return this._intArraySort(this._getArrayOfNumbers(curYear - yearsCount, curYear), direction);
+                };
+                this._intArraySort = function (arr, direction) {
+                    if (direction === void 0) { direction = 'asc'; }
+                    function desc(a, b) {
+                        return b - a;
+                    }
+                    switch (direction) {
+                        default:
+                            return arr.sort(function (a, b) {
+                                return a - b;
+                            });
+                        case "desc":
+                            return arr.sort(desc);
+                    }
                 };
                 this._getArrayOfNumbers = function (start, end) {
                     var result = [];
