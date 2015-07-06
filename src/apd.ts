@@ -99,6 +99,8 @@ module apd.directive {
                         scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                         isInitialized = true;
+
+                        startWatchDay();
                     }
 
                     init();
@@ -110,10 +112,15 @@ module apd.directive {
                     //    init();
                     //}, true);
                     //
-                    //scope.$watch('data.selected.day', function (day) {
-                    //    if (!day && !isReInitializing) return;
-                    //    reloadSelectedDay(scope.data.selected.datetime);
-                    //});
+                    function startWatchDay () {
+                        scope.$watch('data.selected.day', function (day, oldValue) {
+                            if (!day && !isReInitializing) return;
+                            if (day === oldValue) return;
+
+                            reloadSelectedDay(scope.data.selected.datetime);
+                        });
+                    }
+
                     //
                     //scope.$watch('data.selected.month', function (month) {
                     //    if (!month && month !== 0 && !isReInitializing) return;

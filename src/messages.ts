@@ -2,21 +2,21 @@ module apd.messages {
     'use strict';
 
     class MessagesFactoryClass {
-        private static messages = {
+        private messages = {
             invalidParams: 'Invalid params',
             invalidDateModel: 'Invalid date model'
         };
 
-        static throwDeveloperError = (message:string) => {
+        throwDeveloperError = (message:string) => {
             console.error(message);
         };
 
-        static throwModelValidationMessage (field:string) {
+        throwModelValidationMessage (field:string) {
             //TODO (S.Panfilov) possibly problems with this
             this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
         }
 
-        static throwInvalidParamsMessage (){
+        throwInvalidParamsMessage (){
             //TODO (S.Panfilov) possibly problems with this
             this.throwDeveloperError(this.messages.invalidParams);
         }

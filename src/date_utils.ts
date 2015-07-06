@@ -85,7 +85,7 @@ module apd.dateUtils {
             var yearsCount = 20;
             var curYear = new Date().getFullYear();
             var direction = 'desc';
-            return this._intArraySort(this._getArrayOfNumbers(curYear - yearsCount, curYear), direction);
+            return this._intArraySort(this._getArrayOfNumbers(curYear - (yearsCount - 1), curYear), direction);
         };
 
         private _intArraySort = function (arr:Array<number>, direction:string = 'asc') {

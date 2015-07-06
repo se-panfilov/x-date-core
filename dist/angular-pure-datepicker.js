@@ -90,6 +90,7 @@ var apd;
                         scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                         isInitialized = true;
+                        startWatchDay();
                     }
                     init();
                     //scope.$watch('ngModel.datetime', function (value, oldValue) {
@@ -99,10 +100,15 @@ var apd;
                     //    init();
                     //}, true);
                     //
-                    //scope.$watch('data.selected.day', function (day) {
-                    //    if (!day && !isReInitializing) return;
-                    //    reloadSelectedDay(scope.data.selected.datetime);
-                    //});
+                    function startWatchDay() {
+                        scope.$watch('data.selected.day', function (day, oldValue) {
+                            if (!day && !isReInitializing)
+                                return;
+                            if (day === oldValue)
+                                return;
+                            reloadSelectedDay(scope.data.selected.datetime);
+                        });
+                    }
                     //
                     //scope.$watch('data.selected.month', function (month) {
                     //    if (!month && month !== 0 && !isReInitializing) return;
@@ -151,21 +157,21 @@ var apd;
         'use strict';
         var MessagesFactoryClass = (function () {
             function MessagesFactoryClass() {
+                this.messages = {
+                    invalidParams: 'Invalid params',
+                    invalidDateModel: 'Invalid date model'
+                };
+                this.throwDeveloperError = function (message) {
+                    console.error(message);
+                };
             }
-            MessagesFactoryClass.throwModelValidationMessage = function (field) {
+            MessagesFactoryClass.prototype.throwModelValidationMessage = function (field) {
                 //TODO (S.Panfilov) possibly problems with this
                 this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
             };
-            MessagesFactoryClass.throwInvalidParamsMessage = function () {
+            MessagesFactoryClass.prototype.throwInvalidParamsMessage = function () {
                 //TODO (S.Panfilov) possibly problems with this
                 this.throwDeveloperError(this.messages.invalidParams);
-            };
-            MessagesFactoryClass.messages = {
-                invalidParams: 'Invalid params',
-                invalidDateModel: 'Invalid date model'
-            };
-            MessagesFactoryClass.throwDeveloperError = function (message) {
-                console.error(message);
             };
             return MessagesFactoryClass;
         })();
@@ -231,7 +237,7 @@ var apd;
                     var yearsCount = 20;
                     var curYear = new Date().getFullYear();
                     var direction = 'desc';
-                    return this._intArraySort(this._getArrayOfNumbers(curYear - yearsCount, curYear), direction);
+                    return this._intArraySort(this._getArrayOfNumbers(curYear - (yearsCount - 1), curYear), direction);
                 };
                 this._intArraySort = function (arr, direction) {
                     if (direction === void 0) { direction = 'asc'; }
