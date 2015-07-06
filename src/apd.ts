@@ -112,21 +112,39 @@ module apd.directive {
                     //    init();
                     //}, true);
                     //
-                    function startWatchDay () {
-                        scope.$watch('data.selected.day', function (day, oldValue) {
-                            if (!day && !isReInitializing) return;
+                    function startWatchDay() {
+                        scope.$watch('data.selected.day', function (day:number, oldValue:number) {
+                            if (!day) return;
                             if (day === oldValue) return;
 
+                            var datetime = getDateTime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
+                            reloadSelectedDay(datetime);
+                        });
+                    }
+
+                    function startWatchMonth() {
+                        scope.$watch('data.selected.month', function (month:number, oldValue:number) {
+                            if (!month && month !== 0) return;
+                            if (month === oldValue) return;
+
+                            var datetime = getDateTime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
+
+                            reloadDaysCount(scope.data.selected.datetime);
                             reloadSelectedDay(scope.data.selected.datetime);
                         });
                     }
 
+                    function getDateTime(day:number, month:number, year:number) {
+                        if (!day || (!month && month !== 0) || !year) {
+                            MessagesFactory.throwInvalidParamsMessage();
+                        }
+
+                        return new Date(year, month, day).getTime();
+                    }
+
+
                     //
-                    //scope.$watch('data.selected.month', function (month) {
-                    //    if (!month && month !== 0 && !isReInitializing) return;
-                    //    reloadDaysCount(scope.data.selected.datetime);
-                    //    reloadSelectedDay(scope.data.selected.datetime);
-                    //});
+
                     //
                     //scope.$watch('data.selected.year', function (year) {
                     //    if (!year && !isReInitializing) return;
@@ -158,7 +176,7 @@ module apd.directive {
                         }
 
                         scope.data.selected.dayOfWeek = date.getDay();
-                        scope.data.selected.datetime = date.getTime() * 1000;
+                        scope.data.selected.datetime = date.getTime();
                     }
 
                     scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
