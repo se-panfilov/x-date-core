@@ -32,18 +32,57 @@ module apd.dateUtils {
 
         constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
             var self = this;
-            self.selected = selected;
-            self.days = self._getNumList(startDateTime, endDateTime, self._getDaysCount, function () {
-                var daysCount = self._getDaysCount(new Date());
-                return self._getIntArr(daysCount);
-            });
-            self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, function () {
-                return self._getArrayOfNumbers(0, 11);
-            });
-            self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, function () {
-                return [new Date().getFullYear()];
+
+            self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, self._getDefaultYearsList.bind(self));
+
+            self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, self._getDefaultMonthList.bind(self));
+
+            self.selected = self._getSelected(selected, startDateTime, endDateTime);
+
+            self.days = self._getNumList(startDateTime, endDateTime, self._getDay, function () {
+                self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
             });
         }
+
+        private _getSelected = function (selected:DateModelClass, startDateTime:number, endDateTime:number) {
+            var result;
+
+            var isBiggerThenStart = (selected.datetime > startDateTime);
+            var isEqualToStart = (selected.datetime === startDateTime);
+            var isLowerThenEnd = (selected.datetime > endDateTime);
+            var isEqualToEnd = (selected.datetime === endDateTime);
+
+            //start == 1; selected == 1 or 2 or 3; end == 3;
+            if ((isBiggerThenStart || isEqualToStart) && (isLowerThenEnd || isEqualToEnd)) {
+                result = new DateModelClass(selected.datetime);
+            } else
+            //start == 1; selected == 0
+            if (!isBiggerThenStart) {
+                result = new DateModelClass(startDateTime);
+            }
+            //selected == 4; end == 3;
+            if (!isBiggerThenStart) {
+                result = new DateModelClass(endDateTime);
+            }
+            //paranoid case
+            else {
+                result = new DateModelClass(new Date().getTime());
+            }
+
+            return result;
+        };
+
+        private _getDefaultDaysList = function (month: number, year: number) {
+            var daysCount = this.getDaysInMonth(month, year);
+            return this._getIntArr(daysCount);
+        };
+
+        private _getDefaultMonthList = function () {
+            return this._getArrayOfNumbers(0, 11);
+        };
+        private _getDefaultYearsList = function () {
+            return [new Date().getFullYear()];
+        };
 
         private _getArrayOfNumbers = function (start:number, end:number) {
             var result:Array<number> = [];
@@ -63,7 +102,7 @@ module apd.dateUtils {
             return date.getMonth();
         };
 
-        private _getDaysCount = function (date:Date) {
+        private _getDay = function (date:Date) {
             return date.getDate();
         };
 

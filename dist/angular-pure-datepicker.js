@@ -95,27 +95,25 @@ var apd;
                         if (isInitialized && (value === oldValue)) {
                             return;
                         }
-                        isReInitializing = true;
                         init();
-                        isReInitializing = false;
                     }, true);
-                    scope.$watch('data.selected.day', function (day) {
-                        if (!day && !isReInitializing)
-                            return;
-                        reloadSelectedDay(scope.data.selected.datetime);
-                    });
-                    scope.$watch('data.selected.month', function (month) {
-                        if (!month && month !== 0 && !isReInitializing)
-                            return;
-                        reloadDaysCount(scope.data.selected.datetime);
-                        reloadSelectedDay(scope.data.selected.datetime);
-                    });
-                    scope.$watch('data.selected.year', function (year) {
-                        if (!year && !isReInitializing)
-                            return;
-                        reloadDaysCount(scope.data.selected.datetime);
-                        reloadSelectedDay(scope.data.selected.datetime);
-                    });
+                    //
+                    //scope.$watch('data.selected.day', function (day) {
+                    //    if (!day && !isReInitializing) return;
+                    //    reloadSelectedDay(scope.data.selected.datetime);
+                    //});
+                    //
+                    //scope.$watch('data.selected.month', function (month) {
+                    //    if (!month && month !== 0 && !isReInitializing) return;
+                    //    reloadDaysCount(scope.data.selected.datetime);
+                    //    reloadSelectedDay(scope.data.selected.datetime);
+                    //});
+                    //
+                    //scope.$watch('data.selected.year', function (year) {
+                    //    if (!year && !isReInitializing) return;
+                    //    reloadDaysCount(scope.data.selected.datetime);
+                    //    reloadSelectedDay(scope.data.selected.datetime);
+                    //});
                     function reloadDaysCount(datetime) {
                         if (!datetime && datetime !== 0) {
                             MessagesFactory.throwInvalidParamsMessage();
@@ -197,6 +195,40 @@ var apd;
         var DataClass = (function () {
             function DataClass(selected, startDateTime, endDateTime) {
                 var _this = this;
+                this._getSelected = function (selected, startDateTime, endDateTime) {
+                    var result;
+                    var isBiggerThenStart = (selected.datetime > startDateTime);
+                    var isEqualToStart = (selected.datetime === startDateTime);
+                    var isLowerThenEnd = (selected.datetime > endDateTime);
+                    var isEqualToEnd = (selected.datetime === endDateTime);
+                    //start == 1; selected == 1 or 2 or 3; end == 3;
+                    if ((isBiggerThenStart || isEqualToStart) && (isLowerThenEnd || isEqualToEnd)) {
+                        result = new DateModelClass(selected.datetime);
+                    }
+                    else 
+                    //start == 1; selected == 0
+                    if (!isBiggerThenStart) {
+                        result = new DateModelClass(startDateTime);
+                    }
+                    //selected == 4; end == 3;
+                    if (!isBiggerThenStart) {
+                        result = new DateModelClass(endDateTime);
+                    }
+                    else {
+                        result = new DateModelClass(new Date().getTime());
+                    }
+                    return result;
+                };
+                this._getDefaultDaysList = function (month, year) {
+                    var daysCount = this.getDaysInMonth(month, year);
+                    return this._getIntArr(daysCount);
+                };
+                this._getDefaultMonthList = function () {
+                    return this._getArrayOfNumbers(0, 11);
+                };
+                this._getDefaultYearsList = function () {
+                    return [new Date().getFullYear()];
+                };
                 this._getArrayOfNumbers = function (start, end) {
                     var result = [];
                     for (var i = start; i <= end; i++) {
@@ -210,7 +242,7 @@ var apd;
                 this._getMonth = function (date) {
                     return date.getMonth();
                 };
-                this._getDaysCount = function (date) {
+                this._getDay = function (date) {
                     return date.getDate();
                 };
                 //TODO (S.Panfilov) not any, but functions types
@@ -267,16 +299,11 @@ var apd;
                     return new Date(year, month + 1, 0).getDate();
                 };
                 var self = this;
-                self.selected = selected;
-                self.days = self._getNumList(startDateTime, endDateTime, self._getDaysCount, function () {
-                    var daysCount = self._getDaysCount(new Date());
-                    return self._getIntArr(daysCount);
-                });
-                self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, function () {
-                    return self._getArrayOfNumbers(0, 11);
-                });
-                self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, function () {
-                    return [new Date().getFullYear()];
+                self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, self._getDefaultYearsList.bind(self));
+                self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, self._getDefaultMonthList.bind(self));
+                self.selected = self._getSelected(selected, startDateTime, endDateTime);
+                self.days = self._getNumList(startDateTime, endDateTime, self._getDay, function () {
+                    self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
                 });
             }
             return DataClass;

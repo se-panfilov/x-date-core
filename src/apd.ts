@@ -105,27 +105,25 @@ module apd.directive {
                         if (isInitialized && (value === oldValue)) {
                             return;
                         }
-                        isReInitializing = true;
                         init();
-                        isReInitializing = false;
                     }, true);
-
-                    scope.$watch('data.selected.day', function (day) {
-                        if (!day && !isReInitializing) return;
-                        reloadSelectedDay(scope.data.selected.datetime);
-                    });
-
-                    scope.$watch('data.selected.month', function (month) {
-                        if (!month && month !== 0 && !isReInitializing) return;
-                        reloadDaysCount(scope.data.selected.datetime);
-                        reloadSelectedDay(scope.data.selected.datetime);
-                    });
-
-                    scope.$watch('data.selected.year', function (year) {
-                        if (!year && !isReInitializing) return;
-                        reloadDaysCount(scope.data.selected.datetime);
-                        reloadSelectedDay(scope.data.selected.datetime);
-                    });
+                    //
+                    //scope.$watch('data.selected.day', function (day) {
+                    //    if (!day && !isReInitializing) return;
+                    //    reloadSelectedDay(scope.data.selected.datetime);
+                    //});
+                    //
+                    //scope.$watch('data.selected.month', function (month) {
+                    //    if (!month && month !== 0 && !isReInitializing) return;
+                    //    reloadDaysCount(scope.data.selected.datetime);
+                    //    reloadSelectedDay(scope.data.selected.datetime);
+                    //});
+                    //
+                    //scope.$watch('data.selected.year', function (year) {
+                    //    if (!year && !isReInitializing) return;
+                    //    reloadDaysCount(scope.data.selected.datetime);
+                    //    reloadSelectedDay(scope.data.selected.datetime);
+                    //});
 
                     function reloadDaysCount(datetime:number) {
                         if (!datetime && datetime !== 0) {
