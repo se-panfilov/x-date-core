@@ -3,6 +3,7 @@ module apd.messages {
 
     class MessagesFactoryClass {
         private messages = {
+            wrongInstance: 'Class created without \'new\', wrong \'this\'',
             invalidParams: 'Invalid params',
             invalidDateModel: 'Invalid date model'
         };
@@ -19,6 +20,11 @@ module apd.messages {
         throwInvalidParamsMessage (){
             //TODO (S.Panfilov) possibly problems with this
             this.throwDeveloperError(this.messages.invalidParams);
+        }
+
+        throwWrongInstanceMessage (){
+            //TODO (S.Panfilov) possibly problems with this
+            this.throwDeveloperError(this.messages.wrongInstance);
         }
     }
 

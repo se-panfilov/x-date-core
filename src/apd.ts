@@ -10,8 +10,14 @@ module apd.directive {
         short:string;
 
         constructor(name:string, short:string) {
+            if (!(this instanceof DayOfWeek)) {
+                //return MessagesFactoryClass.throwWrongInstanceMessage();
+            }
+
             this.name = name;
             this.short = short;
+
+            return this;
         }
     }
 
@@ -21,9 +27,14 @@ module apd.directive {
         shorts:Array<string>;
 
         constructor(days:Array<DayOfWeek>) {
+            if (!(this instanceof DaysOfWeek)) {
+                //return MessagesFactoryClass.throwWrongInstanceMessage();
+            }
+
             this.list = days;
             this.shorts = this.getListOfShorts();
             this.names = this.getListOfNames();
+            return this;
         }
 
         private getListOfShorts = () => {

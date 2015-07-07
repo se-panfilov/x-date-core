@@ -12,6 +12,10 @@ module apd.dateUtils {
         timezone:number;
 
         constructor(datetime:number) {
+            if (!(this instanceof DateModelClass)) {
+                //return MessagesFactoryClass.throwWrongInstanceMessage();
+            }
+
             var date = new Date();
 
             this.day = date.getDate();
@@ -20,6 +24,8 @@ module apd.dateUtils {
             this.year = date.getFullYear();
             this.datetime = datetime;
             this.timezone = date.getTimezoneOffset();
+
+            return this;
         }
 
     }
@@ -31,6 +37,10 @@ module apd.dateUtils {
         years:Array<number>;
 
         constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
+            if (!(this instanceof DataClass)) {
+                //return MessagesFactoryClass.throwWrongInstanceMessage();
+            }
+
             var self = this;
 
             self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, self._getDefaultYearsList.bind(self));
@@ -42,6 +52,8 @@ module apd.dateUtils {
             self.days = self._getNumList(startDateTime, endDateTime, self._getDay, function () {
                 return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
             });
+
+            return this;
         }
 
         private _getSelected = function (selected:DateModelClass, startDateTime:number, endDateTime:number) {
@@ -184,14 +196,6 @@ module apd.dateUtils {
             }
 
             return length ? this._getIntArr(length - 1).concat(length) : [];
-        };
-
-        getDaysNumberArr = (month:number, year:number) => {
-            if ((!month && month !== 0) || !year) {
-                //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
-                return false;
-            }
-            return this._getIntArr(this.getDaysInMonth(month, year));
         };
 
         getDaysInMonth = (month:number, year:number) => {
