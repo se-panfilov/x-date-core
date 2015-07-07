@@ -192,6 +192,12 @@ var apd;
         dateUtils.DateModelClass = DateModelClass;
         var DataClass = (function () {
             function DataClass(selected, startDateTime, endDateTime) {
+                this.LIST_DIRECTION = 'desc';
+                this._setLimitDate = function (limitDate, datetime) {
+                    limitDate.day = new Date(datetime).getDate();
+                    limitDate.month = new Date(datetime).getMonth();
+                    limitDate.year = new Date(datetime).getFullYear();
+                };
                 this._getSelected = function (selected, startDateTime, endDateTime) {
                     var result;
                     var isBiggerThenStart = (selected.datetime > startDateTime);
@@ -220,9 +226,6 @@ var apd;
                     var daysCount = this.getDaysInMonth(month, year);
                     return this._getIntArr(daysCount);
                 };
-                this._getDefaultMonthList = function () {
-                    return this._getArrayOfNumbers(0, 11);
-                };
                 this._intArraySort = function (arr, direction) {
                     if (direction === void 0) { direction = 'asc'; }
                     function desc(a, b) {
@@ -246,45 +249,53 @@ var apd;
                 };
                 this._getYearsList = function (startDateTime, endDateTime) {
                     var result = [];
-                    var nowDateTime = new Date().getTime();
                     var DEFAULT_YEARS_COUNT = 20;
-                    var DIRECTION = 'desc';
-                    var startDate = {
-                        day: new Date(startDateTime).getDate(),
-                        month: new Date(startDateTime).getMonth(),
-                        year: new Date(startDateTime).getFullYear()
-                    };
-                    var endDate = {
-                        day: new Date(endDateTime).getDate(),
-                        month: new Date(endDateTime).getMonth(),
-                        year: new Date(endDateTime).getFullYear()
-                    };
-                    var nowDate = {
-                        day: new Date(nowDateTime).getDate(),
-                        month: new Date(nowDateTime).getMonth(),
-                        year: new Date(nowDateTime).getFullYear()
-                    };
                     //start = 2011, end = 2014
                     if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                        result = this._getArrayOfNumbers(startDate.year, endDate.year);
+                        result = this._getArrayOfNumbers(this._limitDates._startDate.year, this._limitDates._endDate.year);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
                         apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
-                        result = this._getArrayOfNumbers(endDate.year, startDate.year);
+                        result = this._getArrayOfNumbers(this._limitDates._endDate.year, this._limitDates._startDate.year);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                        result = this._getArrayOfNumbers(startDate.year, endDate.year);
+                        result = this._getArrayOfNumbers(this._limitDates._startDate.year, this._limitDates._endDate.year);
                     }
                     else if (startDateTime && !endDateTime) {
-                        result = this._getArrayOfNumbers(startDate.year, nowDate.year);
+                        result = this._getArrayOfNumbers(this._limitDates._startDate.year, this._limitDates._nowDate.year);
                     }
                     else if (!startDateTime && endDateTime) {
-                        result = this._getArrayOfNumbers(endDate.year, endDate.year);
+                        result = this._getArrayOfNumbers(this._limitDates._endDate.year, this._limitDates._endDate.year);
                     }
                     else if (!startDateTime && !endDateTime) {
-                        result = this._getArrayOfNumbers(nowDate.year - (DEFAULT_YEARS_COUNT - 1), nowDate.year);
+                        result = this._getArrayOfNumbers(this._limitDates._nowDate.year - (DEFAULT_YEARS_COUNT - 1), this._limitDates._nowDate.year);
                     }
-                    return this._intArraySort(result, DIRECTION);
+                    return this._intArraySort(result, this.LIST_DIRECTION);
+                };
+                this._getMonthList = function (startDateTime, endDateTime) {
+                    var result = [];
+                    //TODO (S.Panfilov) we should recalc month for each year, cause if selected year with limit, we should limit month list too
+                    //TODO (S.Panfilov) current work point
+                    //start = 3, end = 6
+                    if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
+                        result = this._getArrayOfNumbers(this._limitDates._startDate.month, this._limitDates._endDate.month);
+                    }
+                    else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
+                        apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
+                        result = this._getArrayOfNumbers(this._limitDates._endDate.month, this._limitDates._startDate.month);
+                    }
+                    else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
+                        result = this._getArrayOfNumbers(this._limitDates._startDate.month, this._limitDates._endDate.month);
+                    }
+                    else if (startDateTime && !endDateTime) {
+                        result = this._getArrayOfNumbers(this._limitDates._startDate.month, this._limitDates._nowDate.month);
+                    }
+                    else if (!startDateTime && endDateTime) {
+                        result = this._getArrayOfNumbers(this._limitDates._endDate.month, this._limitDates._endDate.month);
+                    }
+                    else if (!startDateTime && !endDateTime) {
+                    }
+                    return this._intArraySort(result, this.LIST_DIRECTION);
                 };
                 this._getIntArr = function (length) {
                     if (!length && length !== 0) {
@@ -301,9 +312,12 @@ var apd;
                     return new DataClass(selected, startDateTime, endDateTime);
                 }
                 var self = this;
+                self._setLimitDate(self._limitDates._startDate, startDateTime);
+                self._setLimitDate(self._limitDates._endDate, endDateTime);
+                self._setLimitDate(self._limitDates._nowDate, new Date().getTime());
                 //TODO (S.Panfilov) why I'm cannot pass self._getFullYear this without casting to TimeFunction?
                 self.years = self._getYearsList(startDateTime, endDateTime);
-                //self.month = self._getNumList(startDateTime, endDateTime, self._getDefaultMonthList.bind(self));
+                self.month = self._getMonthList(startDateTime, endDateTime);
                 self.selected = self._getSelected(selected, startDateTime, endDateTime);
                 //self.days = self._getNumList(startDateTime, endDateTime, function () {
                 //    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
