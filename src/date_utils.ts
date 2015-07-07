@@ -29,14 +29,6 @@ module apd.dateUtils {
 
     }
 
-    interface TimeFunction extends Function {
-        (date:Date):number;
-    }
-
-    interface ArrayNumberFunction extends Function {
-        ():Array<number>;
-    }
-
     class DataClass {
         selected:DateModelClass;
         days:Array<number>;
@@ -52,15 +44,15 @@ module apd.dateUtils {
             var self = this;
 
             //TODO (S.Panfilov) why I'm cannot pass self._getFullYear this without casting to TimeFunction?
-            self.years = self._getNumList(startDateTime, endDateTime, <TimeFunction>self._getFullYear, self._getDefaultYearsList.bind(self));
+            self.years = self._getYearsList(startDateTime, endDateTime);
 
-            self.month = self._getNumList(startDateTime, endDateTime, <TimeFunction>self._getMonth, self._getDefaultMonthList.bind(self));
+            //self.month = self._getNumList(startDateTime, endDateTime, self._getDefaultMonthList.bind(self));
 
             self.selected = self._getSelected(selected, startDateTime, endDateTime);
 
-            self.days = self._getNumList(startDateTime, endDateTime, <TimeFunction>self._getDay, <ArrayNumberFunction>function () {
-                return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
-            });
+            //self.days = self._getNumList(startDateTime, endDateTime, function () {
+            //    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
+            //});
 
             return this;
         }
@@ -102,13 +94,6 @@ module apd.dateUtils {
             return this._getArrayOfNumbers(0, 11);
         };
 
-        private _getDefaultYearsList = function () {
-            var yearsCount = 20;
-            var curYear = new Date().getFullYear();
-            var direction = 'desc';
-            return this._intArraySort(this._getArrayOfNumbers(curYear - (yearsCount - 1), curYear), direction);
-        };
-
         private _intArraySort = function (arr:Array<number>, direction:string = 'asc') {
             function desc(a, b) {
                 return b - a;
@@ -135,65 +120,62 @@ module apd.dateUtils {
             return result;
         };
 
-        private _getFullYear = function (date:Date):number {
-            return date.getFullYear();
-        };
-
-        private _getMonth = function (date:Date):number {
-            return date.getMonth();
-        };
-
-        private _getDay = function (date:Date):number {
-            return date.getDate();
-        };
-
-        private _getNumList = function (startDateTime:number, endDateTime:number, timeFunc:TimeFunction, callback?:ArrayNumberFunction) {
+        private _getYearsList = function (startDateTime:number, endDateTime:number) {
             var result:Array<number> = [];
+            var nowDateTime:number = new Date().getTime();
+            var DEFAULT_YEARS_COUNT = 20;
+            var DIRECTION = 'desc';
 
-            var now:number = timeFunc(new Date());
-            var start:number;
-            var end:number;
+            var startDate = {
+                day: new Date(startDateTime).getDate(),
+                month: new Date(startDateTime).getMonth(),
+                year: new Date(startDateTime).getFullYear()
+            };
+
+            var endDate = {
+                day: new Date(endDateTime).getDate(),
+                month: new Date(endDateTime).getMonth(),
+                year: new Date(endDateTime).getFullYear()
+            };
+
+            var nowDate = {
+                day: new Date(nowDateTime).getDate(),
+                month: new Date(nowDateTime).getMonth(),
+                year: new Date(nowDateTime).getFullYear()
+            };
 
             //start = 2011, end = 2014
             if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                start = timeFunc(new Date(startDateTime));
-                end = timeFunc(new Date(endDateTime));
-                result = this._getArrayOfNumbers(start, end);
+                result = this._getArrayOfNumbers(startDate.year, endDate.year);
             }
 
             //start = 2014, end = 2011
             else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
-                start = timeFunc(new Date(endDateTime));
-                end = timeFunc(new Date(startDateTime));
                 apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
-
-                result = this._getArrayOfNumbers(start, end);
+                result = this._getArrayOfNumbers(endDate.year, startDate.year);
             }
 
             //start = 2011, end = 2011
             else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                start = timeFunc(new Date(startDateTime));
-                result = this._getArrayOfNumbers(start, start);
+                result = this._getArrayOfNumbers(startDate.year, endDate.year);
             }
 
             //start = 2014, end = null
             else if (startDateTime && !endDateTime) {
-                start = timeFunc(new Date(startDateTime));
-                result = this._getArrayOfNumbers(start, now);
+                result = this._getArrayOfNumbers(startDate.year, nowDate.year);
             }
 
             //start = null, end = 2014
             else if (!startDateTime && endDateTime) {
-                end = timeFunc(new Date(endDateTime));
-                result = this._getArrayOfNumbers(end, end);
+                result = this._getArrayOfNumbers(endDate.year, endDate.year);
             }
 
             //start = null, end = null
             else if (!startDateTime && !endDateTime) {
-                if (callback) return callback();
+                result =this._getArrayOfNumbers(nowDate.year - (DEFAULT_YEARS_COUNT - 1), nowDate.year)
             }
 
-            return result;
+            return  this._intArraySort(result, DIRECTION);
         };
 
 
