@@ -17,8 +17,11 @@ var apd;
         'use strict';
         var DayOfWeek = (function () {
             function DayOfWeek(name, short) {
+                if (!(this instanceof DayOfWeek)) {
+                }
                 this.name = name;
                 this.short = short;
+                return this;
             }
             return DayOfWeek;
         })();
@@ -47,9 +50,12 @@ var apd;
                 this.getDayOfWeekName = function (dayNum) {
                     return _this.names[dayNum];
                 };
+                if (!(this instanceof DaysOfWeek)) {
+                }
                 this.list = days;
                 this.shorts = this.getListOfShorts();
                 this.names = this.getListOfNames();
+                return this;
             }
             return DaysOfWeek;
         })();
@@ -180,6 +186,7 @@ var apd;
         var MessagesFactoryClass = (function () {
             function MessagesFactoryClass() {
                 this.messages = {
+                    wrongInstance: 'Class created without \'new\', wrong \'this\'',
                     invalidParams: 'Invalid params',
                     invalidDateModel: 'Invalid date model'
                 };
@@ -194,6 +201,10 @@ var apd;
             MessagesFactoryClass.prototype.throwInvalidParamsMessage = function () {
                 //TODO (S.Panfilov) possibly problems with this
                 this.throwDeveloperError(this.messages.invalidParams);
+            };
+            MessagesFactoryClass.prototype.throwWrongInstanceMessage = function () {
+                //TODO (S.Panfilov) possibly problems with this
+                this.throwDeveloperError(this.messages.wrongInstance);
             };
             return MessagesFactoryClass;
         })();
@@ -211,6 +222,8 @@ var apd;
         'use strict';
         var DateModelClass = (function () {
             function DateModelClass(datetime) {
+                if (!(this instanceof DateModelClass)) {
+                }
                 var date = new Date();
                 this.day = date.getDate();
                 this.dayOfWeek = date.getDay();
@@ -218,12 +231,12 @@ var apd;
                 this.year = date.getFullYear();
                 this.datetime = datetime;
                 this.timezone = date.getTimezoneOffset();
+                return this;
             }
             return DateModelClass;
         })();
         var DataClass = (function () {
             function DataClass(selected, startDateTime, endDateTime) {
-                var _this = this;
                 this._getSelected = function (selected, startDateTime, endDateTime) {
                     var result;
                     var isBiggerThenStart = (selected.datetime > startDateTime);
@@ -334,16 +347,11 @@ var apd;
                     }
                     return length ? this._getIntArr(length - 1).concat(length) : [];
                 };
-                this.getDaysNumberArr = function (month, year) {
-                    if ((!month && month !== 0) || !year) {
-                        //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
-                        return false;
-                    }
-                    return _this._getIntArr(_this.getDaysInMonth(month, year));
-                };
                 this.getDaysInMonth = function (month, year) {
                     return new Date(year, month + 1, 0).getDate();
                 };
+                if (!(this instanceof DataClass)) {
+                }
                 var self = this;
                 self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, self._getDefaultYearsList.bind(self));
                 self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, self._getDefaultMonthList.bind(self));
@@ -351,6 +359,7 @@ var apd;
                 self.days = self._getNumList(startDateTime, endDateTime, self._getDay, function () {
                     return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
                 });
+                return this;
             }
             return DataClass;
         })();
