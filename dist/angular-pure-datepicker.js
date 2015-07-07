@@ -261,6 +261,7 @@ var apd;
                 };
                 this._getNumList = function (startDateTime, endDateTime, timeFunc, callback) {
                     var result = [];
+                    var now = timeFunc(new Date());
                     var start;
                     var end;
                     //start = 2011, end = 2014
@@ -281,7 +282,7 @@ var apd;
                     }
                     else if (startDateTime && !endDateTime) {
                         start = timeFunc(new Date(startDateTime));
-                        result = this._getArrayOfNumbers(start, start);
+                        result = this._getArrayOfNumbers(start, now);
                     }
                     else if (!startDateTime && endDateTime) {
                         end = timeFunc(new Date(endDateTime));

@@ -150,6 +150,7 @@ module apd.dateUtils {
         private _getNumList = function (startDateTime:number, endDateTime:number, timeFunc:TimeFunction, callback?:ArrayNumberFunction) {
             var result:Array<number> = [];
 
+            var now:number = timeFunc(new Date());
             var start:number;
             var end:number;
 
@@ -178,7 +179,7 @@ module apd.dateUtils {
             //start = 2014, end = null
             else if (startDateTime && !endDateTime) {
                 start = timeFunc(new Date(startDateTime));
-                result = this._getArrayOfNumbers(start, start);
+                result = this._getArrayOfNumbers(start, now);
             }
 
             //start = null, end = 2014
