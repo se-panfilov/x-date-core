@@ -93,7 +93,7 @@ var apd;
                         endDateTime: null
                     };
                     function init() {
-                        settings.initDateModel = DateUtilsFactory.getDateModel(scope.ngModel);
+                        settings.initDateModel = getInitDateModel(scope.ngModel);
                         settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
                         settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
@@ -101,7 +101,17 @@ var apd;
                         scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
                     }
                     init();
-                    //TODO (S.Panfilov) missed type checking for a apd.dateUtils.DateModel
+                    function getInitDateModel(model) {
+                        var isInitModelValid = DateUtilsFactory.validateModel(model);
+                        var initDatetime;
+                        if (isInitModelValid) {
+                            initDatetime = model.datetime;
+                        }
+                        else {
+                            initDatetime = new Date().getTime();
+                        }
+                        return new apd.dateUtils.DateModelClass(initDatetime);
+                    }
                     function _initData(initDateModel, startDateTime, endDateTime) {
                         scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
@@ -111,6 +121,7 @@ var apd;
                         scope.data.selected = DateUtilsFactory.getDateModel(dateModel);
                         scope.ngModel = scope.data.selected;
                     }
+                    //TODO (S.Panfilov) fixes for external model change
                     //scope.$watch('ngModel.datetime', function (value, oldValue) {
                     //    if (value === oldValue) {
                     //        return;
@@ -221,6 +232,7 @@ var apd;
             }
             return DateModelClass;
         })();
+        dateUtils.DateModelClass = DateModelClass;
         var DataClass = (function () {
             function DataClass(selected, startDateTime, endDateTime) {
                 this._getSelected = function (selected, startDateTime, endDateTime) {
@@ -356,17 +368,6 @@ var apd;
                 },
                 validateModel: function (model) {
                     return !!(model && model.datetime);
-                },
-                getDateModel: function (model) {
-                    var isValidModel = exports.validateModel(model);
-                    if (isValidModel) {
-                        return new DateModelClass(model.datetime);
-                    }
-                    else {
-                        //TODO (S.Panfilov) remove
-                        console.warn('model invalid');
-                        return new DateModelClass(new Date().getTime());
-                    }
                 }
             };
             return exports;

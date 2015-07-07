@@ -3,7 +3,7 @@
 module apd.dateUtils {
     'use strict';
 
-    class DateModelClass {
+    export class DateModelClass {
         day:number;
         dayOfWeek:number;
         month:number;
@@ -214,17 +214,6 @@ module apd.dateUtils {
                 },
                 validateModel: function (model:DateModelClass) {
                     return !!(model && model.datetime);
-                },
-                getDateModel: function (model) {
-                    var isValidModel:boolean = exports.validateModel(model);
-
-                    if (isValidModel) {
-                        return new DateModelClass(model.datetime);
-                    } else {
-                        //TODO (S.Panfilov) remove
-                        console.warn('model invalid');
-                        return new DateModelClass(new Date().getTime());
-                    }
                 }
             };
 

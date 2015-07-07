@@ -107,7 +107,7 @@ module apd.directive {
                     };
 
                     function init() {
-                        settings.initDateModel = DateUtilsFactory.getDateModel(scope.ngModel);
+                        settings.initDateModel = getInitDateModel(scope.ngModel);
                         settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
                         settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
@@ -118,8 +118,19 @@ module apd.directive {
 
                     init();
 
-                    //TODO (S.Panfilov) missed type checking for a apd.dateUtils.DateModel
-                    function _initData(initDateModel, startDateTime:number, endDateTime:number) {
+                    function getInitDateModel(model:any) {
+                        var isInitModelValid:boolean = DateUtilsFactory.validateModel(model);
+                        var initDatetime:number;
+
+                        if (isInitModelValid) {
+                            initDatetime = model.datetime
+                        } else {
+                            initDatetime = new Date().getTime();
+                        }
+                        return new apd.dateUtils.DateModelClass(initDatetime);
+                    }
+
+                    function _initData(initDateModel:apd.dateUtils.DateModelClass, startDateTime:number, endDateTime:number) {
                         scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                     }
@@ -130,6 +141,7 @@ module apd.directive {
                         scope.ngModel = scope.data.selected;
                     }
 
+                    //TODO (S.Panfilov) fixes for external model change
                     //scope.$watch('ngModel.datetime', function (value, oldValue) {
                     //    if (value === oldValue) {
                     //        return;
@@ -173,7 +185,7 @@ module apd.directive {
 
                         datetime = getDateTime(day, month, year);
                         updateModel(datetime);
-                    }
+                    };
 
                     function getDateTime(day:number, month:number, year:number) {
                         if (!day || (!month && month !== 0) || !year) {
