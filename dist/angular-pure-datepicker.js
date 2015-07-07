@@ -311,17 +311,19 @@ var apd;
                     return this._intArraySort(result, direction);
                 };
                 this.reloadMonthList = function () {
-                    this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, this.MONTH_LIST_DIRECTION);
+                    var selectedYear = new Date(this.selected.datetime).getFullYear();
+                    this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
                 };
-                this._getMonthList = function (startDateTime, endDateTime, limitDates, direction) {
+                this._getMonthList = function (startDateTime, endDateTime, limitDates, selectedYear, direction) {
                     var result = [];
                     var START_MONTH = 0;
                     var END_MONTH = 11;
                     var start = limitDates.startDate.month;
                     var end = limitDates.endDate.month;
                     var now = limitDates.nowDate.month;
-                    //TODO (S.Panfilov) we should recalc month for each year, cause if selected year with limit, we should limit month list too
-                    //TODO (S.Panfilov) current work point
+                    //TODO (S.Panfilov) Add limited years support and check other cases
+                    var isYearOfLowerLimit = limitDates.startDate.year === selectedYear;
+                    var isYearOfUpperLimit = limitDates.endDate.year === selectedYear;
                     //start = 3, end = 6
                     if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
                         result = this._getArrayOfNumbers(start, end);
@@ -359,12 +361,13 @@ var apd;
                     return new DataClass(selected, startDateTime, endDateTime);
                 }
                 var self = this;
+                self.selected = self._getSelected(selected, startDateTime, endDateTime);
+                var selectedYear = new Date(this.selected.datetime).getFullYear();
                 self._limitDates = new LimitDatesClass(startDateTime, endDateTime);
                 self._startDateTime = startDateTime;
                 self._endDateTime = endDateTime;
                 self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, this.YEARS_LIST_DIRECTION);
-                self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, this.MONTH_LIST_DIRECTION);
-                self.selected = self._getSelected(selected, startDateTime, endDateTime);
+                self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
                 //self.days = self._getNumList(startDateTime, endDateTime, function () {
                 //    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
                 //});

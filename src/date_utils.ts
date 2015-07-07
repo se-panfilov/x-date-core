@@ -105,13 +105,15 @@ module apd.dateUtils {
             }
 
             var self = this;
+            self.selected = self._getSelected(selected, startDateTime, endDateTime);
+            var selectedYear = new Date(this.selected.datetime).getFullYear();
 
             self._limitDates = new LimitDatesClass(startDateTime, endDateTime);
             self._startDateTime = startDateTime;
             self._endDateTime = endDateTime;
             self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, this.YEARS_LIST_DIRECTION);
-            self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, this.MONTH_LIST_DIRECTION);
-            self.selected = self._getSelected(selected, startDateTime, endDateTime);
+            self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
+
 
             //self.days = self._getNumList(startDateTime, endDateTime, function () {
             //    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
@@ -226,10 +228,11 @@ module apd.dateUtils {
         };
 
         reloadMonthList = function () {
-            this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, this.MONTH_LIST_DIRECTION);
+            var selectedYear = new Date(this.selected.datetime).getFullYear();
+            this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
         };
 
-        private _getMonthList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, direction:string) {
+        private _getMonthList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, direction:string) {
             var result:Array<number> = [];
             var START_MONTH = 0;
             var END_MONTH = 11;
@@ -238,8 +241,10 @@ module apd.dateUtils {
             var end = limitDates.endDate.month;
             var now = limitDates.nowDate.month;
 
-            //TODO (S.Panfilov) we should recalc month for each year, cause if selected year with limit, we should limit month list too
-            //TODO (S.Panfilov) current work point
+            //TODO (S.Panfilov) Add limited years support and check other cases
+            var isYearOfLowerLimit = limitDates.startDate.year === selectedYear;
+            var isYearOfUpperLimit = limitDates.endDate.year === selectedYear;
+
             //start = 3, end = 6
             if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
                 result = this._getArrayOfNumbers(start, end);
