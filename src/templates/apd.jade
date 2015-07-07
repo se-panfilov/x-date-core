@@ -1,5 +1,27 @@
 .apd_root
-    select.apd_elem.apd_select_day.apd_select(ng-model="data.selected.day", ng-options="day for day in data.days", ng-init="data.selected.day = data.days[0]", id="{{::apdDayId}}", class="{{::apdDayClasses}}")
-    span.apd_elem.apd_day_of_week(title="{{getDayOfWeekName(data.selected.dayOfWeek)}}", ng-bind="getDayOfWeekShortName(data.selected.dayOfWeek)")
-    select.apd_elem.apd_select_month.apd_select(ng-model="data.selected.month", ng-options="(month + 1) for month in data.month", ng-init="data.selected.month = data.month[0]", id="{{::apdMonthId}}", class="{{::apdMonthClasses}}")
-    select.apd_elem.apd_select_year.apd_select(ng-model="data.selected.year", ng-options="year for year in data.years", ng-init="data.selected.year = data.years[0]", id="{{::apdYearId}}", class="{{::apdYearClasses}}")
+    select.apd_elem.apd_select_day.apd_select(
+    ng-model="data.selected.day",
+    ng-options="day for day in data.days",
+    ng-init="data.selected.day = data.days[0]",
+    ng-change="",
+    id="{{::apdDayId}}",
+    class="{{::apdDayClasses}}"
+    )
+    span.apd_elem.apd_day_of_week(
+    title="{{getDayOfWeekName(data.selected.dayOfWeek)}}",
+    ng-bind="getDayOfWeekShortName(data.selected.dayOfWeek)"
+    )
+    select.apd_elem.apd_select_month.apd_select(
+    ng-model="data.selected.month",
+    ng-options="(month + 1) for month in data.month",
+    ng-init="data.selected.month = data.month[0]",
+    id="{{::apdMonthId}}",
+    class="{{::apdMonthClasses}}"
+    )
+    select.apd_elem.apd_select_year.apd_select(
+    ng-model="data.selected.year",
+    ng-options="year for year in data.years",
+    ng-init="data.selected.year = data.years[0]",
+    id="{{::apdYearId}}",
+    class="{{::apdYearClasses}}"
+    )

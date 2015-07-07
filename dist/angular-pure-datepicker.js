@@ -1,4 +1,4 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span title={{getDayOfWeekName(data.selected.dayOfWeek)}} ng-bind=getDayOfWeekShortName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=\"\" id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span title={{getDayOfWeekName(data.selected.dayOfWeek)}} ng-bind=getDayOfWeekShortName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 //module apd.main {
 //    'use strict';
 angular.module('angular-pd', [
@@ -100,8 +100,8 @@ var apd;
                         scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
                         scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
                         startWatchDay();
-                        startWatchMonth();
-                        startWatchYear();
+                        //startWatchMonth();
+                        //startWatchYear();
                     }
                     init();
                     //TODO (S.Panfilov) missed type checking for a apd.dateUtils.DateModel
@@ -110,7 +110,8 @@ var apd;
                         scope.ngModel = scope.data.selected;
                     }
                     function updateModel(datetime) {
-                        scope.data.selected = DateUtilsFactory.getDateModel(datetime);
+                        var dateModel = { datetime: datetime };
+                        scope.data.selected = DateUtilsFactory.getDateModel(dateModel);
                         scope.ngModel = scope.data.selected;
                     }
                     //scope.$watch('ngModel.datetime', function (value, oldValue) {
@@ -364,20 +365,12 @@ var apd;
             return DataClass;
         })();
         angular.module('angular-pd.date_utils', []).factory('DateUtilsFactory', function () {
-            function preserveModelValues(model) {
-                for (var value in model) {
-                    if (model.hasOwnProperty(value)) {
-                        model[value] = +model[value];
-                    }
-                }
-                return model;
-            }
             var exports = {
                 getData: function (selected, startDateTime, endDateTime) {
                     return new DataClass(selected, startDateTime, endDateTime);
                 },
                 validateModel: function (model) {
-                    return (model && model.datetime);
+                    return !!(model && model.datetime);
                 },
                 getDateModel: function (model) {
                     var isValidModel = exports.validateModel(model);
@@ -385,6 +378,8 @@ var apd;
                         return new DateModelClass(model.datetime);
                     }
                     else {
+                        //TODO (S.Panfilov) remove
+                        console.warn('model invalid');
                         return new DateModelClass(new Date().getTime());
                     }
                 }

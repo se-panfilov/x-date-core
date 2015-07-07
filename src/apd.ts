@@ -116,8 +116,8 @@ module apd.directive {
                         scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
 
                         startWatchDay();
-                        startWatchMonth();
-                        startWatchYear();
+                        //startWatchMonth();
+                        //startWatchYear();
                     }
 
                     init();
@@ -129,7 +129,8 @@ module apd.directive {
                     }
 
                     function updateModel(datetime:number) {
-                        scope.data.selected =  DateUtilsFactory.getDateModel(datetime);
+                        var dateModel = {datetime: datetime};
+                        scope.data.selected =  DateUtilsFactory.getDateModel(dateModel);
                         scope.ngModel = scope.data.selected;
                     }
 

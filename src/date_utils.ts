@@ -208,29 +208,21 @@ module apd.dateUtils {
 
         .factory('DateUtilsFactory', function () {
 
-            function preserveModelValues(model:Object) {
-                for (var value in model) {
-                    if (model.hasOwnProperty(value)) {
-                        model[value] = +model[value]
-                    }
-                }
-
-                return <DateModelClass>model;
-            }
-
             var exports = {
                 getData: function (selected:DateModelClass, startDateTime:number, endDateTime:number) {
                     return new DataClass(selected, startDateTime, endDateTime);
                 },
                 validateModel: function (model:DateModelClass) {
-                    return (model && model.datetime);
+                    return !!(model && model.datetime);
                 },
                 getDateModel: function (model) {
-                    var isValidModel = exports.validateModel(model);
+                    var isValidModel:boolean = exports.validateModel(model);
 
                     if (isValidModel) {
                         return new DateModelClass(model.datetime);
                     } else {
+                        //TODO (S.Panfilov) remove
+                        console.warn('model invalid');
                         return new DateModelClass(new Date().getTime());
                     }
                 }
