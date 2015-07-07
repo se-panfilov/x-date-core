@@ -11,7 +11,8 @@ module apd.directive {
 
         constructor(name:string, short:string) {
             if (!(this instanceof DayOfWeek)) {
-                //return MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                return new DayOfWeek(name, short);
             }
 
             this.name = name;
@@ -28,7 +29,8 @@ module apd.directive {
 
         constructor(days:Array<DayOfWeek>) {
             if (!(this instanceof DaysOfWeek)) {
-                //return MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                return new DaysOfWeek(days);
             }
 
             this.list = days;

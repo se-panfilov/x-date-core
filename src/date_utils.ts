@@ -13,7 +13,8 @@ module apd.dateUtils {
 
         constructor(datetime:number) {
             if (!(this instanceof DateModelClass)) {
-                //return MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                return new DateModelClass(datetime);
             }
 
             var date = new Date(datetime);
@@ -38,7 +39,8 @@ module apd.dateUtils {
 
         constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
             if (!(this instanceof DataClass)) {
-                //return MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                return new DataClass(selected, startDateTime, endDateTime);
             }
 
             var self = this;
@@ -156,8 +158,7 @@ module apd.dateUtils {
             else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
                 start = timeFunc(new Date(endDateTime));
                 end = timeFunc(new Date(startDateTime));
-                //TODO (S.Panfilov) throw warning here, that dates inverted
-                //apd.messages.MessagesFactoryClass.throwMessage('asdsadasd');
+                apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
 
                 result = this._getArrayOfNumbers(start, end);
             }
@@ -191,7 +192,7 @@ module apd.dateUtils {
 
         private _getIntArr = function (length:number) {
             if (!length && length !== 0) {
-                //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
+                apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
                 return false;
             }
 

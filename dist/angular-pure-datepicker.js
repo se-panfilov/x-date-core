@@ -18,6 +18,8 @@ var apd;
         var DayOfWeek = (function () {
             function DayOfWeek(name, short) {
                 if (!(this instanceof DayOfWeek)) {
+                    apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                    return new DayOfWeek(name, short);
                 }
                 this.name = name;
                 this.short = short;
@@ -51,6 +53,8 @@ var apd;
                     return _this.names[dayNum];
                 };
                 if (!(this instanceof DaysOfWeek)) {
+                    apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                    return new DaysOfWeek(days);
                 }
                 this.list = days;
                 this.shorts = this.getListOfShorts();
@@ -184,26 +188,28 @@ var apd;
                 this.messages = {
                     wrongInstance: 'Class created without \'new\', wrong \'this\'',
                     invalidParams: 'Invalid params',
-                    invalidDateModel: 'Invalid date model'
-                };
-                this.throwDeveloperError = function (message) {
-                    console.error(message);
+                    invalidDateModel: 'Invalid date model',
+                    datesInverted: 'Warning! Start date > End date'
                 };
             }
-            MessagesFactoryClass.prototype.throwModelValidationMessage = function (field) {
-                //TODO (S.Panfilov) possibly problems with this
+            MessagesFactoryClass.throwDeveloperError = function (message) {
+                console.error(message);
+            };
+            MessagesFactoryClass.throwModelValidationMessage = function (field) {
                 this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
             };
-            MessagesFactoryClass.prototype.throwInvalidParamsMessage = function () {
-                //TODO (S.Panfilov) possibly problems with this
+            MessagesFactoryClass.throwInvalidParamsMessage = function () {
                 this.throwDeveloperError(this.messages.invalidParams);
             };
-            MessagesFactoryClass.prototype.throwWrongInstanceMessage = function () {
-                //TODO (S.Panfilov) possibly problems with this
+            MessagesFactoryClass.throwWrongInstanceMessage = function () {
                 this.throwDeveloperError(this.messages.wrongInstance);
+            };
+            MessagesFactoryClass.throwDatesInvertedMessage = function () {
+                this.throwDeveloperError(this.messages.datesInverted);
             };
             return MessagesFactoryClass;
         })();
+        messages.MessagesFactoryClass = MessagesFactoryClass;
         angular.module('angular-pd.messages', []).factory('MessagesFactory', function () {
             return new MessagesFactoryClass();
         });
@@ -219,6 +225,8 @@ var apd;
         var DateModelClass = (function () {
             function DateModelClass(datetime) {
                 if (!(this instanceof DateModelClass)) {
+                    apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                    return new DateModelClass(datetime);
                 }
                 var date = new Date(datetime);
                 this.day = date.getDate();
@@ -315,8 +323,7 @@ var apd;
                     else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
                         start = timeFunc(new Date(endDateTime));
                         end = timeFunc(new Date(startDateTime));
-                        //TODO (S.Panfilov) throw warning here, that dates inverted
-                        //apd.messages.MessagesFactoryClass.throwMessage('asdsadasd');
+                        apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
                         result = this._getArrayOfNumbers(start, end);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
@@ -339,7 +346,7 @@ var apd;
                 };
                 this._getIntArr = function (length) {
                     if (!length && length !== 0) {
-                        //apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
+                        apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
                         return false;
                     }
                     return length ? this._getIntArr(length - 1).concat(length) : [];
@@ -348,6 +355,8 @@ var apd;
                     return new Date(year, month + 1, 0).getDate();
                 };
                 if (!(this instanceof DataClass)) {
+                    apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                    return new DataClass(selected, startDateTime, endDateTime);
                 }
                 var self = this;
                 self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, self._getDefaultYearsList.bind(self));

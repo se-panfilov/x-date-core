@@ -1,31 +1,33 @@
 module apd.messages {
     'use strict';
 
-    class MessagesFactoryClass {
+    export class MessagesFactoryClass {
         private messages = {
             wrongInstance: 'Class created without \'new\', wrong \'this\'',
             invalidParams: 'Invalid params',
-            invalidDateModel: 'Invalid date model'
+            invalidDateModel: 'Invalid date model',
+            datesInverted: 'Warning! Start date > End date'
         };
 
-        throwDeveloperError = (message:string) => {
+        static throwDeveloperError = (message:string) => {
             console.error(message);
         };
 
-        throwModelValidationMessage (field:string) {
-            //TODO (S.Panfilov) possibly problems with this
+        static throwModelValidationMessage = function (field:string) {
             this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
-        }
+        };
 
-        throwInvalidParamsMessage (){
-            //TODO (S.Panfilov) possibly problems with this
+        static throwInvalidParamsMessage = function () {
             this.throwDeveloperError(this.messages.invalidParams);
-        }
+        };
 
-        throwWrongInstanceMessage (){
-            //TODO (S.Panfilov) possibly problems with this
+        static throwWrongInstanceMessage = function () {
             this.throwDeveloperError(this.messages.wrongInstance);
-        }
+        };
+
+        static throwDatesInvertedMessage = function () {
+            this.throwDeveloperError(this.messages.datesInverted);
+        };
     }
 
     angular.module('angular-pd.messages', [])
