@@ -215,9 +215,9 @@ var apd;
                     apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
                     return new LimitDatesClass(startDateTime, endDateTime);
                 }
-                this.startDate = {};
-                this.endDate = {};
-                this.nowDate = {};
+                this.startDate = { day: null, month: null, year: null };
+                this.endDate = { day: null, month: null, year: null };
+                this.nowDate = { day: null, month: null, year: null };
                 this._setStartDate(startDateTime);
                 this._setEndDate(endDateTime);
                 this._setNowDate();
@@ -226,7 +226,6 @@ var apd;
         })();
         var DataClass = (function () {
             function DataClass(selected, startDateTime, endDateTime) {
-                this.LIST_DIRECTION = 'desc';
                 this._getSelected = function (selected, startDateTime, endDateTime) {
                     var result;
                     var isBiggerThenStart = (selected.datetime > startDateTime);
@@ -276,55 +275,64 @@ var apd;
                     }
                     return result;
                 };
-                this._getYearsList = function (startDateTime, endDateTime) {
+                this._getYearsList = function (startDateTime, endDateTime, limitDates, direction) {
                     var result = [];
                     var DEFAULT_YEARS_COUNT = 20;
+                    var start = limitDates.startDate.year;
+                    var end = limitDates.endDate.year;
+                    var now = limitDates.nowDate.year;
                     //start = 2011, end = 2014
                     if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                        result = this._getArrayOfNumbers(this.limitDatesClass.startDate.year, this.limitDatesClass.endDate.year);
+                        result = this._getArrayOfNumbers(start, end);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
                         apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
-                        result = this._getArrayOfNumbers(this.limitDatesClass.endDate.year, this.limitDatesClass.startDate.year);
+                        result = this._getArrayOfNumbers(end, start);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                        result = this._getArrayOfNumbers(this.limitDatesClass.startDate.year, this.limitDatesClass.endDate.year);
+                        result = this._getArrayOfNumbers(start, end);
                     }
                     else if (startDateTime && !endDateTime) {
-                        result = this._getArrayOfNumbers(this.limitDatesClass.startDate.year, this.limitDatesClass.nowDate.year);
+                        result = this._getArrayOfNumbers(start, now);
                     }
                     else if (!startDateTime && endDateTime) {
-                        result = this._getArrayOfNumbers(this.limitDatesClass.endDate.year, this.limitDatesClass.endDate.year);
+                        result = this._getArrayOfNumbers(end, end);
                     }
                     else if (!startDateTime && !endDateTime) {
-                        result = this._getArrayOfNumbers(this.limitDatesClass.nowDate.year - (DEFAULT_YEARS_COUNT - 1), this.limitDatesClass.nowDate.year);
+                        result = this._getArrayOfNumbers(now - (DEFAULT_YEARS_COUNT - 1), now);
                     }
-                    return this._intArraySort(result, this.LIST_DIRECTION);
+                    return this._intArraySort(result, direction);
                 };
-                this._getMonthList = function (startDateTime, endDateTime) {
+                this._getMonthList = function (startDateTime, endDateTime, limitDates, direction) {
                     var result = [];
+                    var START_MONTH = 0;
+                    var END_MONTH = 11;
+                    var start = limitDates.startDate.month;
+                    var end = limitDates.endDate.month;
+                    var now = limitDates.nowDate.month;
                     //TODO (S.Panfilov) we should recalc month for each year, cause if selected year with limit, we should limit month list too
                     //TODO (S.Panfilov) current work point
                     //start = 3, end = 6
                     if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                        result = this._getArrayOfNumbers(this.limitDatesClass.startDate.month, this.limitDatesClass.endDate.month);
+                        result = this._getArrayOfNumbers(start, end);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
                         apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
-                        result = this._getArrayOfNumbers(this.limitDatesClass.endDate.month, this.limitDatesClass.startDate.month);
+                        result = this._getArrayOfNumbers(end, start);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                        result = this._getArrayOfNumbers(this.limitDatesClass.startDate.month, this.limitDatesClass.endDate.month);
+                        result = this._getArrayOfNumbers(start, end);
                     }
                     else if (startDateTime && !endDateTime) {
-                        result = this._getArrayOfNumbers(this.limitDatesClass.startDate.month, this.limitDatesClass.nowDate.month);
+                        result = this._getArrayOfNumbers(start, now);
                     }
                     else if (!startDateTime && endDateTime) {
-                        result = this._getArrayOfNumbers(this.limitDatesClass.endDate.month, this.limitDatesClass.endDate.month);
+                        result = this._getArrayOfNumbers(end, end);
                     }
                     else if (!startDateTime && !endDateTime) {
+                        result = this._getArrayOfNumbers(START_MONTH, END_MONTH);
                     }
-                    return this._intArraySort(result, this.LIST_DIRECTION);
+                    return this._intArraySort(result, direction);
                 };
                 this._getIntArr = function (length) {
                     if (!length && length !== 0) {
@@ -341,10 +349,11 @@ var apd;
                     return new DataClass(selected, startDateTime, endDateTime);
                 }
                 var self = this;
-                self.limitDatesClass = new LimitDatesClass(startDateTime, endDateTime);
-                //TODO (S.Panfilov) why I'm cannot pass self._getFullYear this without casting to TimeFunction?
-                self.years = self._getYearsList(startDateTime, endDateTime);
-                self.month = self._getMonthList(startDateTime, endDateTime);
+                var YEARS_LIST_DIRECTION = 'desc';
+                var MONTH_LIST_DIRECTION = 'asc';
+                var limitDates = new LimitDatesClass(startDateTime, endDateTime);
+                self.years = self._getYearsList(startDateTime, endDateTime, limitDates, YEARS_LIST_DIRECTION);
+                self.month = self._getMonthList(startDateTime, endDateTime, limitDates, MONTH_LIST_DIRECTION);
                 self.selected = self._getSelected(selected, startDateTime, endDateTime);
                 //self.days = self._getNumList(startDateTime, endDateTime, function () {
                 //    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
