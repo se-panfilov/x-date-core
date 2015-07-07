@@ -259,7 +259,6 @@ var apd;
                 this._getDay = function (date) {
                     return date.getDate();
                 };
-                //TODO (S.Panfilov) not any, but functions types
                 this._getNumList = function (startDateTime, endDateTime, timeFunc, callback) {
                     var result = [];
                     var start;
@@ -290,14 +289,14 @@ var apd;
                     }
                     else if (!startDateTime && !endDateTime) {
                         if (callback)
-                            return callback(timeFunc);
+                            return callback();
                     }
                     return result;
                 };
                 this._getIntArr = function (length) {
                     if (!length && length !== 0) {
                         apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
-                        return false;
+                        return null;
                     }
                     return length ? this._getIntArr(length - 1).concat(length) : [];
                 };
@@ -309,6 +308,7 @@ var apd;
                     return new DataClass(selected, startDateTime, endDateTime);
                 }
                 var self = this;
+                //TODO (S.Panfilov) why I'm cannot pass self._getFullYear this without casting to TimeFunction?
                 self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, self._getDefaultYearsList.bind(self));
                 self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, self._getDefaultMonthList.bind(self));
                 self.selected = self._getSelected(selected, startDateTime, endDateTime);
