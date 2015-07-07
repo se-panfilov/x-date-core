@@ -149,6 +149,8 @@ var apd;
                         if (!isCorrectDay(day, month, year)) {
                             day = scope.data.getDaysInMonth(year, year);
                         }
+                        //TODO (S.Panfilov) check
+                        scope.data.reloadMonthList();
                         datetime = getDateTime(day, month, year);
                         updateModel(datetime);
                     };
@@ -226,6 +228,8 @@ var apd;
         })();
         var DataClass = (function () {
             function DataClass(selected, startDateTime, endDateTime) {
+                this.YEARS_LIST_DIRECTION = 'desc';
+                this.MONTH_LIST_DIRECTION = 'asc';
                 this._getSelected = function (selected, startDateTime, endDateTime) {
                     var result;
                     var isBiggerThenStart = (selected.datetime > startDateTime);
@@ -250,10 +254,10 @@ var apd;
                     }
                     return result;
                 };
-                this._getDefaultDaysList = function (month, year) {
-                    var daysCount = this.getDaysInMonth(month, year);
-                    return this._getIntArr(daysCount);
-                };
+                //private _getDefaultDaysList = function (month:number, year:number):Array<number> {
+                //    var daysCount = this.getDaysInMonth(month, year);
+                //    return this._getIntArr(daysCount);
+                //};
                 this._intArraySort = function (arr, direction) {
                     if (direction === void 0) { direction = 'asc'; }
                     function desc(a, b) {
@@ -274,6 +278,9 @@ var apd;
                         result.push(i);
                     }
                     return result;
+                };
+                this.reloadYearsList = function () {
+                    this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates, this.YEARS_LIST_DIRECTION);
                 };
                 this._getYearsList = function (startDateTime, endDateTime, limitDates, direction) {
                     var result = [];
@@ -302,6 +309,9 @@ var apd;
                         result = this._getArrayOfNumbers(now - (DEFAULT_YEARS_COUNT - 1), now);
                     }
                     return this._intArraySort(result, direction);
+                };
+                this.reloadMonthList = function () {
+                    this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, this.MONTH_LIST_DIRECTION);
                 };
                 this._getMonthList = function (startDateTime, endDateTime, limitDates, direction) {
                     var result = [];
@@ -349,11 +359,11 @@ var apd;
                     return new DataClass(selected, startDateTime, endDateTime);
                 }
                 var self = this;
-                var YEARS_LIST_DIRECTION = 'desc';
-                var MONTH_LIST_DIRECTION = 'asc';
-                var limitDates = new LimitDatesClass(startDateTime, endDateTime);
-                self.years = self._getYearsList(startDateTime, endDateTime, limitDates, YEARS_LIST_DIRECTION);
-                self.month = self._getMonthList(startDateTime, endDateTime, limitDates, MONTH_LIST_DIRECTION);
+                self._limitDates = new LimitDatesClass(startDateTime, endDateTime);
+                self._startDateTime = startDateTime;
+                self._endDateTime = endDateTime;
+                self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, this.YEARS_LIST_DIRECTION);
+                self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, this.MONTH_LIST_DIRECTION);
                 self.selected = self._getSelected(selected, startDateTime, endDateTime);
                 //self.days = self._getNumList(startDateTime, endDateTime, function () {
                 //    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
