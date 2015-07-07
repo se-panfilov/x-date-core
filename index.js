@@ -4,7 +4,7 @@ angular.module('demo', [
     'angular-pd'
 ])
 
-    .directive('modelWell', function () {
+    .directive('modelWell', function ($filter) {
         return {
             restrict: 'E',
             replace: true,
@@ -15,13 +15,17 @@ angular.module('demo', [
             '<div><span>Day:</span>&nbsp;<span ng-bind=caseModel.model.day></span></div>' +
             '<div><span>Month:</span>&nbsp;<span ng-bind=caseModel.model.month></span></div>' +
             '<div><span>Year:</span>&nbsp;<span ng-bind=caseModel.model.year></span></div>' +
-            '<div><span>Datetime:</span>&nbsp;<span ng-bind=caseModel.model.datetime></span></div>' +
+            '<div><span>Datetime:</span>&nbsp;<span ng-bind=caseModel.model.datetime></span>&nbsp;<span>({{getDate(caseModel.model.datetime)}})</span></div>' +
             '<div><span>Timezone:</span>&nbsp;<span ng-bind=caseModel.model.timezone></span></div>' +
-            '<div><span>Start limit:</span>&nbsp;<span ng-bind=caseModel.model.startDate></span></div>' +
-            '<div><span>End limit:</span>&nbsp;<span ng-bind=caseModel.model.endDate></span></div>' +
+            '<div><span>Start limit:</span>&nbsp;<span ng-bind=caseModel.startDate></span>&nbsp;<span>({{getDate(caseModel.startDate)}})</span></div>' +
+            '<div><span>End limit:</span>&nbsp;<span ng-bind=caseModel.endDate></span>&nbsp;<span>({{getDate(caseModel.endDate)}})</span></div>' +
             '</section>',
             link: function (scope) {
-                //console.log(scope.caseModel);
+                scope.getDate = function (datetime) {
+                    if (!datetime) return '-';
+
+                    return $filter('date')(new Date(datetime), 'dd-MM-yyyy');
+                }
             }
         };
     })
@@ -64,12 +68,7 @@ angular.module('demo', [
 
         $scope.commonCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             }
         };
 
@@ -81,12 +80,7 @@ angular.module('demo', [
 
         $scope.limitsCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             startDate: new Date(2015, 6, 21).getTime(),
             endDate: new Date(2020, 6, 27).getTime()
@@ -94,48 +88,28 @@ angular.module('demo', [
 
         $scope.leftLimitsCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: 1435315214948,
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             startDate: new Date(2015, 5, 1).getTime()
         };
 
         $scope.rightLimitsCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             endDate: new Date(2015, 7, 31).getTime()
         };
 
         $scope.outOfRightLimitCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             endDate: new Date(2015, 6, 21).getTime()
         };
 
         $scope.outOfLeftLimitCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             startDate: new Date(2015, 6, 27).getTime()
         };
@@ -156,47 +130,27 @@ angular.module('demo', [
 
         $scope.invalidLeftLimitCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             startDate: 'invalid'
         };
 
         $scope.invalidRightLimitCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             endDate: Infinity
         };
 
         $scope.linkedModelCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             }
         };
 
         $scope.linkedModelBothLimitsCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             startDate: new Date(2015, 6, 25).getTime(),
             endDate: new Date(2015, 6, 27).getTime()
@@ -204,12 +158,7 @@ angular.module('demo', [
 
         $scope.linkedModelBothDifferentLimitsCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             startDate_one: new Date(2015, 5, 1).getTime(),
             endDate_one: new Date(2015, 7, 31).getTime(),
@@ -219,35 +168,20 @@ angular.module('demo', [
 
         $scope.externalChangeCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             }
         };
 
         $scope.externalChangeLeftLimitCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             startDate: new Date(2015, 6, 25).getTime()
         };
 
         $scope.externalChangeRightLimitCase = {
             model: {
-                day: 26,
-                dayOfWeek: 6,
-                month: 6,
-                year: 2015,
-                datetime: new Date(2015, 6, 26).getTime(),
-                timezone: -480
+                datetime: new Date(2015, 6, 26).getTime()
             },
             endDate: new Date(2015, 6, 27).getTime()
         };
