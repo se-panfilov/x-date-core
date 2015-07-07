@@ -13,7 +13,7 @@ angular.module('demo', [
             },
             template: '<section class=well>' +
             '<div><span>Day:</span>&nbsp;<span ng-bind=caseModel.model.day></span></div>' +
-            '<div><span>Month:</span>&nbsp;<span ng-bind=caseModel.model.month></span></div>' +
+            '<div><span>Month:</span>&nbsp;<span ng-bind=caseModel.model.month></span>&nbsp;<span>(+1)</span></div>' +
             '<div><span>Year:</span>&nbsp;<span ng-bind=caseModel.model.year></span></div>' +
             '<div><span>Datetime:</span>&nbsp;<span ng-bind=caseModel.model.datetime></span>&nbsp;<span>({{getDate(caseModel.model.datetime)}})</span></div>' +
             '<div><span>Timezone:</span>&nbsp;<span ng-bind=caseModel.model.timezone></span></div>' +
@@ -72,12 +72,6 @@ angular.module('demo', [
             }
         };
 
-        $scope.onlyDatetimeCase = {
-            model: {
-                datetime: new Date(2015, 6, 26).getTime()
-            }
-        };
-
         $scope.limitsCase = {
             model: {
                 datetime: new Date(2015, 6, 26).getTime()
@@ -90,7 +84,7 @@ angular.module('demo', [
             model: {
                 datetime: new Date(2015, 6, 26).getTime()
             },
-            startDate: new Date(2015, 5, 1).getTime()
+            startDate: new Date(2012, 4, 3).getTime()
         };
 
         $scope.rightLimitsCase = {
