@@ -29,39 +29,71 @@ module apd.dateUtils {
 
     }
 
+    class LimitDatesClass {
+        startDate:{
+            day: number;
+            month:number;
+            year:number;
+        };
+
+        endDate:{
+            day:number;
+            month: number;
+            year:number;
+        };
+
+        nowDate:{
+            day:number;
+            month: number;
+            year:number;
+        };
+
+        constructor(startDateTime:number, endDateTime:number) {
+            if (!(this instanceof LimitDatesClass)) {
+                apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                return new LimitDatesClass(startDateTime, endDateTime);
+            }
+            
+            this.startDate = {};
+            this.endDate = {};
+            this.nowDate = {};
+
+            this._setStartDate(startDateTime);
+            this._setEndDate(endDateTime);
+            this._setNowDate();
+        }
+
+        _setStartDate = function (datetime:number) {
+            this.startDate.day = new Date(datetime).getDate();
+            this.startDate.month = new Date(datetime).getMonth();
+            this.startDate.year = new Date(datetime).getFullYear();
+            return this;
+        };
+
+        _setEndDate = function (datetime:number) {
+            this.endDate.day = new Date(datetime).getDate();
+            this.endDate.month = new Date(datetime).getMonth();
+            this.endDate.year = new Date(datetime).getFullYear();
+            return this;
+        };
+
+        _setNowDate = function () {
+            this.nowDate.day = new Date().getDate();
+            this.nowDate.month = new Date().getMonth();
+            this.nowDate.year = new Date().getFullYear();
+            return this;
+        };
+
+    }
+
     class DataClass {
         selected:DateModelClass;
         days:Array<number>;
         month:Array<number>;
         years:Array<number>;
-
-        _limitDates:{
-            _startDate: {
-                day: number;
-                month:number;
-                year:number;
-            };
-
-            _endDate:{
-                day:number;
-                month: number;
-                year:number;
-            };
-
-            _nowDate:{
-                day:number;
-                month: number;
-                year:number;
-            };
-        };
+        limitDatesClass:LimitDatesClass;
 
         LIST_DIRECTION = 'desc';
-
-        _setLimitDate = function (limitDate:any, datetime:number) {
-            limitDate.day = new Date(datetime).getDate();
-            limitDate.month = new Date(datetime).getMonth();
-            limitDate.year = new Date(datetime).getFullYear();
-        };
 
         constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
             if (!(this instanceof DataClass)) {
@@ -71,9 +103,7 @@ module apd.dateUtils {
 
             var self = this;
 
-            self._setLimitDate(self._limitDates._startDate, startDateTime);
-            self._setLimitDate(self._limitDates._endDate, endDateTime);
-            self._setLimitDate(self._limitDates._nowDate, new Date().getTime());
+            self.limitDatesClass = new LimitDatesClass(startDateTime, endDateTime);
 
             //TODO (S.Panfilov) why I'm cannot pass self._getFullYear this without casting to TimeFunction?
             self.years = self._getYearsList(startDateTime, endDateTime);
@@ -155,33 +185,33 @@ module apd.dateUtils {
 
             //start = 2011, end = 2014
             if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                result = this._getArrayOfNumbers(this._limitDates._startDate.year, this._limitDates._endDate.year);
+                result = this._getArrayOfNumbers(this.limitDatesClass.startDate.year, this.limitDatesClass.endDate.year);
             }
 
             //start = 2014, end = 2011
             else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
                 apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
-                result = this._getArrayOfNumbers(this._limitDates._endDate.year, this._limitDates._startDate.year);
+                result = this._getArrayOfNumbers(this.limitDatesClass.endDate.year, this.limitDatesClass.startDate.year);
             }
 
             //start = 2011, end = 2011
             else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                result = this._getArrayOfNumbers(this._limitDates._startDate.year, this._limitDates._endDate.year);
+                result = this._getArrayOfNumbers(this.limitDatesClass.startDate.year, this.limitDatesClass.endDate.year);
             }
 
             //start = 2014, end = null
             else if (startDateTime && !endDateTime) {
-                result = this._getArrayOfNumbers(this._limitDates._startDate.year, this._limitDates._nowDate.year);
+                result = this._getArrayOfNumbers(this.limitDatesClass.startDate.year, this.limitDatesClass.nowDate.year);
             }
 
             //start = null, end = 2014
             else if (!startDateTime && endDateTime) {
-                result = this._getArrayOfNumbers(this._limitDates._endDate.year, this._limitDates._endDate.year);
+                result = this._getArrayOfNumbers(this.limitDatesClass.endDate.year, this.limitDatesClass.endDate.year);
             }
 
             //start = null, end = null
             else if (!startDateTime && !endDateTime) {
-                result = this._getArrayOfNumbers(this._limitDates._nowDate.year - (DEFAULT_YEARS_COUNT - 1), this._limitDates._nowDate.year)
+                result = this._getArrayOfNumbers(this.limitDatesClass.nowDate.year - (DEFAULT_YEARS_COUNT - 1), this.limitDatesClass.nowDate.year)
             }
 
             return this._intArraySort(result, this.LIST_DIRECTION);
@@ -194,33 +224,33 @@ module apd.dateUtils {
             //TODO (S.Panfilov) current work point
             //start = 3, end = 6
             if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                result = this._getArrayOfNumbers(this._limitDates._startDate.month, this._limitDates._endDate.month);
+                result = this._getArrayOfNumbers(this.limitDatesClass.startDate.month, this.limitDatesClass.endDate.month);
             }
 
             //start = 6, end = 3
             else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
                 apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
-                result = this._getArrayOfNumbers(this._limitDates._endDate.month, this._limitDates._startDate.month);
+                result = this._getArrayOfNumbers(this.limitDatesClass.endDate.month, this.limitDatesClass.startDate.month);
             }
 
             //start = 3, end = 3
             else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                result = this._getArrayOfNumbers(this._limitDates._startDate.month, this._limitDates._endDate.month);
+                result = this._getArrayOfNumbers(this.limitDatesClass.startDate.month, this.limitDatesClass.endDate.month);
             }
 
             //start = 6, end = null
             else if (startDateTime && !endDateTime) {
-                result = this._getArrayOfNumbers(this._limitDates._startDate.month, this._limitDates._nowDate.month);
+                result = this._getArrayOfNumbers(this.limitDatesClass.startDate.month, this.limitDatesClass.nowDate.month);
             }
 
             //start = null, end = 6
             else if (!startDateTime && endDateTime) {
-                result = this._getArrayOfNumbers(this._limitDates._endDate.month, this._limitDates._endDate.month);
+                result = this._getArrayOfNumbers(this.limitDatesClass.endDate.month, this.limitDatesClass.endDate.month);
             }
 
             //start = null, end = null
             else if (!startDateTime && !endDateTime) {
-                //result = this._getArrayOfNumbers(this._limitDates._nowDate.month - (DEFAULT_YEARS_COUNT - 1), this._limitDates._nowDate.month)
+                //result = this._getArrayOfNumbers(this.limitDatesClass.nowDate.month - (DEFAULT_YEARS_COUNT - 1), this.limitDatesClass.nowDate.month)
             }
 
             return this._intArraySort(result, this.LIST_DIRECTION);

@@ -163,6 +163,7 @@ module apd.directive {
                         var day = scope.data.selected.day;
 
                         if (!isCorrectDay(day, month, year)) {
+                            //TODO (S.Panfilov) .getDaysInMonth didn't expect limits, should use other func
                             day = scope.data.getDaysInMonth(month, year);
                         }
 
