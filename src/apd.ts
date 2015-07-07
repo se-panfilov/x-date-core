@@ -127,6 +127,7 @@ module apd.directive {
                         } else {
                             initDatetime = new Date().getTime();
                         }
+
                         return new apd.dateUtils.DateModelClass(initDatetime);
                     }
 
@@ -136,8 +137,7 @@ module apd.directive {
                     }
 
                     function updateModel(datetime:number) {
-                        var dateModel = {datetime: datetime};
-                        scope.data.selected = DateUtilsFactory.getDateModel(dateModel);
+                        scope.data.selected = new apd.dateUtils.DateModelClass(datetime);
                         scope.ngModel = scope.data.selected;
                     }
 

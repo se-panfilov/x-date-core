@@ -117,8 +117,7 @@ var apd;
                         scope.ngModel = scope.data.selected;
                     }
                     function updateModel(datetime) {
-                        var dateModel = { datetime: datetime };
-                        scope.data.selected = DateUtilsFactory.getDateModel(dateModel);
+                        scope.data.selected = new apd.dateUtils.DateModelClass(datetime);
                         scope.ngModel = scope.data.selected;
                     }
                     //TODO (S.Panfilov) fixes for external model change
