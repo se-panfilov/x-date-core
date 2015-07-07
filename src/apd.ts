@@ -114,23 +114,19 @@ module apd.directive {
 
                         scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
                         scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
-
-                        startWatchDay();
-                        //startWatchMonth();
-                        //startWatchYear();
                     }
 
                     init();
 
                     //TODO (S.Panfilov) missed type checking for a apd.dateUtils.DateModel
-                    function _initData (initDateModel, startDateTime:number, endDateTime:number) {
+                    function _initData(initDateModel, startDateTime:number, endDateTime:number) {
                         scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                     }
 
                     function updateModel(datetime:number) {
                         var dateModel = {datetime: datetime};
-                        scope.data.selected =  DateUtilsFactory.getDateModel(dateModel);
+                        scope.data.selected = DateUtilsFactory.getDateModel(dateModel);
                         scope.ngModel = scope.data.selected;
                     }
 
@@ -142,50 +138,41 @@ module apd.directive {
                     //    _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
                     //}, true);
 
-                    function startWatchDay() {
-                        scope.$watch('data.selected.day', function (day:number, oldValue:number) {
-                            if (!day) return;
-                            if (day === oldValue) return;
+                    scope.onDaySelectChanged = function (day:number) {
+                        if (!day) return;
 
-                            var datetime = getDateTime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
-                            updateModel(datetime);
-                        });
-                    }
+                        var datetime = getDateTime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
+                        updateModel(datetime);
+                    };
 
-                    function startWatchMonth() {
-                        scope.$watch('data.selected.month', function (month:number, oldValue:number) {
-                            if (!month && month !== 0) return;
-                            if (month === oldValue) return;
+                    scope.onMonthSelectChanged = function (month:number) {
+                        if (!month && month !== 0) return;
 
-                            var datetime;
-                            var year = scope.data.selected.year;
-                            var day = scope.data.selected.day;
+                        var datetime;
+                        var year = scope.data.selected.year;
+                        var day = scope.data.selected.day;
 
-                            if (!isCorrectDay(day, month, year)){
-                                day = scope.data.getDaysInMonth(month, year);
-                            }
+                        if (!isCorrectDay(day, month, year)) {
+                            day = scope.data.getDaysInMonth(month, year);
+                        }
 
-                            datetime = getDateTime(day, month, year);
-                            updateModel(datetime);
-                        });
-                    }
+                        datetime = getDateTime(day, month, year);
+                        updateModel(datetime);
+                    };
 
-                    function startWatchYear() {
-                        scope.$watch('data.selected.year', function (year:number, oldValue:number) {
-                            if (!year && year !== 0) return;
-                            if (year === oldValue) return;
+                    scope.onYearSelectChanged = function (year:number) {
+                        if (!year && year !== 0) return;
 
-                            var datetime;
-                            var month = scope.data.selected.month;
-                            var day = scope.data.selected.day;
+                        var datetime;
+                        var month = scope.data.selected.month;
+                        var day = scope.data.selected.day;
 
-                            if (!isCorrectDay(day, month, year)){
-                                day = scope.data.getDaysInMonth(year, year);
-                            }
+                        if (!isCorrectDay(day, month, year)) {
+                            day = scope.data.getDaysInMonth(year, year);
+                        }
 
-                            datetime = getDateTime(day, month, year);
-                            updateModel(datetime);
-                        });
+                        datetime = getDateTime(day, month, year);
+                        updateModel(datetime);
                     }
 
                     function getDateTime(day:number, month:number, year:number) {

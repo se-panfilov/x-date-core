@@ -16,7 +16,7 @@ module apd.dateUtils {
                 //return MessagesFactoryClass.throwWrongInstanceMessage();
             }
 
-            var date = new Date();
+            var date = new Date(datetime);
 
             this.day = date.getDate();
             this.dayOfWeek = date.getDay();
