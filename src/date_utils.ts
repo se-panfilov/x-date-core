@@ -29,6 +29,14 @@ module apd.dateUtils {
 
     }
 
+    interface TimeFunction extends Function {
+        (date:Date):number;
+    }
+
+    interface ArrayNumberFunction extends Function {
+        ():Array<number>;
+    }
+
     class DataClass {
         selected:DateModelClass;
         days:Array<number>;
@@ -43,13 +51,14 @@ module apd.dateUtils {
 
             var self = this;
 
-            self.years = self._getNumList(startDateTime, endDateTime, self._getFullYear, self._getDefaultYearsList.bind(self));
+            //TODO (S.Panfilov) why I'm cannot pass self._getFullYear this without casting to TimeFunction?
+            self.years = self._getNumList(startDateTime, endDateTime, <TimeFunction>self._getFullYear, self._getDefaultYearsList.bind(self));
 
-            self.month = self._getNumList(startDateTime, endDateTime, self._getMonth, self._getDefaultMonthList.bind(self));
+            self.month = self._getNumList(startDateTime, endDateTime, <TimeFunction>self._getMonth, self._getDefaultMonthList.bind(self));
 
             self.selected = self._getSelected(selected, startDateTime, endDateTime);
 
-            self.days = self._getNumList(startDateTime, endDateTime, self._getDay, function () {
+            self.days = self._getNumList(startDateTime, endDateTime, <TimeFunction>self._getDay, <ArrayNumberFunction>function () {
                 return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
             });
 
@@ -84,7 +93,7 @@ module apd.dateUtils {
             return result;
         };
 
-        private _getDefaultDaysList = function (month:number, year:number) {
+        private _getDefaultDaysList = function (month:number, year:number):Array<number> {
             var daysCount = this.getDaysInMonth(month, year);
             return this._getIntArr(daysCount);
         };
@@ -126,20 +135,19 @@ module apd.dateUtils {
             return result;
         };
 
-        private _getFullYear = function (date:Date) {
+        private _getFullYear = function (date:Date):number {
             return date.getFullYear();
         };
 
-        private _getMonth = function (date:Date) {
+        private _getMonth = function (date:Date):number {
             return date.getMonth();
         };
 
-        private _getDay = function (date:Date) {
+        private _getDay = function (date:Date):number {
             return date.getDate();
         };
 
-        //TODO (S.Panfilov) not any, but functions types
-        private _getNumList = function (startDateTime:number, endDateTime:number, timeFunc:any, callback:any) {
+        private _getNumList = function (startDateTime:number, endDateTime:number, timeFunc:TimeFunction, callback?:ArrayNumberFunction) {
             var result:Array<number> = [];
 
             var start:number;
@@ -181,7 +189,7 @@ module apd.dateUtils {
 
             //start = null, end = null
             else if (!startDateTime && !endDateTime) {
-                if (callback) return callback(timeFunc);
+                if (callback) return callback();
             }
 
             return result;
@@ -191,7 +199,7 @@ module apd.dateUtils {
         private _getIntArr = function (length:number) {
             if (!length && length !== 0) {
                 apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
-                return false;
+                return null;
             }
 
             return length ? this._getIntArr(length - 1).concat(length) : [];
