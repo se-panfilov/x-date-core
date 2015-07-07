@@ -1,15 +1,4 @@
 angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span title={{getDayOfWeekName(data.selected.dayOfWeek)}} ng-bind=getDayOfWeekShortName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
-//module apd.main {
-//    'use strict';
-angular.module('angular-pd', [
-    'angular-pd.datepicker',
-    'angular-pd.date_utils',
-    'angular-pd.messages'
-]);
-//} 
-
-/// <reference path="main.ts" />
-//TODO (S.Panfilov)  is this references necessary?
 var apd;
 (function (apd) {
     var directive;
@@ -180,45 +169,6 @@ var apd;
 
 var apd;
 (function (apd) {
-    var messages;
-    (function (messages) {
-        'use strict';
-        var MessagesFactoryClass = (function () {
-            function MessagesFactoryClass() {
-                this.messages = {
-                    wrongInstance: 'Class created without \'new\', wrong \'this\'',
-                    invalidParams: 'Invalid params',
-                    invalidDateModel: 'Invalid date model',
-                    datesInverted: 'Warning! Start date > End date'
-                };
-            }
-            MessagesFactoryClass.throwDeveloperError = function (message) {
-                console.error(message);
-            };
-            MessagesFactoryClass.throwModelValidationMessage = function (field) {
-                this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
-            };
-            MessagesFactoryClass.throwInvalidParamsMessage = function () {
-                this.throwDeveloperError(this.messages.invalidParams);
-            };
-            MessagesFactoryClass.throwWrongInstanceMessage = function () {
-                this.throwDeveloperError(this.messages.wrongInstance);
-            };
-            MessagesFactoryClass.throwDatesInvertedMessage = function () {
-                this.throwDeveloperError(this.messages.datesInverted);
-            };
-            return MessagesFactoryClass;
-        })();
-        messages.MessagesFactoryClass = MessagesFactoryClass;
-        angular.module('angular-pd.messages', []).factory('MessagesFactory', function () {
-            return new MessagesFactoryClass();
-        });
-    })(messages = apd.messages || (apd.messages = {}));
-})(apd || (apd = {}));
-
-/// <reference path="messages.ts" />
-var apd;
-(function (apd) {
     var dateUtils;
     (function (dateUtils) {
         'use strict';
@@ -381,4 +331,51 @@ var apd;
             return exports;
         });
     })(dateUtils = apd.dateUtils || (apd.dateUtils = {}));
+})(apd || (apd = {}));
+
+//module apd.main {
+//    'use strict';
+angular.module('angular-pd', [
+    'angular-pd.datepicker',
+    'angular-pd.date_utils',
+    'angular-pd.messages'
+]);
+//} 
+
+var apd;
+(function (apd) {
+    var messages;
+    (function (messages) {
+        'use strict';
+        var MessagesFactoryClass = (function () {
+            function MessagesFactoryClass() {
+                this.messages = {
+                    wrongInstance: 'Class created without \'new\', wrong \'this\'',
+                    invalidParams: 'Invalid params',
+                    invalidDateModel: 'Invalid date model',
+                    datesInverted: 'Warning! Start date > End date'
+                };
+            }
+            MessagesFactoryClass.throwDeveloperError = function (message) {
+                console.error(message);
+            };
+            MessagesFactoryClass.throwModelValidationMessage = function (field) {
+                this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
+            };
+            MessagesFactoryClass.throwInvalidParamsMessage = function () {
+                this.throwDeveloperError(this.messages.invalidParams);
+            };
+            MessagesFactoryClass.throwWrongInstanceMessage = function () {
+                this.throwDeveloperError(this.messages.wrongInstance);
+            };
+            MessagesFactoryClass.throwDatesInvertedMessage = function () {
+                this.throwDeveloperError(this.messages.datesInverted);
+            };
+            return MessagesFactoryClass;
+        })();
+        messages.MessagesFactoryClass = MessagesFactoryClass;
+        angular.module('angular-pd.messages', []).factory('MessagesFactory', function () {
+            return new MessagesFactoryClass();
+        });
+    })(messages = apd.messages || (apd.messages = {}));
 })(apd || (apd = {}));

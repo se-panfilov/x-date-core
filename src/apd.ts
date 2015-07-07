@@ -1,7 +1,3 @@
-/// <reference path="main.ts" />
-
-//TODO (S.Panfilov)  is this references necessary?
-
 module apd.directive {
     'use strict';
 

@@ -1,5 +1,3 @@
-/// <reference path="messages.ts" />
-
 module apd.dateUtils {
     'use strict';
 
