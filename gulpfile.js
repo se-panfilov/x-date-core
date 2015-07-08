@@ -41,6 +41,15 @@ var dest = {
 //        .pipe(coffeelint.reporter())
 //});
 
+gulp.task('todo', function() {
+    var todo = require('gulp-todo');
+
+    gulp.src('src/**/*.*')
+        .pipe(todo())
+        .pipe(gulp.dest('./'));
+    // -> Will output a TODO.md with your todos
+});
+
 
 gulp.task('sizes_dist', function () {
     return gulp.src([
@@ -107,9 +116,9 @@ gulp.task('stylus', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch(src.jade, ['ts']);
-    gulp.watch(src.styles, ['stylus']);
-    gulp.watch(src.ts, ['ts']);
+    gulp.watch(src.jade, ['ts', 'todo']);
+    gulp.watch(src.styles, ['stylus', 'todo']);
+    gulp.watch(src.ts, ['ts', 'todo']);
 });
 
 gulp.task('build', function () {
