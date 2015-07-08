@@ -13,7 +13,7 @@ module apd.Model {
 
         constructor(datetime:number) {
             if (!(this instanceof DateModelClass)) {
-                apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
                 return new DateModelClass(datetime);
             }
 
@@ -27,6 +27,10 @@ module apd.Model {
             this.timezone = date.getTimezoneOffset();
 
             return this;
+        }
+
+        static validate = function (model:DateModelClass) {
+            return !!(model && model.datetime);
         }
 
     }

@@ -1,6 +1,10 @@
 /// <reference path="classes/DayOfWeek.ts" />
 /// <reference path="classes/DaysOfWeek.ts" />
 /// <reference path="classes/DateModelClass.ts" />
+/// <reference path="messages_factory.ts" />
+
+declare
+var angular:any;
 
 module apd.directive {
     'use strict';
@@ -16,11 +20,12 @@ module apd.directive {
         new apd.Model.DayOfWeek('Saturday', 'Sat')
     ]);
 
-    angular.module('angular-pd.datepicker', [
-        'angular-pd.templates'
+    angular.module('angular-pd', [
+        'angular-pd.templates',
+        'angular-pd.messages'
     ])
 
-        .directive('pureDatepicker', function (DateUtilsFactory, MessagesFactory) {
+        .directive('pureDatepicker', function (MessagesFactory) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -66,7 +71,7 @@ module apd.directive {
                     };
 
                     function getInitDateModel(model:any) {
-                        var isInitModelValid:boolean = DateUtilsFactory.validateModel(model);
+                        var isInitModelValid:boolean = apd.Model.DateModelClass.validate(model);
                         var initDatetime:number;
 
                         if (isInitModelValid) {
@@ -79,7 +84,7 @@ module apd.directive {
                     }
 
                     function _initData(initDateModel:apd.Model.DateModelClass, startDateTime:number, endDateTime:number) {
-                        scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
+                        scope.data =new apd.Model.DataClass(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                     }
 
@@ -96,7 +101,6 @@ module apd.directive {
                         }
 
                         updateModel(datetime);
-
 
                         scope.data.reloadYearsList();
                         scope.data.reloadMonthList();
@@ -117,8 +121,8 @@ module apd.directive {
                         var year = scope.data.selected.year;
                         var day = scope.data.selected.day;
 
-                        //TODO (S.Panfilov) check case whrn it's incorrect day
-                        if (!isCorrectDay(day, month, year)) {
+                        //TODO (S.Panfilov) check case when it's incorrect day
+                        if (!isDayInMonth(day, month, year)) {
                             //TODO (S.Panfilov) .getDaysInMonth didn't expect limits, should use other func
                             day = scope.data.getDaysInMonth(month, year);
                         }
@@ -135,7 +139,7 @@ module apd.directive {
                         var month = scope.data.selected.month;
                         var day = scope.data.selected.day;
 
-                        if (!isCorrectDay(day, month, year)) {
+                        if (!isDayInMonth(day, month, year)) {
                             day = scope.data.getDaysInMonth(year, year);
                         }
 
@@ -154,7 +158,7 @@ module apd.directive {
                         return new Date(year, month, day).getTime();
                     }
 
-                    function isCorrectDay(day:number, month:number, year:number):boolean {
+                    function isDayInMonth(day:number, month:number, year:number):boolean {
                         var daysInMonth = scope.data.getDaysInMonth(month, year);
 
                         return day <= daysInMonth;

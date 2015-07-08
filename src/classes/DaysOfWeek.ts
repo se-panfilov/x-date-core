@@ -10,7 +10,7 @@ module apd.Model {
 
         constructor(days:Array<DayOfWeek>) {
             if (!(this instanceof DaysOfWeek)) {
-                apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
                 return new DaysOfWeek(days);
             }
 

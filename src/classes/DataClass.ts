@@ -18,7 +18,7 @@ module apd.Model {
 
         constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
             if (!(this instanceof DataClass)) {
-                apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
                 return new DataClass(selected, startDateTime, endDateTime);
             }
 
@@ -92,6 +92,7 @@ module apd.Model {
 
         reloadYearsList = function () {
             this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates, this.YEARS_LIST_DIRECTION);
+            return this;
         };
 
         private _getYearsList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, direction:string) {
@@ -109,7 +110,7 @@ module apd.Model {
 
             //start = 2014, end = 2011
             else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
-                apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
+                apd.Model.MessagesFactoryClass.throwDatesInvertedMessage();
                 result = this._getArrayOfNumbers(end, start);
             }
 
@@ -139,6 +140,7 @@ module apd.Model {
         reloadMonthList = function () {
             var selectedYear = new Date(this.selected.datetime).getFullYear();
             this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
+            return this;
         };
 
         private _getMonthList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, direction:string) {
@@ -181,6 +183,7 @@ module apd.Model {
             var selectedYear = new Date(this.selected.datetime).getFullYear();
             var selectedMonth = new Date(this.selected.datetime).getMonth();
             this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.DAYS_LIST_DIRECTION);
+            return this;
         };
 
         private _getDaysList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, selectedMonth:number, direction:string) {
@@ -221,7 +224,7 @@ module apd.Model {
 
         private _getIntArr = function (length:number) {
             if (!length && length !== 0) {
-                apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
+                apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
                 return null;
             }
 
@@ -230,6 +233,20 @@ module apd.Model {
 
         getDaysInMonth = (month:number, year:number) => {
             return new Date(year, month + 1, 0).getDate();
+        };
+
+        static isDateUpperStartLimit = function (datetime:number, startLimitTime:number) {
+            if (!startLimitTime) return true;
+            return (datetime > startLimitTime);
+        };
+
+        static isDateLowerEndLimit = function (datetime:number, endLimitTime:number) {
+            if (!endLimitTime) return true;
+            return (datetime < endLimitTime);
+        };
+
+        static isDateBetweenLimits = function (datetime:number, startLimitTime:number, endLimitTime:number) {
+            return (this.isDateUpperStartLimit(datetime, startLimitTime) && this.isDateLowerEndLimit(datetime, endLimitTime));
         };
 
     }

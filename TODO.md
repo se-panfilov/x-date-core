@@ -1,8 +1,9 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| apd.ts | 8 | (S.Panfilov) add localization
-| apd.ts | 120 | (S.Panfilov) check case whrn it's incorrect day
-| apd.ts | 122 | (S.Panfilov) .getDaysInMonth didn't expect limits, should use other func
-| classes/DataClass.ts | 148 | (S.Panfilov)  check
-| classes/DataClass.ts | 190 | (S.Panfilov)  check
+| apd_directive.ts | 12 | (S.Panfilov) add localization
+| apd_directive.ts | 124 | (S.Panfilov) check case when it's incorrect day
+| apd_directive.ts | 126 | (S.Panfilov) .getDaysInMonth didn't expect limits, should use other func
+| classes/DataClass.ts | 14 | Remove sorting from here to the directive
+| classes/DataClass.ts | 151 | (S.Panfilov)  check
+| classes/DataClass.ts | 194 | (S.Panfilov)  check

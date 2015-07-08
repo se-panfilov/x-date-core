@@ -24,7 +24,7 @@ module apd.Model {
 
         constructor(startDateTime:number, endDateTime:number) {
             if (!(this instanceof LimitDatesClass)) {
-                apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
                 return new LimitDatesClass(startDateTime, endDateTime);
             }
 

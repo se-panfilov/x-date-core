@@ -1,4 +1,6 @@
-module apd.messages {
+/// <reference path="DataClass.ts" />
+
+module apd.Model {
     'use strict';
 
     export class MessagesFactoryClass {
@@ -29,13 +31,4 @@ module apd.messages {
             this.throwDeveloperError(this.messages.datesInverted);
         };
     }
-
-    angular.module('angular-pd.messages', [])
-
-        .factory('MessagesFactory', function () {
-            return new MessagesFactoryClass();
-        }
-    )
-    ;
-
 }
