@@ -84,7 +84,7 @@ module apd.directive {
                     }
 
                     function _initData(initDateModel:apd.Model.DateModelClass, startDateTime:number, endDateTime:number) {
-                        scope.data =new apd.Model.DataClass(initDateModel, startDateTime, endDateTime);
+                        scope.data = new apd.Model.DataClass(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                     }
 
@@ -126,7 +126,22 @@ module apd.directive {
                             //TODO (S.Panfilov) .getDaysInMonth didn't expect limits, should use other func
                             day = scope.data.getDaysInMonth(month, year);
                         }
+
                         datetime = getDateTime(day, month, year);
+
+                        if (!apd.Model.DataClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)){
+                            //TODO (S.Panfilov) current work point
+                            //if start > datetime, should set start as datetime
+                            if (apd.Model.DataClass.isDateUpperStartLimit(datetime, settings.startDateTime)){
+
+                            }
+
+                            if (apd.Model.DataClass.isDateLowerEndLimit(datetime, settings.endDateTime)){
+
+                            }
+                        }
+
+
                         updateModel(datetime);
 
                         scope.data.reloadDaysList();
