@@ -75,7 +75,9 @@ function makeJade() {
 
 function makeTypeScript() {
     return gulp.src(src.ts)
-        .pipe(ts({bare: true}))
+        .pipe(ts({
+            removeComments: true
+        }))
         .on('error', console.log)
         .pipe(concat('angular-pure-datepicker.js'))
         .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))

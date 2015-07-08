@@ -1,3 +1,6 @@
+/// <reference path="classes/DataClass.ts" />
+/// <reference path="classes/DateModelClass.ts" />
+
 module apd.dateUtils {
     'use strict';
 

@@ -1,195 +1,6 @@
 angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span title={{getDayOfWeekName(data.selected.dayOfWeek)}} ng-bind=getDayOfWeekShortName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 var apd;
 (function (apd) {
-    var directive;
-    (function (directive) {
-        'use strict';
-        var daysOfWeek = new apd.Model.DaysOfWeek([
-            new apd.Model.DayOfWeek('Sunday', 'Sun'),
-            new apd.Model.DayOfWeek('Monday', 'Mon'),
-            new apd.Model.DayOfWeek('Tuesday', 'Tue'),
-            new apd.Model.DayOfWeek('Wednesday', 'Wed'),
-            new apd.Model.DayOfWeek('Thursday', 'Thu'),
-            new apd.Model.DayOfWeek('Friday', 'Fri'),
-            new apd.Model.DayOfWeek('Saturday', 'Sat')
-        ]);
-        angular.module('angular-pd.datepicker', [
-            'angular-pd.templates'
-        ]).directive('pureDatepicker', ['DateUtilsFactory', 'MessagesFactory', function (DateUtilsFactory, MessagesFactory) {
-            return {
-                restrict: 'E',
-                replace: true,
-                templateUrl: 'apd.html',
-                scope: {
-                    ngModel: '=',
-                    apdStart: '=?',
-                    apdEnd: '=?',
-                    apdDayId: '@?',
-                    apdMonthId: '@?',
-                    apdYearId: '@?',
-                    apdDayClasses: '@?',
-                    apdMonthClasses: '@?',
-                    apdYearClasses: '@?'
-                },
-                link: function (scope) {
-                    var settings = {
-                        initDateModel: null,
-                        startDateTime: null,
-                        endDateTime: null
-                    };
-                    function init() {
-                        settings.initDateModel = getInitDateModel(scope.ngModel);
-                        settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
-                        settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
-                        _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
-                        scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
-                        scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
-                    }
-                    init();
-                    function getInitDateModel(model) {
-                        var isInitModelValid = DateUtilsFactory.validateModel(model);
-                        var initDatetime;
-                        if (isInitModelValid) {
-                            initDatetime = model.datetime;
-                        }
-                        else {
-                            initDatetime = new Date().getTime();
-                        }
-                        return new apd.Model.DateModelClass(initDatetime);
-                    }
-                    function _initData(initDateModel, startDateTime, endDateTime) {
-                        scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
-                        scope.ngModel = scope.data.selected;
-                    }
-                    function updateModel(datetime) {
-                        scope.data.selected = new apd.Model.DateModelClass(datetime);
-                        scope.ngModel = scope.data.selected;
-                    }
-                    //TODO (S.Panfilov) fixes for external model change
-                    //scope.$watch('ngModel.datetime', function (value, oldValue) {
-                    //    if (value === oldValue) {
-                    //        return;
-                    //    }
-                    //
-                    //    _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
-                    //}, true);
-                    scope.onDaySelectChanged = function (day) {
-                        if (!day)
-                            return;
-                        var datetime = getDateTime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
-                        updateModel(datetime);
-                    };
-                    scope.onMonthSelectChanged = function (month) {
-                        if (!month && month !== 0)
-                            return;
-                        var datetime;
-                        var year = scope.data.selected.year;
-                        var day = scope.data.selected.day;
-                        if (!isCorrectDay(day, month, year)) {
-                            //TODO (S.Panfilov) .getDaysInMonth didn't expect limits, should use other func
-                            day = scope.data.getDaysInMonth(month, year);
-                        }
-                        datetime = getDateTime(day, month, year);
-                        updateModel(datetime);
-                    };
-                    scope.onYearSelectChanged = function (year) {
-                        if (!year && year !== 0)
-                            return;
-                        var datetime;
-                        var month = scope.data.selected.month;
-                        var day = scope.data.selected.day;
-                        if (!isCorrectDay(day, month, year)) {
-                            day = scope.data.getDaysInMonth(year, year);
-                        }
-                        //TODO (S.Panfilov) check
-                        scope.data.reloadMonthList();
-                        datetime = getDateTime(day, month, year);
-                        updateModel(datetime);
-                    };
-                    function getDateTime(day, month, year) {
-                        if (!day || (!month && month !== 0) || !year) {
-                            MessagesFactory.throwInvalidParamsMessage();
-                        }
-                        return new Date(year, month, day).getTime();
-                    }
-                    function isCorrectDay(day, month, year) {
-                        var daysInMonth = scope.data.getDaysInMonth(month, year);
-                        return day <= daysInMonth;
-                    }
-                }
-            };
-        }]);
-    })(directive = apd.directive || (apd.directive = {}));
-})(apd || (apd = {}));
-
-var apd;
-(function (apd) {
-    var dateUtils;
-    (function (dateUtils) {
-        'use strict';
-        angular.module('angular-pd.date_utils', []).factory('DateUtilsFactory', function () {
-            var exports = {
-                getData: function (selected, startDateTime, endDateTime) {
-                    return new apd.Model.DataClass(selected, startDateTime, endDateTime);
-                },
-                validateModel: function (model) {
-                    return !!(model && model.datetime);
-                }
-            };
-            return exports;
-        });
-    })(dateUtils = apd.dateUtils || (apd.dateUtils = {}));
-})(apd || (apd = {}));
-
-//module apd.main {
-//    'use strict';
-angular.module('angular-pd', [
-    'angular-pd.datepicker',
-    'angular-pd.date_utils',
-    'angular-pd.messages'
-]);
-//} 
-
-var apd;
-(function (apd) {
-    var messages;
-    (function (messages) {
-        'use strict';
-        var MessagesFactoryClass = (function () {
-            function MessagesFactoryClass() {
-                this.messages = {
-                    wrongInstance: 'Class created without \'new\', wrong \'this\'',
-                    invalidParams: 'Invalid params',
-                    invalidDateModel: 'Invalid date model',
-                    datesInverted: 'Warning! Start date > End date'
-                };
-            }
-            MessagesFactoryClass.throwDeveloperError = function (message) {
-                console.error(message);
-            };
-            MessagesFactoryClass.throwModelValidationMessage = function (field) {
-                this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
-            };
-            MessagesFactoryClass.throwInvalidParamsMessage = function () {
-                this.throwDeveloperError(this.messages.invalidParams);
-            };
-            MessagesFactoryClass.throwWrongInstanceMessage = function () {
-                this.throwDeveloperError(this.messages.wrongInstance);
-            };
-            MessagesFactoryClass.throwDatesInvertedMessage = function () {
-                this.throwDeveloperError(this.messages.datesInverted);
-            };
-            return MessagesFactoryClass;
-        })();
-        messages.MessagesFactoryClass = MessagesFactoryClass;
-        angular.module('angular-pd.messages', []).factory('MessagesFactory', function () {
-            return new MessagesFactoryClass();
-        });
-    })(messages = apd.messages || (apd.messages = {}));
-})(apd || (apd = {}));
-
-var apd;
-(function (apd) {
     var Model;
     (function (Model) {
         'use strict';
@@ -203,16 +14,12 @@ var apd;
                     var isEqualToStart = (selected.datetime === startDateTime);
                     var isLowerThenEnd = (selected.datetime > endDateTime);
                     var isEqualToEnd = (selected.datetime === endDateTime);
-                    //start == 1; selected == 1 or 2 or 3; end == 3;
                     if ((isBiggerThenStart || isEqualToStart) && (isLowerThenEnd || isEqualToEnd)) {
                         result = new Model.DateModelClass(selected.datetime);
                     }
-                    else 
-                    //start == 1; selected == 0
-                    if (!isBiggerThenStart) {
+                    else if (!isBiggerThenStart) {
                         result = new Model.DateModelClass(startDateTime);
                     }
-                    //selected == 4; end == 3;
                     if (!isBiggerThenStart) {
                         result = new Model.DateModelClass(endDateTime);
                     }
@@ -221,10 +28,6 @@ var apd;
                     }
                     return result;
                 };
-                //private _getDefaultDaysList = function (month:number, year:number):Array<number> {
-                //    var daysCount = this.getDaysInMonth(month, year);
-                //    return this._getIntArr(daysCount);
-                //};
                 this._intArraySort = function (arr, direction) {
                     if (direction === void 0) { direction = 'asc'; }
                     function desc(a, b) {
@@ -255,7 +58,6 @@ var apd;
                     var start = limitDates.startDate.year;
                     var end = limitDates.endDate.year;
                     var now = limitDates.nowDate.year;
-                    //start = 2011, end = 2014
                     if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
                         result = this._getArrayOfNumbers(start, end);
                     }
@@ -288,10 +90,8 @@ var apd;
                     var start = limitDates.startDate.month;
                     var end = limitDates.endDate.month;
                     var now = limitDates.nowDate.month;
-                    //TODO (S.Panfilov) Add limited years support and check other cases
                     var isYearOfLowerLimit = limitDates.startDate.year === selectedYear;
                     var isYearOfUpperLimit = limitDates.endDate.year === selectedYear;
-                    //start = 3, end = 6
                     if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
                         result = this._getArrayOfNumbers(start, end);
                     }
@@ -335,40 +135,11 @@ var apd;
                 self._endDateTime = endDateTime;
                 self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, this.YEARS_LIST_DIRECTION);
                 self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
-                //self.days = self._getNumList(startDateTime, endDateTime, function () {
-                //    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
-                //});
                 return this;
             }
             return DataClass;
         })();
         Model.DataClass = DataClass;
-    })(Model = apd.Model || (apd.Model = {}));
-})(apd || (apd = {}));
-
-var apd;
-(function (apd) {
-    var Model;
-    (function (Model) {
-        'use strict';
-        var DateModelClass = (function () {
-            function DateModelClass(datetime) {
-                if (!(this instanceof DateModelClass)) {
-                    apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
-                    return new DateModelClass(datetime);
-                }
-                var date = new Date(datetime);
-                this.day = date.getDate();
-                this.dayOfWeek = date.getDay();
-                this.month = date.getMonth();
-                this.year = date.getFullYear();
-                this.datetime = datetime;
-                this.timezone = date.getTimezoneOffset();
-                return this;
-            }
-            return DateModelClass;
-        })();
-        Model.DateModelClass = DateModelClass;
     })(Model = apd.Model || (apd.Model = {}));
 })(apd || (apd = {}));
 
@@ -436,6 +207,208 @@ var apd;
         })();
         Model.DaysOfWeek = DaysOfWeek;
     })(Model = apd.Model || (apd.Model = {}));
+})(apd || (apd = {}));
+
+var apd;
+(function (apd) {
+    var Model;
+    (function (Model) {
+        'use strict';
+        var DateModelClass = (function () {
+            function DateModelClass(datetime) {
+                if (!(this instanceof DateModelClass)) {
+                    apd.messages.MessagesFactoryClass.throwWrongInstanceMessage();
+                    return new DateModelClass(datetime);
+                }
+                var date = new Date(datetime);
+                this.day = date.getDate();
+                this.dayOfWeek = date.getDay();
+                this.month = date.getMonth();
+                this.year = date.getFullYear();
+                this.datetime = datetime;
+                this.timezone = date.getTimezoneOffset();
+                return this;
+            }
+            return DateModelClass;
+        })();
+        Model.DateModelClass = DateModelClass;
+    })(Model = apd.Model || (apd.Model = {}));
+})(apd || (apd = {}));
+
+var apd;
+(function (apd) {
+    var directive;
+    (function (directive) {
+        'use strict';
+        var daysOfWeek = new apd.Model.DaysOfWeek([
+            new apd.Model.DayOfWeek('Sunday', 'Sun'),
+            new apd.Model.DayOfWeek('Monday', 'Mon'),
+            new apd.Model.DayOfWeek('Tuesday', 'Tue'),
+            new apd.Model.DayOfWeek('Wednesday', 'Wed'),
+            new apd.Model.DayOfWeek('Thursday', 'Thu'),
+            new apd.Model.DayOfWeek('Friday', 'Fri'),
+            new apd.Model.DayOfWeek('Saturday', 'Sat')
+        ]);
+        angular.module('angular-pd.datepicker', [
+            'angular-pd.templates'
+        ]).directive('pureDatepicker', ['DateUtilsFactory', 'MessagesFactory', function (DateUtilsFactory, MessagesFactory) {
+            return {
+                restrict: 'E',
+                replace: true,
+                templateUrl: 'apd.html',
+                scope: {
+                    ngModel: '=',
+                    apdStart: '=?',
+                    apdEnd: '=?',
+                    apdDayId: '@?',
+                    apdMonthId: '@?',
+                    apdYearId: '@?',
+                    apdDayClasses: '@?',
+                    apdMonthClasses: '@?',
+                    apdYearClasses: '@?'
+                },
+                link: function (scope) {
+                    var settings = {
+                        initDateModel: null,
+                        startDateTime: null,
+                        endDateTime: null
+                    };
+                    function init() {
+                        settings.initDateModel = getInitDateModel(scope.ngModel);
+                        settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
+                        settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                        _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
+                        scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
+                        scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
+                    }
+                    init();
+                    function getInitDateModel(model) {
+                        var isInitModelValid = DateUtilsFactory.validateModel(model);
+                        var initDatetime;
+                        if (isInitModelValid) {
+                            initDatetime = model.datetime;
+                        }
+                        else {
+                            initDatetime = new Date().getTime();
+                        }
+                        return new apd.Model.DateModelClass(initDatetime);
+                    }
+                    function _initData(initDateModel, startDateTime, endDateTime) {
+                        scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
+                        scope.ngModel = scope.data.selected;
+                    }
+                    function updateModel(datetime) {
+                        scope.data.selected = new apd.Model.DateModelClass(datetime);
+                        scope.ngModel = scope.data.selected;
+                    }
+                    scope.onDaySelectChanged = function (day) {
+                        if (!day)
+                            return;
+                        var datetime = getDateTime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
+                        updateModel(datetime);
+                    };
+                    scope.onMonthSelectChanged = function (month) {
+                        if (!month && month !== 0)
+                            return;
+                        var datetime;
+                        var year = scope.data.selected.year;
+                        var day = scope.data.selected.day;
+                        if (!isCorrectDay(day, month, year)) {
+                            day = scope.data.getDaysInMonth(month, year);
+                        }
+                        datetime = getDateTime(day, month, year);
+                        updateModel(datetime);
+                    };
+                    scope.onYearSelectChanged = function (year) {
+                        if (!year && year !== 0)
+                            return;
+                        var datetime;
+                        var month = scope.data.selected.month;
+                        var day = scope.data.selected.day;
+                        if (!isCorrectDay(day, month, year)) {
+                            day = scope.data.getDaysInMonth(year, year);
+                        }
+                        scope.data.reloadMonthList();
+                        datetime = getDateTime(day, month, year);
+                        updateModel(datetime);
+                    };
+                    function getDateTime(day, month, year) {
+                        if (!day || (!month && month !== 0) || !year) {
+                            MessagesFactory.throwInvalidParamsMessage();
+                        }
+                        return new Date(year, month, day).getTime();
+                    }
+                    function isCorrectDay(day, month, year) {
+                        var daysInMonth = scope.data.getDaysInMonth(month, year);
+                        return day <= daysInMonth;
+                    }
+                }
+            };
+        }]);
+    })(directive = apd.directive || (apd.directive = {}));
+})(apd || (apd = {}));
+
+var apd;
+(function (apd) {
+    var dateUtils;
+    (function (dateUtils) {
+        'use strict';
+        angular.module('angular-pd.date_utils', []).factory('DateUtilsFactory', function () {
+            var exports = {
+                getData: function (selected, startDateTime, endDateTime) {
+                    return new apd.Model.DataClass(selected, startDateTime, endDateTime);
+                },
+                validateModel: function (model) {
+                    return !!(model && model.datetime);
+                }
+            };
+            return exports;
+        });
+    })(dateUtils = apd.dateUtils || (apd.dateUtils = {}));
+})(apd || (apd = {}));
+
+angular.module('angular-pd', [
+    'angular-pd.datepicker',
+    'angular-pd.date_utils',
+    'angular-pd.messages'
+]);
+
+var apd;
+(function (apd) {
+    var messages;
+    (function (messages) {
+        'use strict';
+        var MessagesFactoryClass = (function () {
+            function MessagesFactoryClass() {
+                this.messages = {
+                    wrongInstance: 'Class created without \'new\', wrong \'this\'',
+                    invalidParams: 'Invalid params',
+                    invalidDateModel: 'Invalid date model',
+                    datesInverted: 'Warning! Start date > End date'
+                };
+            }
+            MessagesFactoryClass.throwDeveloperError = function (message) {
+                console.error(message);
+            };
+            MessagesFactoryClass.throwModelValidationMessage = function (field) {
+                this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
+            };
+            MessagesFactoryClass.throwInvalidParamsMessage = function () {
+                this.throwDeveloperError(this.messages.invalidParams);
+            };
+            MessagesFactoryClass.throwWrongInstanceMessage = function () {
+                this.throwDeveloperError(this.messages.wrongInstance);
+            };
+            MessagesFactoryClass.throwDatesInvertedMessage = function () {
+                this.throwDeveloperError(this.messages.datesInverted);
+            };
+            return MessagesFactoryClass;
+        })();
+        messages.MessagesFactoryClass = MessagesFactoryClass;
+        angular.module('angular-pd.messages', []).factory('MessagesFactory', function () {
+            return new MessagesFactoryClass();
+        });
+    })(messages = apd.messages || (apd.messages = {}));
 })(apd || (apd = {}));
 
 var apd;

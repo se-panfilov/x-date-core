@@ -1,5 +1,10 @@
+/// <reference path="classes/DayOfWeek.ts" />
+/// <reference path="classes/DaysOfWeek.ts" />
+/// <reference path="classes/DateModelClass.ts" />
+
 module apd.directive {
     'use strict';
+
 
     var daysOfWeek = new apd.Model.DaysOfWeek([
         new apd.Model.DayOfWeek('Sunday', 'Sun'),

@@ -2,6 +2,7 @@ module apd.Model {
     'use strict';
 
     export class DataClass {
+
         selected:DateModelClass;
         days:Array<number>;
         month:Array<number>;
@@ -28,7 +29,6 @@ module apd.Model {
             self._endDateTime = endDateTime;
             self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, this.YEARS_LIST_DIRECTION);
             self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
-
 
             //self.days = self._getNumList(startDateTime, endDateTime, function () {
             //    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
@@ -69,7 +69,6 @@ module apd.Model {
         //    var daysCount = this.getDaysInMonth(month, year);
         //    return this._getIntArr(daysCount);
         //};
-
 
         private _intArraySort = function (arr:Array<number>, direction:string = 'asc') {
             function desc(a, b) {
