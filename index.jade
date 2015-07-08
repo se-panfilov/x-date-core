@@ -46,19 +46,19 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                     //                label.control-label(for="apd_1") Date
                     //                pure-datepicker#apd_1(ng-model="limitsCase.model", apd-start="limitsCase.startDate", apd-end="limitsCase.endDate")
                     //        model-well(case-model="limitsCase")
-                    li
-                        section
-                            hgroup
-                                h3 Left-side limit and valid model
-                            .case_description
-                                ul
-                                    li Valid ngModel
-                                    li Start date
-                            form#demo_simple_form(name="demo_simple_form")
-                                .form-group
-                                    label.control-label(for="apd_2") Date
-                                    pure-datepicker#apd_2(ng-model="leftLimitsCase.model", apd-start="leftLimitsCase.startDate")
-                            model-well(case-model="leftLimitsCase")
+                    //li
+                    //    section
+                    //        hgroup
+                    //            h3 Left-side limit and valid model
+                    //        .case_description
+                    //            ul
+                    //                li Valid ngModel
+                    //                li Start date
+                    //        form#demo_simple_form(name="demo_simple_form")
+                    //            .form-group
+                    //                label.control-label(for="apd_2") Date
+                    //                pure-datepicker#apd_2(ng-model="leftLimitsCase.model", apd-start="leftLimitsCase.startDate")
+                    //        model-well(case-model="leftLimitsCase")
                     //li
                     //    section
                     //        hgroup
@@ -149,121 +149,123 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                     //                label.control-label(for="apd_1") Date
                     //                pure-datepicker#apd_1(ng-model="emptyModelRightLimitCase.model", apd-end="emptyModelRightLimitCase.endDate")
                     //        model-well(case-model="emptyModelRightLimitCase")
-                    //    li
-                    //        section
-                    //            hgroup
-                    //                h3 Invalid left-side limit
-                    //            .case_description
-                    //                ul
-                    //                    li Invalid Start date
-                    //            form#demo_simple_form(name="demo_simple_form")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="invalidLeftLimitCase.model", apd-start="invalidLeftLimitCase.startDate")
-                    //            model-well(case-model="invalidLeftLimitCase")
-                    //    li
-                    //        section
-                    //            hgroup
-                    //                h3 Invalid right-side limit
-                    //            .case_description
-                    //                ul
-                    //                    li Invalid End date
-                    //            form#demo_simple_form(name="demo_simple_form")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="invalidRightLimitCase.model", apd-end="invalidRightLimitCase.endDate")
-                    //            model-well(case-model="invalidRightLimitCase")
-                    //    li
-                    //        section
-                    //            hgroup
-                    //                h3 Linked Dates
-                    //            .case_description
-                    //                ul
-                    //                    li Linked Dates
-                    //            form#demo_simple_form(name="demo_simple_form")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="linkedModelCase.model")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="linkedModelCase.model")
-                    //            model-well(case-model="linkedModelCase")
-                    //    li
-                    //        section
-                    //            hgroup
-                    //                h3 Linked Dates with same both-side limit
-                    //            .case_description
-                    //                ul
-                    //                    li Linked Dates
-                    //                    li Start Date
-                    //                    li End Date
-                    //            form#demo_simple_form(name="demo_simple_form")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="linkedModelBothLimitsCase.model", apd-start="linkedModelBothLimitsCase.startDate", apd-end="linkedModelBothLimitsCase.endDate")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="linkedModelBothLimitsCase.model", apd-start="linkedModelBothLimitsCase.startDate", apd-end="linkedModelBothLimitsCase.endDate")
-                    //            model-well(case-model="linkedModelBothLimitsCase")
-                    //    li
-                    //        section
-                    //            hgroup
-                    //                h3 Linked Dates with different both-side limit
-                    //            .case_description
-                    //                ul
-                    //                    li Linked Dates
-                    //                    li Different Limits
-                    //                    li Start Date
-                    //                    li End Date
-                    //            form#demo_simple_form(name="demo_simple_form")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="linkedModelBothDifferentLimitsCase.model", apd-start="linkedModelBothDifferentLimitsCase.startDate_one", apd-end="linkedModelBothDifferentLimitsCase.endDate_one")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="linkedModelBothDifferentLimitsCase.model", apd-start="linkedModelBothDifferentLimitsCase.startDate_two", apd-end="linkedModelBothDifferentLimitsCase.endDate_two")
-                    //            model-well(case-model="linkedModelBothDifferentLimitsCase")
-                    //    li
-                    //        section
-                    //            hgroup
-                    //                h3 External model change case
-                    //            .case_description
-                    //                ul
-                    //                    li Valid ngModel
-                    //                    li External model change
-                    //            form#demo_simple_form(name="demo_simple_form")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="externalChangeCase.model")
-                    //            button(type="button", ng-click="plusOneMonth(externalChangeCase)") +1 month
-                    //            model-well(case-model="externalChangeCase")
-                    //    li
-                    //        section
-                    //            hgroup
-                    //                h3 External model change with left-limit case
-                    //            .case_description
-                    //                ul
-                    //                    li Valid ngModel
-                    //                    li External model change
-                    //                    li left-limit
-                    //            form#demo_simple_form(name="demo_simple_form")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="externalChangeLeftLimitCase.model", apd-start="externalChangeLeftLimitCase.startDate")
-                    //            button(type="button", ng-click="minusOneMonth(externalChangeLeftLimitCase)") -1 month
-                    //            model-well(case-model="externalChangeLeftLimitCase")
-                    //    li
-                    //        section
-                    //            hgroup
-                    //                h3 External model change with right-limit case
-                    //            .case_description
-                    //                ul
-                    //                    li Valid ngModel
-                    //                    li External model change
-                    //                    li right-limit
-                    //            form#demo_simple_form(name="demo_simple_form")
-                    //                .form-group
-                    //                    label.control-label(for="apd_1") Date
-                    //                    pure-datepicker#apd_1(ng-model="externalChangeRightLimitCase.model", apd-start="externalChangeRightLimitCase.endDate")
-                    //            button(type="button", ng-click="plusOneMonth(externalChangeRightLimitCase)") +1 month
-                    //            model-well(case-model="externalChangeRightLimitCase")
+                    //li
+                    //    section
+                    //        hgroup
+                    //            h3 Invalid left-side limit
+                    //        .case_description
+                    //            ul
+                    //                li Invalid Start date
+                    //        form#demo_simple_form(name="demo_simple_form")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="invalidLeftLimitCase.model", apd-start="invalidLeftLimitCase.startDate")
+                    //        model-well(case-model="invalidLeftLimitCase")
+                    //li
+                    //    section
+                    //        hgroup
+                    //            h3 Invalid right-side limit
+                    //        .case_description
+                    //            ul
+                    //                li Invalid End date
+                    //        form#demo_simple_form(name="demo_simple_form")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="invalidRightLimitCase.model", apd-end="invalidRightLimitCase.endDate")
+                    //        model-well(case-model="invalidRightLimitCase")
+                    //li
+                    //    section
+                    //        hgroup
+                    //            h3 Linked Dates
+                    //        .case_description
+                    //            ul
+                    //                li Linked Dates
+                    //        form#demo_simple_form(name="demo_simple_form")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="linkedModelCase.model")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="linkedModelCase.model")
+                    //        model-well(case-model="linkedModelCase")
+                    //li
+                    //    section
+                    //        hgroup
+                    //            h3 Linked Dates with same both-side limit
+                    //        .case_description
+                    //            ul
+                    //                li Linked Dates
+                    //                li Start Date
+                    //                li End Date
+                    //        form#demo_simple_form(name="demo_simple_form")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="linkedModelBothLimitsCase.model", apd-start="linkedModelBothLimitsCase.startDate", apd-end="linkedModelBothLimitsCase.endDate")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="linkedModelBothLimitsCase.model", apd-start="linkedModelBothLimitsCase.startDate", apd-end="linkedModelBothLimitsCase.endDate")
+                    //        model-well(case-model="linkedModelBothLimitsCase")
+                    //li
+                    //    section
+                    //        hgroup
+                    //            h3 Linked Dates with different both-side limit
+                    //        .case_description
+                    //            ul
+                    //                li Linked Dates
+                    //                li Different Limits
+                    //                li Start Date
+                    //                li End Date
+                    //        form#demo_simple_form(name="demo_simple_form")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="linkedModelBothDifferentLimitsCase.model", apd-start="linkedModelBothDifferentLimitsCase.startDate_one", apd-end="linkedModelBothDifferentLimitsCase.endDate_one")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="linkedModelBothDifferentLimitsCase.model", apd-start="linkedModelBothDifferentLimitsCase.startDate_two", apd-end="linkedModelBothDifferentLimitsCase.endDate_two")
+                    //        model-well(case-model="linkedModelBothDifferentLimitsCase")
+                    //li
+                    //    section
+                    //        hgroup
+                    //            h3 External model change case
+                    //        .case_description
+                    //            ul
+                    //                li Valid ngModel
+                    //                li External model change
+                    //        form#demo_simple_form(name="demo_simple_form")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="externalChangeCase.model")
+                    //        button(type="button", ng-click="plusOneMonth(externalChangeCase)") +1 month
+                    //        button(type="button", ng-click="minusOneMonth(externalChangeCase)") -1 month
+                    //        model-well(case-model="externalChangeCase")
+                    li
+                        section
+                            hgroup
+                                h3 External model change with left-limit case
+                            .case_description
+                                ul
+                                    li Valid ngModel
+                                    li External model change
+                                    li left-limit
+                            form#demo_simple_form(name="demo_simple_form")
+                                .form-group
+                                    label.control-label(for="apd_1") Date
+                                    pure-datepicker#apd_1(ng-model="externalChangeLeftLimitCase.model", apd-start="externalChangeLeftLimitCase.startDate")
+                            button(type="button", ng-click="plusOneMonth(externalChangeLeftLimitCase)") +1 month
+                            button(type="button", ng-click="minusOneMonth(externalChangeLeftLimitCase)") -1 month
+                            model-well(case-model="externalChangeLeftLimitCase")
+                    //li
+                    //    section
+                    //        hgroup
+                    //            h3 External model change with right-limit case
+                    //        .case_description
+                    //            ul
+                    //                li Valid ngModel
+                    //                li External model change
+                    //                li right-limit
+                    //        form#demo_simple_form(name="demo_simple_form")
+                    //            .form-group
+                    //                label.control-label(for="apd_1") Date
+                    //                pure-datepicker#apd_1(ng-model="externalChangeRightLimitCase.model", apd-start="externalChangeRightLimitCase.endDate")
+                    //        button(type="button", ng-click="plusOneMonth(externalChangeRightLimitCase)") +1 month
+                    //        model-well(case-model="externalChangeRightLimitCase")
