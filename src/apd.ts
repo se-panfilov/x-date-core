@@ -106,12 +106,10 @@ module apd.directive {
                             //TODO (S.Panfilov) .getDaysInMonth didn't expect limits, should use other func
                             day = scope.data.getDaysInMonth(month, year);
                         }
-
-                        //TODO (S.Panfilov) check
-                        scope.data.reloadDaysList();
-
                         datetime = getDateTime(day, month, year);
                         updateModel(datetime);
+
+                        scope.data.reloadDaysList();
                     };
 
                     scope.onYearSelectChanged = function (year:number) {
@@ -125,11 +123,11 @@ module apd.directive {
                             day = scope.data.getDaysInMonth(year, year);
                         }
 
-                        //TODO (S.Panfilov) check
-                        scope.data.reloadMonthList();
-
                         datetime = getDateTime(day, month, year);
                         updateModel(datetime);
+
+                        scope.data.reloadMonthList();
+                        scope.data.reloadDaysList();
                     };
 
                     function getDateTime(day:number, month:number, year:number) {

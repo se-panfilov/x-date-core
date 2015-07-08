@@ -352,9 +352,9 @@ var apd;
                         if (!isCorrectDay(day, month, year)) {
                             day = scope.data.getDaysInMonth(month, year);
                         }
-                        scope.data.reloadDaysList();
                         datetime = getDateTime(day, month, year);
                         updateModel(datetime);
+                        scope.data.reloadDaysList();
                     };
                     scope.onYearSelectChanged = function (year) {
                         if (!year && year !== 0)
@@ -365,9 +365,10 @@ var apd;
                         if (!isCorrectDay(day, month, year)) {
                             day = scope.data.getDaysInMonth(year, year);
                         }
-                        scope.data.reloadMonthList();
                         datetime = getDateTime(day, month, year);
                         updateModel(datetime);
+                        scope.data.reloadMonthList();
+                        scope.data.reloadDaysList();
                     };
                     function getDateTime(day, month, year) {
                         if (!day || (!month && month !== 0) || !year) {
