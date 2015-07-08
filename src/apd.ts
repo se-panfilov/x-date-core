@@ -107,6 +107,9 @@ module apd.directive {
                             day = scope.data.getDaysInMonth(month, year);
                         }
 
+                        //TODO (S.Panfilov) check
+                        scope.data.reloadDaysList();
+
                         datetime = getDateTime(day, month, year);
                         updateModel(datetime);
                     };

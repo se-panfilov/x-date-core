@@ -13,6 +13,7 @@ module apd.Model {
 
         YEARS_LIST_DIRECTION = 'desc';
         MONTH_LIST_DIRECTION = 'asc';
+        DAYS_LIST_DIRECTION = 'asc';
 
         constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
             if (!(this instanceof DataClass)) {
@@ -23,16 +24,14 @@ module apd.Model {
             var self = this;
             self.selected = self._getSelected(selected, startDateTime, endDateTime);
             var selectedYear = new Date(this.selected.datetime).getFullYear();
+            var selectedMonth = new Date(this.selected.datetime).getMonth();
 
             self._limitDates = new LimitDatesClass(startDateTime, endDateTime);
             self._startDateTime = startDateTime;
             self._endDateTime = endDateTime;
             self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, this.YEARS_LIST_DIRECTION);
             self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
-
-            //self.days = self._getNumList(startDateTime, endDateTime, function () {
-            //    return self._getDefaultDaysList.call(self, self.selected.month, self.selected.year);
-            //});
+            self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth, this.DAYS_LIST_DIRECTION);
 
             return this;
         }
@@ -64,11 +63,6 @@ module apd.Model {
 
             return result;
         };
-
-        //private _getDefaultDaysList = function (month:number, year:number):Array<number> {
-        //    var daysCount = this.getDaysInMonth(month, year);
-        //    return this._getIntArr(daysCount);
-        //};
 
         private _intArraySort = function (arr:Array<number>, direction:string = 'asc') {
             function desc(a, b) {
@@ -177,6 +171,48 @@ module apd.Model {
             } else {
                 // in all other cases return array of 12 month
                 result = this._getArrayOfNumbers(START_MONTH, END_MONTH);
+            }
+
+            return this._intArraySort(result, direction);
+        };
+
+        reloadDaysList = function () {
+            var selectedYear = new Date(this.selected.datetime).getFullYear();
+            var selectedMonth = new Date(this.selected.datetime).getMonth();
+            this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.DAYS_LIST_DIRECTION);
+        };
+
+        private _getDaysList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, selectedMonth:number, direction:string) {
+            var result:Array<number>;
+            var START_DAY = 1;
+            var lastDayInMonth = this.getDaysInMonth(selectedMonth, selectedYear);
+
+            //TODO (S.Panfilov)  check
+            if (startDateTime && endDateTime) {
+                var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
+                var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
+                var isMonthOfLowerLimit = (startDateTime) ? limitDates.startDate.month === selectedMonth : false;
+                var isMonthOfUpperLimit = (endDateTime) ? limitDates.endDate.month === selectedMonth : false;
+
+                var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
+                var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
+
+                var start = (startDateTime) ? limitDates.startDate.day : START_DAY;
+                var end = (endDateTime) ? limitDates.endDate.day : lastDayInMonth;
+
+                if (isLowerLimit && isUpperLimit) {
+                    result = this._getArrayOfNumbers(start, end);
+                } else if (isLowerLimit && !isUpperLimit) {
+                    result = this._getArrayOfNumbers(start, lastDayInMonth);
+                } else if (!isLowerLimit && isUpperLimit) {
+                    result = this._getArrayOfNumbers(START_DAY, end);
+                } else {
+                    // in all other cases return array of 12 month
+                    result = this._getArrayOfNumbers(START_DAY, lastDayInMonth);
+                }
+            } else {
+                // in all other cases return array of 12 month
+                result = this._getArrayOfNumbers(START_DAY, lastDayInMonth);
             }
 
             return this._intArraySort(result, direction);

@@ -8,6 +8,7 @@ var apd;
             function DataClass(selected, startDateTime, endDateTime) {
                 this.YEARS_LIST_DIRECTION = 'desc';
                 this.MONTH_LIST_DIRECTION = 'asc';
+                this.DAYS_LIST_DIRECTION = 'asc';
                 this._getSelected = function (selected, startDateTime, endDateTime) {
                     var result;
                     var isBiggerThenStart = (selected.datetime > startDateTime);
@@ -110,6 +111,42 @@ var apd;
                     }
                     return this._intArraySort(result, direction);
                 };
+                this.reloadDaysList = function () {
+                    var selectedYear = new Date(this.selected.datetime).getFullYear();
+                    var selectedMonth = new Date(this.selected.datetime).getMonth();
+                    this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.DAYS_LIST_DIRECTION);
+                };
+                this._getDaysList = function (startDateTime, endDateTime, limitDates, selectedYear, selectedMonth, direction) {
+                    var result;
+                    var START_DAY = 1;
+                    var lastDayInMonth = this.getDaysInMonth(selectedMonth, selectedYear);
+                    if (startDateTime && endDateTime) {
+                        var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
+                        var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
+                        var isMonthOfLowerLimit = (startDateTime) ? limitDates.startDate.month === selectedMonth : false;
+                        var isMonthOfUpperLimit = (endDateTime) ? limitDates.endDate.month === selectedMonth : false;
+                        var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
+                        var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
+                        var start = (startDateTime) ? limitDates.startDate.day : START_DAY;
+                        var end = (endDateTime) ? limitDates.endDate.day : lastDayInMonth;
+                        if (isLowerLimit && isUpperLimit) {
+                            result = this._getArrayOfNumbers(start, end);
+                        }
+                        else if (isLowerLimit && !isUpperLimit) {
+                            result = this._getArrayOfNumbers(start, lastDayInMonth);
+                        }
+                        else if (!isLowerLimit && isUpperLimit) {
+                            result = this._getArrayOfNumbers(START_DAY, end);
+                        }
+                        else {
+                            result = this._getArrayOfNumbers(START_DAY, lastDayInMonth);
+                        }
+                    }
+                    else {
+                        result = this._getArrayOfNumbers(START_DAY, lastDayInMonth);
+                    }
+                    return this._intArraySort(result, direction);
+                };
                 this._getIntArr = function (length) {
                     if (!length && length !== 0) {
                         apd.messages.MessagesFactoryClass.throwInvalidParamsMessage();
@@ -127,11 +164,13 @@ var apd;
                 var self = this;
                 self.selected = self._getSelected(selected, startDateTime, endDateTime);
                 var selectedYear = new Date(this.selected.datetime).getFullYear();
+                var selectedMonth = new Date(this.selected.datetime).getMonth();
                 self._limitDates = new Model.LimitDatesClass(startDateTime, endDateTime);
                 self._startDateTime = startDateTime;
                 self._endDateTime = endDateTime;
                 self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, this.YEARS_LIST_DIRECTION);
                 self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
+                self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth, this.DAYS_LIST_DIRECTION);
                 return this;
             }
             return DataClass;
@@ -313,6 +352,7 @@ var apd;
                         if (!isCorrectDay(day, month, year)) {
                             day = scope.data.getDaysInMonth(month, year);
                         }
+                        scope.data.reloadDaysList();
                         datetime = getDateTime(day, month, year);
                         updateModel(datetime);
                     };
