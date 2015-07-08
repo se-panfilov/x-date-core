@@ -11,6 +11,7 @@ module apd.Model {
         _endDateTime:number;
         _limitDates:LimitDatesClass;
 
+        //TODO Remove sorting from here to the directive
         YEARS_LIST_DIRECTION = 'desc';
         MONTH_LIST_DIRECTION = 'asc';
         DAYS_LIST_DIRECTION = 'asc';
