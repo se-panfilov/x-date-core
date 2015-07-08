@@ -147,46 +147,35 @@ module apd.Model {
         };
 
         private _getMonthList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, direction:string) {
-            var result:Array<number> = [];
+            var result:Array<number>;
             var START_MONTH = 0;
             var END_MONTH = 11;
 
-            var start = limitDates.startDate.month;
-            var end = limitDates.endDate.month;
-            var now = limitDates.nowDate.month;
+            //TODO (S.Panfilov)  check
+            if (startDateTime && endDateTime) {
+                var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
+                var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
+                var start = (startDateTime) ? limitDates.startDate.month : START_MONTH;
+                var end = (endDateTime) ? limitDates.endDate.month : END_MONTH;
 
-            //TODO (S.Panfilov) Add limited years support and check other cases
-            var isYearOfLowerLimit = limitDates.startDate.year === selectedYear;
-            var isYearOfUpperLimit = limitDates.endDate.year === selectedYear;
-
-            //start = 3, end = 6
-            if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                result = this._getArrayOfNumbers(start, end);
-            }
-
-            //start = 6, end = 3
-            else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
-                apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
-                result = this._getArrayOfNumbers(end, start);
-            }
-
-            //start = 3, end = 3
-            else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                result = this._getArrayOfNumbers(start, end);
-            }
-
-            //start = 6, end = null
-            else if (startDateTime && !endDateTime) {
-                result = this._getArrayOfNumbers(start, now);
-            }
-
-            //start = null, end = 6
-            else if (!startDateTime && endDateTime) {
-                result = this._getArrayOfNumbers(end, end);
-            }
-
-            //start = null, end = null
-            else if (!startDateTime && !endDateTime) {
+                // startYear == 2015, nowYear == 2015, endYear == 2015
+                if (isYearOfLowerLimit && isYearOfUpperLimit) {
+                    result = this._getArrayOfNumbers(start, end);
+                }
+                // startYear == 2015, nowYear == 2015, endYear == 2016 (or null)
+                else if (isYearOfLowerLimit && !isYearOfUpperLimit) {
+                    result = this._getArrayOfNumbers(start, END_MONTH);
+                }
+                // startYear == 2014 (or null), nowYear == 2015, endYear == 2015
+                else if (!isYearOfLowerLimit && isYearOfUpperLimit) {
+                    result = this._getArrayOfNumbers(START_MONTH, end);
+                }
+                else {
+                    // in all other cases return array of 12 month
+                    result = this._getArrayOfNumbers(START_MONTH, END_MONTH);
+                }
+            } else {
+                // in all other cases return array of 12 month
                 result = this._getArrayOfNumbers(START_MONTH, END_MONTH);
             }
 

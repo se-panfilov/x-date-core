@@ -84,31 +84,28 @@ var apd;
                     this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
                 };
                 this._getMonthList = function (startDateTime, endDateTime, limitDates, selectedYear, direction) {
-                    var result = [];
+                    var result;
                     var START_MONTH = 0;
                     var END_MONTH = 11;
-                    var start = limitDates.startDate.month;
-                    var end = limitDates.endDate.month;
-                    var now = limitDates.nowDate.month;
-                    var isYearOfLowerLimit = limitDates.startDate.year === selectedYear;
-                    var isYearOfUpperLimit = limitDates.endDate.year === selectedYear;
-                    if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
-                        result = this._getArrayOfNumbers(start, end);
+                    if (startDateTime && endDateTime) {
+                        var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
+                        var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
+                        var start = (startDateTime) ? limitDates.startDate.month : START_MONTH;
+                        var end = (endDateTime) ? limitDates.endDate.month : END_MONTH;
+                        if (isYearOfLowerLimit && isYearOfUpperLimit) {
+                            result = this._getArrayOfNumbers(start, end);
+                        }
+                        else if (isYearOfLowerLimit && !isYearOfUpperLimit) {
+                            result = this._getArrayOfNumbers(start, END_MONTH);
+                        }
+                        else if (!isYearOfLowerLimit && isYearOfUpperLimit) {
+                            result = this._getArrayOfNumbers(START_MONTH, end);
+                        }
+                        else {
+                            result = this._getArrayOfNumbers(START_MONTH, END_MONTH);
+                        }
                     }
-                    else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
-                        apd.messages.MessagesFactoryClass.throwDatesInvertedMessage();
-                        result = this._getArrayOfNumbers(end, start);
-                    }
-                    else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
-                        result = this._getArrayOfNumbers(start, end);
-                    }
-                    else if (startDateTime && !endDateTime) {
-                        result = this._getArrayOfNumbers(start, now);
-                    }
-                    else if (!startDateTime && endDateTime) {
-                        result = this._getArrayOfNumbers(end, end);
-                    }
-                    else if (!startDateTime && !endDateTime) {
+                    else {
                         result = this._getArrayOfNumbers(START_MONTH, END_MONTH);
                     }
                     return this._intArraySort(result, direction);
