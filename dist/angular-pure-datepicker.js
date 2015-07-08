@@ -88,7 +88,7 @@ var apd;
                     var result;
                     var START_MONTH = 0;
                     var END_MONTH = 11;
-                    if (startDateTime && endDateTime) {
+                    if (startDateTime || endDateTime) {
                         var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
                         var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
                         var start = (startDateTime) ? limitDates.startDate.month : START_MONTH;
@@ -120,7 +120,7 @@ var apd;
                     var result;
                     var START_DAY = 1;
                     var lastDayInMonth = this.getDaysInMonth(selectedMonth, selectedYear);
-                    if (startDateTime && endDateTime) {
+                    if (startDateTime || endDateTime) {
                         var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
                         var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
                         var isMonthOfLowerLimit = (startDateTime) ? limitDates.startDate.month === selectedMonth : false;

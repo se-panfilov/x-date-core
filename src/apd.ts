@@ -5,7 +5,7 @@
 module apd.directive {
     'use strict';
 
-
+    //TODO (S.Panfilov) add localization
     var daysOfWeek = new apd.Model.DaysOfWeek([
         new apd.Model.DayOfWeek('Sunday', 'Sun'),
         new apd.Model.DayOfWeek('Monday', 'Mon'),
@@ -117,6 +117,7 @@ module apd.directive {
                         var year = scope.data.selected.year;
                         var day = scope.data.selected.day;
 
+                        //TODO (S.Panfilov) check case whrn it's incorrect day
                         if (!isCorrectDay(day, month, year)) {
                             //TODO (S.Panfilov) .getDaysInMonth didn't expect limits, should use other func
                             day = scope.data.getDaysInMonth(month, year);
