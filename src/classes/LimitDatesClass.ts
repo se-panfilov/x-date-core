@@ -1,7 +1,7 @@
 module apd.Model {
     'use strict';
 
-    class LimitDatesClass {
+    export class LimitDatesClass {
         startDate:{
             day: number;
             month:number;

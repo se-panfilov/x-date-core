@@ -1,7 +1,7 @@
 module apd.Model {
     'use strict';
 
-    class DataClass {
+    export class DataClass {
         selected:DateModelClass;
         days:Array<number>;
         month:Array<number>;

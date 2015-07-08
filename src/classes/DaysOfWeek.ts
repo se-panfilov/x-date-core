@@ -1,6 +1,7 @@
 module apd.Model {
     'use strict';
-    class DaysOfWeek {
+
+    export class DaysOfWeek {
         list:Array<DayOfWeek>;
         names:Array<string>;
         shorts:Array<string>;

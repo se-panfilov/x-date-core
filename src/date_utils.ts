@@ -6,10 +6,10 @@ module apd.dateUtils {
         .factory('DateUtilsFactory', function () {
 
             var exports = {
-                getData: function (selected:DateModelClass, startDateTime:number, endDateTime:number) {
-                    return new DataClass(selected, startDateTime, endDateTime);
+                getData: function (selected:apd.Model.DateModelClass, startDateTime:number, endDateTime:number) {
+                    return new apd.Model.DataClass(selected, startDateTime, endDateTime);
                 },
-                validateModel: function (model:DateModelClass) {
+                validateModel: function (model:apd.Model.DateModelClass) {
                     return !!(model && model.datetime);
                 }
             };

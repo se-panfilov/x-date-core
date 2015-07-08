@@ -1,7 +1,7 @@
 module apd.Model {
     'use strict';
 
-    class DayOfWeek {
+    export class DayOfWeek {
         name:string;
         short:string;
 

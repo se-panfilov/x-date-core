@@ -1,18 +1,14 @@
 module apd.directive {
     'use strict';
 
-
-
-
-
-    var daysOfWeek = new DaysOfWeek([
-        new DayOfWeek('Sunday', 'Sun'),
-        new DayOfWeek('Monday', 'Mon'),
-        new DayOfWeek('Tuesday', 'Tue'),
-        new DayOfWeek('Wednesday', 'Wed'),
-        new DayOfWeek('Thursday', 'Thu'),
-        new DayOfWeek('Friday', 'Fri'),
-        new DayOfWeek('Saturday', 'Sat')
+    var daysOfWeek = new apd.Model.DaysOfWeek([
+        new apd.Model.DayOfWeek('Sunday', 'Sun'),
+        new apd.Model.DayOfWeek('Monday', 'Mon'),
+        new apd.Model.DayOfWeek('Tuesday', 'Tue'),
+        new apd.Model.DayOfWeek('Wednesday', 'Wed'),
+        new apd.Model.DayOfWeek('Thursday', 'Thu'),
+        new apd.Model.DayOfWeek('Friday', 'Fri'),
+        new apd.Model.DayOfWeek('Saturday', 'Sat')
     ]);
 
     angular.module('angular-pd.datepicker', [
@@ -65,16 +61,16 @@ module apd.directive {
                             initDatetime = new Date().getTime();
                         }
 
-                        return new apd.dateUtils.DateModelClass(initDatetime);
+                        return new apd.Model.DateModelClass(initDatetime);
                     }
 
-                    function _initData(initDateModel:apd.dateUtils.DateModelClass, startDateTime:number, endDateTime:number) {
+                    function _initData(initDateModel:apd.Model.DateModelClass, startDateTime:number, endDateTime:number) {
                         scope.data = DateUtilsFactory.getData(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                     }
 
                     function updateModel(datetime:number) {
-                        scope.data.selected = new apd.dateUtils.DateModelClass(datetime);
+                        scope.data.selected = new apd.Model.DateModelClass(datetime);
                         scope.ngModel = scope.data.selected;
                     }
 
