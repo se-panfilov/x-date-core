@@ -309,15 +309,24 @@ var apd;
                         startDateTime: null,
                         endDateTime: null
                     };
-                    function init() {
-                        settings.initDateModel = getInitDateModel(scope.ngModel);
-                        settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
-                        settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
-                        _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
-                        scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
-                        scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
-                    }
-                    init();
+                    var ngModelWatcher = {
+                        handler: null,
+                        start: function (callback) {
+                            ngModelWatcher.handler = scope.$watch('ngModel.datetime', function (value, oldValue) {
+                                if (callback) {
+                                    callback(value, oldValue);
+                                }
+                            }, true);
+                        },
+                        stop: function () {
+                            if (!ngModelWatcher.handler) {
+                                MessagesFactory.throwInvalidParamsMessage();
+                                return false;
+                            }
+                            ngModelWatcher.handler();
+                            return true;
+                        }
+                    };
                     function getInitDateModel(model) {
                         var isInitModelValid = DateUtilsFactory.validateModel(model);
                         var initDatetime;
@@ -334,8 +343,19 @@ var apd;
                         scope.ngModel = scope.data.selected;
                     }
                     function updateModel(datetime) {
+                        ngModelWatcher.stop();
                         scope.data.selected = new apd.Model.DateModelClass(datetime);
                         scope.ngModel = scope.data.selected;
+                        ngModelWatcher.start(onModelChange);
+                    }
+                    function onModelChange(datetime, oldValue) {
+                        if (datetime === oldValue) {
+                            return;
+                        }
+                        updateModel(datetime);
+                        scope.data.reloadYearsList();
+                        scope.data.reloadMonthList();
+                        scope.data.reloadDaysList();
                     }
                     scope.onDaySelectChanged = function (day) {
                         if (!day)
@@ -380,6 +400,15 @@ var apd;
                         var daysInMonth = scope.data.getDaysInMonth(month, year);
                         return day <= daysInMonth;
                     }
+                    (function _init() {
+                        settings.initDateModel = getInitDateModel(scope.ngModel);
+                        settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
+                        settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                        _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
+                        scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
+                        scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
+                        ngModelWatcher.start(onModelChange);
+                    })();
                 }
             };
         }]);

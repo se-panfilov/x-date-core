@@ -44,17 +44,26 @@ module apd.directive {
                         endDateTime: null
                     };
 
-                    function init() {
-                        settings.initDateModel = getInitDateModel(scope.ngModel);
-                        settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
-                        settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
-                        _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
+                    var ngModelWatcher = {
+                        handler: null,
+                        start: function (callback:Function) {
+                            ngModelWatcher.handler = scope.$watch('ngModel.datetime', function (value:number, oldValue:number) {
+                                if (callback) {
+                                    callback(value, oldValue)
+                                }
 
-                        scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
-                        scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
-                    }
+                            }, true);
+                        },
+                        stop: function () {
+                            if (!ngModelWatcher.handler) {
+                                MessagesFactory.throwInvalidParamsMessage();
+                                return false;
+                            }
 
-                    init();
+                            ngModelWatcher.handler();
+                            return true;
+                        }
+                    };
 
                     function getInitDateModel(model:any) {
                         var isInitModelValid:boolean = DateUtilsFactory.validateModel(model);
@@ -75,18 +84,24 @@ module apd.directive {
                     }
 
                     function updateModel(datetime:number) {
+                        ngModelWatcher.stop();
                         scope.data.selected = new apd.Model.DateModelClass(datetime);
                         scope.ngModel = scope.data.selected;
+                        ngModelWatcher.start(onModelChange);
                     }
 
-                    //TODO (S.Panfilov) fixes for external model change
-                    //scope.$watch('ngModel.datetime', function (value, oldValue) {
-                    //    if (value === oldValue) {
-                    //        return;
-                    //    }
-                    //
-                    //    _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
-                    //}, true);
+                    function onModelChange(datetime:number, oldValue:number) {
+                        if (datetime === oldValue) {
+                            return;
+                        }
+
+                        updateModel(datetime);
+
+
+                        scope.data.reloadYearsList();
+                        scope.data.reloadMonthList();
+                        scope.data.reloadDaysList();
+                    }
 
                     scope.onDaySelectChanged = function (day:number) {
                         if (!day) return;
@@ -130,7 +145,7 @@ module apd.directive {
                         scope.data.reloadDaysList();
                     };
 
-                    function getDateTime(day:number, month:number, year:number) {
+                    function getDateTime(day:number, month:number, year:number):number {
                         if (!day || (!month && month !== 0) || !year) {
                             MessagesFactory.throwInvalidParamsMessage();
                         }
@@ -138,11 +153,23 @@ module apd.directive {
                         return new Date(year, month, day).getTime();
                     }
 
-                    function isCorrectDay(day:number, month:number, year:number) {
+                    function isCorrectDay(day:number, month:number, year:number):boolean {
                         var daysInMonth = scope.data.getDaysInMonth(month, year);
 
                         return day <= daysInMonth;
                     }
+
+                    (function _init() {
+                        settings.initDateModel = getInitDateModel(scope.ngModel);
+                        settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
+                        settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                        _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
+
+                        scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
+                        scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
+
+                        ngModelWatcher.start(onModelChange);
+                    })();
 
                 }
             }
