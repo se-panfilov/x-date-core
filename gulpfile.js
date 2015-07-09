@@ -1,22 +1,6 @@
-var gulp = require('gulp');
-var concat;
-var rename;
-var uglify;
-var jade;
-var sourcemaps;
-var watch;
-var changed;
-var ngAnnotate;
-var stylus;
-var nib;
-var minifyHTML;
-var minifyCss;
-var ts;
-var templateCache;
-var mergeStream;
-var cssBase64;
-var size;
-var tslint;
+var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, watch, changed,
+    ngAnnotate, stylus, nib, minifyHTML, minifyCss, ts, templateCache, mergeStream,
+    cssBase64, size, tslint, stylish, cleanTs;
 
 var src = {
     styles: ['src/templates/**/*.styl'],
@@ -34,10 +18,13 @@ var dest = {
 
 gulp.task('lint', function () {
     tslint = tslint || require('gulp-tslint');
+    stylish = stylish || require('gulp-tslint-stylish');
 
     return gulp.src(src.ts)
         .pipe(tslint())
-        .pipe(tslint.report('verbose'));
+        .pipe(tslint.report(stylish, {
+            emitError: false
+        }));
 });
 
 gulp.task('todo', function () {
@@ -97,9 +84,12 @@ function mergeJS(templates, mainJs) {
     sourcemaps = sourcemaps || require('gulp-sourcemaps');
     uglify = uglify || require('gulp-uglify');
     rename = rename || require('gulp-rename');
+    cleanTs = cleanTs || require('gulp-clean-ts-extends');
+    concat = concat || require('gulp-concat');
 
     return mergeStream(templates, mainJs)
         .pipe(concat('angular-pure-datepicker.js'))
+        .pipe(cleanTs())
         .pipe(gulp.dest(dest.dist))
         .pipe(sourcemaps.init())
         .pipe(uglify())
@@ -123,6 +113,7 @@ gulp.task('stylus', function () {
     minifyCss = minifyCss || require('gulp-minify-css');
     nib = nib || require('nib');
     stylus = stylus || require('gulp-stylus');
+    concat = concat || require('gulp-concat');
 
     return gulp.src(src.styles, {base: 'src'})
         .pipe(concat('angular-pure-datepicker.styl'))
