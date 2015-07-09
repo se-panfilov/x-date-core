@@ -88,6 +88,24 @@ module apd.directive {
                         scope.ngModel = scope.data.selected;
                     }
 
+                    function getLimitSafeDatetime(day:number, month:number, year:number):number {
+                        if (!isDayInMonth(day, month, year)) {
+                            day = scope.data.getDaysInMonth(month, year);
+                        }
+
+                        var datetime:number = getDateTime(day, month, year);
+
+                        if (!apd.Model.LimitDatesClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
+                            if (!apd.Model.LimitDatesClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
+                                datetime = settings.startDateTime;
+                            } else if (!apd.Model.LimitDatesClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
+                                datetime = settings.endDateTime;
+                            }
+                        }
+
+                        return datetime;
+                    }
+
                     function updateModel(datetime:number) {
                         ngModelWatcher.stop();
                         scope.data.selected = new apd.Model.DateModelClass(datetime);
@@ -100,6 +118,12 @@ module apd.directive {
                             return;
                         }
 
+                        var date = new Date(datetime);
+                        var day = date.getDate();
+                        var month = date.getMonth();
+                        var year = date.getFullYear();
+
+                        datetime = getLimitSafeDatetime(day, month, year);
                         updateModel(datetime);
 
                         scope.data.reloadYearsList();
@@ -110,7 +134,7 @@ module apd.directive {
                     scope.onDaySelectChanged = function (day:number) {
                         if (!day) return;
 
-                        var datetime = getDateTime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
+                        var datetime = getLimitSafeDatetime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
                         updateModel(datetime);
                     };
 
@@ -121,20 +145,7 @@ module apd.directive {
                         var year = scope.data.selected.year;
                         var day = scope.data.selected.day;
 
-                        if (!isDayInMonth(day, month, year)) {
-                            day = scope.data.getDaysInMonth(month, year);
-                        }
-
-                        datetime = getDateTime(day, month, year);
-
-                        if (!apd.Model.LimitDatesClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
-                            if (!apd.Model.LimitDatesClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
-                                datetime = settings.startDateTime;
-                            } else if (!apd.Model.LimitDatesClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
-                                datetime = settings.endDateTime;
-                            }
-                        }
-
+                        datetime = getLimitSafeDatetime(day, month, year);
                         updateModel(datetime);
 
                         scope.data.reloadDaysList();
@@ -143,15 +154,10 @@ module apd.directive {
                     scope.onYearSelectChanged = function (year:number) {
                         if (!year && year !== 0) return;
 
-                        var datetime;
                         var month = scope.data.selected.month;
                         var day = scope.data.selected.day;
 
-                        if (!isDayInMonth(day, month, year)) {
-                            day = scope.data.getDaysInMonth(year, year);
-                        }
-
-                        datetime = getDateTime(day, month, year);
+                        var datetime = getLimitSafeDatetime(day, month, year);
                         updateModel(datetime);
 
                         scope.data.reloadMonthList();
