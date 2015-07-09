@@ -170,14 +170,22 @@ angular.module('demo', [
             model: {
                 datetime: new Date(2015, 6, 26).getTime()
             },
-            startDate: new Date(2015, 6, 25).getTime()
+            startDate: new Date(2013, 6, 25).getTime()
         };
 
         $scope.externalChangeRightLimitCase = {
             model: {
                 datetime: new Date(2015, 6, 26).getTime()
             },
-            endDate: new Date(2015, 6, 27).getTime()
+            endDate: new Date(2018, 6, 27).getTime()
+        };
+
+        $scope.externalChangeBothLimitCase = {
+            model: {
+                datetime: new Date(2015, 6, 26).getTime()
+            },
+            startDate: new Date(2013, 6, 25).getTime(),
+            endDate: new Date(2018, 6, 27).getTime()
         };
     })
 ;

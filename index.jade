@@ -238,34 +238,51 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                     //        button(type="button", ng-click="plusOneMonth(externalChangeCase)") +1 month
                     //        button(type="button", ng-click="minusOneMonth(externalChangeCase)") -1 month
                     //        model-well(case-model="externalChangeCase")
-                    li
-                        section
-                            hgroup
-                                h3 External model change with left-limit case
-                            .case_description
-                                ul
-                                    li Valid ngModel
-                                    li External model change
-                                    li left-limit
-                            form#demo_simple_form(name="demo_simple_form")
-                                .form-group
-                                    label.control-label(for="apd_1") Date
-                                    pure-datepicker#apd_1(ng-model="externalChangeLeftLimitCase.model", apd-start="externalChangeLeftLimitCase.startDate")
-                            button(type="button", ng-click="plusOneMonth(externalChangeLeftLimitCase)") +1 month
-                            button(type="button", ng-click="minusOneMonth(externalChangeLeftLimitCase)") -1 month
-                            model-well(case-model="externalChangeLeftLimitCase")
                     //li
                     //    section
                     //        hgroup
-                    //            h3 External model change with right-limit case
+                    //            h3 External model change with left-limit case
                     //        .case_description
                     //            ul
                     //                li Valid ngModel
                     //                li External model change
-                    //                li right-limit
+                    //                li left-limit
                     //        form#demo_simple_form(name="demo_simple_form")
                     //            .form-group
                     //                label.control-label(for="apd_1") Date
-                    //                pure-datepicker#apd_1(ng-model="externalChangeRightLimitCase.model", apd-start="externalChangeRightLimitCase.endDate")
-                    //        button(type="button", ng-click="plusOneMonth(externalChangeRightLimitCase)") +1 month
-                    //        model-well(case-model="externalChangeRightLimitCase")
+                    //                pure-datepicker#apd_1(ng-model="externalChangeLeftLimitCase.model", apd-start="externalChangeLeftLimitCase.startDate")
+                    //        button(type="button", ng-click="plusOneMonth(externalChangeLeftLimitCase)") +1 month
+                    //        button(type="button", ng-click="minusOneMonth(externalChangeLeftLimitCase)") -1 month
+                    //        model-well(case-model="externalChangeLeftLimitCase")
+                    li
+                        section
+                            hgroup
+                                h3 External model change with right-limit case
+                            .case_description
+                                ul
+                                    li Valid ngModel
+                                    li External model change
+                                    li right-limit
+                            form#demo_simple_form(name="demo_simple_form")
+                                .form-group
+                                    label.control-label(for="apd_1") Date
+                                    pure-datepicker#apd_1(ng-model="externalChangeRightLimitCase.model", apd-end="externalChangeRightLimitCase.endDate")
+                            button(type="button", ng-click="plusOneMonth(externalChangeRightLimitCase)") +1 month
+                            button(type="button", ng-click="minusOneMonth(externalChangeRightLimitCase)") -1 month
+                            model-well(case-model="externalChangeRightLimitCase")
+                    li
+                        section
+                            hgroup
+                                h3 External model change with both-limit case
+                            .case_description
+                                ul
+                                    li Valid ngModel
+                                    li External model change
+                                    li right-limit
+                            form#demo_simple_form(name="demo_simple_form")
+                                .form-group
+                                    label.control-label(for="apd_1") Date
+                                    pure-datepicker#apd_1(ng-model="externalChangeBothLimitCase.model", apd-start="externalChangeBothLimitCase.startDate", apd-end="externalChangeBothLimitCase.endDate")
+                            button(type="button", ng-click="plusOneMonth(externalChangeBothLimitCase)") +1 month
+                            button(type="button", ng-click="minusOneMonth(externalChangeBothLimitCase)") -1 month
+                            model-well(case-model="externalChangeBothLimitCase")
