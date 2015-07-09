@@ -5,10 +5,10 @@ var apd;
     (function (Model) {
         'use strict';
         var DataClass = (function () {
-            function DataClass(selected, startDateTime, endDateTime) {
-                this.YEARS_LIST_DIRECTION = 'desc';
-                this.MONTH_LIST_DIRECTION = 'asc';
-                this.DAYS_LIST_DIRECTION = 'asc';
+            function DataClass(selected, startDateTime, endDateTime, yearsListDirection, monthListDirection, daysListDirection) {
+                this.yearsListDirection = 'desc';
+                this.monthListDirection = 'asc';
+                this.daysListDirection = 'asc';
                 this._getSelected = function (selected, startDateTime, endDateTime) {
                     var result;
                     var isBiggerThenStart = (selected.datetime > startDateTime);
@@ -51,7 +51,7 @@ var apd;
                     return result;
                 };
                 this.reloadYearsList = function () {
-                    this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates, this.YEARS_LIST_DIRECTION);
+                    this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates, this.yearsListDirection);
                     return this;
                 };
                 this._getYearsList = function (startDateTime, endDateTime, limitDates, direction) {
@@ -83,7 +83,7 @@ var apd;
                 };
                 this.reloadMonthList = function () {
                     var selectedYear = new Date(this.selected.datetime).getFullYear();
-                    this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
+                    this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.monthListDirection);
                     return this;
                 };
                 this._getMonthList = function (startDateTime, endDateTime, limitDates, selectedYear, direction) {
@@ -116,7 +116,7 @@ var apd;
                 this.reloadDaysList = function () {
                     var selectedYear = new Date(this.selected.datetime).getFullYear();
                     var selectedMonth = new Date(this.selected.datetime).getMonth();
-                    this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.DAYS_LIST_DIRECTION);
+                    this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.daysListDirection);
                     return this;
                 };
                 this._getDaysList = function (startDateTime, endDateTime, limitDates, selectedYear, selectedMonth, direction) {
@@ -162,33 +162,23 @@ var apd;
                 };
                 if (!(this instanceof DataClass)) {
                     apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                    return new DataClass(selected, startDateTime, endDateTime);
+                    return new DataClass(selected, startDateTime, endDateTime, yearsListDirection, monthListDirection, daysListDirection);
                 }
                 var self = this;
                 self.selected = self._getSelected(selected, startDateTime, endDateTime);
                 var selectedYear = new Date(this.selected.datetime).getFullYear();
                 var selectedMonth = new Date(this.selected.datetime).getMonth();
+                self.yearsListDirection = yearsListDirection || self.yearsListDirection;
+                self.monthListDirection = monthListDirection || self.monthListDirection;
+                self.daysListDirection = daysListDirection || self.daysListDirection;
                 self._limitDates = new Model.LimitDatesClass(startDateTime, endDateTime);
                 self._startDateTime = startDateTime;
                 self._endDateTime = endDateTime;
-                self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, this.YEARS_LIST_DIRECTION);
-                self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
-                self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth, this.DAYS_LIST_DIRECTION);
+                self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, self.yearsListDirection);
+                self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, self.monthListDirection);
+                self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth, self.daysListDirection);
                 return this;
             }
-            DataClass.isDateUpperStartLimit = function (datetime, startLimitTime) {
-                if (!startLimitTime)
-                    return true;
-                return (datetime > startLimitTime);
-            };
-            DataClass.isDateLowerEndLimit = function (datetime, endLimitTime) {
-                if (!endLimitTime)
-                    return true;
-                return (datetime < endLimitTime);
-            };
-            DataClass.isDateBetweenLimits = function (datetime, startLimitTime, endLimitTime) {
-                return (this.isDateUpperStartLimit(datetime, startLimitTime) && this.isDateLowerEndLimit(datetime, endLimitTime));
-            };
             return DataClass;
         })();
         Model.DataClass = DataClass;
@@ -439,10 +429,12 @@ var apd;
                             day = scope.data.getDaysInMonth(month, year);
                         }
                         datetime = getDateTime(day, month, year);
-                        if (!apd.Model.DataClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
-                            if (!apd.Model.DataClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
+                        if (!apd.Model.LimitDatesClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
+                            if (!apd.Model.LimitDatesClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
+                                datetime = settings.startDateTime;
                             }
-                            else if (!apd.Model.DataClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
+                            else if (!apd.Model.LimitDatesClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
+                                datetime = settings.endDateTime;
                             }
                         }
                         updateModel(datetime);
@@ -495,18 +487,30 @@ var apd;
         var LimitDatesClass = (function () {
             function LimitDatesClass(startDateTime, endDateTime) {
                 this._setStartDate = function (datetime) {
+                    if (!(this instanceof LimitDatesClass)) {
+                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                        return false;
+                    }
                     this.startDate.day = new Date(datetime).getDate();
                     this.startDate.month = new Date(datetime).getMonth();
                     this.startDate.year = new Date(datetime).getFullYear();
                     return this;
                 };
                 this._setEndDate = function (datetime) {
+                    if (!(this instanceof LimitDatesClass)) {
+                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                        return false;
+                    }
                     this.endDate.day = new Date(datetime).getDate();
                     this.endDate.month = new Date(datetime).getMonth();
                     this.endDate.year = new Date(datetime).getFullYear();
                     return this;
                 };
                 this._setNowDate = function () {
+                    if (!(this instanceof LimitDatesClass)) {
+                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                        return false;
+                    }
                     this.nowDate.day = new Date().getDate();
                     this.nowDate.month = new Date().getMonth();
                     this.nowDate.year = new Date().getFullYear();
@@ -523,6 +527,19 @@ var apd;
                 this._setEndDate(endDateTime);
                 this._setNowDate();
             }
+            LimitDatesClass.isDateUpperStartLimit = function (datetime, startLimitTime) {
+                if (!startLimitTime)
+                    return true;
+                return (datetime > startLimitTime);
+            };
+            LimitDatesClass.isDateLowerEndLimit = function (datetime, endLimitTime) {
+                if (!endLimitTime)
+                    return true;
+                return (datetime < endLimitTime);
+            };
+            LimitDatesClass.isDateBetweenLimits = function (datetime, startLimitTime, endLimitTime) {
+                return (this.isDateUpperStartLimit(datetime, startLimitTime) && this.isDateLowerEndLimit(datetime, endLimitTime));
+            };
             return LimitDatesClass;
         })();
         Model.LimitDatesClass = LimitDatesClass;

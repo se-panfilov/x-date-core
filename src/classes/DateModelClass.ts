@@ -13,7 +13,7 @@ module apd.Model {
 
         constructor(datetime:number) {
             if (!(this instanceof DateModelClass)) {
-                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
                 return new DateModelClass(datetime);
             }
 

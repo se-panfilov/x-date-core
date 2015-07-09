@@ -121,24 +121,19 @@ module apd.directive {
                         var year = scope.data.selected.year;
                         var day = scope.data.selected.day;
 
-                        //TODO (S.Panfilov) check case when it's incorrect day
                         if (!isDayInMonth(day, month, year)) {
-                            //TODO (S.Panfilov) .getDaysInMonth didn't expect limits, should use other func
                             day = scope.data.getDaysInMonth(month, year);
                         }
 
                         datetime = getDateTime(day, month, year);
 
-                        if (!apd.Model.DataClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
-                            //TODO (S.Panfilov) current work point
-                            //if start > datetime, should set start as datetime
-                            if (!apd.Model.DataClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
-
-                            } else if (!apd.Model.DataClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
-
+                        if (!apd.Model.LimitDatesClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
+                            if (!apd.Model.LimitDatesClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
+                                datetime = settings.startDateTime;
+                            } else if (!apd.Model.LimitDatesClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
+                                datetime = settings.endDateTime;
                             }
                         }
-
 
                         updateModel(datetime);
 

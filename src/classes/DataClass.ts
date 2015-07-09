@@ -11,15 +11,14 @@ module apd.Model {
         _endDateTime:number;
         _limitDates:LimitDatesClass;
 
-        //TODO Remove sorting from here to the directive
-        YEARS_LIST_DIRECTION = 'desc';
-        MONTH_LIST_DIRECTION = 'asc';
-        DAYS_LIST_DIRECTION = 'asc';
+        yearsListDirection = 'desc';
+        monthListDirection = 'asc';
+        daysListDirection = 'asc';
 
-        constructor(selected:DateModelClass, startDateTime:number, endDateTime:number) {
+        constructor(selected:DateModelClass, startDateTime:number, endDateTime:number, yearsListDirection?:string, monthListDirection?:string, daysListDirection?:string) {
             if (!(this instanceof DataClass)) {
-                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                return new DataClass(selected, startDateTime, endDateTime);
+                apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
+                return new DataClass(selected, startDateTime, endDateTime, yearsListDirection, monthListDirection, daysListDirection);
             }
 
             var self = this;
@@ -27,12 +26,16 @@ module apd.Model {
             var selectedYear = new Date(this.selected.datetime).getFullYear();
             var selectedMonth = new Date(this.selected.datetime).getMonth();
 
+            self.yearsListDirection = yearsListDirection || self.yearsListDirection;
+            self.monthListDirection = monthListDirection || self.monthListDirection;
+            self.daysListDirection = daysListDirection || self.daysListDirection;
+
             self._limitDates = new LimitDatesClass(startDateTime, endDateTime);
             self._startDateTime = startDateTime;
             self._endDateTime = endDateTime;
-            self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, this.YEARS_LIST_DIRECTION);
-            self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
-            self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth, this.DAYS_LIST_DIRECTION);
+            self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, self.yearsListDirection);
+            self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, self.monthListDirection);
+            self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth, self.daysListDirection);
 
             return this;
         }
@@ -91,11 +94,21 @@ module apd.Model {
         };
 
         reloadYearsList = function () {
-            this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates, this.YEARS_LIST_DIRECTION);
+            if (!(this instanceof DataClass)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
+            this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates, this.yearsListDirection);
             return this;
         };
 
         private _getYearsList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, direction:string) {
+            if (!(this instanceof DataClass)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             var result:Array<number> = [];
             var DEFAULT_YEARS_COUNT = 20;
 
@@ -138,12 +151,22 @@ module apd.Model {
         };
 
         reloadMonthList = function () {
+            if (!(this instanceof DataClass)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             var selectedYear = new Date(this.selected.datetime).getFullYear();
-            this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.MONTH_LIST_DIRECTION);
+            this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.monthListDirection);
             return this;
         };
 
         private _getMonthList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, direction:string) {
+            if (!(this instanceof DataClass)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             var result:Array<number>;
             var START_MONTH = 0;
             var END_MONTH = 11;
@@ -180,13 +203,23 @@ module apd.Model {
         };
 
         reloadDaysList = function () {
+            if (!(this instanceof DataClass)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             var selectedYear = new Date(this.selected.datetime).getFullYear();
             var selectedMonth = new Date(this.selected.datetime).getMonth();
-            this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.DAYS_LIST_DIRECTION);
+            this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.daysListDirection);
             return this;
         };
 
         private _getDaysList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, selectedMonth:number, direction:string) {
+            if (!(this instanceof DataClass)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             var result:Array<number>;
             var START_DAY = 1;
             var lastDayInMonth = this.getDaysInMonth(selectedMonth, selectedYear);
@@ -223,6 +256,11 @@ module apd.Model {
         };
 
         private _getIntArr = function (length:number) {
+            if (!(this instanceof DataClass)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             if (!length && length !== 0) {
                 apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
                 return null;
@@ -233,20 +271,6 @@ module apd.Model {
 
         getDaysInMonth = (month:number, year:number) => {
             return new Date(year, month + 1, 0).getDate();
-        };
-
-        static isDateUpperStartLimit = function (datetime:number, startLimitTime:number) {
-            if (!startLimitTime) return true;
-            return (datetime > startLimitTime);
-        };
-
-        static isDateLowerEndLimit = function (datetime:number, endLimitTime:number) {
-            if (!endLimitTime) return true;
-            return (datetime < endLimitTime);
-        };
-
-        static isDateBetweenLimits = function (datetime:number, startLimitTime:number, endLimitTime:number) {
-            return (this.isDateUpperStartLimit(datetime, startLimitTime) && this.isDateLowerEndLimit(datetime, endLimitTime));
         };
 
     }

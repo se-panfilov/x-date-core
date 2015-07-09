@@ -9,7 +9,7 @@ module apd.Model {
 
         constructor(name:string, short:string) {
             if (!(this instanceof DayOfWeek)) {
-                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
                 return new DayOfWeek(name, short);
             }
 

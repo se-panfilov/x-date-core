@@ -10,7 +10,7 @@ module apd.Model {
 
         constructor(days:Array<DayOfWeek>) {
             if (!(this instanceof DaysOfWeek)) {
-                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
                 return new DaysOfWeek(days);
             }
 
@@ -21,6 +21,11 @@ module apd.Model {
         }
 
         private getListOfShorts = () => {
+            if (!(this instanceof DaysOfWeek)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             var result = [];
 
             for (var i = 0; i < this.list.length; i++) {
@@ -32,6 +37,11 @@ module apd.Model {
         };
 
         private getListOfNames = () => {
+            if (!(this instanceof DaysOfWeek)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             var result = [];
 
             for (var i = 0; i < this.list.length; i++) {
@@ -43,10 +53,20 @@ module apd.Model {
         };
 
         getDayOfWeekShortName = (dayNum:number) => {
+            if (!(this instanceof DaysOfWeek)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             return this.shorts[dayNum];
         };
 
         getDayOfWeekName = (dayNum:number) => {
+            if (!(this instanceof DaysOfWeek)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
             return this.names[dayNum];
         };
     }
