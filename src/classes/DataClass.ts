@@ -236,7 +236,7 @@ module apd.Model {
 
             var result:Array<number>;
             var START_DAY = 1;
-            var lastDayInMonth = this.getDaysInMonth(selectedMonth, selectedYear);
+            var lastDayInMonth = DataClass.getDaysInMonth(selectedMonth, selectedYear);
 
             //TODO (S.Panfilov)  check
             if (startDateTime || endDateTime) {
@@ -283,7 +283,7 @@ module apd.Model {
             return length ? this._getIntArr(length - 1).concat(length) : [];
         };
 
-        getDaysInMonth = (month:number, year:number) => {
+        static getDaysInMonth = (month:number, year:number) => {
             return new Date(year, month + 1, 0).getDate();
         };
 

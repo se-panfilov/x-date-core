@@ -156,7 +156,7 @@ var apd;
                     }
                     var result;
                     var START_DAY = 1;
-                    var lastDayInMonth = this.getDaysInMonth(selectedMonth, selectedYear);
+                    var lastDayInMonth = DataClass.getDaysInMonth(selectedMonth, selectedYear);
                     if (startDateTime || endDateTime) {
                         var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
                         var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
@@ -195,9 +195,6 @@ var apd;
                     }
                     return length ? this._getIntArr(length - 1).concat(length) : [];
                 };
-                this.getDaysInMonth = function (month, year) {
-                    return new Date(year, month + 1, 0).getDate();
-                };
                 if (!(this instanceof DataClass)) {
                     apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
                     return new DataClass(selected, startDateTime, endDateTime, yearsListDirection, monthListDirection, daysListDirection);
@@ -217,6 +214,9 @@ var apd;
                 self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth, self.daysListDirection);
                 return this;
             }
+            DataClass.getDaysInMonth = function (month, year) {
+                return new Date(year, month + 1, 0).getDate();
+            };
             return DataClass;
         })();
         Model.DataClass = DataClass;
@@ -470,7 +470,12 @@ var apd;
                         else {
                             initDatetime = new Date().getTime();
                         }
-                        return new apd.Model.DateModelClass(initDatetime);
+                        var date = new Date(initDatetime);
+                        var day = date.getDate();
+                        var month = date.getMonth();
+                        var year = date.getFullYear();
+                        var limitSafeDatetime = getLimitSafeDatetime(day, month, year);
+                        return new apd.Model.DateModelClass(limitSafeDatetime);
                     }
                     function _initData(initDateModel, startDateTime, endDateTime) {
                         scope.data = new apd.Model.DataClass(initDateModel, startDateTime, endDateTime);
@@ -478,7 +483,7 @@ var apd;
                     }
                     function getLimitSafeDatetime(day, month, year) {
                         if (!isDayInMonth(day, month, year)) {
-                            day = scope.data.getDaysInMonth(month, year);
+                            day = apd.Model.DataClass.getDaysInMonth(month, year);
                         }
                         var datetime = getDateTime(day, month, year);
                         if (!apd.Model.LimitDatesClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
@@ -544,13 +549,13 @@ var apd;
                         return new Date(year, month, day).getTime();
                     }
                     function isDayInMonth(day, month, year) {
-                        var daysInMonth = scope.data.getDaysInMonth(month, year);
+                        var daysInMonth = apd.Model.DataClass.getDaysInMonth(month, year);
                         return day <= daysInMonth;
                     }
                     (function _init() {
-                        settings.initDateModel = getInitDateModel(scope.ngModel);
                         settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
                         settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                        settings.initDateModel = getInitDateModel(scope.ngModel);
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
                         scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
                         scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;

@@ -80,7 +80,14 @@ module apd.directive {
                             initDatetime = new Date().getTime();
                         }
 
-                        return new apd.Model.DateModelClass(initDatetime);
+                        var date = new Date(initDatetime);
+                        var day = date.getDate();
+                        var month = date.getMonth();
+                        var year = date.getFullYear();
+
+                        var limitSafeDatetime = getLimitSafeDatetime(day, month, year);
+
+                        return new apd.Model.DateModelClass(limitSafeDatetime);
                     }
 
                     function _initData(initDateModel:apd.Model.DateModelClass, startDateTime:number, endDateTime:number) {
@@ -90,7 +97,7 @@ module apd.directive {
 
                     function getLimitSafeDatetime(day:number, month:number, year:number):number {
                         if (!isDayInMonth(day, month, year)) {
-                            day = scope.data.getDaysInMonth(month, year);
+                            day = apd.Model.DataClass.getDaysInMonth(month, year);
                         }
 
                         var datetime:number = getDateTime(day, month, year);
@@ -173,15 +180,15 @@ module apd.directive {
                     }
 
                     function isDayInMonth(day:number, month:number, year:number):boolean {
-                        var daysInMonth = scope.data.getDaysInMonth(month, year);
+                        var daysInMonth = apd.Model.DataClass.getDaysInMonth(month, year);
 
                         return day <= daysInMonth;
                     }
 
                     (function _init() {
-                        settings.initDateModel = getInitDateModel(scope.ngModel);
                         settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
                         settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                        settings.initDateModel = getInitDateModel(scope.ngModel);
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
 
                         scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
