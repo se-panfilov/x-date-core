@@ -139,7 +139,21 @@ module apd.Model {
 
             //start = null, end = 2014
             else if (!startDateTime && endDateTime) {
-                result = this._getArrayOfNumbers(end, end);
+                //now = 2013 (or 2014),  end = 2014
+                if (limitDates.endDate.year >= limitDates.nowDate.year) {
+
+                    if ((now - DEFAULT_YEARS_COUNT) > (end - DEFAULT_YEARS_COUNT)) {
+                        result = this._getArrayOfNumbers(now, end);
+                    } else {
+                        result = this._getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
+                    }
+
+                }
+                //now = 2015,  end = 2014
+                else if (limitDates.endDate.year > limitDates.nowDate.year) {
+                    result = this._getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
+                }
+
             }
 
             //start = null, end = null

@@ -82,7 +82,17 @@ var apd;
                         result = this._getArrayOfNumbers(start, now);
                     }
                     else if (!startDateTime && endDateTime) {
-                        result = this._getArrayOfNumbers(end, end);
+                        if (limitDates.endDate.year >= limitDates.nowDate.year) {
+                            if ((now - DEFAULT_YEARS_COUNT) > (end - DEFAULT_YEARS_COUNT)) {
+                                result = this._getArrayOfNumbers(now, end);
+                            }
+                            else {
+                                result = this._getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
+                            }
+                        }
+                        else if (limitDates.endDate.year > limitDates.nowDate.year) {
+                            result = this._getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
+                        }
                     }
                     else if (!startDateTime && !endDateTime) {
                         result = this._getArrayOfNumbers(now - (DEFAULT_YEARS_COUNT - 1), now);
@@ -567,6 +577,7 @@ var apd;
                     this.startDate.day = new Date(datetime).getDate();
                     this.startDate.month = new Date(datetime).getMonth();
                     this.startDate.year = new Date(datetime).getFullYear();
+                    this.startDate.datetime = datetime;
                     return this;
                 };
                 this._setEndDate = function (datetime) {
@@ -577,6 +588,7 @@ var apd;
                     this.endDate.day = new Date(datetime).getDate();
                     this.endDate.month = new Date(datetime).getMonth();
                     this.endDate.year = new Date(datetime).getFullYear();
+                    this.endDate.datetime = datetime;
                     return this;
                 };
                 this._setNowDate = function () {
@@ -587,15 +599,16 @@ var apd;
                     this.nowDate.day = new Date().getDate();
                     this.nowDate.month = new Date().getMonth();
                     this.nowDate.year = new Date().getFullYear();
+                    this.nowDate.datetime = new Date().getTime();
                     return this;
                 };
                 if (!(this instanceof LimitDatesClass)) {
                     apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
                     return new LimitDatesClass(startDateTime, endDateTime);
                 }
-                this.startDate = { day: null, month: null, year: null };
-                this.endDate = { day: null, month: null, year: null };
-                this.nowDate = { day: null, month: null, year: null };
+                this.startDate = { day: null, month: null, year: null, datetime: null };
+                this.endDate = { day: null, month: null, year: null, datetime: null };
+                this.nowDate = { day: null, month: null, year: null, datetime: null };
                 this._setStartDate(startDateTime);
                 this._setEndDate(endDateTime);
                 this._setNowDate();

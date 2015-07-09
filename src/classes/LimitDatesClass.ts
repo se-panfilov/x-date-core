@@ -5,18 +5,21 @@ module apd.Model {
 
     export class LimitDatesClass {
         startDate:{
+            datetime:number;
             day: number;
             month:number;
             year:number;
         };
 
         endDate:{
+            datetime:number;
             day:number;
             month: number;
             year:number;
         };
 
         nowDate:{
+            datetime:number;
             day:number;
             month: number;
             year:number;
@@ -28,9 +31,9 @@ module apd.Model {
                 return new LimitDatesClass(startDateTime, endDateTime);
             }
 
-            this.startDate = {day: null, month: null, year: null};
-            this.endDate = {day: null, month: null, year: null};
-            this.nowDate = {day: null, month: null, year: null};
+            this.startDate = {day: null, month: null, year: null, datetime: null};
+            this.endDate = {day: null, month: null, year: null, datetime: null};
+            this.nowDate = {day: null, month: null, year: null, datetime: null};
 
             this._setStartDate(startDateTime);
             this._setEndDate(endDateTime);
@@ -46,6 +49,7 @@ module apd.Model {
             this.startDate.day = new Date(datetime).getDate();
             this.startDate.month = new Date(datetime).getMonth();
             this.startDate.year = new Date(datetime).getFullYear();
+            this.startDate.datetime = datetime;
             return this;
         };
 
@@ -58,6 +62,7 @@ module apd.Model {
             this.endDate.day = new Date(datetime).getDate();
             this.endDate.month = new Date(datetime).getMonth();
             this.endDate.year = new Date(datetime).getFullYear();
+            this.endDate.datetime = datetime;
             return this;
         };
 
@@ -70,6 +75,7 @@ module apd.Model {
             this.nowDate.day = new Date().getDate();
             this.nowDate.month = new Date().getMonth();
             this.nowDate.year = new Date().getFullYear();
+            this.nowDate.datetime = new Date().getTime();
             return this;
         };
 
