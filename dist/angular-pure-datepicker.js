@@ -440,9 +440,9 @@ var apd;
                         }
                         datetime = getDateTime(day, month, year);
                         if (!apd.Model.DataClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
-                            if (apd.Model.DataClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
+                            if (!apd.Model.DataClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
                             }
-                            if (apd.Model.DataClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
+                            else if (!apd.Model.DataClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
                             }
                         }
                         updateModel(datetime);

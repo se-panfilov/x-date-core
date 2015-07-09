@@ -1,22 +1,22 @@
 var gulp = require('gulp');
-var concat = require('gulp-concat');
-var rename = require('gulp-rename');
-var uglify = require('gulp-uglify');
-var jade = require('gulp-jade');
-var sourcemaps = require('gulp-sourcemaps');
-var watch = require('gulp-watch');
-var changed = require('gulp-changed');
-var ngAnnotate = require('gulp-ng-annotate');
-var stylus = require('gulp-stylus');
-var nib = require('nib');
-var minifyHTML = require('gulp-minify-html');
-var minifyCss = require('gulp-minify-css');
-var ts = require('gulp-typescript');
-var templateCache = require('gulp-angular-templatecache');
-var mergeStream = require('merge-stream');
-var cssBase64 = require('gulp-css-base64');
-//var typescriptlint = require('gulp-typescriptlint');
-var size = require('gulp-filesize');
+var concat;
+var rename;
+var uglify;
+var jade;
+var sourcemaps;
+var watch;
+var changed;
+var ngAnnotate;
+var stylus;
+var nib;
+var minifyHTML;
+var minifyCss;
+var ts;
+var templateCache;
+var mergeStream;
+var cssBase64;
+var size;
+var tslint;
 
 var src = {
     styles: ['src/templates/**/*.styl'],
@@ -32,26 +32,26 @@ var dest = {
     templates: 'src/templates'
 };
 
-//gulp.task('lint', function () {
-//TODO (S.Panfilov) typescript lint?
-//    gulp.src(src.ts)
-//        .pipe(coffeelint({
-//            max_line_length: false
-//        }))
-//        .pipe(coffeelint.reporter())
-//});
+gulp.task('lint', function () {
+    tslint = tslint || require('gulp-tslint');
 
-gulp.task('todo', function() {
+    return gulp.src(src.ts)
+        .pipe(tslint())
+        .pipe(tslint.report('verbose'));
+});
+
+gulp.task('todo', function () {
     var todo = require('gulp-todo');
 
     gulp.src('src/**/*.*')
         .pipe(todo())
         .pipe(gulp.dest('./'));
-    // -> Will output a TODO.md with your todos
 });
 
 
-gulp.task('sizes_dist', function () {
+gulp.task('sizes', function () {
+    size = size || require('gulp-filesize');
+
     return gulp.src([
         'dist/**/*.js',
         'dist/**/*.css'
@@ -59,8 +59,13 @@ gulp.task('sizes_dist', function () {
 });
 
 function makeJade() {
+    templateCache = templateCache || require('gulp-angular-templatecache');
+    minifyHTML = minifyHTML || require('gulp-minify-html');
+    changed = changed || require('gulp-changed');
+    jade = jade || require('gulp-jade');
+
     return gulp.src(src.jade)
-        //.pipe(changed(dest.templates, {extension: '.html'}))
+        .pipe(changed(dest.templates, {extension: '.html'}))
         .pipe(jade({pretty: false}))
         .on('error', console.log)
         .pipe(minifyHTML({
@@ -74,6 +79,10 @@ function makeJade() {
 }
 
 function makeTypeScript() {
+    ts = ts || require('gulp-typescript');
+    ngAnnotate = ngAnnotate || require('gulp-ng-annotate');
+    concat = concat || require('gulp-concat');
+
     return gulp.src(src.ts)
         .pipe(ts({
             removeComments: true
@@ -83,7 +92,12 @@ function makeTypeScript() {
         .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
 }
 
-function mergeJS (templates, mainJs) {
+function mergeJS(templates, mainJs) {
+    mergeStream = mergeStream || require('merge-stream');
+    sourcemaps = sourcemaps || require('gulp-sourcemaps');
+    uglify = uglify || require('gulp-uglify');
+    rename = rename || require('gulp-rename');
+
     return mergeStream(templates, mainJs)
         .pipe(concat('angular-pure-datepicker.js'))
         .pipe(gulp.dest(dest.dist))
@@ -100,12 +114,16 @@ function buildTS() {
     return mergeJS(templates, mainJs);
 }
 
-
 gulp.task('ts', function () {
     return buildTS();
 });
 
 gulp.task('stylus', function () {
+    cssBase64 = cssBase64 || require('gulp-css-base64');
+    minifyCss = minifyCss || require('gulp-minify-css');
+    nib = nib || require('nib');
+    stylus = stylus || require('gulp-stylus');
+
     return gulp.src(src.styles, {base: 'src'})
         .pipe(concat('angular-pure-datepicker.styl'))
         .pipe(stylus({use: [nib()], compress: true}))
@@ -118,6 +136,8 @@ gulp.task('stylus', function () {
 });
 
 gulp.task('watch', function () {
+    watch = watch || require('gulp-watch');
+
     gulp.watch(src.jade, ['ts', 'todo']);
     gulp.watch(src.styles, ['stylus', 'todo']);
     gulp.watch(src.ts, ['ts', 'todo']);

@@ -129,14 +129,12 @@ module apd.directive {
 
                         datetime = getDateTime(day, month, year);
 
-                        if (!apd.Model.DataClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)){
+                        if (!apd.Model.DataClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
                             //TODO (S.Panfilov) current work point
                             //if start > datetime, should set start as datetime
-                            if (apd.Model.DataClass.isDateUpperStartLimit(datetime, settings.startDateTime)){
+                            if (!apd.Model.DataClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
 
-                            }
-
-                            if (apd.Model.DataClass.isDateLowerEndLimit(datetime, settings.endDateTime)){
+                            } else if (!apd.Model.DataClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
 
                             }
                         }
