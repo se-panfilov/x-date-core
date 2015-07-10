@@ -42,11 +42,20 @@ Features
  - Support start date and end date limitation;
  - No popups;
  - Easy to customize - you'll be able to provide any class or id for any element inside directive;
+ - Localization (developement in progress);
 
 Compatibility with browsers
 --------
 
  - (Not tested yet);
+
+Localization
+-------
+
+There only localization what may be needed is for names of days of week.
+
+(here should be instructions when it's done)
+
  
 How to port to other framework?
 --------
@@ -66,6 +75,12 @@ All contributions are welcome. Please add a [Pull-Request][5].
 If you not sure about TypeScript, you ay wrote your PR in JS (it's will be easy to port after all).
 
 You may found few hand-test cases in [dev-server][6] branch. It will be better if you test how it works on it.
+ 
+ How it work (for developers)
+ ---------
+ 
+ (should write basic principes of apd)
+ 
  
 License
 --------
