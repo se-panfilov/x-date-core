@@ -16,7 +16,12 @@ angular-pure-datepicker
 More info
 --------
 
-tldr
+tldr;
+
+Stability
+--------
+
+Not stable yet; Use it only in test or developement cases.
 
 
 Installation
@@ -59,14 +64,13 @@ Contribution
 
 All contributions are welcome. Please add a [Pull-Request][5].
 If you not sure about TypeScript, you ay wrote your PR in JS (it's will be easy to port after all).
+
+You may found few hand-test cases in [dev-server][6] branch. It will be better if you test how it works on it.
  
 License
 --------
 
 MIT: [go to text][4]
-
-
-
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/se-panfilov/angular-pure-datepicker/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
@@ -76,3 +80,4 @@ MIT: [go to text][4]
 [3]: https://github.com/se-panfilov/angular-pure-datepicker/issues
 [4]: https://github.com/se-panfilov/angular-pure-datepicker/blob/master/LICENSE
 [5]: https://github.com/se-panfilov/angular-pure-datepicker/pulls
+[6]: https://github.com/se-panfilov/angular-pure-datepicker/tree/dev_server
