@@ -19,13 +19,39 @@ angular.module('demo', [
             '<div><span>Timezone:</span>&nbsp;<span ng-bind=caseModel.model.timezone></span></div>' +
             '<div><span>Start limit:</span>&nbsp;<span ng-bind=caseModel.startDate></span>&nbsp;<span>({{getDate(caseModel.startDate)}})</span></div>' +
             '<div><span>End limit:</span>&nbsp;<span ng-bind=caseModel.endDate></span>&nbsp;<span>({{getDate(caseModel.endDate)}})</span></div>' +
+            '<div><button type="button" ng-click="plusOneMonth()">+1 month</button></div>' +
+            '<div><button type="button" ng-click="minusOneMonth()">-1 month</button></div>' +
             '</section>',
             link: function (scope) {
                 scope.getDate = function (datetime) {
-                    if (!datetime) return '-';
+                    if (!datetime) return ' none ';
 
                     return $filter('date')(new Date(datetime), 'dd-MM-yyyy');
-                }
+                };
+
+                scope.plusOneMonth = function () {
+                    var date = new Date(scope.caseModel.model.datetime);
+                    if (date.getMonth() === 11) {
+                        date.setMonth(0);
+                        date.setFullYear(date.getFullYear() + 1)
+                    } else {
+                        date.setMonth(date.getMonth() + 1);
+                    }
+
+                    scope.caseModel.model.datetime = date.getTime();
+                };
+
+                scope.minusOneMonth = function () {
+                    var date = new Date(scope.caseModel.model.datetime);
+                    if (date.getMonth() === 0) {
+                        date.setMonth(11);
+                        date.setFullYear(date.getFullYear() - 1)
+                    } else {
+                        date.setMonth(date.getMonth() - 1);
+                    }
+
+                    scope.caseModel.model.datetime = date.getTime();
+                };
             }
         };
     })
@@ -41,30 +67,6 @@ angular.module('demo', [
             {name: 'Суббота', short: 'Сб'},
             {name: 'Воскресенье', short: 'Вс'}
         ];
-
-        $scope.plusOneMonth = function (caseModel) {
-            var date = new Date(caseModel.model.datetime);
-            if (date.getMonth() === 11) {
-                date.setMonth(0);
-                date.setFullYear(date.getFullYear() + 1)
-            } else {
-                date.setMonth(date.getMonth() + 1);
-            }
-
-            caseModel.model.datetime = date.getTime()
-        };
-
-        $scope.minusOneMonth = function (caseModel) {
-            var date = new Date(caseModel.model.datetime);
-            if (date.getMonth() === 0) {
-                date.setMonth(11);
-                date.setFullYear(date.getFullYear() - 1)
-            } else {
-                date.setMonth(date.getMonth() - 1);
-            }
-
-            caseModel.model.datetime = date.getTime()
-        };
 
         $scope.commonCase = {
             model: {
