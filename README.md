@@ -42,7 +42,7 @@ Features
  - Support start date and end date limitation;
  - No popups;
  - Easy to customize - you'll be able to provide any class or id for any element inside directive;
- - Localization (developement in progress);
+ - Localization (development in progress);
 
 Compatibility with browsers
 --------
@@ -76,10 +76,10 @@ If you not sure about TypeScript, you ay wrote your PR in JS (it's will be easy 
 
 You may found few hand-test cases in [dev-server][6] branch. It will be better if you test how it works on it.
  
- How it work (for developers)
- ---------
+How it works (for developers)
+---------
  
- (should write basic principes of apd)
+ (should write basics of apd)
  
  
 License
