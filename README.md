@@ -37,16 +37,19 @@ Installation and usage
     or download from git: [releases][2]
  2. Add to `index.html`
  
-    ```
+    ```html
     <link href="bower_components/angular-pure-datepicker/dist/angular-pure-datepicker.css">
     <script src="bower_components/angular-pure-datepicker/dist/angular-pure-datepicker.min.js"></script>
      ```
+
  3. Add as angilarjs project's dependency:
-    ```
+
+    ```javascript
         angular.module('demo', [
             'angular-pd'
         ])
     ```
+
  4. Add a directive to html
     <pure-datepicker ng-model="model"></pure-datepicker>
     
