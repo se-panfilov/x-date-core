@@ -71,8 +71,8 @@ MIT: [go to text][4]
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/se-panfilov/angular-pure-datepicker/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-[1]: [https://se-panfilov.github.io/angular-pure-datepicker/]
-[2]: [https://github.com/se-panfilov/angular-pure-datepicker/releases]
-[3]: [https://github.com/se-panfilov/angular-pure-datepicker/issues]
-[4]: [https://github.com/se-panfilov/angular-pure-datepicker/blob/master/LICENSE]
-[5]: [https://github.com/se-panfilov/angular-pure-datepicker/pulls]
+[1]: https://se-panfilov.github.io/angular-pure-datepicker/
+[2]: https://github.com/se-panfilov/angular-pure-datepicker/releases
+[3]: https://github.com/se-panfilov/angular-pure-datepicker/issues
+[4]: https://github.com/se-panfilov/angular-pure-datepicker/blob/master/LICENSE
+[5]: https://github.com/se-panfilov/angular-pure-datepicker/pulls
