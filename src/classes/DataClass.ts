@@ -110,7 +110,7 @@ module apd.Model {
             }
 
             var result:Array<number> = [];
-            var DEFAULT_YEARS_COUNT = 20;
+            var DEFAULT_YEARS_COUNT = 10;
 
             var start = limitDates.startDate.year;
             var end = limitDates.endDate.year;
