@@ -46,7 +46,7 @@ module apd.directive {
                 link: function (scope) {
 
                     //TODO (S.Panfilov) check for cross-browser support
-                    //TODO (S.Panfilov)  may be should add tests
+                    //TODO (S.Panfilov) may be should add tests
                     var settings = {
                         initDateModel: null,
                         startDateTime: null,
