@@ -68,6 +68,11 @@ var apd;
                     var start = limitDates.startDate.year;
                     var end = limitDates.endDate.year;
                     var now = limitDates.nowDate.year;
+                    var selectedYear = new Date(this.selected.datetime).getFullYear();
+                    var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
+                    var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
+                    latestPossibleYear = latestPossibleYear + (DEFAULT_YEARS_COUNT - 1);
+                    firstPossibleYear = firstPossibleYear - (DEFAULT_YEARS_COUNT - 1);
                     if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
                         result = this._getArrayOfNumbers(start, end);
                     }
@@ -79,12 +84,12 @@ var apd;
                         result = this._getArrayOfNumbers(start, end);
                     }
                     else if (startDateTime && !endDateTime) {
-                        result = this._getArrayOfNumbers(start, now);
+                        result = this._getArrayOfNumbers(start, latestPossibleYear);
                     }
                     else if (!startDateTime && endDateTime) {
                         if (limitDates.endDate.year >= limitDates.nowDate.year) {
-                            if ((now - DEFAULT_YEARS_COUNT) > (end - DEFAULT_YEARS_COUNT)) {
-                                result = this._getArrayOfNumbers(now, end);
+                            if ((firstPossibleYear - DEFAULT_YEARS_COUNT) > (end - DEFAULT_YEARS_COUNT)) {
+                                result = this._getArrayOfNumbers(firstPossibleYear, end);
                             }
                             else {
                                 result = this._getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
@@ -95,7 +100,7 @@ var apd;
                         }
                     }
                     else if (!startDateTime && !endDateTime) {
-                        result = this._getArrayOfNumbers(now - (DEFAULT_YEARS_COUNT - 1), now);
+                        result = this._getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
                     }
                     return this._intArraySort(result, direction);
                 };
