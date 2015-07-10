@@ -9,6 +9,11 @@ var apd;
                 this.yearsListDirection = 'desc';
                 this.monthListDirection = 'asc';
                 this.daysListDirection = 'asc';
+                this.isValidNumber = function (num) {
+                    var isNumber = !isNaN(num);
+                    var isNotInfinity = isFinite(num);
+                    return isNumber && isNotInfinity;
+                };
                 this._getSelected = function (selected, startDateTime, endDateTime) {
                     var result;
                     var isBiggerThenStart = (selected.datetime > startDateTime);
@@ -205,6 +210,9 @@ var apd;
                     return new DataClass(selected, startDateTime, endDateTime, yearsListDirection, monthListDirection, daysListDirection);
                 }
                 var self = this;
+                selected.datetime = self.isValidNumber(selected.datetime) ? selected.datetime : null;
+                startDateTime = self.isValidNumber(startDateTime) ? startDateTime : null;
+                endDateTime = self.isValidNumber(endDateTime) ? endDateTime : null;
                 self.selected = self._getSelected(selected, startDateTime, endDateTime);
                 var selectedYear = new Date(this.selected.datetime).getFullYear();
                 var selectedMonth = new Date(this.selected.datetime).getMonth();

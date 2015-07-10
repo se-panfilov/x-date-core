@@ -22,6 +22,11 @@ module apd.Model {
             }
 
             var self = this;
+
+            selected.datetime = self.isValidNumber(selected.datetime) ? selected.datetime : null;
+            startDateTime = self.isValidNumber(startDateTime) ? startDateTime : null;
+            endDateTime = self.isValidNumber(endDateTime) ? endDateTime : null;
+
             self.selected = self._getSelected(selected, startDateTime, endDateTime);
             var selectedYear = new Date(this.selected.datetime).getFullYear();
             var selectedMonth = new Date(this.selected.datetime).getMonth();
@@ -39,6 +44,12 @@ module apd.Model {
 
             return this;
         }
+
+        private isValidNumber = function (num:number):boolean {
+            var isNumber = !isNaN(num);
+            var isNotInfinity = isFinite(num);
+            return isNumber && isNotInfinity;
+        };
 
         private _getSelected = function (selected:DateModelClass, startDateTime:number, endDateTime:number) {
             var result;
