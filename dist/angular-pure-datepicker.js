@@ -15,13 +15,13 @@ var apd;
                     var isEqualToStart = (selected.datetime === startDateTime);
                     var isLowerThenEnd = (selected.datetime > endDateTime);
                     var isEqualToEnd = (selected.datetime === endDateTime);
-                    if ((isBiggerThenStart || isEqualToStart) && (isLowerThenEnd || isEqualToEnd)) {
+                    if ((isBiggerThenStart || isEqualToStart) || (isLowerThenEnd || isEqualToEnd)) {
                         result = new Model.DateModelClass(selected.datetime);
                     }
                     else if (!isBiggerThenStart) {
                         result = new Model.DateModelClass(startDateTime);
                     }
-                    if (!isBiggerThenStart) {
+                    else if (!isBiggerThenStart) {
                         result = new Model.DateModelClass(endDateTime);
                     }
                     else {

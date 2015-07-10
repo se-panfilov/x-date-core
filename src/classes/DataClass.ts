@@ -49,13 +49,13 @@ module apd.Model {
             var isEqualToEnd = (selected.datetime === endDateTime);
 
             //start == 1; selected == 1 or 2 or 3; end == 3;
-            if ((isBiggerThenStart || isEqualToStart) && (isLowerThenEnd || isEqualToEnd)) {
+            if ((isBiggerThenStart || isEqualToStart) || (isLowerThenEnd || isEqualToEnd)) {
                 result = new DateModelClass(selected.datetime);
             } else
             //start == 1; selected == 0
             if (!isBiggerThenStart) {
                 result = new DateModelClass(startDateTime);
-            }
+            } else
             //selected == 4; end == 3;
             if (!isBiggerThenStart) {
                 result = new DateModelClass(endDateTime);
