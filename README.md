@@ -103,7 +103,9 @@ Features
 Compatibility with browsers
 --------
 
- - (Not tested yet);
+ - Chrome;
+ - Firefox (select arrows will be hidden);
+ - ...
 
 Localization
 -------
