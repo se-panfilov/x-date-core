@@ -21,24 +21,80 @@ tldr;
 Stability
 --------
 
-Not stable yet; Use it only in test or developement cases.
+Not stable yet; Use it only in test or development cases.
 
 
-Installation
+Installation and usage
 -------
 
-`bower install ??? --save` (not ready yet)
+ 1. Download it
+    `bower install ??? --save` (not ready yet)
 
-`npm install ??? --save` (not ready yet)
+    `npm install ??? --save` (not ready yet)
 
-(look for other package managers)
+    (look for other package managers)
 
-or download from git: [releases][2]
+    or download from git: [releases][2]
+ 2. Add to `index.html`
+ 
+    ```
+    <link href="bower_components/angular-pure-datepicker/dist/angular-pure-datepicker.css">
+    <script src="bower_components/angular-pure-datepicker/dist/angular-pure-datepicker.min.js"></script>
+     ```
+ 3. Add as angilarjs project's dependency:
+    ```
+        angular.module('demo', [
+            'angular-pd'
+        ])
+    ```
+ 4. Add a directive to html
+    <pure-datepicker ng-model="model"></pure-datepicker>
+    
+Options
+-------
+ 
+ - `ng-model` - `Object`, can be `empty` or `null`, but `required`.
+ 
+   The result of select would placed here. Also if ng-model is object with `datetime` field 
+   (should contain number), it's will e applyed as initial date value.
+ 
+ - `apd-start` - `number`,  `optional`.
+    
+    Datetime of a lower date limit (model's values lower then limit wouldn't be applied).
+ 
+ - `apd-end` - `number`,  `optional`.
+    
+    Datetime of a upper date limit (model's values upper then limit wouldn't be applied).
+    
+ - `apd-day-id ` - `string`, `optional`.
+   
+   Setter of custom id for the days select element.
+    
+ - `apd-month-id ` - `string`, `optional`.
+   
+   Setter of custom id for the month select element.
+    
+ - `apd-year-id ` - `string`, `optional`.
+   
+   Setter of custom id for the years select element.
+    
+ - `apd-day-classes ` - `string`, `optional`.
+   
+   Setter of custom classes for the days select element.
+    
+ - `apd-month-classes ` - `string`, `optional`.
+   
+   Setter of custom classes for the month select element.
+    
+ - `apd-year-classes ` - `string`, `optional`.
+   
+   Setter of custom classes for the years select element.
+
 
 Features
 -------
  - No dependencies (except angular of course);
- - About 10kb minified;
+ - About 13kb minified;
  - Support start date and end date limitation;
  - No popups;
  - Easy to customize - you'll be able to provide any class or id for any element inside directive;
@@ -75,6 +131,12 @@ All contributions are welcome. Please add a [Pull-Request][5].
 If you not sure about TypeScript, you ay wrote your PR in JS (it's will be easy to port after all).
 
 You may found few hand-test cases in [dev-server][6] branch. It will be better if you test how it works on it.
+
+ 
+How it works (for users)
+--------
+
+(how it resolve conflicts of limits and datetime, only datetime has mean, what data provided in model, etc...)
  
 How it works (for developers)
 ---------
