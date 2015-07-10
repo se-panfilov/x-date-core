@@ -3,6 +3,8 @@
 /// <reference path="classes/DateModelClass.ts" />
 /// <reference path="messages_factory.ts" />
 
+//TODO (S.Panfilov) mat be should replace manual reference with gulp-auto-references?
+
 declare
 var angular:any;
 
@@ -43,6 +45,8 @@ module apd.directive {
                 },
                 link: function (scope) {
 
+                    //TODO (S.Panfilov) check for cross-browser support
+                    //TODO (S.Panfilov)  may be should add tests
                     var settings = {
                         initDateModel: null,
                         startDateTime: null,
