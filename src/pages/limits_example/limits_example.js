@@ -8,10 +8,10 @@ angular.module('app.pages.limits_example', [
 
         $stateProvider
 
-            .state('users', {
-                url: '/users',
-                templateUrl: 'users/users.html',
-                controller: 'UsersPageCtrl'
+            .state('limits_example', {
+                url: '/limits_example',
+                templateUrl: 'limits_example/users.html',
+                controller: 'LimitsExamplePageCtrl'
             })
         ;
     })

@@ -8,10 +8,10 @@ angular.module('app.pages.basic_example', [
 
         $stateProvider
 
-            .state('users', {
-                url: '/users',
-                templateUrl: 'users/users.html',
-                controller: 'UsersPageCtrl'
+            .state('basic_example', {
+                url: '/basic_example',
+                templateUrl: 'basic_example/basic_example.html',
+                controller: 'BasicExamplePageCtrl'
             })
         ;
     })
