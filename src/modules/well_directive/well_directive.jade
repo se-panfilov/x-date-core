@@ -1,42 +1,42 @@
 section.well
-div
-    span Day:
-    | &nbsp;
-    span(ng-bind="caseModel.model.day")
-div
-    span Month:
-    | &nbsp;
-    span(ng-bind="caseModel.model.month")
-    | &nbsp;
-    | (+1)
-div
-    span Year:
-    | &nbsp;
-    span(ng-bind="caseModel.model.year")
-div
-    span Datetime:
-    | &nbsp;
-    span(ng-bind="caseModel.model.datetime")
-    | &nbsp;
-    span(ng-bind="getDate(caseModel.model.datetime)")
-div
-    span Timezone:
-    | &nbsp;
-    span(ng-bind="caseModel.model.timezone")
-div
-    span Start limit:
-    | &nbsp;
-    span(ng-bind="caseModel.startDate")
-    | &nbsp;
-    span(ng-bind="getDate(caseModel.startDate)")
-div
-    span End limit:
-    | &nbsp;
-    span(ng-bind="caseModel.endDate")
-    | &nbsp;
-    span(ng-bind="getDate(caseModel.endDate)")
-div
     div
-        button(type="button", ng-click="plusOneMonth()") +1 month
+        span Day:
+        | &nbsp;
+        span(ng-bind="caseModel.model.day")
     div
-        button(type="button", ng-click="minusOneMonth()") -1 month
+        span Month:
+        | &nbsp;
+        span(ng-bind="caseModel.model.month")
+        | &nbsp;
+        | (+1)
+    div
+        span Year:
+        | &nbsp;
+        span(ng-bind="caseModel.model.year")
+    div
+        span Datetime:
+        | &nbsp;
+        span(ng-bind="caseModel.model.datetime")
+        | &nbsp;
+        span(ng-bind="getDate(caseModel.model.datetime)")
+    div
+        span Timezone:
+        | &nbsp;
+        span(ng-bind="caseModel.model.timezone")
+    div
+        span Start limit:
+        | &nbsp;
+        span(ng-bind="caseModel.startDate")
+        | &nbsp;
+        span(ng-bind="getDate(caseModel.startDate)")
+    div
+        span End limit:
+        | &nbsp;
+        span(ng-bind="caseModel.endDate")
+        | &nbsp;
+        span(ng-bind="getDate(caseModel.endDate)")
+    div
+        div
+            button(type="button", ng-click="plusOneMonth()") +1 month
+        div
+            button(type="button", ng-click="minusOneMonth()") -1 month

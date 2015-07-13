@@ -8,7 +8,7 @@ angular.module('app.well', [])
             scope: {
                 caseModel: '='
             },
-            templateUrl: 'well_directive/well_directive.jade',
+            templateUrl: 'well_directive/well_directive.html',
             link: function (scope) {
                 scope.getDate = function (datetime) {
                     if (!datetime) return ' none ';
