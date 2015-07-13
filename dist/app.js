@@ -1,5 +1,5 @@
-angular.module("app.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("basic_example/basic_example.html","");
-$templateCache.put("limits_example/limits_example.html","");
+angular.module("app.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("basic_example/basic_example.html","<div>asd</div>");
+$templateCache.put("limits_example/limits_example.html","<div>zxc</div>");
 $templateCache.put("menu/menu.html","");}]);
 'use strict';
 
