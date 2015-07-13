@@ -14,7 +14,11 @@
                                     | APD
                 ul.nav.navbar-nav
                     li(ng-class!="{active: $state.includes('landing')}")
-                        a.btn.btn-link.dd_header(href='', ui-sref="landing", ui-sref-opts="{reload: true}") Landing
+                        a.btn.btn-link(href='', ui-sref="landing", ui-sref-opts="{reload: true}") Landing
+                    li(ng-class!="{active: $state.includes('basic_example')}")
+                        a.btn.btn-link(href='', ui-sref="landing", ui-sref-opts="{reload: true}") Examples
+                    li(ng-class!="{active: $state.includes('docs')}")
+                        a.btn.btn-link(href='', ui-sref="landing", ui-sref-opts="{reload: true}") Docs
                 ul.nav.navbar-nav.navbar-right
                     li
                         a.btn.btn-link(href="https://github.com/se-panfilov/angular-pure-datepicker")
