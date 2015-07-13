@@ -6,7 +6,7 @@ var src = {
     stylesDirs: ['src/common_styles/**/*.styl', 'src/pages/**/*.styl'],
     jade: {
         main: ['*.jade'],
-        templates: ['src/pages/**/*.jade', 'src/partials/**/*.jade']
+        templates: ['src/pages/**/*.jade', 'src/partials/**/*.jade', 'src/modules/**/*.jade']
     },
     jsDir: 'src/**/*.js'
 };

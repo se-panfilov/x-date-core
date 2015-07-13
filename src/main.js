@@ -2,11 +2,15 @@
 
 angular.module('app', [
     //pages
+    'app.pages.landing',
     'app.pages.basic_example',
     'app.pages.limits_example',
 
     //partials
     'app.menu',
+
+    //modules
+    'app.templates',
 
     //external libs
     'angular-loading-bar',
