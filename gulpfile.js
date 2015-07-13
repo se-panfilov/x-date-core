@@ -217,8 +217,7 @@ gulp.task('vendor_css', function () {
 
     gulp.src([
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
-        'bower_components/font-awesome/css/font-awesome.min.css',
-        'bower_components/angular-ui-router-anim-in-out/css/anim-in-out.css',
+        'bower_components/bootswatch/paper/bootstrap.min.css',
         'bower_components/angular-loading-bar/build/loading-bar.min.css'
     ], {base: 'dist'})
         .pipe(concatVendorCss('vendor.min.css'))
