@@ -28,7 +28,8 @@ Installation and usage
 -------
 
  1. Download it
-    `bower install ??? --save` (not ready yet)
+    
+    `bower install angular-pure-datepicker --save`
 
     `npm install ??? --save` (not ready yet)
 
