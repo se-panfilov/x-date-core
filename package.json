@@ -45,9 +45,9 @@
     "gulp-watch": "^4.2.4",
     "merge-stream": "^0.1.7",
     "nib": "^1.1.0",
+    "gulp-clean-ts-extends": "^0.1.1",
     "watch": "^0.16.0"
   },
   "dependencies": {
-    "gulp-clean-ts-extends": "^0.1.1"
   }
 }
