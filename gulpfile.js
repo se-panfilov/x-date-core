@@ -1,10 +1,9 @@
-var gulp = require('gulp');
-var jade = require('gulp-jade');
-var watch = require('gulp-watch');
-var connect = require('gulp-connect');
-var minifyHTML = require('gulp-minify-html');
+var gulp, jade, watch, connect, minifyHTML;
 
 gulp.task('jade', function () {
+    jade = jade || require('gulp-jade');
+    minifyHTML = minifyHTML || require('gulp-minify-html');
+
     return gulp.src('./*.jade')
         .pipe(jade({pretty: false}))
         .on('error', console.log)
@@ -24,6 +23,8 @@ gulp.task('build', function () {
 });
 
 gulp.task('webserver', function () {
+    connect = connect || require('gulp-connect');
+
     connect.server({
         root: [__dirname],
         port: 8001,
