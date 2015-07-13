@@ -8,6 +8,7 @@ angular.module('app', [
 
     //partials
     'app.sidebar',
+    'app.header',
 
     //modules
     'app.templates',

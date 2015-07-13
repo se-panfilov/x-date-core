@@ -1,0 +1,21 @@
+.navbar.navbar-inverse.navbar-fixed-top.pages_header
+    .navbar-inner
+        .container
+            button.navbar-toggle(type='button', ng-click='isNavbarCollapsed = !isNavbarCollapsed')
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            .navbar-collapse(collapse='isNavbarCollapsed')
+                nav.hidden-xs
+                    .navbar-header
+                        ul.nav.navbar-nav
+                            li
+                                a.navbar-brand(ui-sref="landing", title="APD")
+                                    | APD
+                ul.nav.navbar-nav
+                    li(ng-class!="{active: $state.includes('landing')}")
+                        a.btn.btn-link.dd_header(href='', ui-sref="landing", ui-sref-opts="{reload: true}") Landing
+                ul.nav.navbar-nav.navbar-right
+                    li
+                        a.btn.btn-link(href="https://github.com/se-panfilov/angular-pure-datepicker")
+                            | GitHub
