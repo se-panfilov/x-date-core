@@ -1,8 +1,6 @@
 'use strict';
 
-angular.module('demo', [
-    'angular-pd'
-])
+angular.module('app.well', [])
     .directive('modelWell', function ($filter) {
         return {
             restrict: 'E',

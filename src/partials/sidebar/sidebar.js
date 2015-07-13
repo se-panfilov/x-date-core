@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('app.menu', [])
+angular.module('app.sidebar', [])
 
-    .directive('mainMenu', function () {
+    .directive('sidebar', function () {
         return {
             restrict: 'E',
             scope: {},

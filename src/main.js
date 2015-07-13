@@ -7,10 +7,14 @@ angular.module('app', [
     'app.pages.limits_example',
 
     //partials
-    'app.menu',
+    'app.sidebar',
 
     //modules
     'app.templates',
+    'app.well',
+
+    //ANGULAR PURE DATEPICKER
+    'angular-pd',
 
     //external libs
     'angular-loading-bar',
