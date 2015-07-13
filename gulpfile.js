@@ -1,6 +1,6 @@
 var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, changed, minifyHTML, cachebreaker, stylus,
     minifyCss, nib, jshint, complexity, htmlhint, size, templateCache, ngAnnotate,
-    mergeStream;
+    mergeStream, connect;
 
 var src = {
     stylesDirs: ['src/common_styles/**/*.styl', 'src/pages/**/*.styl'],
@@ -90,7 +90,7 @@ function makeJade() {
 
 function makeJS() {
     ngAnnotate = ngAnnotate || require('gulp-ng-annotate');
-    changed = changed || require('gulp-changed');
+    //changed = changed || require('gulp-changed');
     concat = concat || require('gulp-concat');
 
     return gulp.src([src.jsDir])
@@ -139,7 +139,7 @@ gulp.task('jade_static_main', function () {
     jade = jade || require('gulp-jade');
 
     return gulp.src(src.jade.main)
-        .pipe(changed(dest.staticDir, {extension: '.html'}))
+        .pipe(changed(dest.dist, {extension: '.html'}))
         .pipe(jade({pretty: false}))
         .pipe(minifyHTML({
             empty: true,
@@ -250,4 +250,14 @@ gulp.task('build', function () {
 gulp.task('default', function () {
     gulp.start('build');
     gulp.start('watch');
+});
+
+gulp.task('webserver', function () {
+    connect = connect || require('gulp-connect');
+
+    connect.server({
+        root: [__dirname],
+        port: 8001,
+        livereload: true
+    });
 });
