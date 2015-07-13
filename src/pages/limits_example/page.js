@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.pages.basic_example', [
+angular.module('app.pages.limits_example', [
     'ui.router'
 ])
 
@@ -16,6 +16,6 @@ angular.module('app.pages.basic_example', [
         ;
     })
 
-    .controller('BasicExamplePageCtrl', function ($scope) {
+    .controller('LimitsExamplePageCtrl', function ($scope) {
 
     });
