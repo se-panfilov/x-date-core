@@ -7,7 +7,7 @@ angular.module('app.sidebar', [])
             restrict: 'E',
             scope: {},
             replace: true,
-            templateUrl: 'partials/menu/menu.html',
+            templateUrl: 'sidebar/sidebar.html',
             controller: function ($scope, $state) {
                 //
             },

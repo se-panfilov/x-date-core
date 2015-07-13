@@ -3,7 +3,7 @@ var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, changed, m
     mergeStream, connect;
 
 var src = {
-    stylesDirs: ['src/common_styles/**/*.styl', 'src/pages/**/*.styl'],
+    stylesDirs: ['src/common_styles/**/*.styl', 'src/pages/**/*.styl', 'src/partials/**/*.styl', 'src/modules/**/*.styl'],
     jade: {
         main: ['*.jade'],
         templates: ['src/pages/**/*.jade', 'src/partials/**/*.jade', 'src/modules/**/*.jade']

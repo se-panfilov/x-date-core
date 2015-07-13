@@ -7,7 +7,7 @@ angular.module('app', [
     'app.pages.limits_example',
 
     //partials
-    'app.menu',
+    'app.sidebar',
 
     //modules
     'app.templates',
@@ -25,7 +25,7 @@ angular.module('app', [
 ])
 
     .config(['$urlRouterProvider', function ($urlRouterProvider) {
-        $urlRouterProvider.otherwise('/basic_example');
+        $urlRouterProvider.otherwise('/landing');
     }])
 ;
 
@@ -140,14 +140,14 @@ angular.module('app.pages.limits_example', [
     }]);
 'use strict';
 
-angular.module('app.menu', [])
+angular.module('app.sidebar', [])
 
-    .directive('mainMenu', function () {
+    .directive('sidebar', function () {
         return {
             restrict: 'E',
             scope: {},
             replace: true,
-            templateUrl: 'partials/menu/menu.html',
+            templateUrl: 'sidebar/sidebar.html',
             controller: ['$scope', '$state', function ($scope, $state) {
                 //
             }],
@@ -158,7 +158,7 @@ angular.module('app.menu', [])
     })
 ;
 angular.module("app.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("basic_example/basic_example.html","<div>asd</div>");
-$templateCache.put("landing/landing.html","<div>asd</div>");
+$templateCache.put("landing/landing.html","<sidebar></sidebar><div class=landing_page>asd</div>");
 $templateCache.put("limits_example/limits_example.html","<div>zxc</div>");
-$templateCache.put("menu/menu.html","<ul class=\"nav nav-sidebar\"><li><a ui-sref=landing>Landing</a><a ui-sref=basic_example>Basic Example</a><a ui-sref=limits_example>Limits Example</a></li></ul>");
+$templateCache.put("sidebar/sidebar.html","<ul class=\"nav nav-sidebar\"><li><a ui-sref=landing>Landing</a><a ui-sref=basic_example>Basic Example</a><a ui-sref=limits_example>Limits Example</a></li></ul>");
 $templateCache.put("well_directive/well_directive.html","<section class=well></section><div><span>Day:</span>&nbsp;<span ng-bind=caseModel.model.day></span></div><div><span>Month:</span>&nbsp;<span ng-bind=caseModel.model.month></span>&nbsp; (+1)</div><div><span>Year:</span>&nbsp;<span ng-bind=caseModel.model.year></span></div><div><span>Datetime:</span>&nbsp;<span ng-bind=caseModel.model.datetime></span>&nbsp;<span ng-bind=getDate(caseModel.model.datetime)></span></div><div><span>Timezone:</span>&nbsp;<span ng-bind=caseModel.model.timezone></span></div><div><span>Start limit:</span>&nbsp;<span ng-bind=caseModel.startDate></span>&nbsp;<span ng-bind=getDate(caseModel.startDate)></span></div><div><span>End limit:</span>&nbsp;<span ng-bind=caseModel.endDate></span>&nbsp;<span ng-bind=getDate(caseModel.endDate)></span></div><div><div><button type=button ng-click=plusOneMonth()>+1 month</button></div><div><button type=button ng-click=minusOneMonth()>-1 month</button></div></div>");}]);

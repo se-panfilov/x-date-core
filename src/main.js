@@ -25,6 +25,6 @@ angular.module('app', [
 ])
 
     .config(function ($urlRouterProvider) {
-        $urlRouterProvider.otherwise('/basic_example');
+        $urlRouterProvider.otherwise('/landing');
     })
 ;
