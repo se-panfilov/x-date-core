@@ -1,5 +1,5 @@
 {
-  "name": "Angular-pure-date",
+  "name": "angular-pure-date",
   "version": "0.2.0",
   "description": "Angular pure datepicker",
   "main": "angular-pure-datepicker.js",
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/se-panfilov/angular-pure-datepicker.git"
   },
-  "author": "S.Panfilov <se-panfilov@ya.ru> (https://se-panfilov.github.io)"",
+  "author": "S.Panfilov <se-panfilov@ya.ru> (https://se-panfilov.github.io)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/se-panfilov/angular-pure-datepicker/issues"
