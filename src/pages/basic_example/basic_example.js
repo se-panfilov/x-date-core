@@ -18,4 +18,14 @@ angular.module('app.pages.basic_example', [
 
     .controller('BasicExamplePageCtrl', function ($scope) {
 
+        //$scope.commonExampleTemplate =
+        //    '<form id="demo_simple_form" name="demo_simple_form">' +
+        //    '<div class="form-group">' +
+        //    '<label for="apd_1" class="control-label">Date</label>' +
+        //    '<pure-datepicker id="apd_1" ng-model="basicExample.model"></pure-datepicker>' +
+        //    '</div>' +
+        //    '</form>';
+        $scope.commonExampleTemplate =
+            '<div>asd</div>';
+
     });
