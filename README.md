@@ -36,6 +36,7 @@ Installation and usage
     (look for other package managers)
 
     or download from git: [releases][2]
+    
  2. Add to `index.html`
  
     ```html
@@ -60,7 +61,7 @@ Options
  - `ng-model` - `Object`, can be `empty` or `null`, but `required`.
  
    The result of select would placed here. Also if ng-model is object with `datetime` field 
-   (should contain number), it's will e applyed as initial date value.
+   (should contain number), it's will be applied as initial date value.
  
  - `apd-start` - `number`,  `optional`.
     
