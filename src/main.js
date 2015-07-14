@@ -24,7 +24,8 @@ angular.module('app', [
     'ngAnimate',
     'anim-in-out',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'hljs'
 ])
 
     .config(function ($urlRouterProvider) {

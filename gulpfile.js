@@ -1,5 +1,5 @@
 var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, changed, minifyHTML, cachebreaker, stylus,
-    minifyCss, nib, jshint, complexity, htmlhint, size, templateCache, ngAnnotate,
+    minifyCss, nib, jshint, htmlhint, size, templateCache, ngAnnotate,
     mergeStream, connect;
 
 var src = {
@@ -199,7 +199,8 @@ gulp.task('vendor_js', function () {
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'bower_components/angular-ui-router/release/angular-ui-router.js',
         'bower_components/angular-ui-router-anim-in-out/anim-in-out.js',
-        'bower_components/angular-loading-bar/build/loading-bar.js'
+        'bower_components/angular-loading-bar/build/loading-bar.js',
+        'bower_components/angular-highlightjs/build/angular-highlightjs.js'
     ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(dest.dist))

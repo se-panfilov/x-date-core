@@ -3,7 +3,7 @@ sidebar
 .page.basic_page
     .container.with_sidebar
         section
-            h1 Angular Pure Datepicker
+            h3 Angular Pure Datepicker
             form#demo_simple_form(name="demo_simple_form")
                 .form-group
                     label.control-label(for="apd_1") Date
@@ -13,7 +13,7 @@ sidebar
             .pitch
                 | is kind of old-school date select, but with modern look and feel and abilities.
             .settings
-                h6 Settings
+                h4 Settings
                 ul
                     li
                         code ng-model
@@ -138,5 +138,12 @@ sidebar
                         | .
                         br
                         | Setter of custom classes for the years select element.
-        settings
-            | code example
+        div(hljs).
+            <form id=demo_simple_form name=demo_simple_form>
+                <div class=form-group>
+                    <label for=apd_1 class=control-label>
+                        Date
+                    </label>
+                    <pure-datepicker id=apd_1 ng-model=basicExample.model></pure-datepicker>
+                </div>
+            </form>
