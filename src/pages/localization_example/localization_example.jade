@@ -1,0 +1,17 @@
+main-header
+sidebar
+.page.localization_page
+    .container.with_sidebar
+        ol
+            li
+                section
+                    hgroup
+                        h3 Common case
+                    .case_description
+                        ul
+                            li Valid ngModel
+                    form#demo_simple_form(name="demo_simple_form")
+                        .form-group
+                            label.control-label(for="apd_1") Date
+                            pure-datepicker#apd_1(ng-model="commonCase.model")
+                    model-well(case-model="commonCase")

@@ -5,6 +5,8 @@ angular.module('app', [
     'app.pages.landing',
     'app.pages.basic_example',
     'app.pages.limits_example',
+    'app.pages.localization_example',
+    'app.pages.styling_example',
 
     //partials
     'app.sidebar',
