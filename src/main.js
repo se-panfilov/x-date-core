@@ -28,7 +28,13 @@ angular.module('app', [
     'hljs'
 ])
 
-    .config(function ($urlRouterProvider) {
+    .config(function ($urlRouterProvider, hljsServiceProvider) {
         $urlRouterProvider.otherwise('/landing');
+
+        hljsServiceProvider.setOptions({
+            // replace tab with 4 spaces
+            tabReplace: '    '
+        });
     })
+
 ;
