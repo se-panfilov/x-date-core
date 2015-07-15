@@ -18,7 +18,9 @@ section.well
         | &nbsp;
         span(ng-bind="caseModel.model.datetime")
         | &nbsp;
+        | (
         span(ng-bind="getDate(caseModel.model.datetime)")
+        | )
     div
         span Timezone:
         | &nbsp;
@@ -28,13 +30,17 @@ section.well
         | &nbsp;
         span(ng-bind="caseModel.startDate")
         | &nbsp;
+        | (
         span(ng-bind="getDate(caseModel.startDate)")
+        | )
     div
         span End limit:
         | &nbsp;
         span(ng-bind="caseModel.endDate")
         | &nbsp;
+        | (
         span(ng-bind="getDate(caseModel.endDate)")
+        | )
     .btn-group
         button.btn.btn-primary(type="button", ng-click="plusOneMonth()") +1 month
         button.btn.btn-primary(type="button", ng-click="minusOneMonth()") -1 month
