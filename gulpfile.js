@@ -1,4 +1,4 @@
-var gulp, jade, watch, connect, minifyHTML;
+var gulp = require('gulp'), jade, watch, connect, minifyHTML;
 
 gulp.task('jade', function () {
     jade = jade || require('gulp-jade');
