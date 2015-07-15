@@ -1,5 +1,5 @@
 {
-  "name": "apd gh-pages",
+  "name": "apd_gh-pages",
   "private": true,
   "dependencies": {
     "json3": "~3.3.2",
