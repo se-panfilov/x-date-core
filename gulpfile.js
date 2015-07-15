@@ -253,6 +253,7 @@ gulp.task('default', function () {
 });
 
 gulp.task('webserver', function () {
+    console.log(1);
     connect = connect || require('gulp-connect');
 
     connect.server({
