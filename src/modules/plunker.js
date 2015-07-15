@@ -6,7 +6,7 @@ angular.module('app.plunker', [])
         APP_DEPS: 'angular-pd',
         APP_DESCRIPTION: 'https://se-panfilov.github.io/angular-pure-datepicker',
         APP_VERSION: '0.2.1',
-        NG_VERSION: '1.4.x',
+        NG_VERSION: '1.4.1',
         SCRIPTS: [],
         STYLES: []
     })
