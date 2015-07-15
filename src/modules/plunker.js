@@ -2,8 +2,11 @@ angular.module('app.plunker', [])
 
     .constant('plunkerSettings', {
         APP_NAME: 'apd.demo',
-        APP_VERSION: '',
-        NG_VERSION: '',
+        APP_URL: '//se-panfilov.github.io/angular-pure-datepicker/releases/angular-pure-datepicker_',
+        APP_DEPS: 'angular-pd',
+        APP_DESCRIPTION: 'https://se-panfilov.github.io/angular-pure-datepicker',
+        APP_VERSION: '0.2.1',
+        NG_VERSION: '1.4.x',
         SCRIPTS: [],
         STYLES: []
     })
@@ -11,7 +14,6 @@ angular.module('app.plunker', [])
     .factory('plunkGenerator', function ($document, plunkerSettings) {
 
         return function (module, content) {
-
 
             var form = angular.element('<form style="display: none;" method="post" action="http://plnkr.co/edit/?p=preview" target="_blank"></form>');
             var addField = function (name, value) {
@@ -25,9 +27,8 @@ angular.module('app.plunker', [])
                     '<html ng-app="' + plunkerSettings.APP_NAME + '">\n' +
                     '  <head>\n' +
                     '    <script src="//ajax.googleapis.com/ajax/libs/angularjs/' + plunkerSettings.NG_VERSION + '/angular.js"></script>\n' +
-                    '    <script src="//se-panfilov.github.io/angular-pure-datepicker/angular-pure-datepicker.js' + plunkerSettings.APP_VERSION + '.js"></script>\n' +
+                    '    <script src="' + plunkerSettings.APP_URL + plunkerSettings.APP_VERSION + '.js"></script>\n' +
                     '    <script src="example.js"></script>\n' +
-                    '    <link href="//netdna.bootstrapcdn.com/bootstrap/' + bsVersion + '/css/bootstrap.min.css" rel="stylesheet">\n' +
                     '  </head>\n' +
                     '  <body>\n\n' +
                     content + '\n' +
@@ -36,10 +37,10 @@ angular.module('app.plunker', [])
             };
 
             var scriptContent = function (content) {
-                return "angular.module('ui.bootstrap.demo', ['ui.bootstrap']);" + "\n" + content;
+                return "angular.module('" + plunkerSettings.APP_NAME + "', ['" + plunkerSettings.APP_DEPS + "']);" + "\n" + content;
             };
 
-            addField('description', 'http://angular-ui.github.io/bootstrap/');
+            addField('description', plunkerSettings.APP_DESCRIPTION);
             addField('files[index.html]', indexContent(content.markup, version));
             addField('files[example.js]', scriptContent(content.javascript));
 
@@ -50,11 +51,10 @@ angular.module('app.plunker', [])
     })
 
     .controller('PlunkerCtrl', function ($scope, plunkGenerator) {
-
         $scope.content = {};
 
-        $scope.edit = function (bsVersion, version, module) {
-            plunkGenerator(NG_VERSION, bsVersion, version, module, $scope.content);
+        $scope.edit = function (version, module) {
+            plunkGenerator(NG_VERSION, version, module, $scope.content);
         };
     })
 
