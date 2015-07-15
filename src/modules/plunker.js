@@ -34,7 +34,7 @@ angular.module('app.plunker', [])
                         '<html ng-app="' + plunkerSettings.APP_NAME + '">\n' +
                         '  <head>\n' +
                         '    <script src="//ajax.googleapis.com/ajax/libs/angularjs/' + plunkerSettings.NG_VERSION + '/angular.js"></script>\n' +
-                        '    <script src="' + plunkerSettings.APP_URL + plunkerSettings.APP_VERSION + '.js"></script>\n' +
+                        '    <script src="' + plunkerSettings.APP_URL + plunkerSettings.APP_VERSION + '/dist/angular-pure-datepicker.js"></script>\n' +
                         '    <script src="example.js"></script>\n' +
                         '  </head>\n' +
                         '  <body>\n\n' +
