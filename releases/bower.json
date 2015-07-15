@@ -1,0 +1,8 @@
+{
+  "name": "apd_releases",
+  "private": true,
+  "dependencies": {
+    "angular-pure-datepicker_0.2.1": "angular-pure-datepicker#0.2.1",
+    "angular-pure-datepicker_0.1.0": "angular-pure-datepicker#0.1.0"
+  }
+}

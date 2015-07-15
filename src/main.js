@@ -15,6 +15,7 @@ angular.module('app', [
     //modules
     'app.templates',
     'app.well',
+    'app.plunker',
 
     //ANGULAR PURE DATEPICKER
     'angular-pd',

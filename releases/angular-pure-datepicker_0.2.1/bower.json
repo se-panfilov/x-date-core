@@ -1,0 +1,31 @@
+{
+  "name": "angular-pure-datepicker",
+  "version": "0.2.1",
+  "homepage": "https://github.com/se-panfilov/angular-pure-datepicker",
+  "authors": [
+    "S.Panfilov <se-panfilov@ya.ru> (https://se-panfilov.github.io)"
+  ],
+  "description": "Angular pure datepicker",
+  "main": "angular-pure-datepicker.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/se-panfilov/angular-pure-datepicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/se-panfilov/angular-pure-datepicker/issues"
+  },
+  "keywords": [
+    "datepicker",
+    "pure",
+    "Angular",
+    "angularjs",
+    "Angular.js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
