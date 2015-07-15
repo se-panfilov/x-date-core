@@ -2,14 +2,14 @@ main-header
 sidebar
 .page.basic_page
     .container.with_sidebar
-        section
+        section.demo
             h3 Angular Pure Datepicker
             form#demo_simple_form(name="demo_simple_form")
                 .form-group
                     label.control-label(for="apd_1") Date
                     pure-datepicker#apd_1(ng-model="basicExample.model")
             model-well(case-model="basicExample")
-        div
+        .overview
             .pitch
                 | is kind of old-school date select, but with modern look and feel and abilities.
             .settings
@@ -139,4 +139,4 @@ sidebar
                         br
                         | Setter of custom classes for the years select element.
         plunker-edit(html-content="commonExample.template", js-content="commonExample.script")
-        div(hljs, source="commonExample.template", language="html")
+        section.demo_code(hljs, source="commonExample.template", language="html")
