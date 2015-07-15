@@ -52,14 +52,8 @@ angular.module('app.plunker', [])
 
                 scope.edit = function () {
                     addField('description', plunkerSettings.APP_DESCRIPTION);
-
-                    if (scope.htmlContent) {
-                        addField('files[index.html]', indexContent());
-                    }
-
-                    if (scope.jsContent) {
-                        addField('files[example.js]', scriptContent());
-                    }
+                    addField('files[index.html]', indexContent());
+                    addField('files[example.js]', scriptContent());
 
                     $document.find('body').append(form);
                     form[0].submit();

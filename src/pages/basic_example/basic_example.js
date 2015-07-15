@@ -25,7 +25,7 @@ angular.module('app.pages.basic_example', [
             '\n        <pure-datepicker id="apd_1" ng-model="basicExample.model"></pure-datepicker>' +
             '\n    </div>' +
             '\n</form>',
-            script: ''
+            script: 'console.log(1);'
         };
 
     });
