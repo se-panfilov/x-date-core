@@ -1,18 +1,18 @@
 /// <reference path="DataClass.ts" />
-/// <reference path="DaysOfWeek.ts" />
+/// <reference path="DayClass.ts" />
 
 module apd.Model {
     'use strict';
 
-    export class DaysOfWeek {
-        list:Array<DayOfWeek>;
+    export class WeekClass {
+        list:Array<DayClass>;
         names:Array<string>;
         shorts:Array<string>;
 
-        constructor(days?:Array<DayOfWeek>) {
-            if (!(this instanceof DaysOfWeek)) {
+        constructor(days?:Array<DayClass>) {
+            if (!(this instanceof WeekClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                return new DaysOfWeek(days);
+                return new WeekClass(days);
             }
 
             if (days) {
@@ -21,25 +21,25 @@ module apd.Model {
                 this.names = this.getListOfNames();
                 return this;
             } else {
-                return this._setDefaultDaysOfWeek();
+                return this._setDefaultWeek();
             }
 
         }
 
-        private _setDefaultDaysOfWeek = () => {
-            return new DaysOfWeek([
-                new apd.Model.DayOfWeek('Sunday', 'Sun'),
-                new apd.Model.DayOfWeek('Monday', 'Mon'),
-                new apd.Model.DayOfWeek('Tuesday', 'Tue'),
-                new apd.Model.DayOfWeek('Wednesday', 'Wed'),
-                new apd.Model.DayOfWeek('Thursday', 'Thu'),
-                new apd.Model.DayOfWeek('Friday', 'Fri'),
-                new apd.Model.DayOfWeek('Saturday', 'Sat')
+        private _setDefaultWeek = () => {
+            return new WeekClass([
+                new apd.Model.DayClass('Sunday', 'Sun'),
+                new apd.Model.DayClass('Monday', 'Mon'),
+                new apd.Model.DayClass('Tuesday', 'Tue'),
+                new apd.Model.DayClass('Wednesday', 'Wed'),
+                new apd.Model.DayClass('Thursday', 'Thu'),
+                new apd.Model.DayClass('Friday', 'Fri'),
+                new apd.Model.DayClass('Saturday', 'Sat')
             ]);
         };
 
         private getListOfShorts = () => {
-            if (!(this instanceof DaysOfWeek)) {
+            if (!(this instanceof WeekClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
                 return null;
             }
@@ -47,15 +47,15 @@ module apd.Model {
             var result = [];
 
             for (var i = 0; i < this.list.length; i++) {
-                var dayOfWeek = this.list[i];
-                result.push(dayOfWeek.short);
+                var day = this.list[i];
+                result.push(day.short);
             }
 
             return result;
         };
 
         private getListOfNames = () => {
-            if (!(this instanceof DaysOfWeek)) {
+            if (!(this instanceof WeekClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
                 return null;
             }
@@ -63,15 +63,15 @@ module apd.Model {
             var result = [];
 
             for (var i = 0; i < this.list.length; i++) {
-                var dayOfWeek = this.list[i];
-                result.push(dayOfWeek.name);
+                var day = this.list[i];
+                result.push(day.name);
             }
 
             return result;
         };
 
-        getDayOfWeekShortName = (dayNum:number) => {
-            if (!(this instanceof DaysOfWeek)) {
+        getDayShortName = (dayNum:number) => {
+            if (!(this instanceof WeekClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
                 return null;
             }
@@ -79,8 +79,8 @@ module apd.Model {
             return this.shorts[dayNum];
         };
 
-        getDayOfWeekName = (dayNum:number) => {
-            if (!(this instanceof DaysOfWeek)) {
+        getDayName = (dayNum:number) => {
+            if (!(this instanceof WeekClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
                 return null;
             }

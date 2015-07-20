@@ -3,14 +3,14 @@
 module apd.Model {
     'use strict';
 
-    export class DayOfWeek {
+    export class DayClass {
         name:string;
         short:string;
 
         constructor(name:string, short:string) {
-            if (!(this instanceof DayOfWeek)) {
+            if (!(this instanceof DayClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                return new DayOfWeek(name, short);
+                return new DayClass(name, short);
             }
 
             this.name = name;

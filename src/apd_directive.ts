@@ -1,5 +1,5 @@
-/// <reference path="classes/DayOfWeek.ts" />
-/// <reference path="classes/DaysOfWeek.ts" />
+/// <reference path="classes/DayClass.ts" />
+/// <reference path="classes/WeekClass.ts" />
 /// <reference path="classes/DateModelClass.ts" />
 /// <reference path="messages_factory.ts" />
 
@@ -184,8 +184,10 @@ module apd.directive {
                         settings.initDateModel = getInitDateModel(scope.ngModel);
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
 
-                        scope.getDayOfWeekShortName = daysOfWeek.getDayOfWeekShortName;
-                        scope.getDayOfWeekName = daysOfWeek.getDayOfWeekName;
+
+                        var week:apd.Model.WeekClass = new apd.Model.WeekClass();
+                        scope.getDayShortName = week.getDayShortName;
+                        scope.getDayName = week.getDayName;
 
                         ngModelWatcher.start(onModelChange);
                     })();
