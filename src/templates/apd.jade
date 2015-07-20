@@ -8,8 +8,7 @@
     class="{{::apdDayClasses}}"
     )
     span.apd_elem.apd_day_of_week(
-    title="{{getDayName(data.selected.dayOfWeek)}}",
-    ng-bind="getDayShortName(data.selected.dayOfWeek)"
+    ng-bind="getDayName(data.selected.dayOfWeek)"
     )
     select.apd_elem.apd_select_month.apd_select(
     ng-model="data.selected.month",

@@ -1,4 +1,4 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span title={{getDayName(data.selected.dayOfWeek)}} ng-bind=getDayShortName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=getDayName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"(month + 1) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 var apd;
 (function (apd) {
     var Model;
@@ -241,87 +241,17 @@ var apd;
     var Model;
     (function (Model) {
         'use strict';
-        var DayClass = (function () {
-            function DayClass(name, short) {
-                if (!(this instanceof DayClass)) {
-                    apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                    return new DayClass(name, short);
-                }
-                this.name = name;
-                this.short = short;
-                return this;
-            }
-            return DayClass;
-        })();
-        Model.DayClass = DayClass;
-    })(Model = apd.Model || (apd.Model = {}));
-})(apd || (apd = {}));
-
-var apd;
-(function (apd) {
-    var Model;
-    (function (Model) {
-        'use strict';
         var WeekClass = (function () {
             function WeekClass(days) {
-                var _this = this;
                 this._setDefaultWeek = function () {
-                    return new WeekClass([
-                        new apd.Model.DayClass('Sunday', 'Sun'),
-                        new apd.Model.DayClass('Monday', 'Mon'),
-                        new apd.Model.DayClass('Tuesday', 'Tue'),
-                        new apd.Model.DayClass('Wednesday', 'Wed'),
-                        new apd.Model.DayClass('Thursday', 'Thu'),
-                        new apd.Model.DayClass('Friday', 'Fri'),
-                        new apd.Model.DayClass('Saturday', 'Sat')
-                    ]);
-                };
-                this.getListOfShorts = function () {
-                    if (!(_this instanceof WeekClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
-                    var result = [];
-                    for (var i = 0; i < _this.list.length; i++) {
-                        var day = _this.list[i];
-                        result.push(day.short);
-                    }
-                    return result;
-                };
-                this.getListOfNames = function () {
-                    if (!(_this instanceof WeekClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
-                    var result = [];
-                    for (var i = 0; i < _this.list.length; i++) {
-                        var day = _this.list[i];
-                        result.push(day.name);
-                    }
-                    return result;
-                };
-                this.getDayShortName = function (dayNum) {
-                    if (!(_this instanceof WeekClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
-                    return _this.shorts[dayNum];
-                };
-                this.getDayName = function (dayNum) {
-                    if (!(_this instanceof WeekClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
-                    return _this.names[dayNum];
+                    return new WeekClass(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
                 };
                 if (!(this instanceof WeekClass)) {
                     apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
                     return new WeekClass(days);
                 }
                 if (days) {
-                    this.list = days;
-                    this.shorts = this.getListOfShorts();
-                    this.names = this.getListOfNames();
+                    this.days = days;
                     return this;
                 }
                 else {
@@ -509,7 +439,6 @@ var apd;
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
                         var localization = scope.apdLocalization || null;
                         var week = new apd.Model.WeekClass(localization);
-                        scope.getDayShortName = week.getDayShortName;
                         scope.getDayName = week.getDayName;
                         ngModelWatcher.start(onModelChange);
                     })();

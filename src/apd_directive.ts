@@ -1,4 +1,3 @@
-/// <reference path="classes/DayClass.ts" />
 /// <reference path="classes/WeekClass.ts" />
 /// <reference path="classes/DateModelClass.ts" />
 
@@ -186,7 +185,6 @@ module apd.directive {
 
                         var localization = scope.apdLocalization || null;
                         var week:apd.Model.WeekClass = new apd.Model.WeekClass(localization);
-                        scope.getDayShortName = week.getDayShortName;
                         scope.getDayName = week.getDayName;
 
                         ngModelWatcher.start(onModelChange);
