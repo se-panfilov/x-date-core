@@ -1,6 +1,6 @@
 {
   "name": "angular-pure-date",
-  "version": "0.2.1",
+  "version": "0.3.3",
   "description": "Angular pure datepicker",
   "main": "angular-pure-datepicker.js",
   "scripts": {
