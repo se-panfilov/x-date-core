@@ -28,7 +28,8 @@ module apd.directive {
                     apdYearId: '@?',
                     apdDayClasses: '@?',
                     apdMonthClasses: '@?',
-                    apdYearClasses: '@?'
+                    apdYearClasses: '@?',
+                    apdLocalization: '=?'
                 },
                 link: function (scope) {
 
@@ -183,7 +184,8 @@ module apd.directive {
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
 
 
-                        var week:apd.Model.WeekClass = new apd.Model.WeekClass();
+                        var localization = scope.apdLocalization || null;
+                        var week:apd.Model.WeekClass = new apd.Model.WeekClass(localization);
                         scope.getDayShortName = week.getDayShortName;
                         scope.getDayName = week.getDayName;
 

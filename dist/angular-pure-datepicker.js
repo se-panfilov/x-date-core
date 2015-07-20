@@ -384,7 +384,8 @@ var apd;
                     apdYearId: '@?',
                     apdDayClasses: '@?',
                     apdMonthClasses: '@?',
-                    apdYearClasses: '@?'
+                    apdYearClasses: '@?',
+                    apdLocalization: '=?'
                 },
                 link: function (scope) {
                     var settings = {
@@ -506,7 +507,8 @@ var apd;
                         settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
                         settings.initDateModel = getInitDateModel(scope.ngModel);
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
-                        var week = new apd.Model.WeekClass();
+                        var localization = scope.apdLocalization || null;
+                        var week = new apd.Model.WeekClass(localization);
                         scope.getDayShortName = week.getDayShortName;
                         scope.getDayName = week.getDayName;
                         ngModelWatcher.start(onModelChange);
