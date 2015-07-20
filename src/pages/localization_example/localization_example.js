@@ -21,10 +21,10 @@ angular.module('app.pages.localization_example', [
         $scope.localNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 
         $scope.localizedExample = {
-            template: '<form id="demo_localized_form" name="demo_localized_form", ng-controler="ExampleCtrl">' +
+            template: '<form id="demo_localized_form" name="demo_localized_form" ng-controller="ExampleCtrl">' +
             '\n    <div class="form-group">' +
             '\n        <label for="apd_1" class="control-label">Date</label>' +
-            '\n        <pure-datepicker id="apd_1" ng-model="localizedExample.model"></pure-datepicker>' +
+            '\n        <pure-datepicker id="apd_1" ng-model="localizedExample.model" apd-localization="localNames"></pure-datepicker>' +
             '\n    </div>' +
             '\n</form>',
             script: '.controller(\'ExampleCtrl\', function ($scope) {' +
