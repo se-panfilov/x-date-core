@@ -243,8 +243,16 @@ var apd;
         'use strict';
         var WeekClass = (function () {
             function WeekClass(days) {
+                var _this = this;
                 this._setDefaultWeek = function () {
                     return new WeekClass(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+                };
+                this.getDayName = function (dayNum) {
+                    if (!(_this instanceof WeekClass)) {
+                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                        return null;
+                    }
+                    return _this.days[dayNum];
                 };
                 if (!(this instanceof WeekClass)) {
                     apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();

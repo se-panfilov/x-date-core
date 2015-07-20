@@ -6,7 +6,7 @@ module apd.Model {
     export class WeekClass {
         days:Array<string>;
 
-        constructor(days?:Array<String>) {
+        constructor(days?:Array<string>) {
             if (!(this instanceof WeekClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
                 return new WeekClass(days);
@@ -23,6 +23,15 @@ module apd.Model {
 
         private _setDefaultWeek = () => {
             return new WeekClass(['Sun', 'Mon', 'Tue', 'Wed', 'Thu','Fri', 'Sat']);
+        };
+
+        getDayName = (dayNum:number) => {
+            if (!(this instanceof WeekClass)) {
+                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
+                return null;
+            }
+
+            return this.days[dayNum];
         };
     }
 
