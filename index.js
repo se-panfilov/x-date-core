@@ -58,15 +58,7 @@ angular.module('demo', [
 
     .controller('DemoPageCtrl', function ($scope) {
 
-        $scope.localizedDays = [
-            {name: 'Понедельник', short: 'Пн'},
-            {name: 'Вторник', short: 'Вт'},
-            {name: 'Среда', short: 'Ср'},
-            {name: 'Четверг', short: 'Чт'},
-            {name: 'Пятница', short: 'Пт'},
-            {name: 'Суббота', short: 'Сб'},
-            {name: 'Воскресенье', short: 'Вс'}
-        ];
+        $scope.localizedDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 
         $scope.commonCase = {
             model: {

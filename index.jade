@@ -22,8 +22,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                 ol
                     li
                         section
-                            hgroup
-                                h3 Common case
+                            h3 Common case
                             .case_description
                                 ul
                                     li Valid ngModel
@@ -34,8 +33,18 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="commonCase")
                     li
                         section
-                            hgroup
-                                h3 Both-sided limits and valid model
+                            h3 Localized case
+                            .case_description
+                                ul
+                                    li Valid ngModel
+                            form#demo_simple_localized_form(name="demo_simple_localized_form")
+                                .form-group
+                                    label.control-label(for="apd_1") Дата
+                                    pure-datepicker#apd_1(ng-model="commonCase.model", apd-localization="localizedDays")
+                            model-well(case-model="commonCase")
+                    li
+                        section
+                            h3 Both-sided limits and valid model
                             .case_description
                                 ul
                                     li Valid ngModel
@@ -48,8 +57,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="limitsCase")
                     li
                         section
-                            hgroup
-                                h3 Left-side limit and valid model
+                            h3 Left-side limit and valid model
                             .case_description
                                 ul
                                     li Valid ngModel
@@ -61,8 +69,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="leftLimitsCase")
                     li
                         section
-                            hgroup
-                                h3 Right-side limit and valid model
+                            h3 Right-side limit and valid model
                             .case_description
                                 ul
                                     li Valid ngModel
@@ -75,8 +82,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="rightLimitsCase")
                     li
                         section
-                            hgroup
-                                h3 Right-side limit and valid model (but model out of limits)
+                            h3 Right-side limit and valid model (but model out of limits)
                             .case_description
                                 ul
                                     li Valid ngModel
@@ -88,8 +94,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="outOfRightLimitCase")
                     li
                         section
-                            hgroup
-                                h3 Left-side limit and valid model (but model out of limits)
+                            h3 Left-side limit and valid model (but model out of limits)
                             .case_description
                                 ul
                                     li Valid ngModel
@@ -101,8 +106,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="outOfLeftLimitCase")
                     li
                         section
-                            hgroup
-                                h3 No model
+                            h3 No model
                             .case_description
                                 ul
                                     li no ngModel
@@ -114,8 +118,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                 | No model
                     li
                         section
-                            hgroup
-                                h3 Empty model
+                            h3 Empty model
                             .case_description
                                 ul
                                     li Empty ngModel
@@ -126,8 +129,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="emptyModelCase")
                     li
                         section
-                            hgroup
-                                h3 Empty model and left-side limit
+                            h3 Empty model and left-side limit
                             .case_description
                                 ul
                                     li Empty ngModel
@@ -138,8 +140,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                                     pure-datepicker#apd_1(ng-model="emptyModelLeftLimitCase.model", apd-start="emptyModelLeftLimitCase.startDate")
                             model-well(case-model="emptyModelLeftLimitCase")
                         section
-                            hgroup
-                                h3 Empty model and right-side limit
+                            h3 Empty model and right-side limit
                             .case_description
                                 ul
                                     li Empty ngModel
@@ -151,8 +152,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="emptyModelRightLimitCase")
                     li
                         section
-                            hgroup
-                                h3 Invalid left-side limit
+                            h3 Invalid left-side limit
                             .case_description
                                 ul
                                     li Invalid Start date
@@ -163,8 +163,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="invalidLeftLimitCase")
                     li
                         section
-                            hgroup
-                                h3 Invalid right-side limit
+                            h3 Invalid right-side limit
                             .case_description
                                 ul
                                     li Invalid End date
@@ -175,8 +174,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="invalidRightLimitCase")
                     li
                         section
-                            hgroup
-                                h3 Linked Dates
+                            h3 Linked Dates
                             .case_description
                                 ul
                                     li Linked Dates
@@ -190,8 +188,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="linkedModelCase")
                     li
                         section
-                            hgroup
-                                h3 Linked Dates with same both-side limit
+                            h3 Linked Dates with same both-side limit
                             .case_description
                                 ul
                                     li Linked Dates
@@ -207,8 +204,7 @@ html#ng-app(xmlns:ng='http://angularjs.org', ng-app='demo', lang='en')
                             model-well(case-model="linkedModelBothLimitsCase")
                     li
                         section
-                            hgroup
-                                h3 Linked Dates with different both-side limit
+                            h3 Linked Dates with different both-side limit
                             .case_description
                                 ul
                                     li Linked Dates
