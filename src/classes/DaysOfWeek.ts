@@ -1,4 +1,5 @@
 /// <reference path="DataClass.ts" />
+/// <reference path="DaysOfWeek.ts" />
 
 module apd.Model {
     'use strict';
@@ -8,17 +9,34 @@ module apd.Model {
         names:Array<string>;
         shorts:Array<string>;
 
-        constructor(days:Array<DayOfWeek>) {
+        constructor(days?:Array<DayOfWeek>) {
             if (!(this instanceof DaysOfWeek)) {
                 apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
                 return new DaysOfWeek(days);
             }
 
-            this.list = days;
-            this.shorts = this.getListOfShorts();
-            this.names = this.getListOfNames();
-            return this;
+            if (days) {
+                this.list = days;
+                this.shorts = this.getListOfShorts();
+                this.names = this.getListOfNames();
+                return this;
+            } else {
+                return this._setDefaultDaysOfWeek();
+            }
+
         }
+
+        private _setDefaultDaysOfWeek = () => {
+            return new DaysOfWeek([
+                new apd.Model.DayOfWeek('Sunday', 'Sun'),
+                new apd.Model.DayOfWeek('Monday', 'Mon'),
+                new apd.Model.DayOfWeek('Tuesday', 'Tue'),
+                new apd.Model.DayOfWeek('Wednesday', 'Wed'),
+                new apd.Model.DayOfWeek('Thursday', 'Thu'),
+                new apd.Model.DayOfWeek('Friday', 'Fri'),
+                new apd.Model.DayOfWeek('Saturday', 'Sat')
+            ]);
+        };
 
         private getListOfShorts = () => {
             if (!(this instanceof DaysOfWeek)) {

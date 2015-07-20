@@ -11,17 +11,6 @@ var angular:any;
 module apd.directive {
     'use strict';
 
-    //TODO (S.Panfilov) add localization
-    var daysOfWeek = new apd.Model.DaysOfWeek([
-        new apd.Model.DayOfWeek('Sunday', 'Sun'),
-        new apd.Model.DayOfWeek('Monday', 'Mon'),
-        new apd.Model.DayOfWeek('Tuesday', 'Tue'),
-        new apd.Model.DayOfWeek('Wednesday', 'Wed'),
-        new apd.Model.DayOfWeek('Thursday', 'Thu'),
-        new apd.Model.DayOfWeek('Friday', 'Fri'),
-        new apd.Model.DayOfWeek('Saturday', 'Sat')
-    ]);
-
     angular.module('angular-pd', [
         'angular-pd.templates',
         'angular-pd.messages'
