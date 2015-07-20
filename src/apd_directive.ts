@@ -1,7 +1,6 @@
 /// <reference path="classes/DayClass.ts" />
 /// <reference path="classes/WeekClass.ts" />
 /// <reference path="classes/DateModelClass.ts" />
-/// <reference path="messages_factory.ts" />
 
 //TODO (S.Panfilov) mat be should replace manual reference with gulp-auto-references?
 
@@ -12,11 +11,10 @@ module apd.directive {
     'use strict';
 
     angular.module('angular-pd', [
-        'angular-pd.templates',
-        'angular-pd.messages'
+        'angular-pd.templates'
     ])
 
-        .directive('pureDatepicker', function (MessagesFactory) {
+        .directive('pureDatepicker', function () {
             return {
                 restrict: 'E',
                 replace: true,
@@ -54,7 +52,7 @@ module apd.directive {
                         },
                         stop: function () {
                             if (!ngModelWatcher.handler) {
-                                MessagesFactory.throwInvalidParamsMessage();
+                                apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
                                 return false;
                             }
 
@@ -166,7 +164,7 @@ module apd.directive {
 
                     function getDateTime(day:number, month:number, year:number):number {
                         if (!day || (!month && month !== 0) || !year) {
-                            MessagesFactory.throwInvalidParamsMessage();
+                            apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
                         }
 
                         return new Date(year, month, day).getTime();

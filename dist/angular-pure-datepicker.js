@@ -365,83 +365,12 @@ var apd;
 
 var apd;
 (function (apd) {
-    var Model;
-    (function (Model) {
-        'use strict';
-        var MessagesFactoryClass = (function () {
-            function MessagesFactoryClass() {
-                this.messages = {
-                    wrongClassCreation: 'Class created without \'new\', wrong \'this\'',
-                    wrongInstance: 'Wrong \'this\' instance',
-                    invalidParams: 'Invalid params',
-                    invalidDateModel: 'Invalid date model',
-                    datesInverted: 'Warning! Start date > End date'
-                };
-            }
-            MessagesFactoryClass.throwDeveloperError = function (message) {
-                console.error(message);
-            };
-            MessagesFactoryClass.throwModelValidationMessage = function (field) {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
-            };
-            MessagesFactoryClass.throwInvalidParamsMessage = function () {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.invalidParams);
-            };
-            MessagesFactoryClass.throwWrongClassCreationMessage = function () {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.wrongClassCreation);
-            };
-            MessagesFactoryClass.throwWrongInstanceMessage = function () {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.wrongInstance);
-            };
-            MessagesFactoryClass.throwDatesInvertedMessage = function () {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.datesInverted);
-            };
-            return MessagesFactoryClass;
-        })();
-        Model.MessagesFactoryClass = MessagesFactoryClass;
-    })(Model = apd.Model || (apd.Model = {}));
-})(apd || (apd = {}));
-
-var apd;
-(function (apd) {
-    var messages;
-    (function (messages) {
-        'use strict';
-        angular.module('angular-pd.messages', []).factory('MessagesFactory', function () {
-            return new apd.Model.MessagesFactoryClass();
-        });
-    })(messages = apd.messages || (apd.messages = {}));
-})(apd || (apd = {}));
-
-var apd;
-(function (apd) {
     var directive;
     (function (directive) {
         'use strict';
         angular.module('angular-pd', [
-            'angular-pd.templates',
-            'angular-pd.messages'
-        ]).directive('pureDatepicker', ['MessagesFactory', function (MessagesFactory) {
+            'angular-pd.templates'
+        ]).directive('pureDatepicker', function () {
             return {
                 restrict: 'E',
                 replace: true,
@@ -474,7 +403,7 @@ var apd;
                         },
                         stop: function () {
                             if (!ngModelWatcher.handler) {
-                                MessagesFactory.throwInvalidParamsMessage();
+                                apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
                                 return false;
                             }
                             ngModelWatcher.handler();
@@ -564,7 +493,7 @@ var apd;
                     };
                     function getDateTime(day, month, year) {
                         if (!day || (!month && month !== 0) || !year) {
-                            MessagesFactory.throwInvalidParamsMessage();
+                            apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
                         }
                         return new Date(year, month, day).getTime();
                     }
@@ -584,7 +513,7 @@ var apd;
                     })();
                 }
             };
-        }]);
+        });
     })(directive = apd.directive || (apd.directive = {}));
 })(apd || (apd = {}));
 
@@ -655,5 +584,64 @@ var apd;
             return LimitDatesClass;
         })();
         Model.LimitDatesClass = LimitDatesClass;
+    })(Model = apd.Model || (apd.Model = {}));
+})(apd || (apd = {}));
+
+var apd;
+(function (apd) {
+    var Model;
+    (function (Model) {
+        'use strict';
+        var MessagesFactoryClass = (function () {
+            function MessagesFactoryClass() {
+                this.messages = {
+                    wrongClassCreation: 'Class created without \'new\', wrong \'this\'',
+                    wrongInstance: 'Wrong \'this\' instance',
+                    invalidParams: 'Invalid params',
+                    invalidDateModel: 'Invalid date model',
+                    datesInverted: 'Warning! Start date > End date'
+                };
+            }
+            MessagesFactoryClass.throwDeveloperError = function (message) {
+                console.error(message);
+            };
+            MessagesFactoryClass.throwModelValidationMessage = function (field) {
+                if (!(this instanceof MessagesFactoryClass)) {
+                    console.error('Wrong \'this\' instance');
+                    return false;
+                }
+                this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
+            };
+            MessagesFactoryClass.throwInvalidParamsMessage = function () {
+                if (!(this instanceof MessagesFactoryClass)) {
+                    console.error('Wrong \'this\' instance');
+                    return false;
+                }
+                this.throwDeveloperError(this.messages.invalidParams);
+            };
+            MessagesFactoryClass.throwWrongClassCreationMessage = function () {
+                if (!(this instanceof MessagesFactoryClass)) {
+                    console.error('Wrong \'this\' instance');
+                    return false;
+                }
+                this.throwDeveloperError(this.messages.wrongClassCreation);
+            };
+            MessagesFactoryClass.throwWrongInstanceMessage = function () {
+                if (!(this instanceof MessagesFactoryClass)) {
+                    console.error('Wrong \'this\' instance');
+                    return false;
+                }
+                this.throwDeveloperError(this.messages.wrongInstance);
+            };
+            MessagesFactoryClass.throwDatesInvertedMessage = function () {
+                if (!(this instanceof MessagesFactoryClass)) {
+                    console.error('Wrong \'this\' instance');
+                    return false;
+                }
+                this.throwDeveloperError(this.messages.datesInverted);
+            };
+            return MessagesFactoryClass;
+        })();
+        Model.MessagesFactoryClass = MessagesFactoryClass;
     })(Model = apd.Model || (apd.Model = {}));
 })(apd || (apd = {}));
