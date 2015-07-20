@@ -1,2 +1,80 @@
-div
-    | zxc
+main-header
+sidebar
+.page.limits_page
+    .container.with_sidebar
+        h3 Angular Pure Datepicker
+        section.demo
+            form#demo_simple_form(name="demo_simple_form")
+                .form-group
+                    label.control-label(for="apd_1") Date
+                    pure-datepicker#apd_1(ng-model="example.model", apd-start="example.startDate", apd-end="example.endDate")
+            model-well(case-model="example")
+        section.overview
+            .pitch
+                h5 Date Limits
+                p
+                    | You can provide names for days of week by passing an
+                    code Array of strings
+                    | &nbsp;
+                    | to
+                    | &nbsp;
+                    code apd-localization
+                    | &nbsp;
+                    | directive.
+                    br
+                    strong Attention:
+                    | &nbsp;
+                    | Days should start from
+                    | &nbsp;
+                    strong Sunday.
+                    | &nbsp;
+                    br
+                    | Example
+                    | &nbsp;
+                    code $scope.localNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+            .settings
+                h4 Options
+                ul
+                    li
+                        code ng-model
+                        | &nbsp;
+                        | -
+                        | &nbsp;
+                        code Object
+                        | , can be
+                        | &nbsp;
+                        code empty
+                        | &nbsp;
+                        | or
+                        | &nbsp;
+                        code null
+                        | , but
+                        | &nbsp;
+                        code required
+                        | .
+                        br
+                        | The result of select would placed here. Also if
+                        | &nbsp;
+                        code ng-model
+                        | &nbsp;
+                        | is object with
+                        | &nbsp;
+                        code datetime
+                        | &nbsp;
+                        | field
+                        | (should contain number), it's will be applied as initial date value.
+                    li
+                        code apd-localization
+                        | &nbsp;
+                        | -
+                        | &nbsp;
+                        code Array of strings
+                        | ,
+                        | &nbsp;
+                        code optional
+                        | .
+                        br
+                        | Array of days of week names
+        plunker-edit(html-content="demo.template", js-content="demo.script")
+        section.html.demo_code(hljs, source="demo.template", language="html")
+        section.js.demo_code(hljs, source="demo.script", language="javascript")

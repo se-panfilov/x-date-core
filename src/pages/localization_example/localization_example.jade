@@ -7,8 +7,8 @@ sidebar
             form#demo_simple_form(name="demo_simple_form")
                 .form-group
                     label.control-label(for="apd_1") Date
-                    pure-datepicker#apd_1(ng-model="basicExample.model", apd-localization="localNames")
-            model-well(case-model="basicExample")
+                    pure-datepicker#apd_1(ng-model="example.model", apd-localization="example.localNames")
+            model-well(case-model="example")
         section.overview
             .pitch
                 h5 Localization
@@ -75,6 +75,6 @@ sidebar
                         | .
                         br
                         | Array of days of week names
-        plunker-edit(html-content="localizedExample.template", js-content="localizedExample.script")
-        section.html.demo_code(hljs, source="localizedExample.template", language="html")
-        section.js.demo_code(hljs, source="localizedExample.script", language="javascript")
+        plunker-edit(html-content="demo.template", js-content="demo.script")
+        section.html.demo_code(hljs, source="demo.template", language="html")
+        section.js.demo_code(hljs, source="demo.script", language="javascript")

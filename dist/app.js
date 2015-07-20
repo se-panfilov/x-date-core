@@ -154,6 +154,177 @@ angular.module('app.well', [])
 ;
 'use strict';
 
+angular.module('app.pages.basic_example', [
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+
+            .state('basic_example', {
+                url: '/basic_example',
+                templateUrl: 'basic_example/basic_example.html',
+                controller: 'BasicExamplePageCtrl'
+            })
+        ;
+    }])
+
+    .controller('BasicExamplePageCtrl', ['$scope', function ($scope) {
+
+
+        $scope.example = {
+            model: {}
+        };
+
+        $scope.demo = {
+            template: '<form id="demo_form" name="demo_form">' +
+            '\n    <div class="form-group">' +
+            '\n        <label for="apd_1" class="control-label">Date</label>' +
+            '\n        <pure-datepicker id="apd_1" ng-model="example.model"></pure-datepicker>' +
+            '\n    </div>' +
+            '\n</form>',
+            script: ' '
+        };
+
+    }]);
+'use strict';
+
+angular.module('app.pages.landing', [
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'BasicExamplePageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', function ($scope) {
+
+    }]);
+'use strict';
+
+angular.module('app.pages.limits_example', [
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+
+            .state('limits_example', {
+                url: '/limits_example',
+                templateUrl: 'limits_example/limits_example.html',
+                controller: 'LimitsExamplePageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LimitsExamplePageCtrl', ['$scope', function ($scope) {
+
+        $scope.example = {
+            model: {
+                datetime: new Date(2015, 6, 26).getTime()
+            },
+            startDate: new Date(2015, 6, 21).getTime(),
+            endDate: new Date(2020, 6, 27).getTime()
+        };
+
+        $scope.demo = {
+            template: '<form id="demo_form" name="demo_form" ng-controller="ExampleCtrl">' +
+            '\n    <div class="form-group">' +
+            '\n        <label for="apd_1" class="control-label">Date</label>' +
+            '\n        <pure-datepicker id="apd_1" ng-model="example.model" apd-start="example.startDate" apd-end="example.endDate"></pure-datepicker>' +
+            '\n    </div>' +
+            '\n</form>',
+            script: '.controller(\'ExampleCtrl\', function ($scope) {' +
+            '\n    $scope.example = {' +
+            '\n        model: {' +
+            '\n            datetime: new Date(2015, 6, 26).getTime()'+
+            '\n        },'+
+            '\n        startDate: new Date(2015, 6, 21).getTime(),'+
+            '\n        endDate: new Date(2020, 6, 27).getTime()' +
+            '\n    };' +
+            '\n});'
+        };
+
+    }]);
+'use strict';
+
+angular.module('app.pages.localization_example', [
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+
+            .state('localization_example', {
+                url: '/localization_example',
+                templateUrl: 'localization_example/localization_example.html',
+                controller: 'LocalizationExamplePageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LocalizationExamplePageCtrl', ['$scope', function ($scope) {
+
+        $scope.example = {
+            model: {
+                datetime: new Date(2015, 6, 26).getTime()
+            },
+            localNames: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+        };
+
+        $scope.demo = {
+            template: '<form id="demo_form" name="demo_form" ng-controller="ExampleCtrl">' +
+            '\n    <div class="form-group">' +
+            '\n        <label for="apd_1" class="control-label">Date</label>' +
+            '\n        <pure-datepicker id="apd_1" ng-model="example.model" apd-localization="example.localNames"></pure-datepicker>' +
+            '\n    </div>' +
+            '\n</form>',
+            script: '.controller(\'ExampleCtrl\', function ($scope) {' +
+            '\n   $scope.example = {' +
+            '\n       model: {' +
+            '\n           datetime: new Date(2015, 6, 26).getTime()' +
+            '\n       },' +
+            '\n       localNames: [\'Вс\', \'Пн\', \'Вт\', \'Ср\', \'Чт\', \'Пт\', \'Сб\']' +
+            '\n   };' +
+            '\n});'
+        };
+
+    }])
+;
+'use strict';
+
+angular.module('app.pages.styling_example', [
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+
+            .state('styling_example', {
+                url: '/styling_example',
+                templateUrl: 'styling_example/styling_example.html',
+                controller: 'StylingExamplePageCtrl'
+            })
+        ;
+    }])
+
+    .controller('StylingExamplePageCtrl', ['$scope', function ($scope) {
+
+    }]);
+'use strict';
+
 angular.module('app.header', [])
 
     .directive('mainHeader', function () {
@@ -194,139 +365,10 @@ angular.module('app.sidebar', [])
         };
     })
 ;
-'use strict';
-
-angular.module('app.pages.basic_example', [
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-
-            .state('basic_example', {
-                url: '/basic_example',
-                templateUrl: 'basic_example/basic_example.html',
-                controller: 'BasicExamplePageCtrl'
-            })
-        ;
-    }])
-
-    .controller('BasicExamplePageCtrl', ['$scope', function ($scope) {
-
-        $scope.commonExample = {
-            template: '<form id="demo_simple_form" name="demo_simple_form">' +
-            '\n    <div class="form-group">' +
-            '\n        <label for="apd_1" class="control-label">Date</label>' +
-            '\n        <pure-datepicker id="apd_1" ng-model="basicExample.model"></pure-datepicker>' +
-            '\n    </div>' +
-            '\n</form>',
-            script: ' '
-        };
-
-    }]);
-'use strict';
-
-angular.module('app.pages.landing', [
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'BasicExamplePageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', function ($scope) {
-
-    }]);
-'use strict';
-
-angular.module('app.pages.limits_example', [
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-
-            .state('limits_example', {
-                url: '/limits_example',
-                templateUrl: 'limits_example/users.html',
-                controller: 'LimitsExamplePageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LimitsExamplePageCtrl', ['$scope', function ($scope) {
-
-    }]);
-'use strict';
-
-angular.module('app.pages.localization_example', [
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-
-            .state('localization_example', {
-                url: '/localization_example',
-                templateUrl: 'localization_example/localization_example.html',
-                controller: 'LocalizationExamplePageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LocalizationExamplePageCtrl', ['$scope', function ($scope) {
-
-        $scope.localNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-
-        $scope.localizedExample = {
-            template: '<form id="demo_localized_form" name="demo_localized_form" ng-controller="ExampleCtrl">' +
-            '\n    <div class="form-group">' +
-            '\n        <label for="apd_1" class="control-label">Date</label>' +
-            '\n        <pure-datepicker id="apd_1" ng-model="localizedExample.model" apd-localization="localNames"></pure-datepicker>' +
-            '\n    </div>' +
-            '\n</form>',
-            script: '.controller(\'ExampleCtrl\', function ($scope) {' +
-            '\n    $scope.localNames =[\'Вс\', \'Пн\', \'Вт\', \'Ср\', \'Чт\', \'Пт\', \'Сб\'];' +
-            '\n});'
-        };
-
-    }]);
-'use strict';
-
-angular.module('app.pages.styling_example', [
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-
-            .state('styling_example', {
-                url: '/styling_example',
-                templateUrl: 'styling_example/styling_example.html',
-                controller: 'StylingExamplePageCtrl'
-            })
-        ;
-    }])
-
-    .controller('StylingExamplePageCtrl', ['$scope', function ($scope) {
-
-    }]);
-angular.module("app.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("basic_example/basic_example.html","<main-header></main-header><sidebar></sidebar><div class=\"page basic_page\"><div class=\"container with_sidebar\"><h3>Angular Pure Datepicker</h3><section class=demo><form id=demo_simple_form name=demo_simple_form><div class=form-group><label for=apd_1 class=control-label>Date</label><pure-datepicker id=apd_1 ng-model=basicExample.model></pure-datepicker></div></form><model-well case-model=basicExample></model-well></section><section class=overview><div class=pitch><h5>Angular Pure Datepicker</h5><p>is kind of old-school date select, but with modern look and feel and abilities.<br>tldr<br>tldr<br>tldr<br>tldr</p></div><div class=settings><h4>Settings</h4><ul><li><code>ng-model</code>&nbsp; - &nbsp;<code>Object</code>, can be &nbsp;<code>empty</code>&nbsp; or &nbsp;<code>null</code>, but &nbsp;<code>required</code>.<br>The result of select would placed here. Also if &nbsp;<code>ng-model</code>&nbsp; is object with &nbsp;<code>datetime</code>&nbsp; field (should contain number), it\'s will be applied as initial date value.</li><li><code>apd-start</code>&nbsp; - &nbsp;<code>number</code>, &nbsp;<code>optional</code>.<br>Datetime of a lower date limit (model\'s values lower then limit wouldn\'t be applied).</li><li><code>apd-end</code>&nbsp; -<code>number</code>, &nbsp;<code>optional</code>.<br>Datetime of a upper date limit (model\'s values upper then limit wouldn\'t be applied).</li><li><code>apd-day-id</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom id for the days select element.</li><li><code>apd-month-id</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom id for the month select element.</li><li><code>apd-year-id</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom id for the years select element.</li><li><code>apd-day-classes</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom classes for the days select element.</li><li><code>apd-month-classes</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom classes for the month select element.</li><li><code>apd-year-classes</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom classes for the years select element.</li></ul></div></section><plunker-edit html-content=commonExample.template js-content=commonExample.script></plunker-edit><section hljs=hljs source=commonExample.template language=html class=\"html demo_code\"></section></div></div>");
+angular.module("app.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("basic_example/basic_example.html","<main-header></main-header><sidebar></sidebar><div class=\"page basic_page\"><div class=\"container with_sidebar\"><h3>Angular Pure Datepicker</h3><section class=demo><form id=demo_simple_form name=demo_simple_form><div class=form-group><label for=apd_1 class=control-label>Date</label><pure-datepicker id=apd_1 ng-model=example.model></pure-datepicker></div></form><model-well case-model=example></model-well></section><section class=overview><div class=pitch><h5>Basic Example</h5><p>In common case you just need to add directive and specify &nbsp;<code>ngModel</code>.</p></div><div class=settings><h4>Options</h4><ul><li><code>ng-model</code>&nbsp; - &nbsp;<code>Object</code>, can be &nbsp;<code>empty</code>&nbsp; or &nbsp;<code>null</code>, but &nbsp;<code>required</code>.<br>The result of select would placed here. Also if &nbsp;<code>ng-model</code>&nbsp; is object with &nbsp;<code>datetime</code>&nbsp; field (should contain number), it\'s will be applied as initial date value.</li><li><code>apd-start</code>&nbsp; - &nbsp;<code>number</code>, &nbsp;<code>optional</code>.<br>Datetime of a lower date limit (model\'s values lower then limit wouldn\'t be applied).</li><li><code>apd-end</code>&nbsp; -<code>number</code>, &nbsp;<code>optional</code>.<br>Datetime of a upper date limit (model\'s values upper then limit wouldn\'t be applied).</li><li><code>apd-day-id</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom id for the days select element.</li><li><code>apd-month-id</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom id for the month select element.</li><li><code>apd-year-id</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom id for the years select element.</li><li><code>apd-day-classes</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom classes for the days select element.</li><li><code>apd-month-classes</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom classes for the month select element.</li><li><code>apd-year-classes</code>&nbsp; - &nbsp;<code>string</code>, &nbsp;<code>optional</code>.<br>Setter of custom classes for the years select element.</li></ul></div></section><plunker-edit html-content=demo.template js-content=demo.script></plunker-edit><section hljs=hljs source=demo.template language=html class=\"html demo_code\"></section></div></div>");
 $templateCache.put("landing/landing.html","<main-header></main-header><div class=\"page landing_page\"><div class=container>Angular Pure Datepicker is under heavy consruction</div></div>");
-$templateCache.put("limits_example/limits_example.html","<div>zxc</div>");
-$templateCache.put("localization_example/localization_example.html","<main-header></main-header><sidebar></sidebar><div class=\"page localization_page\"><div class=\"container with_sidebar\"><h3>Angular Pure Datepicker</h3><section class=demo><form id=demo_simple_form name=demo_simple_form><div class=form-group><label for=apd_1 class=control-label>Date</label><pure-datepicker id=apd_1 ng-model=basicExample.model apd-localization=localNames></pure-datepicker></div></form><model-well case-model=basicExample></model-well></section><section class=overview><div class=pitch><h5>Localization</h5><p>You can provide names for days of week by passing an<code>Array of strings</code>&nbsp; to &nbsp;<code>apd-localization</code>&nbsp; directive.<br><strong>Attention:</strong>&nbsp; Days should start from &nbsp;<strong>Sunday.</strong>&nbsp;<br>Example &nbsp;<code>$scope.localNames = [\'Вс\', \'Пн\', \'Вт\', \'Ср\', \'Чт\', \'Пт\', \'Сб\'];</code></p></div><div class=settings><h4>Options</h4><ul><li><code>ng-model</code>&nbsp; - &nbsp;<code>Object</code>, can be &nbsp;<code>empty</code>&nbsp; or &nbsp;<code>null</code>, but &nbsp;<code>required</code>.<br>The result of select would placed here. Also if &nbsp;<code>ng-model</code>&nbsp; is object with &nbsp;<code>datetime</code>&nbsp; field (should contain number), it\'s will be applied as initial date value.</li><li><code>apd-localization</code>&nbsp; - &nbsp;<code>Array of strings</code>, &nbsp;<code>optional</code>.<br>Array of days of week names</li></ul></div></section><plunker-edit html-content=localizedExample.template js-content=localizedExample.script></plunker-edit><section hljs=hljs source=localizedExample.template language=html class=\"html demo_code\"></section><section hljs=hljs source=localizedExample.script language=javascript class=\"js demo_code\"></section></div></div>");
+$templateCache.put("limits_example/limits_example.html","<main-header></main-header><sidebar></sidebar><div class=\"page limits_page\"><div class=\"container with_sidebar\"><h3>Angular Pure Datepicker</h3><section class=demo><form id=demo_simple_form name=demo_simple_form><div class=form-group><label for=apd_1 class=control-label>Date</label><pure-datepicker id=apd_1 ng-model=example.model apd-start=example.startDate apd-end=example.endDate></pure-datepicker></div></form><model-well case-model=example></model-well></section><section class=overview><div class=pitch><h5>Date Limits</h5><p>You can provide names for days of week by passing an<code>Array of strings</code>&nbsp; to &nbsp;<code>apd-localization</code>&nbsp; directive.<br><strong>Attention:</strong>&nbsp; Days should start from &nbsp;<strong>Sunday.</strong>&nbsp;<br>Example &nbsp;<code>$scope.localNames = [\'Вс\', \'Пн\', \'Вт\', \'Ср\', \'Чт\', \'Пт\', \'Сб\'];</code></p></div><div class=settings><h4>Options</h4><ul><li><code>ng-model</code>&nbsp; - &nbsp;<code>Object</code>, can be &nbsp;<code>empty</code>&nbsp; or &nbsp;<code>null</code>, but &nbsp;<code>required</code>.<br>The result of select would placed here. Also if &nbsp;<code>ng-model</code>&nbsp; is object with &nbsp;<code>datetime</code>&nbsp; field (should contain number), it\'s will be applied as initial date value.</li><li><code>apd-localization</code>&nbsp; - &nbsp;<code>Array of strings</code>, &nbsp;<code>optional</code>.<br>Array of days of week names</li></ul></div></section><plunker-edit html-content=demo.template js-content=demo.script></plunker-edit><section hljs=hljs source=demo.template language=html class=\"html demo_code\"></section><section hljs=hljs source=demo.script language=javascript class=\"js demo_code\"></section></div></div>");
+$templateCache.put("localization_example/localization_example.html","<main-header></main-header><sidebar></sidebar><div class=\"page localization_page\"><div class=\"container with_sidebar\"><h3>Angular Pure Datepicker</h3><section class=demo><form id=demo_simple_form name=demo_simple_form><div class=form-group><label for=apd_1 class=control-label>Date</label><pure-datepicker id=apd_1 ng-model=example.model apd-localization=example.localNames></pure-datepicker></div></form><model-well case-model=example></model-well></section><section class=overview><div class=pitch><h5>Localization</h5><p>You can provide names for days of week by passing an<code>Array of strings</code>&nbsp; to &nbsp;<code>apd-localization</code>&nbsp; directive.<br><strong>Attention:</strong>&nbsp; Days should start from &nbsp;<strong>Sunday.</strong>&nbsp;<br>Example &nbsp;<code>$scope.localNames = [\'Вс\', \'Пн\', \'Вт\', \'Ср\', \'Чт\', \'Пт\', \'Сб\'];</code></p></div><div class=settings><h4>Options</h4><ul><li><code>ng-model</code>&nbsp; - &nbsp;<code>Object</code>, can be &nbsp;<code>empty</code>&nbsp; or &nbsp;<code>null</code>, but &nbsp;<code>required</code>.<br>The result of select would placed here. Also if &nbsp;<code>ng-model</code>&nbsp; is object with &nbsp;<code>datetime</code>&nbsp; field (should contain number), it\'s will be applied as initial date value.</li><li><code>apd-localization</code>&nbsp; - &nbsp;<code>Array of strings</code>, &nbsp;<code>optional</code>.<br>Array of days of week names</li></ul></div></section><plunker-edit html-content=demo.template js-content=demo.script></plunker-edit><section hljs=hljs source=demo.template language=html class=\"html demo_code\"></section><section hljs=hljs source=demo.script language=javascript class=\"js demo_code\"></section></div></div>");
 $templateCache.put("styling_example/styling_example.html","<main-header></main-header><sidebar></sidebar><div class=\"page styling_page\"><div class=\"container with_sidebar\"><ol><li><section><hgroup><h3>Common case</h3></hgroup><div class=case_description><ul><li>Valid ngModel</li></ul></div><form id=demo_simple_form name=demo_simple_form><div class=form-group><label for=apd_1 class=control-label>Date</label><pure-datepicker id=apd_1 ng-model=commonCase.model></pure-datepicker></div></form><model-well case-model=commonCase></model-well></section></li></ol></div></div>");
 $templateCache.put("header/header.html","<div class=\"navbar navbar-inverse navbar-fixed-top pages_header\"><div class=navbar-inner><div class=container><button type=button ng-click=\"isNavbarCollapsed = !isNavbarCollapsed\" class=navbar-toggle><span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button><div collapse=isNavbarCollapsed class=navbar-collapse><nav class=hidden-xs><div class=navbar-header><ul class=\"nav navbar-nav\"><li><a ui-sref=landing title=APD class=navbar-brand>APD</a></li></ul></div></nav><ul class=\"nav navbar-nav\"><li ng-class=\"{active: $state.includes(\'landing\')}\"><a href=\"\" ui-sref=landing ui-sref-opts=\"{reload: true}\" class=\"btn btn-link\">Landing</a></li><li ng-class=\"{active: $state.includes(\'basic_example\')}\"><a href=\"\" ui-sref=basic_example ui-sref-opts=\"{reload: true}\" class=\"btn btn-link\">Examples</a></li><li ng-class=\"{active: $state.includes(\'docs\')}\"><a href=\"\" ui-sref=docs ui-sref-opts=\"{reload: true}\" class=\"btn btn-link\">Docs</a></li></ul><ul class=\"nav navbar-nav navbar-right\"><li><a href=https://github.com/se-panfilov/angular-pure-datepicker class=\"btn btn-link\">GitHub</a></li></ul></div></div></div></div>");
 $templateCache.put("sidebar/sidebar.html","<ul class=\"nav nav-sidebar\"><li><a ui-sref=basic_example>Basic Example</a><a ui-sref=limits_example>Limits Example</a><a ui-sref=localization_example>Localization</a><a ui-sref=stying_example>Styling</a></li></ul>");
