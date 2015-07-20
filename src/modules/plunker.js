@@ -5,7 +5,7 @@ angular.module('app.plunker', [])
         APP_URL: '//se-panfilov.github.io/angular-pure-datepicker/releases/angular-pure-datepicker_',
         APP_DEPS: 'angular-pd',
         APP_DESCRIPTION: 'https://se-panfilov.github.io/angular-pure-datepicker',
-        APP_VERSION: '0.2.1',
+        APP_VERSION: '0.3.3',
         NG_VERSION: '1.4.1',
         SCRIPTS: [],
         STYLES: []
@@ -45,7 +45,7 @@ angular.module('app.plunker', [])
                 };
 
                 var scriptContent = function () {
-                    return "angular.module('" + plunkerSettings.APP_NAME + "', ['" + plunkerSettings.APP_DEPS + "']);" +
+                    return "angular.module('" + plunkerSettings.APP_NAME + "', ['" + plunkerSettings.APP_DEPS + "'])" +
                         "\n" +
                         scope.jsContent;
                 };

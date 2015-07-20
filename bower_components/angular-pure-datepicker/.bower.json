@@ -1,6 +1,6 @@
 {
   "name": "angular-pure-datepicker",
-  "version": "0.2.1",
+  "version": "0.3.3",
   "homepage": "https://github.com/se-panfilov/angular-pure-datepicker",
   "authors": [
     "S.Panfilov <se-panfilov@ya.ru> (https://se-panfilov.github.io)"
@@ -28,14 +28,13 @@
     "test",
     "tests"
   ],
-  "_release": "0.2.1",
+  "_release": "0.3.3",
   "_resolution": {
     "type": "version",
-    "tag": "v0.2.1",
-    "commit": "f825c6586fa5c1df52ba2716bc333dbe90d52e33"
+    "tag": "v0.3.3",
+    "commit": "b2cf8caaa8f6888b691ccdd5544bf7d1c3a677da"
   },
   "_source": "git://github.com/se-panfilov/angular-pure-datepicker.git",
-  "_target": "~0.2.1",
-  "_originalSource": "angular-pure-datepicker",
-  "_direct": true
+  "_target": "~0.3.3",
+  "_originalSource": "angular-pure-datepicker"
 }

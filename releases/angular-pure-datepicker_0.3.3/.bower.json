@@ -27,5 +27,14 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "_release": "0.3.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.3.3",
+    "commit": "b2cf8caaa8f6888b691ccdd5544bf7d1c3a677da"
+  },
+  "_source": "git://github.com/se-panfilov/angular-pure-datepicker.git",
+  "_target": "0.3.3",
+  "_originalSource": "angular-pure-datepicker"
 }
