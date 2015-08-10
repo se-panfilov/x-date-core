@@ -187,7 +187,9 @@ module apd.directive {
 
                         var localization = scope.apdLocalization || null;
                         var week:apd.Model.WeekClass = new apd.Model.WeekClass(localization);
+                        var year:apd.Model.YearClass = new apd.Model.YearClass(localization);
                         scope.getDayName = week.getDayName;
+                        scope.getMonthName = year.getMonthName;
 
                         ngModelWatcher.start(onModelChange);
                     })();

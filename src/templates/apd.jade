@@ -12,7 +12,7 @@
     )
     select.apd_elem.apd_select_month.apd_select(
     ng-model="data.selected.month",
-    ng-options="(month + 1) for month in data.month",
+    ng-options="getMonthName(month) for month in data.month",
     ng-init="data.selected.month = data.month[0]",
     ng-change="onMonthSelectChanged(data.selected.month)",
     id="{{::apdMonthId}}",
