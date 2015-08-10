@@ -1,3 +1,8 @@
+/// <reference path="DateModelClass.ts" />
+/// <reference path="DateUtilsClass.ts" />
+/// <reference path="LimitDatesClass.ts" />
+/// <reference path="MessagesFactoryClass.ts" />
+
 module apd.Model {
     'use strict';
 
@@ -10,15 +15,16 @@ module apd.Model {
         _startDateTime:number;
         _endDateTime:number;
         _limitDates:LimitDatesClass;
+        _isUTC:boolean;
 
         yearsListDirection = 'desc';
         monthListDirection = 'asc';
         daysListDirection = 'asc';
 
-        constructor(selected:DateModelClass, startDateTime:number, endDateTime:number, yearsListDirection?:string, monthListDirection?:string, daysListDirection?:string) {
+        constructor(selected:DateModelClass, startDateTime:number, endDateTime:number, isUTC:boolean, yearsListDirection?:string, monthListDirection?:string, daysListDirection?:string) {
             if (!(this instanceof DataClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                return new DataClass(selected, startDateTime, endDateTime, yearsListDirection, monthListDirection, daysListDirection);
+                return new DataClass(selected, startDateTime, endDateTime, isUTC, yearsListDirection, monthListDirection, daysListDirection);
             }
 
             var self = this;
@@ -27,15 +33,16 @@ module apd.Model {
             startDateTime = self.isValidNumber(startDateTime) ? startDateTime : null;
             endDateTime = self.isValidNumber(endDateTime) ? endDateTime : null;
 
+            self._isUTC = isUTC;
             self.selected = self._getSelected(selected, startDateTime, endDateTime);
-            var selectedYear = new Date(this.selected.datetime).getFullYear();
-            var selectedMonth = new Date(this.selected.datetime).getMonth();
+            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
+            var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime, this._isUTC);
 
             self.yearsListDirection = yearsListDirection || self.yearsListDirection;
             self.monthListDirection = monthListDirection || self.monthListDirection;
             self.daysListDirection = daysListDirection || self.daysListDirection;
 
-            self._limitDates = new LimitDatesClass(startDateTime, endDateTime);
+            self._limitDates = new LimitDatesClass(startDateTime, endDateTime, this._isUTC);
             self._startDateTime = startDateTime;
             self._endDateTime = endDateTime;
             self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, self.yearsListDirection);
@@ -61,19 +68,19 @@ module apd.Model {
 
             //start == 1; selected == 1 or 2 or 3; end == 3;
             if ((isBiggerThenStart || isEqualToStart) || (isLowerThenEnd || isEqualToEnd)) {
-                result = new DateModelClass(selected.datetime);
+                result = new DateModelClass(selected.datetime, this._isUTC);
             } else
             //start == 1; selected == 0
             if (!isBiggerThenStart) {
-                result = new DateModelClass(startDateTime);
+                result = new DateModelClass(startDateTime, this._isUTC);
             } else
             //selected == 4; end == 3;
             if (!isBiggerThenStart) {
-                result = new DateModelClass(endDateTime);
+                result = new DateModelClass(endDateTime, this._isUTC);
             }
             //paranoid case
             else {
-                result = new DateModelClass(new Date().getTime());
+                result = new DateModelClass(new Date().getTime(), this._isUTC);
             }
 
             return result;
@@ -126,7 +133,7 @@ module apd.Model {
             var start = limitDates.startDate.year;
             var end = limitDates.endDate.year;
             var now = limitDates.nowDate.year;
-            var selectedYear = new Date(this.selected.datetime).getFullYear();
+            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
             var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
             var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
             latestPossibleYear = latestPossibleYear + (DEFAULT_YEARS_COUNT - 1);
@@ -186,7 +193,7 @@ module apd.Model {
                 return null;
             }
 
-            var selectedYear = new Date(this.selected.datetime).getFullYear();
+            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
             this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.monthListDirection);
             return this;
         };
@@ -238,8 +245,8 @@ module apd.Model {
                 return null;
             }
 
-            var selectedYear = new Date(this.selected.datetime).getFullYear();
-            var selectedMonth = new Date(this.selected.datetime).getMonth();
+            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
+            var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime, this._isUTC);
             this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.daysListDirection);
             return this;
         };

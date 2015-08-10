@@ -1,4 +1,5 @@
-/// <reference path="DataClass.ts" />
+/// <reference path="DateUtilsClass.ts" />
+/// <reference path="MessagesFactoryClass.ts" />
 
 module apd.Model {
     'use strict';
@@ -25,11 +26,15 @@ module apd.Model {
             year:number;
         };
 
-        constructor(startDateTime:number, endDateTime:number) {
+        _isUTC:boolean;
+
+        constructor(startDateTime:number, endDateTime:number, isUTC:boolean) {
             if (!(this instanceof LimitDatesClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                return new LimitDatesClass(startDateTime, endDateTime);
+                return new LimitDatesClass(startDateTime, endDateTime, isUTC);
             }
+
+            this._isUTC = isUTC;
 
             this.startDate = {day: null, month: null, year: null, datetime: null};
             this.endDate = {day: null, month: null, year: null, datetime: null};
@@ -46,9 +51,9 @@ module apd.Model {
                 return false;
             }
 
-            this.startDate.day = new Date(datetime).getDate();
-            this.startDate.month = new Date(datetime).getMonth();
-            this.startDate.year = new Date(datetime).getFullYear();
+            this.startDate.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
+            this.startDate.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
+            this.startDate.year = apd.Model.DateUtilsClass.getYear(datetime, this._isUTC);
             this.startDate.datetime = datetime;
             return this;
         };
@@ -59,9 +64,9 @@ module apd.Model {
                 return false;
             }
 
-            this.endDate.day = new Date(datetime).getDate();
-            this.endDate.month = new Date(datetime).getMonth();
-            this.endDate.year = new Date(datetime).getFullYear();
+            this.endDate.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
+            this.endDate.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
+            this.endDate.year = apd.Model.DateUtilsClass.getYear(datetime, this._isUTC);
             this.endDate.datetime = datetime;
             return this;
         };
@@ -72,10 +77,11 @@ module apd.Model {
                 return false;
             }
 
-            this.nowDate.day = new Date().getDate();
-            this.nowDate.month = new Date().getMonth();
-            this.nowDate.year = new Date().getFullYear();
-            this.nowDate.datetime = new Date().getTime();
+            var datetime = new Date().getTime();
+            this.nowDate.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
+            this.nowDate.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
+            this.nowDate.year = apd.Model.DateUtilsClass.getYear(datetime, this._isUTC);
+            this.nowDate.datetime = datetime;
             return this;
         };
 

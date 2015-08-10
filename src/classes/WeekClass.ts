@@ -1,4 +1,4 @@
-/// <reference path="DataClass.ts" />
+/// <reference path="MessagesFactoryClass.ts" />
 
 module apd.Model {
     'use strict';

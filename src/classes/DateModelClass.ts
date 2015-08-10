@@ -1,4 +1,4 @@
-/// <reference path="DataClass.ts" />
+/// <reference path="DateUtilsClass.ts" />
 
 module apd.Model {
     'use strict';
@@ -10,21 +10,21 @@ module apd.Model {
         year:number;
         datetime:number;
         timezone:number;
+        _isUTC:boolean;
 
-        constructor(datetime:number) {
+        constructor(datetime:number, isUTC:boolean) {
             if (!(this instanceof DateModelClass)) {
                 apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                return new DateModelClass(datetime);
+                return new DateModelClass(datetime, isUTC);
             }
 
-            var date = new Date(datetime);
-
-            this.day = date.getDate();
-            this.dayOfWeek = date.getDay();
-            this.month = date.getMonth();
-            this.year = date.getFullYear();
+            this.day =  apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
+            this.dayOfWeek =  apd.Model.DateUtilsClass.getDayOfWeek(datetime, this._isUTC);
+            this.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
+            this.year =  apd.Model.DateUtilsClass.getYear(datetime, this._isUTC);
             this.datetime = datetime;
-            this.timezone = date.getTimezoneOffset();
+            this.timezone = new Date(datetime).getTimezoneOffset();
+            this._isUTC = isUTC;
 
             return this;
         }

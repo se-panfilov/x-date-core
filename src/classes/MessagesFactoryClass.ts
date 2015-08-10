@@ -1,5 +1,3 @@
-/// <reference path="DataClass.ts" />
-
 module apd.Model {
     'use strict';
 

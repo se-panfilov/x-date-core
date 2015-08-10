@@ -1,5 +1,7 @@
 /// <reference path="classes/WeekClass.ts" />
 /// <reference path="classes/DateModelClass.ts" />
+/// <reference path="classes/LimitDatesClass.ts" />
+/// <reference path="classes/MessagesFactoryClass.ts" />
 
 //TODO (S.Panfilov) mat be should replace manual reference with gulp-auto-references?
 
@@ -28,9 +30,12 @@ module apd.directive {
                     apdDayClasses: '@?',
                     apdMonthClasses: '@?',
                     apdYearClasses: '@?',
-                    apdLocalization: '=?'
+                    apdLocalization: '=?',
+                    apdIsUtc: '=?'
                 },
                 link: function (scope) {
+
+                    scope.apdIsUtc = scope.apdIsUtc || false;
 
                     //TODO (S.Panfilov) check for cross-browser support
                     //TODO (S.Panfilov) may be should add tests
@@ -61,37 +66,10 @@ module apd.directive {
                         }
                     };
 
-                    function getInitDateModel(model:any) {
-                        var isInitModelValid:boolean = apd.Model.DateModelClass.validate(model);
-                        var initDatetime:number;
-
-                        if (isInitModelValid) {
-                            initDatetime = model.datetime
-                        } else {
-                            initDatetime = new Date().getTime();
-                        }
-
-                        var date = new Date(initDatetime);
-                        var day = date.getDate();
-                        var month = date.getMonth();
-                        var year = date.getFullYear();
-
-                        var limitSafeDatetime = getLimitSafeDatetime(day, month, year);
-
-                        return new apd.Model.DateModelClass(limitSafeDatetime);
-                    }
-
-                    function _initData(initDateModel:apd.Model.DateModelClass, startDateTime:number, endDateTime:number) {
-                        scope.data = new apd.Model.DataClass(initDateModel, startDateTime, endDateTime);
-                        scope.ngModel = scope.data.selected;
-                    }
 
                     function getLimitSafeDatetime(day:number, month:number, year:number):number {
-                        if (!isDayInMonth(day, month, year)) {
-                            day = apd.Model.DataClass.getDaysInMonth(month, year);
-                        }
 
-                        var datetime:number = getDateTime(day, month, year);
+                        var datetime:number = new Date(year, month, day).getTime();
 
                         if (!apd.Model.LimitDatesClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
                             if (!apd.Model.LimitDatesClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
@@ -106,7 +84,7 @@ module apd.directive {
 
                     function updateModel(datetime:number) {
                         ngModelWatcher.stop();
-                        scope.data.selected = new apd.Model.DateModelClass(datetime);
+                        scope.data.selected = new apd.Model.DateModelClass(datetime, scope.apdIsUtc);
                         scope.ngModel = scope.data.selected;
                         ngModelWatcher.start(onModelChange);
                     }
@@ -116,10 +94,9 @@ module apd.directive {
                             return;
                         }
 
-                        var date = new Date(datetime);
-                        var day = date.getDate();
-                        var month = date.getMonth();
-                        var year = date.getFullYear();
+                        var day = apd.Model.DateUtilsClass.getDay(datetime, scope.apdIsUtc);
+                        var month = apd.Model.DateUtilsClass.getMonth(datetime, scope.apdIsUtc);
+                        var year = apd.Model.DateUtilsClass.getYear(datetime, scope.apdIsUtc);
 
                         datetime = getLimitSafeDatetime(day, month, year);
                         updateModel(datetime);
@@ -128,6 +105,31 @@ module apd.directive {
                         scope.data.reloadMonthList();
                         scope.data.reloadDaysList();
                     }
+
+                    function getInitDateModel(model:any) {
+                        var isInitModelValid:boolean = apd.Model.DateModelClass.validate(model);
+                        var initDatetime:number;
+
+                        if (isInitModelValid) {
+                            initDatetime = model.datetime
+                        } else {
+                            initDatetime = new Date().getTime();
+                        }
+
+                        var day = apd.Model.DateUtilsClass.getDay(initDatetime, scope.apdIsUtc);
+                        var month = apd.Model.DateUtilsClass.getMonth(initDatetime, scope.apdIsUtc);
+                        var year = apd.Model.DateUtilsClass.getYear(initDatetime, scope.apdIsUtc);
+
+                        var limitSafeDatetime = getLimitSafeDatetime(day, month, year);
+
+                        return new apd.Model.DateModelClass(limitSafeDatetime, scope.apdIsUtc);
+                    }
+
+                    function _initData(initDateModel:apd.Model.DateModelClass, startDateTime:number, endDateTime:number) {
+                        scope.data = new apd.Model.DataClass(initDateModel, startDateTime, endDateTime, scope.apdIsUtc);
+                        scope.ngModel = scope.data.selected;
+                    }
+
 
                     scope.onDaySelectChanged = function (day:number) {
                         if (!day) return;
