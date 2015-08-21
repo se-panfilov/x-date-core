@@ -23,6 +23,9 @@ var DateUtils = (function (Settings) {
         getMonth: function (datetime) {
             var method = (Settings.isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
             return this.getVal(datetime, method);
+        },
+        getDaysInMonth: function (month, year) {
+            return new Date(year, month + 1, 0).getDate();
         }
     };
 
