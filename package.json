@@ -38,14 +38,10 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-stylus": "^2.0.5",
     "gulp-todo": "^3.1.1",
-    "gulp-tslint": "^3.1.0-beta",
-    "gulp-tslint-stylish": "^1.0.1",
-    "gulp-typescript": "^2.7.8",
     "gulp-uglify": "^1.2.0",
     "gulp-watch": "^4.3.1",
     "merge-stream": "^0.1.8",
     "nib": "^1.1.0",
-    "gulp-clean-ts-extends": "^0.1.1",
     "watch": "^0.16.0"
   },
   "dependencies": {

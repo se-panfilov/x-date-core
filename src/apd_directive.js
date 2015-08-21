@@ -55,10 +55,10 @@ angular.module('angular-pd', [
 
                     var datetime = new Date(year, month, day).getTime();
 
-                    if (!apd.Model.LimitDatesClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
-                        if (!apd.Model.LimitDatesClass.isDateUpperStartLimit(datetime, settings.startDateTime)) {
+                    if (!LimitsModel.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
+                        if (!LimitsModel.isDateUpperStartLimit(datetime, settings.startDateTime)) {
                             datetime = settings.startDateTime;
-                        } else if (!apd.Model.LimitDatesClass.isDateLowerEndLimit(datetime, settings.endDateTime)) {
+                        } else if (!LimitsModel.isDateLowerEndLimit(datetime, settings.endDateTime)) {
                             datetime = settings.endDateTime;
                         }
                     }
@@ -147,16 +147,6 @@ angular.module('angular-pd', [
                     scope.data.reloadMonthList();
                     scope.data.reloadDaysList();
                 };
-
-                function getDateTime(day, month, year) {
-                    return new Date(year, month, day).getTime();
-                }
-
-                function isDayInMonth(day, month, year) {
-                    var daysInMonth = DataClass.getDaysInMonth(month, year);
-
-                    return day <= daysInMonth;
-                }
 
                 (function _init() {
                     settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;

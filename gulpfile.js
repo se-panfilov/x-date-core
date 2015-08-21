@@ -2,7 +2,7 @@
 
 var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, watch, changed,
     ngAnnotate, stylus, nib, minifyHTML, minifyCss, templateCache, mergeStream,
-    cssBase64, size, tslint, stylish;
+    cssBase64, size, stylish;
 
 var src = {
     styles: ['src/templates/**/*.styl'],
@@ -19,14 +19,14 @@ var dest = {
 };
 
 gulp.task('lint', function () {
-    tslint = tslint || require('gulp-tslint');
-    stylish = stylish || require('gulp-tslint-stylish');
-
-    return gulp.src(src.ts)
-        .pipe(tslint())
-        .pipe(tslint.report(stylish, {
-            emitError: false
-        }));
+    //tslint = tslint || require('gulp-tslint');
+    //stylish = stylish || require('gulp-tslint-stylish');
+    //
+    //return gulp.src(src.ts)
+    //    .pipe(tslint())
+    //    .pipe(tslint.report(stylish, {
+    //        emitError: false
+    //    }));
 });
 
 gulp.task('todo', function () {
@@ -93,13 +93,7 @@ function makeJS() {
     var viewJs = makeViewJS();
 
     return mergeStream(coreJs, viewJs)
-        .pipe(concat('angular-pure-datepicker.js'))
-        .pipe(gulp.dest(dest.dist))
-        .pipe(sourcemaps.init())
-        .pipe(uglify())
-        .pipe(rename({basename: 'angular-pure-datepicker.min'}))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(dest.dist));
+        .pipe(concat('angular-pure-datepicker.js'));
 }
 
 function mergeJS(templates, mainJs) {
