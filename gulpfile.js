@@ -1,13 +1,14 @@
+'use strict';
+
 var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, watch, changed,
-    ngAnnotate, stylus, nib, minifyHTML, minifyCss, ts, templateCache, mergeStream,
+    ngAnnotate, stylus, nib, minifyHTML, minifyCss, templateCache, mergeStream,
     cssBase64, size, tslint, stylish, cleanTs;
 
 var src = {
     styles: ['src/templates/**/*.styl'],
     jade: ['src/templates/**/*.jade'],
     html: ['src/templates/**/*.html'],
-    js: ['src/**/*.js'],
-    ts: ['src/**/*.ts']
+    js: ['src/**/*.js']
 };
 
 var dest = {
@@ -65,15 +66,11 @@ function makeJade() {
         }))
 }
 
-function makeTypeScript() {
-    ts = ts || require('gulp-typescript');
+function makeJS() {
     ngAnnotate = ngAnnotate || require('gulp-ng-annotate');
     concat = concat || require('gulp-concat');
 
-    return gulp.src(src.ts)
-        .pipe(ts({
-            removeComments: true
-        }))
+    return gulp.src(src.js)
         .on('error', console.log)
         .pipe(concat('angular-pure-datepicker.js'))
         .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
