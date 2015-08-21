@@ -56,11 +56,6 @@ module apd.directive {
                             }, true);
                         },
                         stop: function () {
-                            if (!ngModelWatcher.handler) {
-                                apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
-                                return false;
-                            }
-
                             ngModelWatcher.handler();
                             return true;
                         }
@@ -165,10 +160,6 @@ module apd.directive {
                     };
 
                     function getDateTime(day:number, month:number, year:number):number {
-                        if (!day || (!month && month !== 0) || !year) {
-                            apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
-                        }
-
                         return new Date(year, month, day).getTime();
                     }
 
@@ -183,7 +174,6 @@ module apd.directive {
                         settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
                         settings.initDateModel = getInitDateModel(scope.ngModel);
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
-
 
                         var localization = scope.apdLocalization || null;
                         var week:apd.Model.DaysClass = new apd.Model.DaysClass(localization);

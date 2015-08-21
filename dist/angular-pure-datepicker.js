@@ -415,10 +415,6 @@ var apd;
                             }, true);
                         },
                         stop: function () {
-                            if (!ngModelWatcher.handler) {
-                                apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
-                                return false;
-                            }
                             ngModelWatcher.handler();
                             return true;
                         }
@@ -500,9 +496,6 @@ var apd;
                         scope.data.reloadDaysList();
                     };
                     function getDateTime(day, month, year) {
-                        if (!day || (!month && month !== 0) || !year) {
-                            apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
-                        }
                         return new Date(year, month, day).getTime();
                     }
                     function isDayInMonth(day, month, year) {
