@@ -4,57 +4,26 @@ var apd;
     var Model;
     (function (Model) {
         'use strict';
-        var MessagesFactoryClass = (function () {
-            function MessagesFactoryClass() {
-                this.messages = {
-                    wrongClassCreation: 'Class created without \'new\', wrong \'this\'',
-                    wrongInstance: 'Wrong \'this\' instance',
-                    invalidParams: 'Invalid params',
-                    invalidDateModel: 'Invalid date model',
-                    datesInverted: 'Warning! Start date > End date'
+        var MonthClass = (function () {
+            function MonthClass(month) {
+                var _this = this;
+                this._setDefault = function () {
+                    return new MonthClass(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
                 };
+                this.getName = function (monthNum) {
+                    return _this.month[monthNum];
+                };
+                if (month) {
+                    this.month = month;
+                    return this;
+                }
+                else {
+                    return this._setDefault();
+                }
             }
-            MessagesFactoryClass.throwDeveloperError = function (message) {
-                console.error(message);
-            };
-            MessagesFactoryClass.throwModelValidationMessage = function (field) {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.invalidDateModel + ': error on field \"' + field + '+\"');
-            };
-            MessagesFactoryClass.throwInvalidParamsMessage = function () {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.invalidParams);
-            };
-            MessagesFactoryClass.throwWrongClassCreationMessage = function () {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.wrongClassCreation);
-            };
-            MessagesFactoryClass.throwWrongInstanceMessage = function () {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.wrongInstance);
-            };
-            MessagesFactoryClass.throwDatesInvertedMessage = function () {
-                if (!(this instanceof MessagesFactoryClass)) {
-                    console.error('Wrong \'this\' instance');
-                    return false;
-                }
-                this.throwDeveloperError(this.messages.datesInverted);
-            };
-            return MessagesFactoryClass;
+            return MonthClass;
         })();
-        Model.MessagesFactoryClass = MessagesFactoryClass;
+        Model.MonthClass = MonthClass;
     })(Model = apd.Model || (apd.Model = {}));
 })(apd || (apd = {}));
 
@@ -63,34 +32,26 @@ var apd;
     var Model;
     (function (Model) {
         'use strict';
-        var WeekClass = (function () {
-            function WeekClass(days) {
+        var DaysClass = (function () {
+            function DaysClass(days) {
                 var _this = this;
-                this._setDefaultWeek = function () {
-                    return new WeekClass(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+                this._setDefault = function () {
+                    return new DaysClass(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
                 };
-                this.getDayName = function (dayNum) {
-                    if (!(_this instanceof WeekClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
+                this.getName = function (dayNum) {
                     return _this.days[dayNum];
                 };
-                if (!(this instanceof WeekClass)) {
-                    apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                    return new WeekClass(days);
-                }
                 if (days) {
                     this.days = days;
                     return this;
                 }
                 else {
-                    return this._setDefaultWeek();
+                    return this._setDefault();
                 }
             }
-            return WeekClass;
+            return DaysClass;
         })();
-        Model.WeekClass = WeekClass;
+        Model.DaysClass = DaysClass;
     })(Model = apd.Model || (apd.Model = {}));
 })(apd || (apd = {}));
 
@@ -102,10 +63,6 @@ var apd;
         var LimitDatesClass = (function () {
             function LimitDatesClass(startDateTime, endDateTime, isUTC) {
                 this._setStartDate = function (datetime) {
-                    if (!(this instanceof LimitDatesClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return false;
-                    }
                     this.startDate.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
                     this.startDate.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
                     this.startDate.year = apd.Model.DateUtilsClass.getYear(datetime, this._isUTC);
@@ -113,10 +70,6 @@ var apd;
                     return this;
                 };
                 this._setEndDate = function (datetime) {
-                    if (!(this instanceof LimitDatesClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return false;
-                    }
                     this.endDate.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
                     this.endDate.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
                     this.endDate.year = apd.Model.DateUtilsClass.getYear(datetime, this._isUTC);
@@ -124,10 +77,6 @@ var apd;
                     return this;
                 };
                 this._setNowDate = function () {
-                    if (!(this instanceof LimitDatesClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return false;
-                    }
                     var datetime = new Date().getTime();
                     this.nowDate.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
                     this.nowDate.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
@@ -135,10 +84,6 @@ var apd;
                     this.nowDate.datetime = datetime;
                     return this;
                 };
-                if (!(this instanceof LimitDatesClass)) {
-                    apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                    return new LimitDatesClass(startDateTime, endDateTime, isUTC);
-                }
                 this._isUTC = isUTC;
                 this.startDate = { day: null, month: null, year: null, datetime: null };
                 this.endDate = { day: null, month: null, year: null, datetime: null };
@@ -223,18 +168,10 @@ var apd;
                     return result;
                 };
                 this.reloadYearsList = function () {
-                    if (!(this instanceof DataClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
                     this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates, this.yearsListDirection);
                     return this;
                 };
                 this._getYearsList = function (startDateTime, endDateTime, limitDates, direction) {
-                    if (!(this instanceof DataClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
                     var result = [];
                     var DEFAULT_YEARS_COUNT = 10;
                     var start = limitDates.startDate.year;
@@ -249,7 +186,6 @@ var apd;
                         result = this._getArrayOfNumbers(start, end);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
-                        apd.Model.MessagesFactoryClass.throwDatesInvertedMessage();
                         result = this._getArrayOfNumbers(end, start);
                     }
                     else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
@@ -277,19 +213,11 @@ var apd;
                     return this._intArraySort(result, direction);
                 };
                 this.reloadMonthList = function () {
-                    if (!(this instanceof DataClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
                     var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
                     this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.monthListDirection);
                     return this;
                 };
                 this._getMonthList = function (startDateTime, endDateTime, limitDates, selectedYear, direction) {
-                    if (!(this instanceof DataClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
                     var result;
                     var START_MONTH = 0;
                     var END_MONTH = 11;
@@ -317,20 +245,12 @@ var apd;
                     return this._intArraySort(result, direction);
                 };
                 this.reloadDaysList = function () {
-                    if (!(this instanceof DataClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
                     var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
                     var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime, this._isUTC);
                     this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.daysListDirection);
                     return this;
                 };
                 this._getDaysList = function (startDateTime, endDateTime, limitDates, selectedYear, selectedMonth, direction) {
-                    if (!(this instanceof DataClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
                     var result;
                     var START_DAY = 1;
                     var lastDayInMonth = DataClass.getDaysInMonth(selectedMonth, selectedYear);
@@ -362,20 +282,10 @@ var apd;
                     return this._intArraySort(result, direction);
                 };
                 this._getIntArr = function (length) {
-                    if (!(this instanceof DataClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
-                    if (!length && length !== 0) {
-                        apd.Model.MessagesFactoryClass.throwInvalidParamsMessage();
-                        return null;
-                    }
+                    if (!length && length !== 0)
+                        return;
                     return length ? this._getIntArr(length - 1).concat(length) : [];
                 };
-                if (!(this instanceof DataClass)) {
-                    apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                    return new DataClass(selected, startDateTime, endDateTime, isUTC, yearsListDirection, monthListDirection, daysListDirection);
-                }
                 var self = this;
                 selected.datetime = self.isValidNumber(selected.datetime) ? selected.datetime : null;
                 startDateTime = self.isValidNumber(startDateTime) ? startDateTime : null;
@@ -412,45 +322,25 @@ var apd;
         var DateUtilsClass = (function () {
             function DateUtilsClass() {
             }
-            DateUtilsClass.getMonth = function (datetime, isUTC) {
-                var result;
-                if (isUTC) {
-                    result = new Date(datetime).getUTCMonth();
-                }
-                else {
-                    result = new Date(datetime).getMonth();
-                }
-                return result;
-            };
-            DateUtilsClass.getYear = function (datetime, isUTC) {
-                var result;
-                if (isUTC) {
-                    result = new Date(datetime).getUTCFullYear();
-                }
-                else {
-                    result = new Date(datetime).getFullYear();
-                }
-                return result;
+            DateUtilsClass.getVal = function (datetime, method) {
+                var date = new Date(datetime);
+                return method.call(date);
             };
             DateUtilsClass.getDay = function (datetime, isUTC) {
-                var result;
-                if (isUTC) {
-                    result = new Date(datetime).getUTCDate();
-                }
-                else {
-                    result = new Date(datetime).getDate();
-                }
-                return result;
+                var method = (isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+                return this.getVal(datetime, method);
             };
             DateUtilsClass.getDayOfWeek = function (datetime, isUTC) {
-                var result;
-                if (isUTC) {
-                    result = new Date(datetime).getUTCDay();
-                }
-                else {
-                    result = new Date(datetime).getDay();
-                }
-                return result;
+                var method = (isUTC) ? Date.prototype.getUTCDay : Date.prototype.getDay;
+                return this.getVal(datetime, method);
+            };
+            DateUtilsClass.getYear = function (datetime, isUTC) {
+                var method = (isUTC) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
+                return this.getVal(datetime, method);
+            };
+            DateUtilsClass.getMonth = function (datetime, isUTC) {
+                var method = (isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
+                return this.getVal(datetime, method);
             };
             return DateUtilsClass;
         })();
@@ -465,10 +355,6 @@ var apd;
         'use strict';
         var DateModelClass = (function () {
             function DateModelClass(datetime, isUTC) {
-                if (!(this instanceof DateModelClass)) {
-                    apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                    return new DateModelClass(datetime, isUTC);
-                }
                 this.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
                 this.dayOfWeek = apd.Model.DateUtilsClass.getDayOfWeek(datetime, this._isUTC);
                 this.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
@@ -629,50 +515,14 @@ var apd;
                         settings.initDateModel = getInitDateModel(scope.ngModel);
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
                         var localization = scope.apdLocalization || null;
-                        var week = new apd.Model.WeekClass(localization);
-                        var year = new apd.Model.YearClass(localization);
-                        scope.getDayName = week.getDayName;
-                        scope.getMonthName = year.getMonthName;
+                        var week = new apd.Model.DaysClass(localization);
+                        var year = new apd.Model.MonthClass(localization);
+                        scope.getDayName = week.getName;
+                        scope.getMonthName = year.getName;
                         ngModelWatcher.start(onModelChange);
                     })();
                 }
             };
         });
     })(directive = apd.directive || (apd.directive = {}));
-})(apd || (apd = {}));
-
-var apd;
-(function (apd) {
-    var Model;
-    (function (Model) {
-        'use strict';
-        var YearClass = (function () {
-            function YearClass(month) {
-                var _this = this;
-                this._setDefaultYear = function () {
-                    return new YearClass(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
-                };
-                this.getMonthName = function (monthNum) {
-                    if (!(_this instanceof YearClass)) {
-                        apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                        return null;
-                    }
-                    return _this.month[monthNum];
-                };
-                if (!(this instanceof YearClass)) {
-                    apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                    return new YearClass(month);
-                }
-                if (month) {
-                    this.month = month;
-                    return this;
-                }
-                else {
-                    return this._setDefaultYear();
-                }
-            }
-            return YearClass;
-        })();
-        Model.YearClass = YearClass;
-    })(Model = apd.Model || (apd.Model = {}));
 })(apd || (apd = {}));

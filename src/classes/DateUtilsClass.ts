@@ -5,53 +5,29 @@ module apd.Model {
 
     export class DateUtilsClass {
 
-        static getMonth = function (datetime, isUTC:boolean):number {
-            var result:number;
-
-            if (isUTC) {
-                result = new Date(datetime).getUTCMonth();
-            } else {
-                result = new Date(datetime).getMonth();
-            }
-
-            return result;
+        static getVal = function (datetime:number, method:Function):number {
+            var date:Date = new Date(datetime);
+            return method.call(date);
         };
 
-        static getYear = function (datetime, isUTC:boolean):number {
-            var result:number;
-
-            if (isUTC) {
-                result = new Date(datetime).getUTCFullYear();
-            } else {
-                result = new Date(datetime).getFullYear();
-            }
-
-            return result;
+        static getDay = function (datetime:number, isUTC:boolean):number {
+            var method = (isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+            return this.getVal(datetime, method);
         };
 
-        static getDay = function (datetime, isUTC:boolean):number {
-            var result:number;
-
-            if (isUTC) {
-                result = new Date(datetime).getUTCDate();
-            } else {
-                result = new Date(datetime).getDate();
-            }
-
-            return result;
+        static getDayOfWeek = function (datetime:number, isUTC:boolean):number {
+            var method = (isUTC) ? Date.prototype.getUTCDay : Date.prototype.getDay;
+            return this.getVal(datetime, method);
         };
 
-        static getDayOfWeek = function (datetime, isUTC:boolean):number {
-            var result:number;
-
-            if (isUTC) {
-                result = new Date(datetime).getUTCDay();
-            } else {
-                result = new Date(datetime).getDay();
-            }
-
-            return result;
+        static getYear = function (datetime:number, isUTC:boolean):number {
+            var method = (isUTC) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
+            return this.getVal(datetime, method);
         };
 
+        static getMonth = function (datetime:number, isUTC:boolean):number {
+            var method = (isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
+            return this.getVal(datetime, method);
+        };
     }
 }

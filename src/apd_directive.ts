@@ -1,7 +1,7 @@
-/// <reference path="classes/WeekClass.ts" />
+/// <reference path="classes/MonthClass.ts" />
+/// <reference path="classes/DaysClass.ts" />
 /// <reference path="classes/DateModelClass.ts" />
 /// <reference path="classes/LimitDatesClass.ts" />
-/// <reference path="classes/MessagesFactoryClass.ts" />
 
 //TODO (S.Panfilov) mat be should replace manual reference with gulp-auto-references?
 
@@ -186,10 +186,10 @@ module apd.directive {
 
 
                         var localization = scope.apdLocalization || null;
-                        var week:apd.Model.WeekClass = new apd.Model.WeekClass(localization);
-                        var year:apd.Model.YearClass = new apd.Model.YearClass(localization);
-                        scope.getDayName = week.getDayName;
-                        scope.getMonthName = year.getMonthName;
+                        var week:apd.Model.DaysClass = new apd.Model.DaysClass(localization);
+                        var year:apd.Model.MonthClass = new apd.Model.MonthClass(localization);
+                        scope.getDayName = week.getName;
+                        scope.getMonthName = year.getName;
 
                         ngModelWatcher.start(onModelChange);
                     })();

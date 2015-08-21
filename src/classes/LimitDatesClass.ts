@@ -1,5 +1,4 @@
 /// <reference path="DateUtilsClass.ts" />
-/// <reference path="MessagesFactoryClass.ts" />
 
 module apd.Model {
     'use strict';
@@ -29,11 +28,6 @@ module apd.Model {
         _isUTC:boolean;
 
         constructor(startDateTime:number, endDateTime:number, isUTC:boolean) {
-            if (!(this instanceof LimitDatesClass)) {
-                apd.Model.MessagesFactoryClass.throwWrongClassCreationMessage();
-                return new LimitDatesClass(startDateTime, endDateTime, isUTC);
-            }
-
             this._isUTC = isUTC;
 
             this.startDate = {day: null, month: null, year: null, datetime: null};
@@ -46,11 +40,6 @@ module apd.Model {
         }
 
         _setStartDate = function (datetime:number) {
-            if (!(this instanceof LimitDatesClass)) {
-                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                return false;
-            }
-
             this.startDate.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
             this.startDate.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
             this.startDate.year = apd.Model.DateUtilsClass.getYear(datetime, this._isUTC);
@@ -59,11 +48,6 @@ module apd.Model {
         };
 
         _setEndDate = function (datetime:number) {
-            if (!(this instanceof LimitDatesClass)) {
-                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                return false;
-            }
-
             this.endDate.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
             this.endDate.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
             this.endDate.year = apd.Model.DateUtilsClass.getYear(datetime, this._isUTC);
@@ -72,11 +56,6 @@ module apd.Model {
         };
 
         _setNowDate = function () {
-            if (!(this instanceof LimitDatesClass)) {
-                apd.Model.MessagesFactoryClass.throwWrongInstanceMessage();
-                return false;
-            }
-
             var datetime = new Date().getTime();
             this.nowDate.day = apd.Model.DateUtilsClass.getDay(datetime, this._isUTC);
             this.nowDate.month = apd.Model.DateUtilsClass.getMonth(datetime, this._isUTC);
