@@ -2,13 +2,14 @@
 
 var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, watch, changed,
     ngAnnotate, stylus, nib, minifyHTML, minifyCss, templateCache, mergeStream,
-    cssBase64, size, tslint, stylish, cleanTs;
+    cssBase64, size, tslint, stylish;
 
 var src = {
     styles: ['src/templates/**/*.styl'],
     jade: ['src/templates/**/*.jade'],
     html: ['src/templates/**/*.html'],
-    js: ['src/**/*.js']
+    coreJs: ['src/core/*.js'],
+    viewJs: ['src/*.js']
 };
 
 var dest = {
@@ -66,14 +67,39 @@ function makeJade() {
         }))
 }
 
-function makeJS() {
+function makeCoreJS() {
     ngAnnotate = ngAnnotate || require('gulp-ng-annotate');
     concat = concat || require('gulp-concat');
 
-    return gulp.src(src.js)
+    return gulp.src(src.coreJs)
         .on('error', console.log)
-        .pipe(concat('angular-pure-datepicker.js'))
+        .pipe(concat('datepicker-core.js'))
+}
+
+function makeViewJS() {
+    ngAnnotate = ngAnnotate || require('gulp-ng-annotate');
+    concat = concat || require('gulp-concat');
+
+    return gulp.src(src.viewJs)
+        .pipe(concat('angular-view.js'))
         .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
+}
+
+function makeJS() {
+    mergeStream = mergeStream || require('merge-stream');
+    concat = concat || require('gulp-concat');
+
+    var coreJs = makeCoreJS();
+    var viewJs = makeViewJS();
+
+    return mergeStream(coreJs, viewJs)
+        .pipe(concat('angular-pure-datepicker.js'))
+        .pipe(gulp.dest(dest.dist))
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(rename({basename: 'angular-pure-datepicker.min'}))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(dest.dist));
 }
 
 function mergeJS(templates, mainJs) {
@@ -81,28 +107,26 @@ function mergeJS(templates, mainJs) {
     sourcemaps = sourcemaps || require('gulp-sourcemaps');
     uglify = uglify || require('gulp-uglify');
     rename = rename || require('gulp-rename');
-    cleanTs = cleanTs || require('gulp-clean-ts-extends');
     concat = concat || require('gulp-concat');
 
     return mergeStream(templates, mainJs)
         .pipe(concat('angular-pure-datepicker.js'))
-        .pipe(cleanTs())
         .pipe(gulp.dest(dest.dist))
         .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(rename({basename: 'angular-pure-datepicker.min'}))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(dest.dist))
+        .pipe(gulp.dest(dest.dist));
 }
 
-function buildTS() {
+function buildJS() {
     var templates = makeJade();
-    var mainJs = makeTypeScript();
+    var mainJs = makeJS();
     return mergeJS(templates, mainJs);
 }
 
-gulp.task('ts', function () {
-    return buildTS();
+gulp.task('js', function () {
+    return buildJS();
 });
 
 gulp.task('stylus', function () {
@@ -126,14 +150,15 @@ gulp.task('stylus', function () {
 gulp.task('watch', function () {
     watch = watch || require('gulp-watch');
 
-    gulp.watch(src.jade, ['ts', 'todo']);
+    gulp.watch(src.jade, ['js', 'todo']);
     gulp.watch(src.styles, ['stylus', 'todo']);
-    gulp.watch(src.ts, ['ts', 'todo']);
+    gulp.watch(src.coreJs, ['js', 'todo']);
+    gulp.watch(src.viewJs, ['js', 'todo']);
 });
 
 gulp.task('build', function () {
     gulp.start('stylus');
-    gulp.start('ts');
+    gulp.start('js');
 });
 
 gulp.task('default', function () {
