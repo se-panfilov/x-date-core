@@ -2,7 +2,7 @@ var DaysUtils = (function (limitDates, DateUtils, CommonUtils) {
     'use strict';
 
     var exports = {
-        getDaysList: function (startDateTime, endDateTime, limitDates, selectedYear, selectedMonth) {
+        getDaysList: function (startDateTime, endDateTime, selectedYear, selectedMonth) {
             var result;
             var START_DAY = 1;
             var lastDayInMonth = DataClass.getDaysInMonth(selectedMonth, selectedYear);

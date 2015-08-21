@@ -1,6 +1,6 @@
 'use strict';
 
-var CommonUtils = (function (Settings) {
+var CommonUtils = (function () {
 
     var exports = {
         isValidNumber: function (num) {
@@ -33,9 +33,9 @@ var CommonUtils = (function (Settings) {
         },
         getIntArr: function (length) {
             if (!length && length !== 0) return;
-            return length ? this._getIntArr(length - 1).concat(length) : [];
+            return length ? exports._getIntArr(length - 1).concat(length) : [];
         }
     };
 
     return exports;
-})(Settings);
+})();

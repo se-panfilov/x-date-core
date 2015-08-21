@@ -2,7 +2,7 @@ var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
     'use strict';
 
     var exports = {
-        getYearsList: function (startDateTime, endDateTime, limitDates) {
+        getYearsList: function (startDateTime, endDateTime) {
             var result = [];
             var DEFAULT_YEARS_COUNT = 10;
 

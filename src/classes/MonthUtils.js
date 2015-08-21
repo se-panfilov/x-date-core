@@ -2,7 +2,7 @@ var MonthUtils = (function (limitDates, DateUtils, CommonUtils) {
     'use strict';
 
     var exports = {
-        getMonthList: function (startDateTime, endDateTime, limitDates, selectedYear) {
+        getMonthList: function (startDateTime, endDateTime, selectedYear) {
             var result;
             var START_MONTH = 0;
             var END_MONTH = 11;

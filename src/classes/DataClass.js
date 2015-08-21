@@ -1,4 +1,4 @@
-var DataClass = (function (DateUtils, CommonUtils) {
+var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
 
     function DataClass(selected, startDateTime, endDateTime) {
         selected.datetime = CommonUtils.isValidNumber(selected.datetime) ? selected.datetime : null;
@@ -12,9 +12,9 @@ var DataClass = (function (DateUtils, CommonUtils) {
         this._limitDates = new LimitsModel(startDateTime, endDateTime);
         this._startDateTime = startDateTime;
         this._endDateTime = endDateTime;
-        this.years = YearsUtils._getYearsList(startDateTime, endDateTime, this._limitDates);
-        this.month = this._getMonthList(startDateTime, endDateTime, this._limitDates, selectedYear);
-        this.days = this._getDaysList(startDateTime, endDateTime, this._limitDates, selectedYear, selectedMonth);
+        this.years = YearsUtils.getYearsList(startDateTime, endDateTime, this._limitDates);
+        this.month = MonthUtils.getMonthList(startDateTime, endDateTime, this._limitDates, selectedYear);
+        this.days = DaysUtils.getDaysList(startDateTime, endDateTime, this._limitDates, selectedYear, selectedMonth);
 
         return this;
     }
@@ -29,40 +29,40 @@ var DataClass = (function (DateUtils, CommonUtils) {
 
         //start == 1; selected == 1 or 2 or 3; end == 3;
         if ((isBiggerThenStart || isEqualToStart) || (isLowerThenEnd || isEqualToEnd)) {
-            result = new DateModelClass(selected.datetime);
+            result = new DateModel(selected.datetime);
         } else
         //start == 1; selected == 0
         if (!isBiggerThenStart) {
-            result = new DateModelClass(startDateTime);
+            result = new DateModel(startDateTime);
         } else
         //selected == 4; end == 3;
         if (!isBiggerThenStart) {
-            result = new DateModelClass(endDateTime);
+            result = new DateModel(endDateTime);
         }
         //paranoid case
         else {
-            result = new DateModelClass(new Date().getTime());
+            result = new DateModel(new Date().getTime());
         }
 
         return result;
     };
 
     reloadYearsList = function () {
-        this.years = YearsUtils._getYearsList(this._startDateTime, this._endDateTime, this._limitDates);
+        this.years = YearsUtils.getYearsList(this._startDateTime, this._endDateTime, this._limitDates);
         return this;
     };
 
     reloadMonthList = function () {
         var selectedYear = DateUtils.getYear(this.selected.datetime);
-        this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear);
+        this.month = MonthUtils.getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear);
         return this;
     };
 
     reloadDaysList = function () {
         var selectedYear = DateUtils.getYear(this.selected.datetime);
         var selectedMonth = DateUtils.getMonth(this.selected.datetime);
-        this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth);
+        this.days = DaysUtils.getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth);
         return this;
     };
 
-})(DateUtils, CommonUtils);
+})(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);
