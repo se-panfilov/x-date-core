@@ -12,9 +12,9 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         this._limitDates = new LimitsModel(startDateTime, endDateTime);
         this._startDateTime = startDateTime;
         this._endDateTime = endDateTime;
-        this.years = YearsUtils.getYearsList(startDateTime, endDateTime, this._limitDates);
-        this.month = MonthUtils.getMonthList(startDateTime, endDateTime, this._limitDates, selectedYear);
-        this.days = DaysUtils.getDaysList(startDateTime, endDateTime, this._limitDates, selectedYear, selectedMonth);
+        this.years = YearsUtils.getYearsList(startDateTime, endDateTime);
+        this.month = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear);
+        this.days = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth);
 
         return this;
     }
@@ -48,20 +48,20 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
     };
 
     reloadYearsList = function () {
-        this.years = YearsUtils.getYearsList(this._startDateTime, this._endDateTime, this._limitDates);
+        this.years = YearsUtils.getYearsList(this._startDateTime, this._endDateTime);
         return this;
     };
 
     reloadMonthList = function () {
         var selectedYear = DateUtils.getYear(this.selected.datetime);
-        this.month = MonthUtils.getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear);
+        this.month = MonthUtils.getMonthList(this._startDateTime, this._endDateTime, selectedYear);
         return this;
     };
 
     reloadDaysList = function () {
         var selectedYear = DateUtils.getYear(this.selected.datetime);
         var selectedMonth = DateUtils.getMonth(this.selected.datetime);
-        this.days = DaysUtils.getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth);
+        this.days = DaysUtils.getDaysList(this._startDateTime, this._endDateTime, selectedYear, selectedMonth);
         return this;
     };
 
