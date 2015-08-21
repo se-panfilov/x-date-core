@@ -1,6 +1,5 @@
-'use strict';
-
 var CommonUtils = (function () {
+    'use strict';
 
     var exports = {
         isValidNumber: function (num) {
