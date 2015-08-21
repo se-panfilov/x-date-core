@@ -1,6 +1,7 @@
 /// <reference path="DateModelClass.ts" />
 /// <reference path="DateUtilsClass.ts" />
 /// <reference path="LimitDatesClass.ts" />
+/// <reference path="isUtcClass.ts" />
 
 module apd.Model {
     'use strict';
@@ -14,34 +15,25 @@ module apd.Model {
         _startDateTime:number;
         _endDateTime:number;
         _limitDates:LimitDatesClass;
-        _isUTC:boolean;
 
-        yearsListDirection = 'desc';
-        monthListDirection = 'asc';
-        daysListDirection = 'asc';
-
-        constructor(selected:DateModelClass, startDateTime:number, endDateTime:number, isUTC:boolean, yearsListDirection?:string, monthListDirection?:string, daysListDirection?:string) {
+        constructor(selected:DateModelClass, startDateTime:number, endDateTime:number, isUTC:boolean = false) {
             var self = this;
 
             selected.datetime = self.isValidNumber(selected.datetime) ? selected.datetime : null;
             startDateTime = self.isValidNumber(startDateTime) ? startDateTime : null;
             endDateTime = self.isValidNumber(endDateTime) ? endDateTime : null;
 
-            self._isUTC = isUTC;
+            new apd.Model.isUtcClass(isUTC);
             self.selected = self._getSelected(selected, startDateTime, endDateTime);
-            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
-            var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime, this._isUTC);
+            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime);
+            var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime);
 
-            self.yearsListDirection = yearsListDirection || self.yearsListDirection;
-            self.monthListDirection = monthListDirection || self.monthListDirection;
-            self.daysListDirection = daysListDirection || self.daysListDirection;
-
-            self._limitDates = new LimitDatesClass(startDateTime, endDateTime, this._isUTC);
+            self._limitDates = new LimitDatesClass(startDateTime, endDateTime);
             self._startDateTime = startDateTime;
             self._endDateTime = endDateTime;
-            self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, self.yearsListDirection);
-            self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, self.monthListDirection);
-            self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth, self.daysListDirection);
+            self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates);
+            self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear);
+            self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth);
 
             return this;
         }
@@ -62,19 +54,19 @@ module apd.Model {
 
             //start == 1; selected == 1 or 2 or 3; end == 3;
             if ((isBiggerThenStart || isEqualToStart) || (isLowerThenEnd || isEqualToEnd)) {
-                result = new DateModelClass(selected.datetime, this._isUTC);
+                result = new DateModelClass(selected.datetime);
             } else
             //start == 1; selected == 0
             if (!isBiggerThenStart) {
-                result = new DateModelClass(startDateTime, this._isUTC);
+                result = new DateModelClass(startDateTime);
             } else
             //selected == 4; end == 3;
             if (!isBiggerThenStart) {
-                result = new DateModelClass(endDateTime, this._isUTC);
+                result = new DateModelClass(endDateTime);
             }
             //paranoid case
             else {
-                result = new DateModelClass(new Date().getTime(), this._isUTC);
+                result = new DateModelClass(new Date().getTime());
             }
 
             return result;
@@ -106,18 +98,18 @@ module apd.Model {
         };
 
         reloadYearsList = function () {
-            this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates, this.yearsListDirection);
+            this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates);
             return this;
         };
 
-        private _getYearsList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, direction:string) {
+        private _getYearsList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass) {
             var result:Array<number> = [];
             var DEFAULT_YEARS_COUNT = 10;
 
             var start = limitDates.startDate.year;
             var end = limitDates.endDate.year;
             var now = limitDates.nowDate.year;
-            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
+            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime);
             var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
             var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
             latestPossibleYear = latestPossibleYear + (DEFAULT_YEARS_COUNT - 1);
@@ -167,16 +159,16 @@ module apd.Model {
                 result = this._getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
             }
 
-            return this._intArraySort(result, direction);
+            return this._intArraySort(result, 'desc');
         };
 
         reloadMonthList = function () {
-            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
-            this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.monthListDirection);
+            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime);
+            this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear);
             return this;
         };
 
-        private _getMonthList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, direction:string) {
+        private _getMonthList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number) {
             var result:Array<number>;
             var START_MONTH = 0;
             var END_MONTH = 11;
@@ -209,17 +201,17 @@ module apd.Model {
                 result = this._getArrayOfNumbers(START_MONTH, END_MONTH);
             }
 
-            return this._intArraySort(result, direction);
+            return this._intArraySort(result, 'asc');
         };
 
         reloadDaysList = function () {
-            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
-            var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime, this._isUTC);
-            this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.daysListDirection);
+            var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime);
+            var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime);
+            this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth);
             return this;
         };
 
-        private _getDaysList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, selectedMonth:number, direction:string) {
+        private _getDaysList = function (startDateTime:number, endDateTime:number, limitDates:LimitDatesClass, selectedYear:number, selectedMonth:number) {
             var result:Array<number>;
             var START_DAY = 1;
             var lastDayInMonth = DataClass.getDaysInMonth(selectedMonth, selectedYear);
@@ -252,7 +244,7 @@ module apd.Model {
                 result = this._getArrayOfNumbers(START_DAY, lastDayInMonth);
             }
 
-            return this._intArraySort(result, direction);
+            return this._intArraySort(result, 'asc');
         };
 
         private _getIntArr = function (length:number) {

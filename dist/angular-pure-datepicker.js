@@ -1,4 +1,6 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=getDayName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"getMonthName(month) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
+angular.module("angular-pd.templates", []).run(["$templateCache", function ($templateCache) {
+    $templateCache.put("apd.html", "<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=getDayName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"getMonthName(month) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");
+}]);
 var apd;
 (function (apd) {
     var Model;
@@ -21,6 +23,7 @@ var apd;
                     return this._setDefault();
                 }
             }
+
             return MonthClass;
         })();
         Model.MonthClass = MonthClass;
@@ -49,6 +52,7 @@ var apd;
                     return this._setDefault();
                 }
             }
+
             return DaysClass;
         })();
         Model.DaysClass = DaysClass;
@@ -85,13 +89,14 @@ var apd;
                     return this;
                 };
                 this._isUTC = isUTC;
-                this.startDate = { day: null, month: null, year: null, datetime: null };
-                this.endDate = { day: null, month: null, year: null, datetime: null };
-                this.nowDate = { day: null, month: null, year: null, datetime: null };
+                this.startDate = {day: null, month: null, year: null, datetime: null};
+                this.endDate = {day: null, month: null, year: null, datetime: null};
+                this.nowDate = {day: null, month: null, year: null, datetime: null};
                 this._setStartDate(startDateTime);
                 this._setEndDate(endDateTime);
                 this._setNowDate();
             }
+
             LimitDatesClass.isDateUpperStartLimit = function (datetime, startLimitTime) {
                 if (!startLimitTime)
                     return true;
@@ -116,11 +121,33 @@ var apd;
     var Model;
     (function (Model) {
         'use strict';
+        var UtcClass = (function () {
+            var instance;
+            return function UtcClass(isUTC) {
+                if (instance)
+                    return instance;
+                if (this && this.constructor === UtcClass) {
+                    instance = this;
+                }
+                else {
+                    return new UtcClass(isUTC);
+                }
+                instance.isUTC = isUTC;
+            };
+        }());
+    })(Model = apd.Model || (apd.Model = {}));
+})(apd || (apd = {}));
+
+var apd;
+(function (apd) {
+    var Model;
+    (function (Model) {
+        'use strict';
         var DataClass = (function () {
-            function DataClass(selected, startDateTime, endDateTime, isUTC, yearsListDirection, monthListDirection, daysListDirection) {
-                this.yearsListDirection = 'desc';
-                this.monthListDirection = 'asc';
-                this.daysListDirection = 'asc';
+            function DataClass(selected, startDateTime, endDateTime, isUTC) {
+                if (isUTC === void 0) {
+                    isUTC = false;
+                }
                 this.isValidNumber = function (num) {
                     var isNumber = !isNaN(num);
                     var isNotInfinity = isFinite(num);
@@ -133,24 +160,27 @@ var apd;
                     var isLowerThenEnd = (selected.datetime > endDateTime);
                     var isEqualToEnd = (selected.datetime === endDateTime);
                     if ((isBiggerThenStart || isEqualToStart) || (isLowerThenEnd || isEqualToEnd)) {
-                        result = new Model.DateModelClass(selected.datetime, this._isUTC);
+                        result = new Model.DateModelClass(selected.datetime);
                     }
                     else if (!isBiggerThenStart) {
-                        result = new Model.DateModelClass(startDateTime, this._isUTC);
+                        result = new Model.DateModelClass(startDateTime);
                     }
                     else if (!isBiggerThenStart) {
-                        result = new Model.DateModelClass(endDateTime, this._isUTC);
+                        result = new Model.DateModelClass(endDateTime);
                     }
                     else {
-                        result = new Model.DateModelClass(new Date().getTime(), this._isUTC);
+                        result = new Model.DateModelClass(new Date().getTime());
                     }
                     return result;
                 };
                 this._intArraySort = function (arr, direction) {
-                    if (direction === void 0) { direction = 'asc'; }
+                    if (direction === void 0) {
+                        direction = 'asc';
+                    }
                     function desc(a, b) {
                         return b - a;
                     }
+
                     switch (direction) {
                         default:
                             return arr.sort(function (a, b) {
@@ -168,16 +198,16 @@ var apd;
                     return result;
                 };
                 this.reloadYearsList = function () {
-                    this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates, this.yearsListDirection);
+                    this.years = this._getYearsList(this._startDateTime, this._endDateTime, this._limitDates);
                     return this;
                 };
-                this._getYearsList = function (startDateTime, endDateTime, limitDates, direction) {
+                this._getYearsList = function (startDateTime, endDateTime, limitDates) {
                     var result = [];
                     var DEFAULT_YEARS_COUNT = 10;
                     var start = limitDates.startDate.year;
                     var end = limitDates.endDate.year;
                     var now = limitDates.nowDate.year;
-                    var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
+                    var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime);
                     var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
                     var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
                     latestPossibleYear = latestPossibleYear + (DEFAULT_YEARS_COUNT - 1);
@@ -210,14 +240,14 @@ var apd;
                     else if (!startDateTime && !endDateTime) {
                         result = this._getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
                     }
-                    return this._intArraySort(result, direction);
+                    return this._intArraySort(result, 'desc');
                 };
                 this.reloadMonthList = function () {
-                    var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
-                    this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, this.monthListDirection);
+                    var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime);
+                    this.month = this._getMonthList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear);
                     return this;
                 };
-                this._getMonthList = function (startDateTime, endDateTime, limitDates, selectedYear, direction) {
+                this._getMonthList = function (startDateTime, endDateTime, limitDates, selectedYear) {
                     var result;
                     var START_MONTH = 0;
                     var END_MONTH = 11;
@@ -242,15 +272,15 @@ var apd;
                     else {
                         result = this._getArrayOfNumbers(START_MONTH, END_MONTH);
                     }
-                    return this._intArraySort(result, direction);
+                    return this._intArraySort(result, 'asc');
                 };
                 this.reloadDaysList = function () {
-                    var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
-                    var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime, this._isUTC);
-                    this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth, this.daysListDirection);
+                    var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime);
+                    var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime);
+                    this.days = this._getDaysList(this._startDateTime, this._endDateTime, this._limitDates, selectedYear, selectedMonth);
                     return this;
                 };
-                this._getDaysList = function (startDateTime, endDateTime, limitDates, selectedYear, selectedMonth, direction) {
+                this._getDaysList = function (startDateTime, endDateTime, limitDates, selectedYear, selectedMonth) {
                     var result;
                     var START_DAY = 1;
                     var lastDayInMonth = DataClass.getDaysInMonth(selectedMonth, selectedYear);
@@ -279,7 +309,7 @@ var apd;
                     else {
                         result = this._getArrayOfNumbers(START_DAY, lastDayInMonth);
                     }
-                    return this._intArraySort(result, direction);
+                    return this._intArraySort(result, 'asc');
                 };
                 this._getIntArr = function (length) {
                     if (!length && length !== 0)
@@ -290,21 +320,19 @@ var apd;
                 selected.datetime = self.isValidNumber(selected.datetime) ? selected.datetime : null;
                 startDateTime = self.isValidNumber(startDateTime) ? startDateTime : null;
                 endDateTime = self.isValidNumber(endDateTime) ? endDateTime : null;
-                self._isUTC = isUTC;
+                new apd.Model.isUtcClass(isUTC);
                 self.selected = self._getSelected(selected, startDateTime, endDateTime);
-                var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime, this._isUTC);
-                var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime, this._isUTC);
-                self.yearsListDirection = yearsListDirection || self.yearsListDirection;
-                self.monthListDirection = monthListDirection || self.monthListDirection;
-                self.daysListDirection = daysListDirection || self.daysListDirection;
-                self._limitDates = new Model.LimitDatesClass(startDateTime, endDateTime, this._isUTC);
+                var selectedYear = apd.Model.DateUtilsClass.getYear(this.selected.datetime);
+                var selectedMonth = apd.Model.DateUtilsClass.getMonth(this.selected.datetime);
+                self._limitDates = new Model.LimitDatesClass(startDateTime, endDateTime);
                 self._startDateTime = startDateTime;
                 self._endDateTime = endDateTime;
-                self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates, self.yearsListDirection);
-                self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear, self.monthListDirection);
-                self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth, self.daysListDirection);
+                self.years = self._getYearsList(startDateTime, endDateTime, self._limitDates);
+                self.month = self._getMonthList(startDateTime, endDateTime, self._limitDates, selectedYear);
+                self.days = self._getDaysList(startDateTime, endDateTime, self._limitDates, selectedYear, selectedMonth);
                 return this;
             }
+
             DataClass.getDaysInMonth = function (month, year) {
                 return new Date(year, month + 1, 0).getDate();
             };
@@ -322,6 +350,7 @@ var apd;
         var DateUtilsClass = (function () {
             function DateUtilsClass() {
             }
+
             DateUtilsClass.getVal = function (datetime, method) {
                 var date = new Date(datetime);
                 return method.call(date);
@@ -364,6 +393,7 @@ var apd;
                 this._isUTC = isUTC;
                 return this;
             }
+
             DateModelClass.validate = function (model) {
                 return !!(model && model.datetime);
             };
@@ -419,6 +449,7 @@ var apd;
                             return true;
                         }
                     };
+
                     function getLimitSafeDatetime(day, month, year) {
                         var datetime = new Date(year, month, day).getTime();
                         if (!apd.Model.LimitDatesClass.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
@@ -431,12 +462,14 @@ var apd;
                         }
                         return datetime;
                     }
+
                     function updateModel(datetime) {
                         ngModelWatcher.stop();
                         scope.data.selected = new apd.Model.DateModelClass(datetime, scope.apdIsUtc);
                         scope.ngModel = scope.data.selected;
                         ngModelWatcher.start(onModelChange);
                     }
+
                     function onModelChange(datetime, oldValue) {
                         if (datetime === oldValue) {
                             return;
@@ -450,6 +483,7 @@ var apd;
                         scope.data.reloadMonthList();
                         scope.data.reloadDaysList();
                     }
+
                     function getInitDateModel(model) {
                         var isInitModelValid = apd.Model.DateModelClass.validate(model);
                         var initDatetime;
@@ -465,10 +499,12 @@ var apd;
                         var limitSafeDatetime = getLimitSafeDatetime(day, month, year);
                         return new apd.Model.DateModelClass(limitSafeDatetime, scope.apdIsUtc);
                     }
+
                     function _initData(initDateModel, startDateTime, endDateTime) {
                         scope.data = new apd.Model.DataClass(initDateModel, startDateTime, endDateTime, scope.apdIsUtc);
                         scope.ngModel = scope.data.selected;
                     }
+
                     scope.onDaySelectChanged = function (day) {
                         if (!day)
                             return;
@@ -498,10 +534,12 @@ var apd;
                     function getDateTime(day, month, year) {
                         return new Date(year, month, day).getTime();
                     }
+
                     function isDayInMonth(day, month, year) {
                         var daysInMonth = apd.Model.DataClass.getDaysInMonth(month, year);
                         return day <= daysInMonth;
                     }
+
                     (function _init() {
                         settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
                         settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
