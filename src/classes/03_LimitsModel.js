@@ -1,4 +1,4 @@
-var LimitsModel = (function () {
+var LimitsModel = (function (DateUtils) {
     'use strict';
 
     function LimitsModel(startDt, endDt) {
@@ -53,4 +53,4 @@ var LimitsModel = (function () {
     }
     
     return LimitsModel;
-})();
+})(DateUtils);
