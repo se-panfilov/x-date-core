@@ -1,4 +1,4 @@
-var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils) {
+var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
     'use strict';
 
     var exports = {
@@ -9,10 +9,10 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils) {
 
             //TODO (S.Panfilov)  check
             if (startDateTime || endDateTime) {
-                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.startDate.year === selectedYear : false;
-                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.endDate.year === selectedYear : false;
-                var start = (startDateTime) ? LimitsModel.startDate.month : START_MONTH;
-                var end = (endDateTime) ? LimitsModel.endDate.month : END_MONTH;
+                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.start.y === selectedYear : false;
+                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.end.y === selectedYear : false;
+                var start = (startDateTime) ? LimitsModel.start.m : START_MONTH;
+                var end = (endDateTime) ? LimitsModel.end.m : END_MONTH;
 
                 // startYear == 2015, nowYear == 2015, endYear == 2015
                 if (isYearOfLowerLimit && isYearOfUpperLimit) {
@@ -40,4 +40,4 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils);
+})(LimitsModel, DateUtils, CommonUtils, Settings);

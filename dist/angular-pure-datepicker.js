@@ -18,7 +18,7 @@ var CommonUtils = (function () {
             var isNotInfinity = isFinite(num);
             return isNumber && isNotInfinity;
         },
-        getArrayOfNumbers: function (start) {
+        getArrayOfNumbers: function (start, end) {
             var result = [];
 
             for (var i = start; i <= end; i++) {
@@ -156,18 +156,18 @@ var DateModel = (function (DateUtils) {
 
     return DateModel;
 })(DateUtils);
-var YearsUtils = (function (LimitsModel, DateUtils, CommonUtils) {
+var YearsUtils = (function (DateUtils, CommonUtils, Settings) {
     'use strict';
 
     var exports = {
-        getYearsList: function (startDateTime, endDateTime) {
+        getYearsList: function (startDateTime, endDateTime, selected, limitsModel) {
             var result = [];
             var DEFAULT_YEARS_COUNT = 10;
 
-            var start = LimitsModel.startDate.year;
-            var end = LimitsModel.endDate.year;
-            var now = LimitsModel.nowDate.year;
-            var selectedYear = DateUtils.getYear(this.selected.datetime);
+            var start = limitsModel.start.y;
+            var end = limitsModel.end.y;
+            var now = limitsModel.now.y;
+            var selectedYear = DateUtils.getYear(selected.dt);
             var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
             var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
             latestPossibleYear = latestPossibleYear + (DEFAULT_YEARS_COUNT - 1);
@@ -196,7 +196,7 @@ var YearsUtils = (function (LimitsModel, DateUtils, CommonUtils) {
             //start = null, end = 2014
             else if (!startDateTime && endDateTime) {
                 //now = 2013 (or 2014),  end = 2014
-                if (LimitsModel.endDate.year >= LimitsModel.nowDate.year) {
+                if (limitsModel.end.y >= limitsModel.now.y) {
 
                     if ((firstPossibleYear - DEFAULT_YEARS_COUNT) > (end - DEFAULT_YEARS_COUNT)) {
                         result = CommonUtils.getArrayOfNumbers(firstPossibleYear, end);
@@ -206,7 +206,7 @@ var YearsUtils = (function (LimitsModel, DateUtils, CommonUtils) {
 
                 }
                 //now = 2015,  end = 2014
-                else if (LimitsModel.endDate.year > LimitsModel.nowDate.year) {
+                else if (limitsModel.end.y > limitsModel.now.y) {
                     result = CommonUtils.getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
                 }
 
@@ -222,8 +222,8 @@ var YearsUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils);
-var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils) {
+})(DateUtils, CommonUtils, Settings);
+var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
     'use strict';
 
     var exports = {
@@ -234,10 +234,10 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils) {
 
             //TODO (S.Panfilov)  check
             if (startDateTime || endDateTime) {
-                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.startDate.year === selectedYear : false;
-                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.endDate.year === selectedYear : false;
-                var start = (startDateTime) ? LimitsModel.startDate.month : START_MONTH;
-                var end = (endDateTime) ? LimitsModel.endDate.month : END_MONTH;
+                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.start.y === selectedYear : false;
+                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.end.y === selectedYear : false;
+                var start = (startDateTime) ? LimitsModel.start.m : START_MONTH;
+                var end = (endDateTime) ? LimitsModel.end.m : END_MONTH;
 
                 // startYear == 2015, nowYear == 2015, endYear == 2015
                 if (isYearOfLowerLimit && isYearOfUpperLimit) {
@@ -265,28 +265,28 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils);
-var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils) {
+})(LimitsModel, DateUtils, CommonUtils, Settings);
+var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
     'use strict';
 
     var exports = {
         getDaysList: function (startDateTime, endDateTime, selectedYear, selectedMonth) {
             var result;
             var START_DAY = 1;
-            var lastDayInMonth = DataClass.getDaysInMonth(selectedMonth, selectedYear);
+            var lastDayInMonth = DateUtils.getDaysInMonth(selectedMonth, selectedYear);
 
             //TODO (S.Panfilov)  check
             if (startDateTime || endDateTime) {
-                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.startDate.year === selectedYear : false;
-                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.endDate.year === selectedYear : false;
-                var isMonthOfLowerLimit = (startDateTime) ? LimitsModel.startDate.month === selectedMonth : false;
-                var isMonthOfUpperLimit = (endDateTime) ? LimitsModel.endDate.month === selectedMonth : false;
+                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.start.y === selectedYear : false;
+                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.end.y === selectedYear : false;
+                var isMonthOfLowerLimit = (startDateTime) ? LimitsModel.start.m === selectedMonth : false;
+                var isMonthOfUpperLimit = (endDateTime) ? LimitsModel.end.m === selectedMonth : false;
 
                 var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
                 var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
 
-                var start = (startDateTime) ? LimitsModel.startDate.day : START_DAY;
-                var end = (endDateTime) ? LimitsModel.endDate.day : lastDayInMonth;
+                var start = (startDateTime) ? LimitsModel.start.d : START_DAY;
+                var end = (endDateTime) ? LimitsModel.end.d : lastDayInMonth;
 
                 if (isLowerLimit && isUpperLimit) {
                     result = CommonUtils.getArrayOfNumbers(start, end);
@@ -308,7 +308,7 @@ var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils);
+})(LimitsModel, DateUtils, CommonUtils, Settings);
 var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
     'use strict';
 
@@ -344,7 +344,8 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
 
         var _private = {
             _start: null,
-            _end: null
+            _end: null,
+            _limitDates: null
         };
 
         var exports = {
@@ -379,12 +380,12 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         var selectedYear = DateUtils.getYear(exports.selected.dt);
         var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
-        this._limitDates = new LimitsModel(startDateTime, endDateTime);
+        _private._limitDates = new LimitsModel(startDateTime, endDateTime);
         _private._start = startDateTime;
         _private._end = endDateTime;
-        exports.current.y = YearsUtils.getYearsList(startDateTime, endDateTime);
-        exports.current.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear);
-        exports.current.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth);
+        exports.current.y = YearsUtils.getYearsList(startDateTime, endDateTime, exports.selected, _private._limitDates);
+        exports.current.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear, _private._limitDates);
+        exports.current.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth, exports.selected, _private._limitDates);
 
         return this;
     }

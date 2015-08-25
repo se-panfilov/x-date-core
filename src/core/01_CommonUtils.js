@@ -7,7 +7,7 @@ var CommonUtils = (function () {
             var isNotInfinity = isFinite(num);
             return isNumber && isNotInfinity;
         },
-        getArrayOfNumbers: function (start) {
+        getArrayOfNumbers: function (start, end) {
             var result = [];
 
             for (var i = start; i <= end; i++) {

@@ -33,7 +33,8 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
 
         var _private = {
             _start: null,
-            _end: null
+            _end: null,
+            _limitDates: null
         };
 
         var exports = {
@@ -68,12 +69,12 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         var selectedYear = DateUtils.getYear(exports.selected.dt);
         var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
-        this._limitDates = new LimitsModel(startDateTime, endDateTime);
+        _private._limitDates = new LimitsModel(startDateTime, endDateTime);
         _private._start = startDateTime;
         _private._end = endDateTime;
-        exports.current.y = YearsUtils.getYearsList(startDateTime, endDateTime);
-        exports.current.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear);
-        exports.current.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth);
+        exports.current.y = YearsUtils.getYearsList(startDateTime, endDateTime, exports.selected, _private._limitDates);
+        exports.current.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear, _private._limitDates);
+        exports.current.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth, exports.selected, _private._limitDates);
 
         return this;
     }
