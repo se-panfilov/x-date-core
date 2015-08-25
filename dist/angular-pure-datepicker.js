@@ -1,3 +1,4 @@
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=getDayName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"getMonthName(month) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 'use strict';
 
 var Settings = {
@@ -373,3 +374,171 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
     };
 
 })(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);
+'use strict';
+
+angular.module('angular-pd', [
+    'angular-pd.templates'
+])
+
+    .directive('pureDatepicker', function () {
+        return {
+            restrict: 'E',
+            replace: true,
+            templateUrl: 'apd.html',
+            scope: {
+                ngModel: '=',
+                apdStart: '=?',
+                apdEnd: '=?',
+                apdDayId: '@?',
+                apdMonthId: '@?',
+                apdYearId: '@?',
+                apdDayClasses: '@?',
+                apdMonthClasses: '@?',
+                apdYearClasses: '@?',
+                apdLocalization: '=?',
+                apdIsUtc: '=?'
+            },
+            link: function (scope) {
+
+                scope.apdIsUtc = scope.apdIsUtc || false;
+
+                //TODO (S.Panfilov) check for cross-browser support
+                //TODO (S.Panfilov) may be should add tests
+                var settings = {
+                    initDateModel: null,
+                    startDateTime: null,
+                    endDateTime: null
+                };
+
+                var ngModelWatcher = {
+                    handler: null,
+                    start: function (callback) {
+                        ngModelWatcher.handler = scope.$watch('ngModel.datetime', function (value, oldValue) {
+                            if (callback) {
+                                callback(value, oldValue)
+                            }
+
+                        }, true);
+                    },
+                    stop: function () {
+                        ngModelWatcher.handler();
+                        return true;
+                    }
+                };
+
+
+                function getLimitSafeDatetime(day, month, year) {
+
+                    var datetime = new Date(year, month, day).getTime();
+
+                    if (!LimitsModel.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
+                        if (!LimitsModel.isDateUpperStartLimit(datetime, settings.startDateTime)) {
+                            datetime = settings.startDateTime;
+                        } else if (!LimitsModel.isDateLowerEndLimit(datetime, settings.endDateTime)) {
+                            datetime = settings.endDateTime;
+                        }
+                    }
+
+                    return datetime;
+                }
+
+                function updateModel(datetime) {
+                    ngModelWatcher.stop();
+                    scope.data.selected = new DateModel(datetime, scope.apdIsUtc);
+                    scope.ngModel = scope.data.selected;
+                    ngModelWatcher.start(onModelChange);
+                }
+
+                function onModelChange(datetime, oldValue) {
+                    if (datetime === oldValue) {
+                        return;
+                    }
+
+                    var day = DateUtils.getDay(datetime, scope.apdIsUtc);
+                    var month = DateUtils.getMonth(datetime, scope.apdIsUtc);
+                    var year = DateUtils.getYear(datetime, scope.apdIsUtc);
+
+                    datetime = getLimitSafeDatetime(day, month, year);
+                    updateModel(datetime);
+
+                    scope.data.reloadYearsList();
+                    scope.data.reloadMonthList();
+                    scope.data.reloadDaysList();
+                }
+
+                function getInitDateModel(model) {
+                    var isInitModelValid = DateModel.validate(model);
+                    var initDatetime;
+
+                    if (isInitModelValid) {
+                        initDatetime = model.datetime
+                    } else {
+                        initDatetime = new Date().getTime();
+                    }
+
+                    var day = DateUtils.getDay(initDatetime, scope.apdIsUtc);
+                    var month = DateUtils.getMonth(initDatetime, scope.apdIsUtc);
+                    var year = DateUtils.getYear(initDatetime, scope.apdIsUtc);
+
+                    var limitSafeDatetime = getLimitSafeDatetime(day, month, year);
+
+                    return new DateModel(limitSafeDatetime, scope.apdIsUtc);
+                }
+
+                function _initData(initDateModel, startDateTime, endDateTime) {
+                    scope.data = new DataClass(initDateModel, startDateTime, endDateTime, scope.apdIsUtc);
+                    scope.ngModel = scope.data.selected;
+                }
+
+
+                scope.onDaySelectChanged = function (day) {
+                    if (!day) return;
+
+                    var datetime = getLimitSafeDatetime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
+                    updateModel(datetime);
+                };
+
+                scope.onMonthSelectChanged = function (month) {
+                    if (!month && month !== 0) return;
+
+                    var datetime;
+                    var year = scope.data.selected.year;
+                    var day = scope.data.selected.day;
+
+                    datetime = getLimitSafeDatetime(day, month, year);
+                    updateModel(datetime);
+
+                    scope.data.reloadDaysList();
+                };
+
+                scope.onYearSelectChanged = function (year) {
+                    if (!year && year !== 0) return;
+
+                    var month = scope.data.selected.month;
+                    var day = scope.data.selected.day;
+
+                    var datetime = getLimitSafeDatetime(day, month, year);
+                    updateModel(datetime);
+
+                    scope.data.reloadMonthList();
+                    scope.data.reloadDaysList();
+                };
+
+                (function _init() {
+                    settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
+                    settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
+                    settings.initDateModel = getInitDateModel(scope.ngModel);
+                    _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
+
+                    var localization = scope.apdLocalization || null;
+                    //var week = new DaysClass(localization);
+                    //var year = new MonthClass(localization);
+                    scope.getDayName = week.getName;
+                    scope.getMonthName = year.getName;
+
+                    ngModelWatcher.start(onModelChange);
+                })();
+
+            }
+        }
+    });

@@ -5,11 +5,11 @@ var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, watch, cha
     cssBase64, size, stylish, order;
 
 var src = {
-    styles: ['src/templates/**/*.styl'],
-    jade: ['src/templates/**/*.jade'],
-    html: ['src/templates/**/*.html'],
+    styles: ['src/view/templates/**/*.styl'],
+    jade: ['src/view/templates/**/*.jade'],
+    html: ['src/view/templates/**/*.html'],
     coreJs: ['src/core/*.js'],
-    viewJs: ['src/*.js']
+    viewJs: ['src/view/*.js']
 };
 
 var dest = {
@@ -56,7 +56,6 @@ function makeJade() {
     return gulp.src(src.jade)
         .pipe(changed(dest.templates, {extension: '.html'}))
         .pipe(jade({pretty: false}))
-        .on('error', console.log)
         .pipe(minifyHTML({
             empty: true,
             spare: true
@@ -72,7 +71,6 @@ function makeCoreJS() {
     concat = concat || require('gulp-concat');
 
     return gulp.src(src.coreJs)
-        .on('error', console.log)
         .pipe(concat('datepicker-core.js'))
 }
 
@@ -94,10 +92,10 @@ function makeJS() {
     var viewJs = makeViewJS();
 
     return mergeStream(coreJs, viewJs)
-        //.pipe(order([
-        //    'datepicker-core.js',
-        //    'angular-view.js'
-        //]))
+        .pipe(order([
+            'datepicker-core.js',
+            'angular-view.js'
+        ]))
         .pipe(concat('angular-pure-datepicker.js'));
 }
 
@@ -141,7 +139,6 @@ gulp.task('stylus', function () {
         .pipe(cssBase64({
             baseDir: "img"
         }))
-        .on('error', console.log)
         .pipe(minifyCss())
         .pipe(gulp.dest(dest.dist));
 });
