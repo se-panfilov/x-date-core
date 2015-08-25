@@ -6,18 +6,7 @@ var LimitsModel = (function (DateUtils) {
         var exports = {
             start: {},
             end: {},
-            now: {},
-            isDateUpperStartLimit: function (dt, startLimitTime) {
-                if (!startLimitTime) return true;
-                return (dt > startLimitTime);
-            },
-            isDateLowerEndLimit: function (dt, endLimitTime) {
-                if (!endLimitTime) return true;
-                return (dt < endLimitTime);
-            },
-            isDateBetweenLimits: function (dt, startLimitTime, endLimitTime) {
-                return (exports.isDateUpperStartLimit(dt, startLimitTime) && exports.isDateLowerEndLimit(dt, endLimitTime));
-            }
+            now: {}
         };
 
         function _setStart(dt) {
