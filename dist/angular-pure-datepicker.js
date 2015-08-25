@@ -310,37 +310,19 @@ var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     return exports;
 })(LimitsModel, DateUtils, CommonUtils);
 var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
+    'use strict';
 
-    function DataClass(selected, startDateTime, endDateTime) {
-        selected.datetime = CommonUtils.isValidNumber(selected.datetime) ? selected.datetime : null;
-        startDateTime = CommonUtils.isValidNumber(startDateTime) ? startDateTime : null;
-        endDateTime = CommonUtils.isValidNumber(endDateTime) ? endDateTime : null;
-
-        this.selected = this._getSelected(selected, startDateTime, endDateTime);
-        var selectedYear = DateUtils.getYear(this.selected.datetime);
-        var selectedMonth = DateUtils.getMonth(this.selected.datetime);
-
-        this._limitDates = new LimitsModel(startDateTime, endDateTime);
-        this._startDateTime = startDateTime;
-        this._endDateTime = endDateTime;
-        this.years = YearsUtils.getYearsList(startDateTime, endDateTime);
-        this.month = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear);
-        this.days = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth);
-
-        return this;
-    }
-
-    _getSelected = function (selected, startDateTime, endDateTime) {
+    function _getSelected(selected, startDateTime, endDateTime) {
         var result;
 
-        var isBiggerThenStart = (selected.datetime > startDateTime);
-        var isEqualToStart = (selected.datetime === startDateTime);
-        var isLowerThenEnd = (selected.datetime > endDateTime);
-        var isEqualToEnd = (selected.datetime === endDateTime);
+        var isBiggerThenStart = (selected.dt > startDateTime);
+        var isEqualToStart = (selected.dt === startDateTime);
+        var isLowerThenEnd = (selected.dt > endDateTime);
+        var isEqualToEnd = (selected.dt === endDateTime);
 
         //start == 1; selected == 1 or 2 or 3; end == 3;
         if ((isBiggerThenStart || isEqualToStart) || (isLowerThenEnd || isEqualToEnd)) {
-            result = new DateModel(selected.datetime);
+            result = new DateModel(selected.dt);
         } else
         //start == 1; selected == 0
         if (!isBiggerThenStart) {
@@ -356,28 +338,59 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         }
 
         return result;
-    };
+    }
 
-    reloadYearsList = function () {
-        this.years = YearsUtils.getYearsList(this._startDateTime, this._endDateTime);
-        return this;
-    };
+    return function (selected, startDateTime, endDateTime) {
 
-    reloadMonthList = function () {
-        var selectedYear = DateUtils.getYear(this.selected.datetime);
-        this.month = MonthUtils.getMonthList(this._startDateTime, this._endDateTime, selectedYear);
-        return this;
-    };
+        var _private = {
+            _start: null,
+            _end: null
+        };
 
-    reloadDaysList = function () {
-        var selectedYear = DateUtils.getYear(this.selected.datetime);
-        var selectedMonth = DateUtils.getMonth(this.selected.datetime);
-        this.days = DaysUtils.getDaysList(this._startDateTime, this._endDateTime, selectedYear, selectedMonth);
+        var exports = {
+            selected: {},
+            current: {
+                y: null,
+                m: null,
+                d: null
+            },
+            reloadYearsList: function () {
+                exports.current.y = YearsUtils.getYearsList(_private._start, _private._end);
+                return this;
+            },
+            reloadMonthList: function () {
+                var selectedYear = DateUtils.getYear(exports.selected.dt);
+                exports.current.m = MonthUtils.getMonthList(_private._start, _private._end, selectedYear);
+                return this;
+            },
+            reloadDaysList: function () {
+                var selectedYear = DateUtils.getYear(exports.selected.dt);
+                var selectedMonth = DateUtils.getMonth(exports.selected.dt);
+                exports.current.d = DaysUtils.getDaysList(_private._start, _private._end, selectedYear, selectedMonth);
+                return this;
+            }
+        };
+
+        selected.dt = CommonUtils.isValidNumber(selected.dt) ? selected.dt : null;
+        startDateTime = CommonUtils.isValidNumber(startDateTime) ? startDateTime : null;
+        endDateTime = CommonUtils.isValidNumber(endDateTime) ? endDateTime : null;
+
+        exports.selected = _getSelected(selected, startDateTime, endDateTime);
+        var selectedYear = DateUtils.getYear(exports.selected.dt);
+        var selectedMonth = DateUtils.getMonth(exports.selected.dt);
+
+        this._limitDates = new LimitsModel(startDateTime, endDateTime);
+        _private._start = startDateTime;
+        _private._end = endDateTime;
+        exports.current.y = YearsUtils.getYearsList(startDateTime, endDateTime);
+        exports.current.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear);
+        exports.current.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth);
+
         return this;
-    };
+    }
 
 })(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);
-var angularView = (function (DateUtils) {
+var angularView = (function (DateUtils, DataClass) {
     'use strict';
 
 
@@ -547,4 +560,4 @@ var angularView = (function (DateUtils) {
                 }
             }
         });
-})(DateUtils);
+})(DateUtils, DataClass);

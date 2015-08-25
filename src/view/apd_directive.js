@@ -1,4 +1,4 @@
-var angularView = (function (DateUtils) {
+var angularView = (function (DateUtils, DataClass) {
     'use strict';
 
 
@@ -168,4 +168,4 @@ var angularView = (function (DateUtils) {
                 }
             }
         });
-})(DateUtils);
+})(DateUtils, DataClass);
