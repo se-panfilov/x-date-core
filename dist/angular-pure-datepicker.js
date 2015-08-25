@@ -1,4 +1,4 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=daysList[data.selected.dayOfWeek] class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"monthList[month] for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.list.d\" ng-init=\"data.selected.day = data.list.d[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=daysList[data.selected.dayOfWeek] class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"monthList[month] for month in data.list.m\" ng-init=\"data.selected.month = data.list.m[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.list.y\" ng-init=\"data.selected.year = data.list.y[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 'use strict';
 
 var Config = {
@@ -350,24 +350,24 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
 
         var exports = {
             selected: {},
-            current: {
+            list: {
                 y: null,
                 m: null,
                 d: null
             },
             reloadYearsList: function () {
-                exports.current.y = YearsUtils.getYearsList(_private._start, _private._end);
+                exports.list.y = YearsUtils.getYearsList(_private._start, _private._end);
                 return this;
             },
             reloadMonthList: function () {
                 var selectedYear = DateUtils.getYear(exports.selected.dt);
-                exports.current.m = MonthUtils.getMonthList(_private._start, _private._end, selectedYear);
+                exports.list.m = MonthUtils.getMonthList(_private._start, _private._end, selectedYear);
                 return this;
             },
             reloadDaysList: function () {
                 var selectedYear = DateUtils.getYear(exports.selected.dt);
                 var selectedMonth = DateUtils.getMonth(exports.selected.dt);
-                exports.current.d = DaysUtils.getDaysList(_private._start, _private._end, selectedYear, selectedMonth);
+                exports.list.d = DaysUtils.getDaysList(_private._start, _private._end, selectedYear, selectedMonth);
                 return this;
             }
         };
@@ -383,9 +383,10 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         _private._limitDates = new LimitsModel(startDateTime, endDateTime);
         _private._start = startDateTime;
         _private._end = endDateTime;
-        exports.current.y = YearsUtils.getYearsList(startDateTime, endDateTime, exports.selected, _private._limitDates);
-        exports.current.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear, _private._limitDates);
-        exports.current.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth, exports.selected, _private._limitDates);
+
+        exports.list.y = YearsUtils.getYearsList(startDateTime, endDateTime, exports.selected, _private._limitDates);
+        exports.list.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear, _private._limitDates);
+        exports.list.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth, exports.selected, _private._limitDates);
 
         return exports;
     }
