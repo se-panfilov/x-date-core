@@ -1,4 +1,4 @@
-var YearsUtils = (function (DateUtils, CommonUtils, Settings) {
+var YearsUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -59,9 +59,9 @@ var YearsUtils = (function (DateUtils, CommonUtils, Settings) {
                 result = CommonUtils.getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
             }
 
-            return CommonUtils.intArraySort(result, Settings.yearsListDirection);
+            return CommonUtils.intArraySort(result, Config.yearsListDirection);
         }
     };
 
     return exports;
-})(DateUtils, CommonUtils, Settings);
+})(DateUtils, CommonUtils, Config);

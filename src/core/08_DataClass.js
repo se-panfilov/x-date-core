@@ -29,7 +29,7 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         return result;
     }
 
-    return function (selected, startDateTime, endDateTime) {
+    return function (model, startDateTime, endDateTime) {
 
         var _private = {
             _start: null,
@@ -61,11 +61,11 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
             }
         };
 
-        selected.dt = CommonUtils.isValidNumber(selected.dt) ? selected.dt : null;
+        model.dt = CommonUtils.isValidNumber(model.dt) ? model.dt : null;
         startDateTime = CommonUtils.isValidNumber(startDateTime) ? startDateTime : null;
         endDateTime = CommonUtils.isValidNumber(endDateTime) ? endDateTime : null;
 
-        exports.selected = _getSelected(selected, startDateTime, endDateTime);
+        exports.selected = _getSelected(model, startDateTime, endDateTime);
         var selectedYear = DateUtils.getYear(exports.selected.dt);
         var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
@@ -76,7 +76,7 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         exports.current.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear, _private._limitDates);
         exports.current.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth, exports.selected, _private._limitDates);
 
-        return this;
+        return exports;
     }
 
 })(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);

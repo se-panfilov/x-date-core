@@ -1,7 +1,7 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=daysList class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"month for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=daysList[data.selected.dayOfWeek] class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"monthList[month] for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 'use strict';
 
-var Settings = {
+var Config = {
     isUtc: false,
     monthDirection: 'asc',
     daysDirection: 'asc',
@@ -49,7 +49,7 @@ var CommonUtils = (function () {
 
     return exports;
 })();
-var DateUtils = (function (Settings) {
+var DateUtils = (function (Config) {
     'use strict';
 
     function getVal(datetime, method) {
@@ -59,19 +59,19 @@ var DateUtils = (function (Settings) {
 
     var exports = {
         getDay: function (datetime) {
-            var method = (Settings.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+            var method = (Config.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
             return getVal(datetime, method);
         },
         getDayOfWeek: function (datetime) {
-            var method = (Settings.isUTC) ? Date.prototype.getUTCDay : Date.prototype.getDay;
+            var method = (Config.isUTC) ? Date.prototype.getUTCDay : Date.prototype.getDay;
             return getVal(datetime, method);
         },
         getYear: function (datetime) {
-            var method = (Settings.isUTC) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
+            var method = (Config.isUTC) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
             return getVal(datetime, method);
         },
         getMonth: function (datetime) {
-            var method = (Settings.isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
+            var method = (Config.isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
             return getVal(datetime, method);
         },
         getDaysInMonth: function (month, year) {
@@ -94,7 +94,7 @@ var DateUtils = (function (Settings) {
     };
 
     return exports;
-})(Settings);
+})(Config);
 var LimitsModel = (function (DateUtils) {
     'use strict';
 
@@ -156,7 +156,7 @@ var DateModel = (function (DateUtils) {
 
     return DateModel;
 })(DateUtils);
-var YearsUtils = (function (DateUtils, CommonUtils, Settings) {
+var YearsUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -217,13 +217,13 @@ var YearsUtils = (function (DateUtils, CommonUtils, Settings) {
                 result = CommonUtils.getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
             }
 
-            return CommonUtils.intArraySort(result, Settings.yearsListDirection);
+            return CommonUtils.intArraySort(result, Config.yearsListDirection);
         }
     };
 
     return exports;
-})(DateUtils, CommonUtils, Settings);
-var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
+})(DateUtils, CommonUtils, Config);
+var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -260,13 +260,13 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
                 result = CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
             }
 
-            return CommonUtils.intArraySort(result, Settings.monthListDirection);
+            return CommonUtils.intArraySort(result, Config.monthListDirection);
         }
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils, Settings);
-var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
+})(LimitsModel, DateUtils, CommonUtils, Config);
+var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -303,12 +303,12 @@ var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
                 result = CommonUtils.getArrayOfNumbers(START_DAY, lastDayInMonth);
             }
 
-            return CommonUtils.intArraySort(result, Settings.daysListDirection);
+            return CommonUtils.intArraySort(result, Config.daysListDirection);
         }
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils, Settings);
+})(LimitsModel, DateUtils, CommonUtils, Config);
 var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
     'use strict';
 
@@ -340,7 +340,7 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         return result;
     }
 
-    return function (selected, startDateTime, endDateTime) {
+    return function (model, startDateTime, endDateTime) {
 
         var _private = {
             _start: null,
@@ -372,11 +372,11 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
             }
         };
 
-        selected.dt = CommonUtils.isValidNumber(selected.dt) ? selected.dt : null;
+        model.dt = CommonUtils.isValidNumber(model.dt) ? model.dt : null;
         startDateTime = CommonUtils.isValidNumber(startDateTime) ? startDateTime : null;
         endDateTime = CommonUtils.isValidNumber(endDateTime) ? endDateTime : null;
 
-        exports.selected = _getSelected(selected, startDateTime, endDateTime);
+        exports.selected = _getSelected(model, startDateTime, endDateTime);
         var selectedYear = DateUtils.getYear(exports.selected.dt);
         var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
@@ -387,11 +387,11 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         exports.current.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear, _private._limitDates);
         exports.current.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth, exports.selected, _private._limitDates);
 
-        return this;
+        return exports;
     }
 
 })(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);
-var angularView = (function (DateUtils, DataClass, Settings) {
+var angularView = (function (DateUtils, DataClass, Config) {
     'use strict';
 
 
@@ -463,7 +463,7 @@ var angularView = (function (DateUtils, DataClass, Settings) {
 
                     function updateModel(datetime) {
                         ngModelWatcher.stop();
-                        scope.data.selected = new DateModel(datetime, scope.apdIsUtc);
+                        scope.data.selected = new DateModel(datetime);
                         scope.ngModel = scope.data.selected;
                         ngModelWatcher.start(onModelChange);
                     }
@@ -473,9 +473,9 @@ var angularView = (function (DateUtils, DataClass, Settings) {
                             return;
                         }
 
-                        var day = DateUtils.getDay(datetime, scope.apdIsUtc);
-                        var month = DateUtils.getMonth(datetime, scope.apdIsUtc);
-                        var year = DateUtils.getYear(datetime, scope.apdIsUtc);
+                        var day = DateUtils.getDay(datetime);
+                        var month = DateUtils.getMonth(datetime);
+                        var year = DateUtils.getYear(datetime);
 
                         datetime = getLimitSafeDatetime(day, month, year);
                         updateModel(datetime);
@@ -495,17 +495,17 @@ var angularView = (function (DateUtils, DataClass, Settings) {
                             initDatetime = new Date().getTime();
                         }
 
-                        var day = DateUtils.getDay(initDatetime, scope.apdIsUtc);
-                        var month = DateUtils.getMonth(initDatetime, scope.apdIsUtc);
-                        var year = DateUtils.getYear(initDatetime, scope.apdIsUtc);
+                        var day = DateUtils.getDay(initDatetime);
+                        var month = DateUtils.getMonth(initDatetime);
+                        var year = DateUtils.getYear(initDatetime);
 
                         var limitSafeDatetime = getLimitSafeDatetime(day, month, year);
 
-                        return new DateModel(limitSafeDatetime, scope.apdIsUtc);
+                        return new DateModel(limitSafeDatetime);
                     }
 
                     function _initData(initDateModel, startDateTime, endDateTime) {
-                        scope.data = new DataClass(initDateModel, startDateTime, endDateTime, scope.apdIsUtc);
+                        scope.data = new DataClass(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                     }
 
@@ -549,11 +549,10 @@ var angularView = (function (DateUtils, DataClass, Settings) {
                         settings.initDateModel = getInitDateModel(scope.ngModel);
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
 
+                        //TODO (S.Panfilov) localization fix
                         var localization = scope.apdLocalization || null;
-                        //var week = new DaysClass(localization);
-                        //var year = new MonthClass(localization);
-                        scope.daysList = Settings.daysList;
-                        scope.monthList = Settings.monthList;
+                        scope.daysList = Config.daysList;
+                        scope.monthList = Config.monthList;
 
                         ngModelWatcher.start(onModelChange);
                     })();
@@ -561,4 +560,4 @@ var angularView = (function (DateUtils, DataClass, Settings) {
                 }
             }
         });
-})(DateUtils, DataClass, Settings);
+})(DateUtils, DataClass, Config);

@@ -1,6 +1,6 @@
 'use strict';
 
-var Settings = {
+var Config = {
     isUtc: false,
     monthDirection: 'asc',
     daysDirection: 'asc',

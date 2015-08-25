@@ -1,4 +1,4 @@
-var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
+var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -35,9 +35,9 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
                 result = CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
             }
 
-            return CommonUtils.intArraySort(result, Settings.monthListDirection);
+            return CommonUtils.intArraySort(result, Config.monthListDirection);
         }
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils, Settings);
+})(LimitsModel, DateUtils, CommonUtils, Config);

@@ -1,4 +1,4 @@
-var angularView = (function (DateUtils, DataClass, Settings) {
+var angularView = (function (DateUtils, DataClass, Config) {
     'use strict';
 
 
@@ -70,7 +70,7 @@ var angularView = (function (DateUtils, DataClass, Settings) {
 
                     function updateModel(datetime) {
                         ngModelWatcher.stop();
-                        scope.data.selected = new DateModel(datetime, scope.apdIsUtc);
+                        scope.data.selected = new DateModel(datetime);
                         scope.ngModel = scope.data.selected;
                         ngModelWatcher.start(onModelChange);
                     }
@@ -80,9 +80,9 @@ var angularView = (function (DateUtils, DataClass, Settings) {
                             return;
                         }
 
-                        var day = DateUtils.getDay(datetime, scope.apdIsUtc);
-                        var month = DateUtils.getMonth(datetime, scope.apdIsUtc);
-                        var year = DateUtils.getYear(datetime, scope.apdIsUtc);
+                        var day = DateUtils.getDay(datetime);
+                        var month = DateUtils.getMonth(datetime);
+                        var year = DateUtils.getYear(datetime);
 
                         datetime = getLimitSafeDatetime(day, month, year);
                         updateModel(datetime);
@@ -102,17 +102,17 @@ var angularView = (function (DateUtils, DataClass, Settings) {
                             initDatetime = new Date().getTime();
                         }
 
-                        var day = DateUtils.getDay(initDatetime, scope.apdIsUtc);
-                        var month = DateUtils.getMonth(initDatetime, scope.apdIsUtc);
-                        var year = DateUtils.getYear(initDatetime, scope.apdIsUtc);
+                        var day = DateUtils.getDay(initDatetime);
+                        var month = DateUtils.getMonth(initDatetime);
+                        var year = DateUtils.getYear(initDatetime);
 
                         var limitSafeDatetime = getLimitSafeDatetime(day, month, year);
 
-                        return new DateModel(limitSafeDatetime, scope.apdIsUtc);
+                        return new DateModel(limitSafeDatetime);
                     }
 
                     function _initData(initDateModel, startDateTime, endDateTime) {
-                        scope.data = new DataClass(initDateModel, startDateTime, endDateTime, scope.apdIsUtc);
+                        scope.data = new DataClass(initDateModel, startDateTime, endDateTime);
                         scope.ngModel = scope.data.selected;
                     }
 
@@ -156,11 +156,10 @@ var angularView = (function (DateUtils, DataClass, Settings) {
                         settings.initDateModel = getInitDateModel(scope.ngModel);
                         _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
 
+                        //TODO (S.Panfilov) localization fix
                         var localization = scope.apdLocalization || null;
-                        //var week = new DaysClass(localization);
-                        //var year = new MonthClass(localization);
-                        scope.daysList = Settings.daysList;
-                        scope.monthList = Settings.monthList;
+                        scope.daysList = Config.daysList;
+                        scope.monthList = Config.monthList;
 
                         ngModelWatcher.start(onModelChange);
                     })();
@@ -168,4 +167,4 @@ var angularView = (function (DateUtils, DataClass, Settings) {
                 }
             }
         });
-})(DateUtils, DataClass, Settings);
+})(DateUtils, DataClass, Config);

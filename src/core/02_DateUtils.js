@@ -1,4 +1,4 @@
-var DateUtils = (function (Settings) {
+var DateUtils = (function (Config) {
     'use strict';
 
     function getVal(datetime, method) {
@@ -8,19 +8,19 @@ var DateUtils = (function (Settings) {
 
     var exports = {
         getDay: function (datetime) {
-            var method = (Settings.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+            var method = (Config.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
             return getVal(datetime, method);
         },
         getDayOfWeek: function (datetime) {
-            var method = (Settings.isUTC) ? Date.prototype.getUTCDay : Date.prototype.getDay;
+            var method = (Config.isUTC) ? Date.prototype.getUTCDay : Date.prototype.getDay;
             return getVal(datetime, method);
         },
         getYear: function (datetime) {
-            var method = (Settings.isUTC) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
+            var method = (Config.isUTC) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
             return getVal(datetime, method);
         },
         getMonth: function (datetime) {
-            var method = (Settings.isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
+            var method = (Config.isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
             return getVal(datetime, method);
         },
         getDaysInMonth: function (month, year) {
@@ -43,4 +43,4 @@ var DateUtils = (function (Settings) {
     };
 
     return exports;
-})(Settings);
+})(Config);

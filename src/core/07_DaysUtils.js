@@ -1,4 +1,4 @@
-var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
+var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -35,9 +35,9 @@ var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Settings) {
                 result = CommonUtils.getArrayOfNumbers(START_DAY, lastDayInMonth);
             }
 
-            return CommonUtils.intArraySort(result, Settings.daysListDirection);
+            return CommonUtils.intArraySort(result, Config.daysListDirection);
         }
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils, Settings);
+})(LimitsModel, DateUtils, CommonUtils, Config);
