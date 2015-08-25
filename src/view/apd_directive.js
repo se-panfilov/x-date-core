@@ -1,4 +1,4 @@
-var angularView = (function (DateUtils, DataClass) {
+var angularView = (function (DateUtils, DataClass, Settings) {
     'use strict';
 
 
@@ -159,8 +159,8 @@ var angularView = (function (DateUtils, DataClass) {
                         var localization = scope.apdLocalization || null;
                         //var week = new DaysClass(localization);
                         //var year = new MonthClass(localization);
-                        scope.getDayName = week.getName;
-                        scope.getMonthName = year.getName;
+                        scope.daysList = Settings.daysList;
+                        scope.monthList = Settings.monthList;
 
                         ngModelWatcher.start(onModelChange);
                     })();
@@ -168,4 +168,4 @@ var angularView = (function (DateUtils, DataClass) {
                 }
             }
         });
-})(DateUtils, DataClass);
+})(DateUtils, DataClass, Settings);

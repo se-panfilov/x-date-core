@@ -1,4 +1,4 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=getDayName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"getMonthName(month) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
+angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=daysList class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"month for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
 'use strict';
 
 var Settings = {
@@ -391,7 +391,7 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
     }
 
 })(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);
-var angularView = (function (DateUtils, DataClass) {
+var angularView = (function (DateUtils, DataClass, Settings) {
     'use strict';
 
 
@@ -552,8 +552,8 @@ var angularView = (function (DateUtils, DataClass) {
                         var localization = scope.apdLocalization || null;
                         //var week = new DaysClass(localization);
                         //var year = new MonthClass(localization);
-                        scope.getDayName = week.getName;
-                        scope.getMonthName = year.getName;
+                        scope.daysList = Settings.daysList;
+                        scope.monthList = Settings.monthList;
 
                         ngModelWatcher.start(onModelChange);
                     })();
@@ -561,4 +561,4 @@ var angularView = (function (DateUtils, DataClass) {
                 }
             }
         });
-})(DateUtils, DataClass);
+})(DateUtils, DataClass, Settings);
