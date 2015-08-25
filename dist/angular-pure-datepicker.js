@@ -1,172 +1,3 @@
-angular.module("angular-pd.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("apd.html","<div class=apd_root><select ng-model=data.selected.day ng-options=\"day for day in data.days\" ng-init=\"data.selected.day = data.days[0]\" ng-change=onDaySelectChanged(data.selected.day) id={{::apdDayId}} class=\"apd_elem apd_select_day apd_select {{::apdDayClasses}}\"></select><span ng-bind=getDayName(data.selected.dayOfWeek) class=\"apd_elem apd_day_of_week\"></span><select ng-model=data.selected.month ng-options=\"getMonthName(month) for month in data.month\" ng-init=\"data.selected.month = data.month[0]\" ng-change=onMonthSelectChanged(data.selected.month) id={{::apdMonthId}} class=\"apd_elem apd_select_month apd_select {{::apdMonthClasses}}\"></select><select ng-model=data.selected.year ng-options=\"year for year in data.years\" ng-init=\"data.selected.year = data.years[0]\" ng-change=onYearSelectChanged(data.selected.year) id={{::apdYearId}} class=\"apd_elem apd_select_year apd_select {{::apdYearClasses}}\"></select></div>");}]);
-'use strict';
-
-angular.module('angular-pd', [
-    'angular-pd.templates'
-])
-
-    .directive('pureDatepicker', function () {
-        return {
-            restrict: 'E',
-            replace: true,
-            templateUrl: 'apd.html',
-            scope: {
-                ngModel: '=',
-                apdStart: '=?',
-                apdEnd: '=?',
-                apdDayId: '@?',
-                apdMonthId: '@?',
-                apdYearId: '@?',
-                apdDayClasses: '@?',
-                apdMonthClasses: '@?',
-                apdYearClasses: '@?',
-                apdLocalization: '=?',
-                apdIsUtc: '=?'
-            },
-            link: function (scope) {
-
-                scope.apdIsUtc = scope.apdIsUtc || false;
-
-                //TODO (S.Panfilov) check for cross-browser support
-                //TODO (S.Panfilov) may be should add tests
-                var settings = {
-                    initDateModel: null,
-                    startDateTime: null,
-                    endDateTime: null
-                };
-
-                var ngModelWatcher = {
-                    handler: null,
-                    start: function (callback) {
-                        ngModelWatcher.handler = scope.$watch('ngModel.datetime', function (value, oldValue) {
-                            if (callback) {
-                                callback(value, oldValue)
-                            }
-
-                        }, true);
-                    },
-                    stop: function () {
-                        ngModelWatcher.handler();
-                        return true;
-                    }
-                };
-
-
-                function getLimitSafeDatetime(day, month, year) {
-
-                    var datetime = new Date(year, month, day).getTime();
-
-                    if (!LimitsModel.isDateBetweenLimits(datetime, settings.startDateTime, settings.endDateTime)) {
-                        if (!LimitsModel.isDateUpperStartLimit(datetime, settings.startDateTime)) {
-                            datetime = settings.startDateTime;
-                        } else if (!LimitsModel.isDateLowerEndLimit(datetime, settings.endDateTime)) {
-                            datetime = settings.endDateTime;
-                        }
-                    }
-
-                    return datetime;
-                }
-
-                function updateModel(datetime) {
-                    ngModelWatcher.stop();
-                    scope.data.selected = new DateModel(datetime, scope.apdIsUtc);
-                    scope.ngModel = scope.data.selected;
-                    ngModelWatcher.start(onModelChange);
-                }
-
-                function onModelChange(datetime, oldValue) {
-                    if (datetime === oldValue) {
-                        return;
-                    }
-
-                    var day = DateUtils.getDay(datetime, scope.apdIsUtc);
-                    var month = DateUtils.getMonth(datetime, scope.apdIsUtc);
-                    var year = DateUtils.getYear(datetime, scope.apdIsUtc);
-
-                    datetime = getLimitSafeDatetime(day, month, year);
-                    updateModel(datetime);
-
-                    scope.data.reloadYearsList();
-                    scope.data.reloadMonthList();
-                    scope.data.reloadDaysList();
-                }
-
-                function getInitDateModel(model) {
-                    var isInitModelValid = DateModel.validate(model);
-                    var initDatetime;
-
-                    if (isInitModelValid) {
-                        initDatetime = model.datetime
-                    } else {
-                        initDatetime = new Date().getTime();
-                    }
-
-                    var day = DateUtils.getDay(initDatetime, scope.apdIsUtc);
-                    var month = DateUtils.getMonth(initDatetime, scope.apdIsUtc);
-                    var year = DateUtils.getYear(initDatetime, scope.apdIsUtc);
-
-                    var limitSafeDatetime = getLimitSafeDatetime(day, month, year);
-
-                    return new DateModel(limitSafeDatetime, scope.apdIsUtc);
-                }
-
-                function _initData(initDateModel, startDateTime, endDateTime) {
-                    scope.data = new DataClass(initDateModel, startDateTime, endDateTime, scope.apdIsUtc);
-                    scope.ngModel = scope.data.selected;
-                }
-
-
-                scope.onDaySelectChanged = function (day) {
-                    if (!day) return;
-
-                    var datetime = getLimitSafeDatetime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
-                    updateModel(datetime);
-                };
-
-                scope.onMonthSelectChanged = function (month) {
-                    if (!month && month !== 0) return;
-
-                    var datetime;
-                    var year = scope.data.selected.year;
-                    var day = scope.data.selected.day;
-
-                    datetime = getLimitSafeDatetime(day, month, year);
-                    updateModel(datetime);
-
-                    scope.data.reloadDaysList();
-                };
-
-                scope.onYearSelectChanged = function (year) {
-                    if (!year && year !== 0) return;
-
-                    var month = scope.data.selected.month;
-                    var day = scope.data.selected.day;
-
-                    var datetime = getLimitSafeDatetime(day, month, year);
-                    updateModel(datetime);
-
-                    scope.data.reloadMonthList();
-                    scope.data.reloadDaysList();
-                };
-
-                (function _init() {
-                    settings.startDateTime = (scope.apdStart) ? +scope.apdStart : null;
-                    settings.endDateTime = (scope.apdEnd) ? +scope.apdEnd : null;
-                    settings.initDateModel = getInitDateModel(scope.ngModel);
-                    _initData(settings.initDateModel, settings.startDateTime, settings.endDateTime);
-
-                    var localization = scope.apdLocalization || null;
-                    //var week = new DaysClass(localization);
-                    //var year = new MonthClass(localization);
-                    scope.getDayName = week.getName;
-                    scope.getMonthName = year.getName;
-
-                    ngModelWatcher.start(onModelChange);
-                })();
-
-            }
-        }
-    });
 'use strict';
 
 var Settings = {
@@ -177,8 +8,6 @@ var Settings = {
     daysList: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 };
-
-
 var CommonUtils = (function () {
     'use strict';
 
@@ -219,9 +48,8 @@ var CommonUtils = (function () {
 
     return exports;
 })();
-'use strict';
-
 var DateUtils = (function (Settings) {
+    'use strict';
 
     function getVal(datetime, method) {
         var date = new Date(datetime);
@@ -324,7 +152,7 @@ var DateModel = (function (DateUtils) {
 
     return DateModel;
 })(DateUtils);
-var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
+var YearsUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     'use strict';
 
     var exports = {
@@ -332,9 +160,9 @@ var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
             var result = [];
             var DEFAULT_YEARS_COUNT = 10;
 
-            var start = limitDates.startDate.year;
-            var end = limitDates.endDate.year;
-            var now = limitDates.nowDate.year;
+            var start = LimitsModel.startDate.year;
+            var end = LimitsModel.endDate.year;
+            var now = LimitsModel.nowDate.year;
             var selectedYear = DateUtils.getYear(this.selected.datetime);
             var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
             var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
@@ -364,7 +192,7 @@ var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
             //start = null, end = 2014
             else if (!startDateTime && endDateTime) {
                 //now = 2013 (or 2014),  end = 2014
-                if (limitDates.endDate.year >= limitDates.nowDate.year) {
+                if (LimitsModel.endDate.year >= LimitsModel.nowDate.year) {
 
                     if ((firstPossibleYear - DEFAULT_YEARS_COUNT) > (end - DEFAULT_YEARS_COUNT)) {
                         result = CommonUtils.getArrayOfNumbers(firstPossibleYear, end);
@@ -374,7 +202,7 @@ var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
 
                 }
                 //now = 2015,  end = 2014
-                else if (limitDates.endDate.year > limitDates.nowDate.year) {
+                else if (LimitsModel.endDate.year > LimitsModel.nowDate.year) {
                     result = CommonUtils.getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
                 }
 
@@ -390,8 +218,8 @@ var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
     };
 
     return exports;
-})(limitDates, DateUtils, CommonUtils);
-var MonthUtils = (function (limitDates, DateUtils, CommonUtils) {
+})(LimitsModel, DateUtils, CommonUtils);
+var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     'use strict';
 
     var exports = {
@@ -402,10 +230,10 @@ var MonthUtils = (function (limitDates, DateUtils, CommonUtils) {
 
             //TODO (S.Panfilov)  check
             if (startDateTime || endDateTime) {
-                var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
-                var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
-                var start = (startDateTime) ? limitDates.startDate.month : START_MONTH;
-                var end = (endDateTime) ? limitDates.endDate.month : END_MONTH;
+                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.startDate.year === selectedYear : false;
+                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.endDate.year === selectedYear : false;
+                var start = (startDateTime) ? LimitsModel.startDate.month : START_MONTH;
+                var end = (endDateTime) ? LimitsModel.endDate.month : END_MONTH;
 
                 // startYear == 2015, nowYear == 2015, endYear == 2015
                 if (isYearOfLowerLimit && isYearOfUpperLimit) {
@@ -433,8 +261,8 @@ var MonthUtils = (function (limitDates, DateUtils, CommonUtils) {
     };
 
     return exports;
-})(limitDates, DateUtils, CommonUtils);
-var DaysUtils = (function (limitDates, DateUtils, CommonUtils) {
+})(LimitsModel, DateUtils, CommonUtils);
+var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     'use strict';
 
     var exports = {
@@ -445,16 +273,16 @@ var DaysUtils = (function (limitDates, DateUtils, CommonUtils) {
 
             //TODO (S.Panfilov)  check
             if (startDateTime || endDateTime) {
-                var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
-                var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
-                var isMonthOfLowerLimit = (startDateTime) ? limitDates.startDate.month === selectedMonth : false;
-                var isMonthOfUpperLimit = (endDateTime) ? limitDates.endDate.month === selectedMonth : false;
+                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.startDate.year === selectedYear : false;
+                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.endDate.year === selectedYear : false;
+                var isMonthOfLowerLimit = (startDateTime) ? LimitsModel.startDate.month === selectedMonth : false;
+                var isMonthOfUpperLimit = (endDateTime) ? LimitsModel.endDate.month === selectedMonth : false;
 
                 var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
                 var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
 
-                var start = (startDateTime) ? limitDates.startDate.day : START_DAY;
-                var end = (endDateTime) ? limitDates.endDate.day : lastDayInMonth;
+                var start = (startDateTime) ? LimitsModel.startDate.day : START_DAY;
+                var end = (endDateTime) ? LimitsModel.endDate.day : lastDayInMonth;
 
                 if (isLowerLimit && isUpperLimit) {
                     result = CommonUtils.getArrayOfNumbers(start, end);
@@ -476,7 +304,7 @@ var DaysUtils = (function (limitDates, DateUtils, CommonUtils) {
     };
 
     return exports;
-})(limitDates, DateUtils, CommonUtils);
+})(LimitsModel, DateUtils, CommonUtils);
 var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
 
     function DataClass(selected, startDateTime, endDateTime) {

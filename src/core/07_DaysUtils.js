@@ -1,4 +1,4 @@
-var DaysUtils = (function (limitDates, DateUtils, CommonUtils) {
+var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     'use strict';
 
     var exports = {
@@ -9,16 +9,16 @@ var DaysUtils = (function (limitDates, DateUtils, CommonUtils) {
 
             //TODO (S.Panfilov)  check
             if (startDateTime || endDateTime) {
-                var isYearOfLowerLimit = (startDateTime) ? limitDates.startDate.year === selectedYear : false;
-                var isYearOfUpperLimit = (endDateTime) ? limitDates.endDate.year === selectedYear : false;
-                var isMonthOfLowerLimit = (startDateTime) ? limitDates.startDate.month === selectedMonth : false;
-                var isMonthOfUpperLimit = (endDateTime) ? limitDates.endDate.month === selectedMonth : false;
+                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.startDate.year === selectedYear : false;
+                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.endDate.year === selectedYear : false;
+                var isMonthOfLowerLimit = (startDateTime) ? LimitsModel.startDate.month === selectedMonth : false;
+                var isMonthOfUpperLimit = (endDateTime) ? LimitsModel.endDate.month === selectedMonth : false;
 
                 var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
                 var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
 
-                var start = (startDateTime) ? limitDates.startDate.day : START_DAY;
-                var end = (endDateTime) ? limitDates.endDate.day : lastDayInMonth;
+                var start = (startDateTime) ? LimitsModel.startDate.day : START_DAY;
+                var end = (endDateTime) ? LimitsModel.endDate.day : lastDayInMonth;
 
                 if (isLowerLimit && isUpperLimit) {
                     result = CommonUtils.getArrayOfNumbers(start, end);
@@ -40,4 +40,4 @@ var DaysUtils = (function (limitDates, DateUtils, CommonUtils) {
     };
 
     return exports;
-})(limitDates, DateUtils, CommonUtils);
+})(LimitsModel, DateUtils, CommonUtils);

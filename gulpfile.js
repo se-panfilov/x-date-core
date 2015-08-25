@@ -2,7 +2,7 @@
 
 var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, watch, changed,
     ngAnnotate, stylus, nib, minifyHTML, minifyCss, templateCache, mergeStream,
-    cssBase64, size, stylish;
+    cssBase64, size, stylish, order;
 
 var src = {
     styles: ['src/templates/**/*.styl'],
@@ -88,11 +88,16 @@ function makeViewJS() {
 function makeJS() {
     mergeStream = mergeStream || require('merge-stream');
     concat = concat || require('gulp-concat');
+    order = order || require('gulp-order');
 
     var coreJs = makeCoreJS();
     var viewJs = makeViewJS();
 
     return mergeStream(coreJs, viewJs)
+        //.pipe(order([
+        //    'datepicker-core.js',
+        //    'angular-view.js'
+        //]))
         .pipe(concat('angular-pure-datepicker.js'));
 }
 

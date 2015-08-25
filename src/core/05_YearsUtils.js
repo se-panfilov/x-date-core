@@ -1,4 +1,4 @@
-var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
+var YearsUtils = (function (LimitsModel, DateUtils, CommonUtils) {
     'use strict';
 
     var exports = {
@@ -6,9 +6,9 @@ var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
             var result = [];
             var DEFAULT_YEARS_COUNT = 10;
 
-            var start = limitDates.startDate.year;
-            var end = limitDates.endDate.year;
-            var now = limitDates.nowDate.year;
+            var start = LimitsModel.startDate.year;
+            var end = LimitsModel.endDate.year;
+            var now = LimitsModel.nowDate.year;
             var selectedYear = DateUtils.getYear(this.selected.datetime);
             var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
             var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
@@ -38,7 +38,7 @@ var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
             //start = null, end = 2014
             else if (!startDateTime && endDateTime) {
                 //now = 2013 (or 2014),  end = 2014
-                if (limitDates.endDate.year >= limitDates.nowDate.year) {
+                if (LimitsModel.endDate.year >= LimitsModel.nowDate.year) {
 
                     if ((firstPossibleYear - DEFAULT_YEARS_COUNT) > (end - DEFAULT_YEARS_COUNT)) {
                         result = CommonUtils.getArrayOfNumbers(firstPossibleYear, end);
@@ -48,7 +48,7 @@ var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
 
                 }
                 //now = 2015,  end = 2014
-                else if (limitDates.endDate.year > limitDates.nowDate.year) {
+                else if (LimitsModel.endDate.year > LimitsModel.nowDate.year) {
                     result = CommonUtils.getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
                 }
 
@@ -64,4 +64,4 @@ var YearsUtils = (function (limitDates, DateUtils, CommonUtils) {
     };
 
     return exports;
-})(limitDates, DateUtils, CommonUtils);
+})(LimitsModel, DateUtils, CommonUtils);

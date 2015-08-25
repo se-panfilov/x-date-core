@@ -1,6 +1,5 @@
-'use strict';
-
 var DateUtils = (function (Settings) {
+    'use strict';
 
     function getVal(datetime, method) {
         var date = new Date(datetime);
