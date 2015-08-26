@@ -4,14 +4,14 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
     function _getSelected(model, startDateTime, endDateTime) {
         var result;
 
-        var isBiggerThenStart = (model.datetime > startDateTime);
-        var isEqualToStart = (model.datetime === startDateTime);
-        var isLowerThenEnd = (model.datetime > endDateTime);
-        var isEqualToEnd = (model.datetime === endDateTime);
+        var isBiggerThenStart = (model.dt > startDateTime);
+        var isEqualToStart = (model.dt === startDateTime);
+        var isLowerThenEnd = (model.dt > endDateTime);
+        var isEqualToEnd = (model.dt === endDateTime);
 
         //start == 1; model == 1 or 2 or 3; end == 3;
         if ((isBiggerThenStart || isEqualToStart) || (isLowerThenEnd || isEqualToEnd)) {
-            result = new DateModel(model.datetime);
+            result = new DateModel(model.dt);
         } else
         //start == 1; model == 0
         if (!isBiggerThenStart) {
@@ -61,13 +61,13 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
             }
         };
 
-        model.datetime = CommonUtils.isValidNumber(model.datetime) ? model.datetime : null;
+        model.dt = CommonUtils.isValidNumber(model.dt) ? model.dt : null;
         startDateTime = CommonUtils.isValidNumber(startDateTime) ? startDateTime : null;
         endDateTime = CommonUtils.isValidNumber(endDateTime) ? endDateTime : null;
 
         exports.selected = _getSelected(model, startDateTime, endDateTime);
-        var selectedYear = DateUtils.getYear(exports.selected.datetime);
-        var selectedMonth = DateUtils.getMonth(exports.selected.datetime);
+        var selectedYear = DateUtils.getYear(exports.selected.dt);
+        var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
         _private._limitDates = new LimitsModel(startDateTime, endDateTime);
         _private._start = startDateTime;

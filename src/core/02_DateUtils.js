@@ -27,7 +27,7 @@ var DateUtils = (function (Config) {
             return new Date(year, month + 1, 0).getDate();
         },
         isValidModel: function (model) {
-            return !!model && (!!model.datetime || model.datetime === 0);
+            return !!model && (!!model.dt || model.dt === 0);
         },
         isDateUpperStartLimit: function (dt, startLimitTime) {
             if (!startLimitTime) return true;

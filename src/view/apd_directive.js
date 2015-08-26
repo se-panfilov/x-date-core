@@ -39,7 +39,7 @@ var angularView = (function (DateUtils, DataClass, Config) {
                     var ngModelWatcher = {
                         handler: null,
                         start: function (callback) {
-                            ngModelWatcher.handler = scope.$watch('ngModel.datetime', function (value, oldValue) {
+                            ngModelWatcher.handler = scope.$watch('ngModel.dt', function (value, oldValue) {
                                 if (callback) {
                                     callback(value, oldValue)
                                 }
@@ -97,7 +97,7 @@ var angularView = (function (DateUtils, DataClass, Config) {
                         var initDatetime;
 
                         if (isInitModelValid) {
-                            initDatetime = model.datetime
+                            initDatetime = model.dt
                         } else {
                             initDatetime = new Date().getTime();
                         }
@@ -120,7 +120,7 @@ var angularView = (function (DateUtils, DataClass, Config) {
                     scope.onDaySelectChanged = function (day) {
                         if (!day) return;
 
-                        var datetime = getLimitSafeDatetime(scope.data.selected.day, scope.data.selected.month, scope.data.selected.year);
+                        var datetime = getLimitSafeDatetime(scope.data.selected.d, scope.data.selected.m, scope.data.selected.y);
                         updateModel(datetime);
                     };
 
@@ -128,8 +128,8 @@ var angularView = (function (DateUtils, DataClass, Config) {
                         if (!month && month !== 0) return;
 
                         var datetime;
-                        var year = scope.data.selected.year;
-                        var day = scope.data.selected.day;
+                        var year = scope.data.selected.y;
+                        var day = scope.data.selected.d;
 
                         datetime = getLimitSafeDatetime(day, month, year);
                         updateModel(datetime);
@@ -140,8 +140,8 @@ var angularView = (function (DateUtils, DataClass, Config) {
                     scope.onYearSelectChanged = function (year) {
                         if (!year && year !== 0) return;
 
-                        var month = scope.data.selected.month;
-                        var day = scope.data.selected.day;
+                        var month = scope.data.selected.m;
+                        var day = scope.data.selected.d;
 
                         var datetime = getLimitSafeDatetime(day, month, year);
                         updateModel(datetime);
