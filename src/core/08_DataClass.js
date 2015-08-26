@@ -1,25 +1,25 @@
 var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
     'use strict';
 
-    function _getSelected(model, startDateTime, endDateTime) {
+    function _getSelected(model, start, end) {
         var result;
 
-        var isBiggerThenStart = (model.dt > startDateTime);
-        var isEqualToStart = (model.dt === startDateTime);
-        var isLowerThenEnd = (model.dt > endDateTime);
-        var isEqualToEnd = (model.dt === endDateTime);
+        var isUpperStart = (model.dt > start);
+        var isEqualStart = (model.dt === start);
+        var isLowerEnd = (model.dt > end);
+        var isEqualEnd = (model.dt === end);
 
         //start == 1; model == 1 or 2 or 3; end == 3;
-        if ((isBiggerThenStart || isEqualToStart) || (isLowerThenEnd || isEqualToEnd)) {
+        if ((isUpperStart || isEqualStart) || (isLowerEnd || isEqualEnd)) {
             result = new DateModel(model.dt);
         } else
         //start == 1; model == 0
-        if (!isBiggerThenStart) {
-            result = new DateModel(startDateTime);
+        if (!isUpperStart) {
+            result = new DateModel(start);
         } else
         //model == 4; end == 3;
-        if (!isBiggerThenStart) {
-            result = new DateModel(endDateTime);
+        if (!isUpperStart) {
+            result = new DateModel(end);
         }
         //paranoid case
         else {
@@ -29,7 +29,7 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         return result;
     }
 
-    return function (model, startDateTime, endDateTime) {
+    return function (model, start, end) {
 
         var _private = {
             _start: null,
@@ -62,20 +62,20 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         };
 
         model.dt = CommonUtils.isValidNumber(model.dt) ? model.dt : null;
-        startDateTime = CommonUtils.isValidNumber(startDateTime) ? startDateTime : null;
-        endDateTime = CommonUtils.isValidNumber(endDateTime) ? endDateTime : null;
+        start = CommonUtils.isValidNumber(start) ? start : null;
+        end = CommonUtils.isValidNumber(end) ? end : null;
 
-        exports.selected = _getSelected(model, startDateTime, endDateTime);
+        exports.selected = _getSelected(model, start, end);
         var selectedYear = DateUtils.getYear(exports.selected.dt);
         var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
-        _private._limitDates = new LimitsModel(startDateTime, endDateTime);
-        _private._start = startDateTime;
-        _private._end = endDateTime;
+        _private._limitDates = new LimitsModel(start, end);
+        _private._start = start;
+        _private._end = end;
 
-        exports.list.y = YearsUtils.getYearsList(startDateTime, endDateTime, exports.selected, _private._limitDates);
-        exports.list.m = MonthUtils.getMonthList(startDateTime, endDateTime, selectedYear, _private._limitDates);
-        exports.list.d = DaysUtils.getDaysList(startDateTime, endDateTime, selectedYear, selectedMonth, exports.selected, _private._limitDates);
+        exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _private._limitDates);
+        exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _private._limitDates);
+        exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _private._limitDates);
 
         return exports;
     }

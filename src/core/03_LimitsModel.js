@@ -1,7 +1,7 @@
 var LimitsModel = (function (DateUtils) {
     'use strict';
 
-    function LimitsModel(startDt, endDt) {
+    function LimitsModel(start, end) {
 
         var exports = {
             start: {},
@@ -34,8 +34,8 @@ var LimitsModel = (function (DateUtils) {
             return this;
         }
 
-        _setStart(startDt);
-        _setEnd(endDt);
+        _setStart(start);
+        _setEnd(end);
         _setNow();
         
         return exports;

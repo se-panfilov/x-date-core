@@ -2,41 +2,41 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
-        getYearsList: function (startDateTime, endDateTime, selected, limitsModel) {
+        getYearsList: function (startDt, endDt, model, limitsModel) {
             var result = [];
             var DEFAULT_YEARS_COUNT = 10;
 
             var start = limitsModel.start.y;
             var end = limitsModel.end.y;
             var now = limitsModel.now.y;
-            var selectedYear = DateUtils.getYear(selected.dt);
+            var selectedYear = DateUtils.getYear(model.dt);
             var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
             var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
             latestPossibleYear = latestPossibleYear + (DEFAULT_YEARS_COUNT - 1);
             firstPossibleYear = firstPossibleYear - (DEFAULT_YEARS_COUNT - 1);
 
             //start = 2011, end = 2014
-            if ((startDateTime && endDateTime) && (startDateTime < endDateTime)) {
+            if ((startDt && endDt) && (startDt < endDt)) {
                 result = CommonUtils.getArrayOfNumbers(start, end);
             }
 
             //start = 2014, end = 2011
-            else if ((startDateTime && endDateTime) && (startDateTime > endDateTime)) {
+            else if ((startDt && endDt) && (startDt > endDt)) {
                 result = CommonUtils.getArrayOfNumbers(end, start);
             }
 
             //start = 2011, end = 2011
-            else if ((startDateTime && endDateTime) && (startDateTime === endDateTime)) {
+            else if ((startDt && endDt) && (startDt === endDt)) {
                 result = CommonUtils.getArrayOfNumbers(start, end);
             }
 
             //start = 2014, end = null
-            else if (startDateTime && !endDateTime) {
+            else if (startDt && !endDt) {
                 result = CommonUtils.getArrayOfNumbers(start, latestPossibleYear);
             }
 
             //start = null, end = 2014
-            else if (!startDateTime && endDateTime) {
+            else if (!startDt && endDt) {
                 //now = 2013 (or 2014),  end = 2014
                 if (limitsModel.end.y >= limitsModel.now.y) {
 
@@ -55,7 +55,7 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
             }
 
             //start = null, end = null
-            else if (!startDateTime && !endDateTime) {
+            else if (!startDt && !endDt) {
                 result = CommonUtils.getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
             }
 

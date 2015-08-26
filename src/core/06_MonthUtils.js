@@ -2,17 +2,17 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
-        getMonthList: function (startDateTime, endDateTime, selectedYear) {
+        getMonthList: function (startDt, endDt, selectedYear) {
             var result;
             var START_MONTH = 0;
             var END_MONTH = 11;
 
             //TODO (S.Panfilov)  check
-            if (startDateTime || endDateTime) {
-                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.start.y === selectedYear : false;
-                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.end.y === selectedYear : false;
-                var start = (startDateTime) ? LimitsModel.start.m : START_MONTH;
-                var end = (endDateTime) ? LimitsModel.end.m : END_MONTH;
+            if (startDt || endDt) {
+                var isYearOfLowerLimit = (startDt) ? LimitsModel.start.y === selectedYear : false;
+                var isYearOfUpperLimit = (endDt) ? LimitsModel.end.y === selectedYear : false;
+                var start = (startDt) ? LimitsModel.start.m : START_MONTH;
+                var end = (endDt) ? LimitsModel.end.m : END_MONTH;
 
                 // startYear == 2015, nowYear == 2015, endYear == 2015
                 if (isYearOfLowerLimit && isYearOfUpperLimit) {

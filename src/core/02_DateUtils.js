@@ -1,27 +1,27 @@
 var DateUtils = (function (Config) {
     'use strict';
 
-    function getVal(datetime, method) {
-        var date = new Date(datetime);
+    function getVal(dt, method) {
+        var date = new Date(dt);
         return method.call(date);
     }
 
     var exports = {
-        getDay: function (datetime) {
+        getDay: function (dt) {
             var method = (Config.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
-            return getVal(datetime, method);
+            return getVal(dt, method);
         },
-        getDayOfWeek: function (datetime) {
+        getDayOfWeek: function (dt) {
             var method = (Config.isUTC) ? Date.prototype.getUTCDay : Date.prototype.getDay;
-            return getVal(datetime, method);
+            return getVal(dt, method);
         },
-        getYear: function (datetime) {
+        getYear: function (dt) {
             var method = (Config.isUTC) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
-            return getVal(datetime, method);
+            return getVal(dt, method);
         },
-        getMonth: function (datetime) {
+        getMonth: function (dt) {
             var method = (Config.isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
-            return getVal(datetime, method);
+            return getVal(dt, method);
         },
         getDaysInMonth: function (month, year) {
             return new Date(year, month + 1, 0).getDate();
@@ -29,16 +29,16 @@ var DateUtils = (function (Config) {
         isValidModel: function (model) {
             return !!model && (!!model.dt || model.dt === 0);
         },
-        isDateUpperStartLimit: function (dt, startLimitTime) {
-            if (!startLimitTime) return true;
-            return (dt > startLimitTime);
+        isDateUpperStartLimit: function (dt, start) {
+            if (!start) return true;
+            return (dt > start);
         },
-        isDateLowerEndLimit: function (dt, endLimitTime) {
-            if (!endLimitTime) return true;
-            return (dt < endLimitTime);
+        isDateLowerEndLimit: function (dt, end) {
+            if (!end) return true;
+            return (dt < end);
         },
-        isDateBetweenLimits: function (dt, startLimitTime, endLimitTime) {
-            return (exports.isDateUpperStartLimit(dt, startLimitTime) && exports.isDateLowerEndLimit(dt, endLimitTime));
+        isDateBetweenLimits: function (dt, start, end) {
+            return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
         }
     };
 

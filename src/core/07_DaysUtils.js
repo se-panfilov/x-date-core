@@ -2,23 +2,23 @@ var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
-        getDaysList: function (startDateTime, endDateTime, selectedYear, selectedMonth) {
+        getDaysList: function (startDt, endDt, year, month) {
             var result;
             var START_DAY = 1;
-            var lastDayInMonth = DateUtils.getDaysInMonth(selectedMonth, selectedYear);
+            var lastDayInMonth = DateUtils.getDaysInMonth(month, year);
 
             //TODO (S.Panfilov)  check
-            if (startDateTime || endDateTime) {
-                var isYearOfLowerLimit = (startDateTime) ? LimitsModel.start.y === selectedYear : false;
-                var isYearOfUpperLimit = (endDateTime) ? LimitsModel.end.y === selectedYear : false;
-                var isMonthOfLowerLimit = (startDateTime) ? LimitsModel.start.m === selectedMonth : false;
-                var isMonthOfUpperLimit = (endDateTime) ? LimitsModel.end.m === selectedMonth : false;
+            if (startDt || endDt) {
+                var isYearOfLowerLimit = (startDt) ? LimitsModel.start.y === year : false;
+                var isYearOfUpperLimit = (endDt) ? LimitsModel.end.y === year : false;
+                var isMonthOfLowerLimit = (startDt) ? LimitsModel.start.m === month : false;
+                var isMonthOfUpperLimit = (endDt) ? LimitsModel.end.m === month : false;
 
                 var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
                 var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
 
-                var start = (startDateTime) ? LimitsModel.start.d : START_DAY;
-                var end = (endDateTime) ? LimitsModel.end.d : lastDayInMonth;
+                var start = (startDt) ? LimitsModel.start.d : START_DAY;
+                var end = (endDt) ? LimitsModel.end.d : lastDayInMonth;
 
                 if (isLowerLimit && isUpperLimit) {
                     result = CommonUtils.getArrayOfNumbers(start, end);

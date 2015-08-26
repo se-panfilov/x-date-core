@@ -1,13 +1,13 @@
 var DateModel = (function (DateUtils) {
     'use strict';
 
-    function DateModel(datetime) {
-        this.d = DateUtils.getDay(datetime);
-        this.dow = DateUtils.getDayOfWeek(datetime);
-        this.m = DateUtils.getMonth(datetime);
-        this.y = DateUtils.getYear(datetime);
-        this.dt = datetime;
-        this.tz = new Date(datetime).getTimezoneOffset();
+    function DateModel(dt) {
+        this.d = DateUtils.getDay(dt);
+        this.dow = DateUtils.getDayOfWeek(dt);
+        this.m = DateUtils.getMonth(dt);
+        this.y = DateUtils.getYear(dt);
+        this.dt = dt;
+        this.tz = new Date(dt).getTimezoneOffset();
 
         return this;
     }
