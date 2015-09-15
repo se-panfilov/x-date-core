@@ -1,25 +1,23 @@
 {
-  "name": "angular-pure-datepicker",
-  "version": "0.3.9",
-  "homepage": "https://github.com/se-panfilov/angular-pure-datepicker",
+  "name": "x-date-core",
+  "version": "0.0.1",
+  "homepage": "https://github.com/se-panfilov/x-date-core",
   "authors": [
     "S.Panfilov <se-panfilov@ya.ru> (https://se-panfilov.github.io)"
   ],
-  "description": "Angular pure datepicker",
-  "main": "angular-pure-datepicker.js",
+  "description": "Business logic core for datepicker",
+  "main": "x-date-core.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/se-panfilov/angular-pure-datepicker.git"
+    "url": "git://github.com/se-panfilov/x-date-core.git"
   },
   "bugs": {
-    "url": "https://github.com/se-panfilov/angular-pure-datepicker/issues"
+    "url": "https://github.com/se-panfilov/x-date-core/issues"
   },
   "keywords": [
-    "datepicker",
-    "pure",
-    "Angular",
-    "angularjs",
-    "Angular.js"
+    "date",
+    "core",
+    "datepicker"
   ],
   "license": "MIT",
   "ignore": [
