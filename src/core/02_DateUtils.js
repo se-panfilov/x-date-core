@@ -24,7 +24,8 @@ var DateUtils = (function (Config) {
             return getVal(dt, method);
         },
         getDaysInMonth: function (month, year) {
-            return new Date(year, month + 1, 0).getDate();
+            var method = (Config.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+            return method.call(new Date(year, month + 1, 0));
         },
         isValidModel: function (model) {
             return !!model && (!!model.dt || model.dt === 0);
