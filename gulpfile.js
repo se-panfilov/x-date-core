@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'), concat, rename, uglify, sourcemaps, watch, changed,
-    ngAnnotate, size, order, install, jshint, stylish;
+    size, install, jshint, stylish, todo;
 
 var src = 'src/*.js';
 
@@ -11,7 +11,7 @@ var dest = {
 };
 
 gulp.task('install', function () {
-    var install = install || require("gulp-install");
+    install = install || require("gulp-install");
 
     gulp.src(['./bower.json', './package.json'])
         .pipe(install());
@@ -32,7 +32,7 @@ gulp.task('lint', function () {
         .pipe(jshint.reporter(stylish));
 });
 gulp.task('todo', function () {
-    var todo = require('gulp-todo');
+    todo = require('gulp-todo');
 
     gulp.src('src/**/*.*')
         .pipe(todo())
@@ -54,6 +54,7 @@ gulp.task('js', function () {
     rename = rename || require('gulp-rename');
     concat = concat || require('gulp-concat');
 
+    //TODO (S.Panfilov) add "changed" support
     return gulp.src(src)
         .pipe(concat('x-date-core.js'))
         .pipe(gulp.dest(dest.dist))

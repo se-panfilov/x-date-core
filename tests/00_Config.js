@@ -1,6 +1,8 @@
 var expect = require('chai').expect;
 
-var some = require('../../src/core/00_Config.js');
+var some = require('../src/00_Config.js');
+
+
 
 describe("Module", function() {
 
