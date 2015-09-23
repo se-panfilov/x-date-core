@@ -45,6 +45,8 @@ var CommonUtils = (function () {
             return result;
         },
         intArraySort: function (arr, direction) {
+            var DESC = 'desc';
+
             function desc(a, b) {
                 return b - a;
             }
@@ -54,13 +56,13 @@ var CommonUtils = (function () {
                     return arr.sort(function (a, b) {
                         return a - b;
                     });
-                case "desc":
+                case DESC:
                     return arr.sort(desc);
             }
         },
         getIntArr: function (length) {
             if (!length && length !== 0) return;
-            return length ? exports._getIntArr(length - 1).concat(length) : [];
+            return length ? exports.getIntArr(length - 1).concat(length) : [];
         }
     };
 
@@ -76,23 +78,23 @@ var DateUtils = (function (Config) {
 
     var exports = {
         getDay: function (dt) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+            var method = (Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
             return getVal(dt, method);
         },
         getDayOfWeek: function (dt) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCDay : Date.prototype.getDay;
+            var method = (Config.isUtc) ? Date.prototype.getUTCDay : Date.prototype.getDay;
             return getVal(dt, method);
         },
         getYear: function (dt) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
+            var method = (Config.isUtc) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
             return getVal(dt, method);
         },
         getMonth: function (dt) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
+            var method = (Config.isUtc) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
             return getVal(dt, method);
         },
         getDaysInMonth: function (month, year) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+            var method = (Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
             return method.call(new Date(year, month + 1, 0));
         },
         isValidModel: function (model) {
@@ -188,8 +190,8 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
             var selectedYear = DateUtils.getYear(model.dt);
             var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
             var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
-            latestPossibleYear = latestPossibleYear + (DEFAULT_YEARS_COUNT - 1);
-            firstPossibleYear = firstPossibleYear - (DEFAULT_YEARS_COUNT - 1);
+            latestPossibleYear += (DEFAULT_YEARS_COUNT - 1);
+            firstPossibleYear -= (DEFAULT_YEARS_COUNT - 1);
 
             //start = 2011, end = 2014
             if ((startDt && endDt) && (startDt < endDt)) {
@@ -278,7 +280,7 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
                 result = CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
             }
 
-            return CommonUtils.intArraySort(result, Config.monthListDirection);
+            return CommonUtils.intArraySort(result, Config.monthDirection);
         }
     };
 
@@ -321,7 +323,7 @@ var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
                 result = CommonUtils.getArrayOfNumbers(START_DAY, lastDayInMonth);
             }
 
-            return CommonUtils.intArraySort(result, Config.daysListDirection);
+            return CommonUtils.intArraySort(result, Config.daysDirection);
         }
     };
 
@@ -341,17 +343,11 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         //start == 1; model == 1 or 2 or 3; end == 3;
         if ((isUpperStart || isEqualStart) || (isLowerEnd || isEqualEnd)) {
             result = new DateModel(model.dt);
-        } else
-        //start == 1; model == 0
-        if (!isUpperStart) {
+        } else if (!isUpperStart) { //start == 1; model == 0
             result = new DateModel(start);
-        } else
-        //model == 4; end == 3;
-        if (!isUpperStart) {
+        } else if (!isUpperStart) {         //model == 4; end == 3;
             result = new DateModel(end);
-        }
-        //paranoid case
-        else {
+        } else {//paranoid case
             result = new DateModel(new Date().getTime());
         }
 

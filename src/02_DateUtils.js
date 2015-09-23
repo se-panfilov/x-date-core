@@ -8,23 +8,23 @@ var DateUtils = (function (Config) {
 
     var exports = {
         getDay: function (dt) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+            var method = (Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
             return getVal(dt, method);
         },
         getDayOfWeek: function (dt) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCDay : Date.prototype.getDay;
+            var method = (Config.isUtc) ? Date.prototype.getUTCDay : Date.prototype.getDay;
             return getVal(dt, method);
         },
         getYear: function (dt) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
+            var method = (Config.isUtc) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
             return getVal(dt, method);
         },
         getMonth: function (dt) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
+            var method = (Config.isUtc) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
             return getVal(dt, method);
         },
         getDaysInMonth: function (month, year) {
-            var method = (Config.isUTC) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+            var method = (Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
             return method.call(new Date(year, month + 1, 0));
         },
         isValidModel: function (model) {

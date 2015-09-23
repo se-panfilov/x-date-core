@@ -35,7 +35,7 @@ var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
                 result = CommonUtils.getArrayOfNumbers(START_DAY, lastDayInMonth);
             }
 
-            return CommonUtils.intArraySort(result, Config.daysListDirection);
+            return CommonUtils.intArraySort(result, Config.daysDirection);
         }
     };
 

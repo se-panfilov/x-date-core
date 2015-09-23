@@ -17,6 +17,8 @@ var CommonUtils = (function () {
             return result;
         },
         intArraySort: function (arr, direction) {
+            var DESC = 'desc';
+
             function desc(a, b) {
                 return b - a;
             }
@@ -26,13 +28,13 @@ var CommonUtils = (function () {
                     return arr.sort(function (a, b) {
                         return a - b;
                     });
-                case "desc":
+                case DESC:
                     return arr.sort(desc);
             }
         },
         getIntArr: function (length) {
             if (!length && length !== 0) return;
-            return length ? exports._getIntArr(length - 1).concat(length) : [];
+            return length ? exports.getIntArr(length - 1).concat(length) : [];
         }
     };
 

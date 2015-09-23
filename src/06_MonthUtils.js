@@ -35,7 +35,7 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
                 result = CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
             }
 
-            return CommonUtils.intArraySort(result, Config.monthListDirection);
+            return CommonUtils.intArraySort(result, Config.monthDirection);
         }
     };
 

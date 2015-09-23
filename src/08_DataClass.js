@@ -12,17 +12,11 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         //start == 1; model == 1 or 2 or 3; end == 3;
         if ((isUpperStart || isEqualStart) || (isLowerEnd || isEqualEnd)) {
             result = new DateModel(model.dt);
-        } else
-        //start == 1; model == 0
-        if (!isUpperStart) {
+        } else if (!isUpperStart) { //start == 1; model == 0
             result = new DateModel(start);
-        } else
-        //model == 4; end == 3;
-        if (!isUpperStart) {
+        } else if (!isUpperStart) {         //model == 4; end == 3;
             result = new DateModel(end);
-        }
-        //paranoid case
-        else {
+        } else {//paranoid case
             result = new DateModel(new Date().getTime());
         }
 

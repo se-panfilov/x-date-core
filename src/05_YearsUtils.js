@@ -12,8 +12,8 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
             var selectedYear = DateUtils.getYear(model.dt);
             var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
             var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
-            latestPossibleYear = latestPossibleYear + (DEFAULT_YEARS_COUNT - 1);
-            firstPossibleYear = firstPossibleYear - (DEFAULT_YEARS_COUNT - 1);
+            latestPossibleYear += (DEFAULT_YEARS_COUNT - 1);
+            firstPossibleYear -= (DEFAULT_YEARS_COUNT - 1);
 
             //start = 2011, end = 2014
             if ((startDt && endDt) && (startDt < endDt)) {
