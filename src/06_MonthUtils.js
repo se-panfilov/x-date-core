@@ -1,17 +1,17 @@
-exports.MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
+exports.MonthUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
     return {
-        getMonthList: function (startDt, endDt, selectedYear) {
+        getMonthList: function (startDt, endDt, selectedYear, limitsModel) {
             var result;
             var START_MONTH = 0;
             var END_MONTH = 11;
 
             if (startDt || endDt) {
-                var isYearOfLowerLimit = (startDt) ? LimitsModel.start.y === selectedYear : false;
-                var isYearOfUpperLimit = (endDt) ? LimitsModel.end.y === selectedYear : false;
-                var start = (startDt) ? LimitsModel.start.m : START_MONTH;
-                var end = (endDt) ? LimitsModel.end.m : END_MONTH;
+                var isYearOfLowerLimit = (startDt) ? limitsModel.start.y === selectedYear : false;
+                var isYearOfUpperLimit = (endDt) ? limitsModel.end.y === selectedYear : false;
+                var start = (startDt) ? limitsModel.start.m : START_MONTH;
+                var end = (endDt) ? limitsModel.end.m : END_MONTH;
 
                 // startYear == 2015, nowYear == 2015, endYear == 2015
                 if (isYearOfLowerLimit && isYearOfUpperLimit) {
@@ -30,4 +30,4 @@ exports.MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
             return CommonUtils.intArraySort(result, Config.monthDirection);
         }
     };
-})(exports.LimitsModel, exports.DateUtils, exports.CommonUtils, exports.Config);
+})(exports.DateUtils, exports.CommonUtils, exports.Config);

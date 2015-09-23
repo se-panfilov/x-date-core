@@ -208,20 +208,20 @@ exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
         }
     };
 })(exports.DateUtils, exports.CommonUtils, exports.Config);
-exports.MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
+exports.MonthUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
     return {
-        getMonthList: function (startDt, endDt, selectedYear) {
+        getMonthList: function (startDt, endDt, selectedYear, limitsModel) {
             var result;
             var START_MONTH = 0;
             var END_MONTH = 11;
 
             if (startDt || endDt) {
-                var isYearOfLowerLimit = (startDt) ? LimitsModel.start.y === selectedYear : false;
-                var isYearOfUpperLimit = (endDt) ? LimitsModel.end.y === selectedYear : false;
-                var start = (startDt) ? LimitsModel.start.m : START_MONTH;
-                var end = (endDt) ? LimitsModel.end.m : END_MONTH;
+                var isYearOfLowerLimit = (startDt) ? limitsModel.start.y === selectedYear : false;
+                var isYearOfUpperLimit = (endDt) ? limitsModel.end.y === selectedYear : false;
+                var start = (startDt) ? limitsModel.start.m : START_MONTH;
+                var end = (endDt) ? limitsModel.end.m : END_MONTH;
 
                 // startYear == 2015, nowYear == 2015, endYear == 2015
                 if (isYearOfLowerLimit && isYearOfUpperLimit) {
@@ -240,27 +240,27 @@ exports.MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
             return CommonUtils.intArraySort(result, Config.monthDirection);
         }
     };
-})(exports.LimitsModel, exports.DateUtils, exports.CommonUtils, exports.Config);
-exports.DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
+})(exports.DateUtils, exports.CommonUtils, exports.Config);
+exports.DaysUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
     return {
-        getDaysList: function (startDt, endDt, year, month) {
+        getDaysList: function (startDt, endDt, year, month, limitsModel) {
             var result;
             var START_DAY = 1;
             var lastDayInMonth = DateUtils.getDaysInMonth(month, year);
 
             if (startDt || endDt) {
-                var isYearOfLowerLimit = (startDt) ? LimitsModel.start.y === year : false;
-                var isYearOfUpperLimit = (endDt) ? LimitsModel.end.y === year : false;
-                var isMonthOfLowerLimit = (startDt) ? LimitsModel.start.m === month : false;
-                var isMonthOfUpperLimit = (endDt) ? LimitsModel.end.m === month : false;
+                var isYearOfLowerLimit = (startDt) ? limitsModel.start.y === year : false;
+                var isYearOfUpperLimit = (endDt) ? limitsModel.end.y === year : false;
+                var isMonthOfLowerLimit = (startDt) ? limitsModel.start.m === month : false;
+                var isMonthOfUpperLimit = (endDt) ? limitsModel.end.m === month : false;
 
                 var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
                 var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
 
-                var start = (startDt) ? LimitsModel.start.d : START_DAY;
-                var end = (endDt) ? LimitsModel.end.d : lastDayInMonth;
+                var start = (startDt) ? limitsModel.start.d : START_DAY;
+                var end = (endDt) ? limitsModel.end.d : lastDayInMonth;
 
                 if (isLowerLimit && isUpperLimit) {
                     result = CommonUtils.getArrayOfNumbers(start, end);
@@ -278,8 +278,8 @@ exports.DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
             return CommonUtils.intArraySort(result, Config.daysDirection);
         }
     };
-})(exports.LimitsModel, exports.DateUtils, exports.CommonUtils, exports.Config);
-exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
+})(exports.DateUtils, exports.CommonUtils, exports.Config);
+exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
     'use strict';
 
     function _getSelected(model, start, end) {
@@ -355,7 +355,7 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
         return exports;
     };
 
-})(exports.DateUtils, exports.CommonUtils, exports.YearsUtils, exports.MonthUtils, exports.DaysUtils, exports.DateModel);
+})(exports.DateUtils, exports.CommonUtils, exports.YearsUtils, exports.MonthUtils, exports.DaysUtils, exports.DateModel, exports.LimitsModel);
     if (typeof module === 'object' && module.exports) module.exports = exports;
 
     return exports;})();
