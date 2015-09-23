@@ -60,9 +60,7 @@ gulp.task('js', function () {
         'var xDateCore = (function () {' +
         '\n\r    var exports = {};' +
         '\n\r<%= contents %>' +
-        '\n\r    if (typeof module === \'object\' && module.exports) {' +
-        '\n\r        module.exports = exports;' +
-        '\n\r    }' +
+        '\n\r    if (typeof module === \'object\' && module.exports) module.exports = exports;' +
         '\n\r' +
         '\n\r    return exports;' +
         '})();';

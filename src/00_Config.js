@@ -11,8 +11,3 @@ exports.Config = (function () {
         monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     };
 })();
-
-////TODO (S.Panfilov) test
-//if ( typeof module === 'object' && module.exports) {
-//    module.exports = Config;
-//}

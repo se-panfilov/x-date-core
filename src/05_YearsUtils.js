@@ -1,67 +1,45 @@
 exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
-    var exports = {
+    return {
         getYearsList: function (startDt, endDt, model, limitsModel) {
             var result = [];
             var DEFAULT_YEARS_COUNT = Config.defaultYearsCount;
 
-            var start = limitsModel.start.y;
-            var end = limitsModel.end.y;
-            var now = limitsModel.now.y;
+            var start = (limitsModel) ? limitsModel.start.y : null;
+            var end = (limitsModel) ? limitsModel.end.y : null;
+            var now = (limitsModel) ? limitsModel.now.y : null;
             var selectedYear = DateUtils.getYear(model.dt);
             var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
             var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
             latestPossibleYear += (DEFAULT_YEARS_COUNT - 1);
             firstPossibleYear -= (DEFAULT_YEARS_COUNT - 1);
 
-            //start = 2011, end = 2014
-            if ((startDt && endDt) && (startDt < endDt)) {
+            //TODO (S.Panfilov) why we use here limitModel's start but not startDt?
+            //TODO (S.Panfilov) Cur work point
+            if ((startDt && endDt) && (startDt < endDt)) { //start = 2011, end = 2014
                 result = CommonUtils.getArrayOfNumbers(start, end);
-            }
-
-            //start = 2014, end = 2011
-            else if ((startDt && endDt) && (startDt > endDt)) {
+            } else if ((startDt && endDt) && (startDt > endDt)) { //start = 2014, end = 2011
                 result = CommonUtils.getArrayOfNumbers(end, start);
-            }
-
-            //start = 2011, end = 2011
-            else if ((startDt && endDt) && (startDt === endDt)) {
+            } else if ((startDt && endDt) && (startDt === endDt)) { //start = 2011, end = 2011
                 result = CommonUtils.getArrayOfNumbers(start, end);
-            }
-
-            //start = 2014, end = null
-            else if (startDt && !endDt) {
+            } else if (startDt && !endDt) {  //start = 2014, end = null
                 result = CommonUtils.getArrayOfNumbers(start, latestPossibleYear);
-            }
-
-            //start = null, end = 2014
-            else if (!startDt && endDt) {
-                //now = 2013 (or 2014),  end = 2014
-                if (limitsModel.end.y >= limitsModel.now.y) {
-
+            } else if (!startDt && endDt) {  //start = null, end = 2014
+                if (limitsModel.end.y >= limitsModel.now.y) {  //now = 2013 (or 2014),  end = 2014
                     if ((firstPossibleYear - DEFAULT_YEARS_COUNT) > (end - DEFAULT_YEARS_COUNT)) {
                         result = CommonUtils.getArrayOfNumbers(firstPossibleYear, end);
                     } else {
                         result = CommonUtils.getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
                     }
-
-                }
-                //now = 2015,  end = 2014
-                else if (limitsModel.end.y > limitsModel.now.y) {
+                } else if (limitsModel.end.y > limitsModel.now.y) {  //now = 2015,  end = 2014
                     result = CommonUtils.getArrayOfNumbers(end - (DEFAULT_YEARS_COUNT - 1), end);
                 }
-
-            }
-
-            //start = null, end = null
-            else if (!startDt && !endDt) {
+            } else if (!startDt && !endDt) {  //start = null, end = null
                 result = CommonUtils.getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
             }
 
             return CommonUtils.intArraySort(result, Config.yearsDirection);
         }
     };
-
-    return exports;
 })(exports.DateUtils, exports.CommonUtils, exports.Config);
