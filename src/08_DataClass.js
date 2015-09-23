@@ -14,7 +14,7 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
             result = new DateModel(model.dt);
         } else if (!isUpperStart) { //start == 1; model == 0
             result = new DateModel(start);
-        } else if (!isUpperStart) {         //model == 4; end == 3;
+        } else if (!isUpperStart) { //model == 4; end == 3;
             result = new DateModel(end);
         } else {//paranoid case
             result = new DateModel(new Date().getTime());

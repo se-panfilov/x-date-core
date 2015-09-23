@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'), concat, rename, uglify, sourcemaps, watch, changed,
-    size, install, jshint, stylish, todo;
+    size, install, jshint, stylish, todo, wrap;
 
 var src = 'src/*.js';
 
@@ -53,10 +53,15 @@ gulp.task('js', function () {
     uglify = uglify || require('gulp-uglify');
     rename = rename || require('gulp-rename');
     concat = concat || require('gulp-concat');
+    wrap = wrap || require('gulp-wrap');
+
+
+    var modulesStr = '(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}';
 
     //TODO (S.Panfilov) add "changed" support
     return gulp.src(src)
         .pipe(concat('x-date-core.js'))
+        .pipe(wrap('var xDateCore = (function () {\n\r<%= contents %>})();'))
         .pipe(gulp.dest(dest.dist))
         .pipe(sourcemaps.init())
         .pipe(uglify())

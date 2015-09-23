@@ -5,7 +5,7 @@ var some = require('../src/00_Config.js');
 
 
 describe("Module", function() {
-
+    console.log(some);
     it("is module an object", function() {
         expect(some).to.be.a('object');
     });

@@ -1,27 +1,18 @@
-'use strict';
+var xDateCore = (function () {
+  var Config = (function () {
+    'use strict';
 
-var Config = {
-    isUtc: false,
-    monthDirection: 'asc',
-    daysDirection: 'asc',
-    yearsDirection: 'desc',
-    defaultYearsCount: 50,
-    daysList: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-};
+    return {
+        isUtc: false,
+        monthDirection: 'asc',
+        daysDirection: 'asc',
+        yearsDirection: 'desc',
+        defaultYearsCount: 50,
+        daysList: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    };
+})();
 
-//
-//var Config = (function () {
-//    return {
-//        isUtc: false,
-//        monthDirection: 'asc',
-//        daysDirection: 'asc',
-//        yearsDirection: 'desc',
-//        daysList: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-//        monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-//    };
-//})();
-//
 ////TODO (S.Panfilov) test
 //if ( typeof module === 'object' && module.exports) {
 //    module.exports = Config;
@@ -345,7 +336,7 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
             result = new DateModel(model.dt);
         } else if (!isUpperStart) { //start == 1; model == 0
             result = new DateModel(start);
-        } else if (!isUpperStart) {         //model == 4; end == 3;
+        } else if (!isUpperStart) { //model == 4; end == 3;
             result = new DateModel(end);
         } else {//paranoid case
             result = new DateModel(new Date().getTime());
@@ -405,4 +396,4 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         return exports;
     };
 
-})(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);
+})(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);})();
