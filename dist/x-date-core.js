@@ -5,9 +5,27 @@ var Config = {
     monthDirection: 'asc',
     daysDirection: 'asc',
     yearsDirection: 'desc',
+    defaultYearsCount: 50,
     daysList: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 };
+
+//
+//var Config = (function () {
+//    return {
+//        isUtc: false,
+//        monthDirection: 'asc',
+//        daysDirection: 'asc',
+//        yearsDirection: 'desc',
+//        daysList: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+//        monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+//    };
+//})();
+//
+////TODO (S.Panfilov) test
+//if ( typeof module === 'object' && module.exports) {
+//    module.exports = Config;
+//}
 var CommonUtils = (function () {
     'use strict';
 
@@ -162,7 +180,7 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
     var exports = {
         getYearsList: function (startDt, endDt, model, limitsModel) {
             var result = [];
-            var DEFAULT_YEARS_COUNT = 10;
+            var DEFAULT_YEARS_COUNT = Config.defaultYearsCount;
 
             var start = limitsModel.start.y;
             var end = limitsModel.end.y;
@@ -217,7 +235,7 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
                 result = CommonUtils.getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
             }
 
-            return CommonUtils.intArraySort(result, Config.yearsListDirection);
+            return CommonUtils.intArraySort(result, Config.yearsDirection);
         }
     };
 

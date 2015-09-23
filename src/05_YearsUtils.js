@@ -4,7 +4,7 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
     var exports = {
         getYearsList: function (startDt, endDt, model, limitsModel) {
             var result = [];
-            var DEFAULT_YEARS_COUNT = 10;
+            var DEFAULT_YEARS_COUNT = Config.defaultYearsCount;
 
             var start = limitsModel.start.y;
             var end = limitsModel.end.y;
@@ -59,7 +59,7 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
                 result = CommonUtils.getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
             }
 
-            return CommonUtils.intArraySort(result, Config.yearsListDirection);
+            return CommonUtils.intArraySort(result, Config.yearsDirection);
         }
     };
 
