@@ -1,4 +1,4 @@
-var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
+exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
     'use strict';
 
     function _getSelected(model, start, end) {
@@ -74,4 +74,4 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         return exports;
     };
 
-})(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);
+})(exports.DateUtils, exports.CommonUtils, exports.YearsUtils, exports.MonthUtils, exports.DaysUtils, exports.DateModel);

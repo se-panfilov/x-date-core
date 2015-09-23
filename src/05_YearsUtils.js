@@ -1,4 +1,4 @@
-var YearsUtils = (function (DateUtils, CommonUtils, Config) {
+exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -64,4 +64,4 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
     };
 
     return exports;
-})(DateUtils, CommonUtils, Config);
+})(exports.DateUtils, exports.CommonUtils, exports.Config);

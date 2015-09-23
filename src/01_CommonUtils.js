@@ -1,4 +1,4 @@
-var CommonUtils = (function () {
+exports.CommonUtils = (function () {
     'use strict';
 
     var exports = {

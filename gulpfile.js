@@ -56,12 +56,21 @@ gulp.task('js', function () {
     wrap = wrap || require('gulp-wrap');
 
 
-    var modulesStr = '(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}';
+    var moduleWrap =
+        'var xDateCore = (function () {' +
+        '\n\r    var exports = {};' +
+        '\n\r<%= contents %>' +
+        '\n\r    if (typeof module === \'object\' && module.exports) {' +
+        '\n\r        module.exports = exports;' +
+        '\n\r    }' +
+        '\n\r' +
+        '\n\r    return exports;' +
+        '})();';
 
     //TODO (S.Panfilov) add "changed" support
     return gulp.src(src)
         .pipe(concat('x-date-core.js'))
-        .pipe(wrap('var xDateCore = (function () {\n\r<%= contents %>})();'))
+        .pipe(wrap(moduleWrap))
         .pipe(gulp.dest(dest.dist))
         .pipe(sourcemaps.init())
         .pipe(uglify())

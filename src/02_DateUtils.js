@@ -1,4 +1,4 @@
-var DateUtils = (function (Config) {
+exports.DateUtils = (function (Config) {
     'use strict';
 
     function getVal(dt, method) {
@@ -44,4 +44,4 @@ var DateUtils = (function (Config) {
     };
 
     return exports;
-})(Config);
+})(exports.Config);

@@ -1,4 +1,4 @@
-var DateModel = (function (DateUtils) {
+exports.DateModel = (function (DateUtils) {
     'use strict';
 
     function DateModel(dt) {
@@ -13,4 +13,4 @@ var DateModel = (function (DateUtils) {
     }
 
     return DateModel;
-})(DateUtils);
+})(exports.DateUtils);

@@ -1,4 +1,4 @@
-var Config = (function () {
+exports.Config = (function () {
     'use strict';
 
     return {

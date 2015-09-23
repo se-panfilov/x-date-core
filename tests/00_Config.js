@@ -1,17 +1,17 @@
 var expect = require('chai').expect;
 
-var some = require('../src/00_Config.js');
+var config = require('../dist/x-date-core.js').Config;
 
 
 
 describe("Module", function() {
-    console.log(some);
+    console.log(config);
     it("is module an object", function() {
-        expect(some).to.be.a('object');
+        expect(config).to.be.a('object');
     });
 
     it("is module not empty", function() {
-        expect(Object.keys(some)).to.have.length.greaterThan(0);
+        expect(Object.keys(config)).to.have.length.greaterThan(0);
     });
 
 });

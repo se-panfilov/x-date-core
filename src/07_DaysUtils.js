@@ -1,4 +1,4 @@
-var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
+exports.DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -40,4 +40,4 @@ var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils, Config);
+})(exports.LimitsModel, exports.DateUtils, exports.CommonUtils, exports.Config);

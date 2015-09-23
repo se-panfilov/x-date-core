@@ -1,5 +1,6 @@
 var xDateCore = (function () {
-  var Config = (function () {
+    var exports = {};
+    exports.Config = (function () {
     'use strict';
 
     return {
@@ -17,7 +18,7 @@ var xDateCore = (function () {
 //if ( typeof module === 'object' && module.exports) {
 //    module.exports = Config;
 //}
-var CommonUtils = (function () {
+exports.CommonUtils = (function () {
     'use strict';
 
     var exports = {
@@ -59,7 +60,7 @@ var CommonUtils = (function () {
 
     return exports;
 })();
-var DateUtils = (function (Config) {
+exports.DateUtils = (function (Config) {
     'use strict';
 
     function getVal(dt, method) {
@@ -105,8 +106,8 @@ var DateUtils = (function (Config) {
     };
 
     return exports;
-})(Config);
-var LimitsModel = (function (DateUtils) {
+})(exports.Config);
+exports.LimitsModel = (function (DateUtils) {
     'use strict';
 
     function LimitsModel(start, end) {
@@ -150,8 +151,8 @@ var LimitsModel = (function (DateUtils) {
     }
     
     return LimitsModel;
-})(DateUtils);
-var DateModel = (function (DateUtils) {
+})(exports.DateUtils);
+exports.DateModel = (function (DateUtils) {
     'use strict';
 
     function DateModel(dt) {
@@ -166,8 +167,8 @@ var DateModel = (function (DateUtils) {
     }
 
     return DateModel;
-})(DateUtils);
-var YearsUtils = (function (DateUtils, CommonUtils, Config) {
+})(exports.DateUtils);
+exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -233,8 +234,8 @@ var YearsUtils = (function (DateUtils, CommonUtils, Config) {
     };
 
     return exports;
-})(DateUtils, CommonUtils, Config);
-var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
+})(exports.DateUtils, exports.CommonUtils, exports.Config);
+exports.MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -276,8 +277,8 @@ var MonthUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils, Config);
-var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
+})(exports.LimitsModel, exports.DateUtils, exports.CommonUtils, exports.Config);
+exports.DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     'use strict';
 
     var exports = {
@@ -319,8 +320,8 @@ var DaysUtils = (function (LimitsModel, DateUtils, CommonUtils, Config) {
     };
 
     return exports;
-})(LimitsModel, DateUtils, CommonUtils, Config);
-var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
+})(exports.LimitsModel, exports.DateUtils, exports.CommonUtils, exports.Config);
+exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel) {
     'use strict';
 
     function _getSelected(model, start, end) {
@@ -396,4 +397,9 @@ var DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysU
         return exports;
     };
 
-})(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel);})();
+})(exports.DateUtils, exports.CommonUtils, exports.YearsUtils, exports.MonthUtils, exports.DaysUtils, exports.DateModel);
+    if (typeof module === 'object' && module.exports) {
+        module.exports = exports;
+    }
+
+    return exports;})();
