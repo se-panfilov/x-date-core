@@ -23,13 +23,17 @@ exports.CommonUtils = (function () {
             return isNumber && isNotInfinity;
         },
         getArrayOfNumbers: function (start, end) {
-            var result = [];
+            if (!exports.isValidNumber(start) || !exports.isValidNumber(end)) return [];
 
-            for (var i = start; i <= end; i++) {
-                result.push(i);
-            }
+            var isReverse = (start > end);
+            var targetLength = isReverse ? (start - end) + 1 : (end - start ) + 1;
+            var arr = new Array(targetLength);
+            var b = Array.apply(null, arr);
+            var result = b.map(function (discard, n) {
+                return (isReverse) ? n + end : n + start;
+            });
 
-            return result;
+            return (isReverse) ? result.reverse() : result;
         },
         intArraySort: function (arr, direction) {
             var DESC = 'desc';
