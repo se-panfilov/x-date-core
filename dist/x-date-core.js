@@ -18,7 +18,7 @@ exports.CommonUtils = (function () {
 
     var exports = {
         isValidNumber: function (num) {
-            var isNumber = !isNaN(num);
+            var isNumber = !isNaN(parseFloat(num));
             var isNotInfinity = isFinite(num);
             return isNumber && isNotInfinity;
         },
