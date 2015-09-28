@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'), concat, rename, uglify, sourcemaps, watch, changed,
-    size, install, jshint, stylish, todo, wrap;
+    size, install, jshint, stylish, todo, wrap, mocha, istanbul;
 
 var src = 'src/*.js';
 
@@ -31,6 +31,38 @@ gulp.task('lint', function () {
         }))
         .pipe(jshint.reporter(stylish));
 });
+
+//gulp.task('test', function (cb) { //TODO (S.Panfilov) test coverage should be fixed
+//    istanbul = istanbul || require('gulp-istanbul');
+//    mocha = mocha || require('gulp-mocha');
+//
+//    gulp.src('dist/x-date-core.js')
+//        .pipe(istanbul()) // Covering files
+//        .pipe(istanbul.hookRequire()) // Force `require` to return covered files
+//        .on('finish', function () {
+//            gulp.src('./test/*.js')
+//                .pipe(mocha())
+//                .pipe(istanbul.writeReports()) // Creating the reports after tests ran
+//                .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } })) // Enforce a coverage of at least 90%
+//                .on('end', cb);
+//        });
+//});
+
+//gulp.task('test', function () {
+//    var cover = require('gulp-coverage');//TODO (S.Panfilov)
+//    mocha = mocha || require('gulp-mocha');
+//
+//    return gulp.src('./dist/x-date-core.js')
+//        .pipe(cover.instrument({
+//            pattern: ['./test/*js'],
+//            debugDirectory: 'debug'
+//        }))
+//        .pipe(mocha())
+//        .pipe(cover.gather())
+//        .pipe(cover.format())
+//        .pipe(gulp.dest('reports'));
+//});
+
 gulp.task('todo', function () {
     todo = require('gulp-todo');
 

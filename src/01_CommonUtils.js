@@ -13,8 +13,8 @@ exports.CommonUtils = (function () {
             var isReverse = (start > end);
             var targetLength = isReverse ? (start - end) + 1 : (end - start ) + 1;
             var arr = new Array(targetLength);
-            var b = Array.apply(null, arr);
-            var result = b.map(function (discard, n) {
+            var newArr = Array.apply(null, arr);
+            var result = newArr.map(function (d, n) {
                 return (isReverse) ? n + end : n + start;
             });
 
@@ -35,10 +35,6 @@ exports.CommonUtils = (function () {
                 case DESC:
                     return arr.sort(desc);
             }
-        },
-        getIntArr: function (length) {
-            if (!length && length !== 0) return;
-            return length ? exports.getIntArr(length - 1).concat(length) : [];
         }
     };
 

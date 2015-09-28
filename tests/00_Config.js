@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 var config = require('../dist/x-date-core.js').Config;
 
-describe("Config tests", function() {
+describe("Config", function() {
 
     it("is module an object", function() {
         expect(config).to.be.a('object');

@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 var assert = require('chai').assert;
 var CommonUtils = require('../dist/x-date-core.js').CommonUtils;
 
-describe("CommonUtils tests", function () {
+describe("CommonUtils", function () {
 
     it("is module an object", function () {
         expect(CommonUtils).to.be.a('object');
