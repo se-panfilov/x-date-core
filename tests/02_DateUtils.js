@@ -143,55 +143,159 @@ describe("Date Utils", function () {
             });
         });
 
-        describe("isValidModel", function () {
+    });
 
-            it("common case", function () {
-                var model = {dt: 1};
-                return expect(DateUtils.isValidModel(model)).to.be.true;
-            });
+    describe("isValidModel", function () {
 
-            it("empty model", function () {
-                var model = {};
-                return expect(DateUtils.isValidModel(model)).to.be.false;
-            });
+        it("common case", function () {
+            var model = {dt: 1};
+            return expect(DateUtils.isValidModel(model)).to.be.true;
+        });
 
-            it("null model", function () {
-                var model = null;
-                return expect(DateUtils.isValidModel(model)).to.be.false;
-            });
+        it("empty model", function () {
+            var model = {};
+            return expect(DateUtils.isValidModel(model)).to.be.false;
+        });
 
-            it("array model", function () {
-                var model = [];
-                return expect(DateUtils.isValidModel(model)).to.be.false;
-            });
+        it("null model", function () {
+            var model = null;
+            return expect(DateUtils.isValidModel(model)).to.be.false;
+        });
 
-            it("primitive model", function () {
-                var model = 123;
-                return expect(DateUtils.isValidModel(model)).to.be.false;
-            });
+        it("array model", function () {
+            var model = [];
+            return expect(DateUtils.isValidModel(model)).to.be.false;
+        });
 
-            it("primitive model", function () {
-                var model = {dt: null};
-                return expect(DateUtils.isValidModel(model)).to.be.false;
-            });
+        it("primitive model", function () {
+            var model = 123;
+            return expect(DateUtils.isValidModel(model)).to.be.false;
+        });
 
-            it("infinity datetime", function () {
-                var model = {dt: Infinity};
-                return expect(DateUtils.isValidModel(model)).to.be.false;
-            });
+        it("null datetime in model", function () {
+            var model = {dt: null};
+            return expect(DateUtils.isValidModel(model)).to.be.false;
+        });
 
-            it("string datetime model", function () {
-                var model = {dt: "123"};
-                return expect(DateUtils.isValidModel(model)).to.be.true;
-            });
+        it("infinity datetime", function () {
+            var model = {dt: Infinity};
+            return expect(DateUtils.isValidModel(model)).to.be.false;
+        });
 
-            it("model dt is 0", function () {
-                var model = {dt: 0};
-                return expect(DateUtils.isValidModel(model)).to.be.true;
-            });
+        it("string number datetime model", function () {
+            var model = {dt: "123"};
+            return expect(DateUtils.isValidModel(model)).to.be.true;
+        });
 
+        it("string datetime model", function () {
+            var model = {dt: "some"};
+            return expect(DateUtils.isValidModel(model)).to.be.false;
+        });
+
+        it("model dt is 0", function () {
+            var model = {dt: 0};
+            return expect(DateUtils.isValidModel(model)).to.be.true;
+        });
+
+    });
+
+    describe("isDateUpperStartLimit", function () {
+
+        it("datetime > start limit", function () {
+            var dt = new Date(2015, 1, 2).getTime();
+            var start = new Date(2015, 1, 1).getTime();
+
+            return expect(DateUtils.isDateUpperStartLimit(dt, start)).to.be.true;
+        });
+
+        it("datetime < start limit", function () {
+            var dt = new Date(2015, 1, 1).getTime();
+            var start = new Date(2015, 1, 2).getTime();
+
+            return expect(DateUtils.isDateUpperStartLimit(dt, start)).to.be.false;
+        });
+
+        it("datetime equal start limit", function () {
+            var dt = new Date(2015, 1, 1).getTime();
+            var start = new Date(2015, 1, 1).getTime();
+
+            return expect(DateUtils.isDateUpperStartLimit(dt, start)).to.be.false;
+        });
+
+        it("no datetime", function () {
+            var start = new Date(2015, 1, 1).getTime();
+
+            //var spy = sinon.spy(DateUtils, 'isDateUpperStartLimit');
+            return expect(function () {
+                DateUtils.isDateUpperStartLimit(undefined, start);
+            }).to.throw('NaN or null');
+            //DateUtils.isDateUpperStartLimit.restore();
+        });
+
+        it("no start limit", function () {
+            var dt = new Date(2015, 1, 1).getTime();
+            return expect(DateUtils.isDateUpperStartLimit(dt, undefined)).to.be.true;
+        });
+
+        it("no args", function () {
+            return expect(DateUtils.isDateUpperStartLimit()).to.be.true;
+        });
+
+        it("string args and datetime < start limit", function () {
+            var dt = new Date(2015, 1, 1).getTime().toString();
+            var start = new Date(2015, 1, 2).getTime().toString();
+
+            return expect(DateUtils.isDateUpperStartLimit(dt, start)).to.be.false;
+        });
+
+        it("string args and datetime > start limit", function () {
+            var dt = new Date(2015, 1, 2).getTime().toString();
+            var start = new Date(2015, 1, 1).getTime().toString();
+
+            return expect(DateUtils.isDateUpperStartLimit(dt, start)).to.be.true;
+        });
+
+        it("string args and datetime equal to start limit", function () {
+            var dt = new Date(2015, 1, 1).getTime().toString();
+            var start = new Date(2015, 1, 1).getTime().toString();
+
+            return expect(DateUtils.isDateUpperStartLimit(dt, start)).to.be.false;
+        });
+
+        it("Infinity start", function () {
+            var dt = new Date(2015, 1, 1).getTime();
+            var start = Infinity;
+
+            return expect(DateUtils.isDateUpperStartLimit(dt, start)).to.be.false;
+        });
+
+        it("Infinity datetime", function () {
+            var dt = Infinity;
+            var start = new Date(2015, 1, 1).getTime();
+
+            return expect(DateUtils.isDateUpperStartLimit(dt, start)).to.be.true;
+        });
+
+        it("NaN datetime", function () {
+            var dt = 'Adasdsd';
+            var start = new Date(2015, 1, 1).getTime();
+
+            //var spy = sinon.spy(DateUtils, 'isDateUpperStartLimit');
+            return expect(function () {
+                DateUtils.isDateUpperStartLimit(dt, start);
+            }).to.throw('NaN or null');
+            //DateUtils.isDateUpperStartLimit.restore();
 
         });
+
+    });
+
+    describe("isDateLowerEndLimit", function () {
+        //TODO (S.Panfilov)
+    });
+
+    describe("isDateBetweenLimits", function () {
+        //TODO (S.Panfilov)
     });
 
     describe("getVal", function () {

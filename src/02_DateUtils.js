@@ -28,15 +28,17 @@ exports.DateUtils = (function (Config) {
             return method.call(new Date(+year, (+month) + 1, 0));
         },
         isValidModel: function (model) {
-            return !!model && (!!model.dt || model.dt === 0) && (model.dt == +model.dt) && !Number.isNaN(+model.dt) && Number.isFinite(+model.dt);
+            return !!model && (!!model.dt || model.dt === 0) && !Number.isNaN(+model.dt) && Number.isFinite(+model.dt);
         },
         isDateUpperStartLimit: function (dt, start) {
             if (!start) return true;
-            return (dt > start);
+            if ((!dt && dt !== 0) || Number.isNaN(+dt) || Number.isNaN(+start)) throw 'NaN or null';
+            return (+dt > +start);
         },
         isDateLowerEndLimit: function (dt, end) {
             if (!end) return true;
-            return (dt < end);
+            if (Number.isNaN(+dt) || Number.isNaN(+end)) throw 'NaN or null';
+            return (+dt < +end);
         },
         isDateBetweenLimits: function (dt, start, end) {
             return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
