@@ -45,6 +45,104 @@ describe("Date Utils", function () {
             });
         });
 
+        describe("getDayOfWeek", function () {
+
+            it("common case", function () {
+                expect(DateUtils.getDayOfWeek(date)).to.be.equal(new Date(date).getUTCDay());
+            });
+
+            it("NaN arg", function () {
+                return expect(DateUtils.getDayOfWeek('random text')).to.be.NaN;
+            });
+
+            it("string num arg", function () {
+                expect(DateUtils.getDayOfWeek(date.toString())).to.be.equal(new Date(date).getUTCDay());
+            });
+
+            it("infinity case", function () {
+                return expect(DateUtils.getDayOfWeek(Infinity)).to.be.NaN;
+            });
+
+            it("no args case", function () {
+                return expect(DateUtils.getDayOfWeek()).to.be.NaN;
+            });
+        });
+
+        describe("getYear", function () {
+
+            it("common case", function () {
+                expect(DateUtils.getYear(date)).to.be.equal(new Date(date).getUTCFullYear());
+            });
+
+            it("NaN arg", function () {
+                return expect(DateUtils.getYear('random text')).to.be.NaN;
+            });
+
+            it("string num arg", function () {
+                expect(DateUtils.getYear(date.toString())).to.be.equal(new Date(date).getUTCFullYear());
+            });
+
+            it("infinity case", function () {
+                return expect(DateUtils.getYear(Infinity)).to.be.NaN;
+            });
+
+            it("no args case", function () {
+                return expect(DateUtils.getYear()).to.be.NaN;
+            });
+        });
+
+        describe("getMonth", function () {
+
+            it("common case", function () {
+                expect(DateUtils.getMonth(date)).to.be.equal(new Date(date).getUTCMonth());
+            });
+
+            it("NaN arg", function () {
+                return expect(DateUtils.getMonth('random text')).to.be.NaN;
+            });
+
+            it("string num arg", function () {
+                expect(DateUtils.getMonth(date.toString())).to.be.equal(new Date(date).getUTCMonth());
+            });
+
+            it("infinity case", function () {
+                return expect(DateUtils.getMonth(Infinity)).to.be.NaN;
+            });
+
+            it("no args case", function () {
+                return expect(DateUtils.getMonth()).to.be.NaN;
+            });
+        });
+
+        describe("getDaysInMonth", function () {
+
+            it("common case", function () {
+                var year = 2015;
+                var month = 1;
+                var resultDate = new Date(year, month + 1, 0);
+                expect(DateUtils.getDaysInMonth(month, year)).to.be.equal(resultDate.getUTCDate());
+            });
+
+            it("NaN arg", function () {
+                return expect(DateUtils.getDaysInMonth('random text')).to.be.NaN;
+            });
+
+            it("string num arg", function () {
+                var year = 2015;
+                var month = 1;
+                var resultDate = new Date(year, month + 1, 0);
+                expect(DateUtils.getDaysInMonth(month.toString(), year.toString())).to.be.equal(resultDate.getUTCDate());
+            });
+
+            it("infinity case", function () {
+                return expect(DateUtils.getDaysInMonth(Infinity)).to.be.NaN;
+            });
+
+            it("no args case", function () {
+                return expect(DateUtils.getDaysInMonth()).to.be.NaN;
+            });
+        });
+
 
     });
 

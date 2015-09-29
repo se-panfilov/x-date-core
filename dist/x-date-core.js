@@ -82,7 +82,7 @@ exports.DateUtils = (function (Config) {
         },
         getDaysInMonth: function (month, year) {
             var method = (Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
-            return method.call(new Date(year, month + 1, 0));
+            return method.call(new Date(+year, (+month) + 1, 0));
         },
         isValidModel: function (model) {
             return !!model && (!!model.dt || model.dt === 0);
