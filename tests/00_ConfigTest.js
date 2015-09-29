@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var config = require('../dist/x-date-core.js').Config;
+var config = require('../dist/x-date-core.test_only.js').Config;
 
 describe("Config", function() {
 
