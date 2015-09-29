@@ -3,7 +3,7 @@ exports.DateUtils = (function (Config) {
 
     function getVal(dt, method) {
         var date = new Date(+dt);
-        return method.call(date);
+        return (date && method) ? method.call(date) : null;
     }
 
     var exports = {

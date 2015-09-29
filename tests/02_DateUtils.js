@@ -1,5 +1,4 @@
 var expect = require('chai').expect;
-var assert = require('chai').assert;
 var sinon = require('sinon');
 var DateUtils = require('../dist/x-date-core.test_only.js').DateUtils;
 var config = require('../dist/x-date-core.test_only.js').Config;
@@ -26,37 +25,75 @@ describe("Date Utils", function () {
         describe("getDay", function () {
 
             it("common case", function () {
-                assert.equal(DateUtils.getDay(date), new Date(date).getUTCDate());
+                expect(DateUtils.getDay(date)).to.be.equal(new Date(date).getUTCDate());
             });
 
             it("NaN arg", function () {
-                assert.isTrue(Number.isNaN(DateUtils.getDay('random text')));
+                return expect(DateUtils.getDay('random text')).to.be.NaN;
             });
 
             it("string num arg", function () {
-                assert.equal(DateUtils.getDay(date.toString()), new Date(date).getUTCDate());
+                expect(DateUtils.getDay(date.toString())).to.be.equal(new Date(date).getUTCDate());
             });
 
             it("infinity case", function () {
-                assert.deepEqual(DateUtils.getDay(Infinity), Number.NaN);
+                return expect(DateUtils.getDay(Infinity)).to.be.NaN;
             });
 
             it("no args case", function () {
-                assert.deepEqual(DateUtils.getDay(), Number.NaN);
+                return expect(DateUtils.getDay()).to.be.NaN;
             });
         });
 
-        describe("getVal", function () {
 
-            it("common case", function () {
-                var datetime = new Date(2015, 1, 1).getTime();
-                var method = Date.prototype.getDate;
-                var result = new Date(datetime).getDate();
+    });
 
-                assert.equal(DateUtils._private.getVal(datetime, method), result);
-            });
+    describe("getVal", function () {
 
+        it("common case", function () {
+            var datetime = new Date(2015, 1, 1).getTime();
+            var method = Date.prototype.getDate;
+            var result = new Date(datetime).getDate();
 
+            expect(DateUtils._private.getVal(datetime, method)).to.be.equal(result);
         });
+
+        it("not date method", function () {
+            var datetime = new Date(2015, 1, 1).getTime();
+            var method = function () {
+                console.log('some');
+            };
+
+            return expect(DateUtils._private.getVal(datetime, method)).to.be.undefined;
+        });
+
+        it("no method", function () {
+            var datetime = new Date(2015, 1, 1).getTime();
+            return expect(DateUtils._private.getVal(datetime)).to.be.null;
+        });
+
+        it("no date", function () {
+            var method = Date.prototype.getDate;
+            return expect(DateUtils._private.getVal(undefined, method)).to.be.NaN;
+        });
+
+        it("string num datetime", function () {
+            var datetime = new Date(2015, 1, 1).getTime();
+            var method = Date.prototype.getDate;
+            var result = new Date(datetime).getDate();
+
+            expect(DateUtils._private.getVal(datetime.toString(), method)).to.be.equal(result);
+        });
+
+        it("string datetime", function () {
+            var method = Date.prototype.getDate;
+
+            return expect(DateUtils._private.getVal(undefined, method)).to.be.NaN;
+        });
+
+        it("no args", function () {
+            return expect(DateUtils._private.getVal()).to.be.null;
+        });
+
     });
 });
