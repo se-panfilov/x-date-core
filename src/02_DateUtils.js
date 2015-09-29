@@ -32,15 +32,20 @@ exports.DateUtils = (function (Config) {
         },
         isDateUpperStartLimit: function (dt, start) {
             if (!start) return true;
-            if ((!dt && dt !== 0) || Number.isNaN(+dt) || Number.isNaN(+start)) throw 'NaN or null';//TODO (S.Panfilov) should be a const
-            return (+dt > +start); //TODO (S.Panfilov) may be (+dt >= +end)
+            //TODO (S.Panfilov) should be a const
+            if ((!dt && dt !== 0) || Number.isNaN(+dt) || Number.isNaN(+start)) throw 'NaN or null';
+            //TODO (S.Panfilov) may be (+dt >= +end)
+            return (+dt > +start);
         },
         isDateLowerEndLimit: function (dt, end) {
             if (!end) return true;
-            if (Number.isNaN(+dt) || Number.isNaN(+end)) throw 'NaN or null';//TODO (S.Panfilov) should be a const
-            return (+dt < +end); //TODO (S.Panfilov) may be (+dt <= +end)
+            //TODO (S.Panfilov) should be a const
+            if (Number.isNaN(+dt) || Number.isNaN(+end)) throw 'NaN or null';
+            //TODO (S.Panfilov) may be (+dt <= +end)
+            return (+dt < +end);
         },
-        isDateBetweenLimits: function (dt, start, end) {//TODO (S.Panfilov) lowerAndEqual and UpperAndEqual?
+        isDateBetweenLimits: function (dt, start, end) {
+            //TODO (S.Panfilov) lowerAndEqual and UpperAndEqual?
             return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
         }
     };

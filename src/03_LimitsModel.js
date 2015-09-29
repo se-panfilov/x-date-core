@@ -14,7 +14,8 @@ exports.LimitsModel = (function (DateUtils) {
             exports.start.m = DateUtils.getMonth(dt);
             exports.start.y = DateUtils.getYear(dt);
             exports.start.dt = dt;
-            return this;//TODO (S.Panfilov) Possible strict violation
+            //TODO (S.Panfilov) Possible strict violation
+            return this;
         }
 
         function _setEnd(dt) {
@@ -22,7 +23,8 @@ exports.LimitsModel = (function (DateUtils) {
             exports.end.m = DateUtils.getMonth(dt);
             exports.end.y = DateUtils.getYear(dt);
             exports.end.dt = dt;
-            return this;//TODO (S.Panfilov) Possible strict violation
+            //TODO (S.Panfilov) Possible strict violation
+            return this;
         }
 
         function _setNow() {
@@ -31,7 +33,8 @@ exports.LimitsModel = (function (DateUtils) {
             exports.now.m = DateUtils.getMonth(dt);
             exports.now.y = DateUtils.getYear(dt);
             exports.now.dt = dt;
-            return this;//TODO (S.Panfilov) Possible strict violation
+            //TODO (S.Panfilov) Possible strict violation
+            return this;
         }
 
         _setStart(start);

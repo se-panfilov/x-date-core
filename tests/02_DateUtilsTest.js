@@ -363,7 +363,8 @@ describe("Date Utils", function () {
             //var spy = sinon.spy(DateUtils, 'isDateUpperStartLimit');
             return expect(function () {
                 DateUtils.isDateUpperStartLimit(undefined, start);
-            }).to.throw('NaN or null'); //TODO (S.Panfilov) should be a const
+                //TODO (S.Panfilov) NaN or null should be a const
+            }).to.throw('NaN or null');
             //DateUtils.isDateUpperStartLimit.restore();
         });
 
@@ -418,7 +419,8 @@ describe("Date Utils", function () {
             //var spy = sinon.spy(DateUtils, 'isDateUpperStartLimit');
             return expect(function () {
                 DateUtils.isDateUpperStartLimit(dt, start);
-            }).to.throw('NaN or null'); //TODO (S.Panfilov) should be a const
+                //TODO (S.Panfilov) NaN or null should be a const
+            }).to.throw('NaN or null');
             //DateUtils.isDateUpperStartLimit.restore();
 
         });
@@ -454,7 +456,8 @@ describe("Date Utils", function () {
             //var spy = sinon.spy(DateUtils, 'isDateLowerEndLimit');
             return expect(function () {
                 DateUtils.isDateLowerEndLimit(undefined, end);
-            }).to.throw('NaN or null'); //TODO (S.Panfilov) should be a const
+                //TODO (S.Panfilov) should be a const
+            }).to.throw('NaN or null');
             //DateUtils.isDateLowerEndLimit.restore();
         });
 
@@ -509,7 +512,8 @@ describe("Date Utils", function () {
             //var spy = sinon.spy(DateUtils, 'isDateLowerEndLimit');
             return expect(function () {
                 DateUtils.isDateLowerEndLimit(dt, end);
-            }).to.throw('NaN or null'); //TODO (S.Panfilov) should be a const
+                //TODO (S.Panfilov) should be a const
+            }).to.throw('NaN or null');
             //DateUtils.isDateLowerEndLimit.restore();
 
         });
@@ -574,7 +578,8 @@ describe("Date Utils", function () {
             return expect(DateUtils.isDateBetweenLimits(dt, start, end)).to.be.true;
         });
 
-        //it("NaN limits", function () { //TODO (S.Panfilov) check this case
+        //TODO (S.Panfilov) check this case
+        //it("NaN limits", function () {
         //    var start = NaN;
         //    var dt = new Date(2015, 1, 2).getTime();
         //    var end = 'asdasd';
@@ -584,7 +589,8 @@ describe("Date Utils", function () {
 
         it("null limits", function () {
             var dt = new Date(2015, 1, 2).getTime();
-            return expect(DateUtils.isDateBetweenLimits(dt, null, null)).to.be.true;//TODO (S.Panfilov) check
+            //TODO (S.Panfilov) check
+            return expect(DateUtils.isDateBetweenLimits(dt, null, null)).to.be.true;
         });
     });
 

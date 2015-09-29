@@ -32,7 +32,7 @@ gulp.task('lint', function () {
         .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('test', function (cb) { //TODO (S.Panfilov) test coverage should be fixed
+gulp.task('test', function (cb) {
     istanbul = istanbul || require('gulp-istanbul');
     mocha = mocha || require('gulp-mocha');
 
@@ -51,7 +51,9 @@ gulp.task('test', function (cb) { //TODO (S.Panfilov) test coverage should be fi
 gulp.task('todo', function () {
     todo = require('gulp-todo');
 
-    gulp.src('src/**/*.*')
+    var sources = 'src/**/*.js';
+    var tests = 'tests/**/*.js';
+    gulp.src([sources, tests])
         .pipe(todo())
         .pipe(gulp.dest('./'));
 });
