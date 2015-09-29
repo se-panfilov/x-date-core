@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'), concat, rename, uglify, sourcemaps, watch, changed,
-    size, install, jshint, stylish, todo, wrap, mocha, istanbul;
+    size, install, jshint, stylish, todo, wrap, mocha, istanbul, stripCode;
 
 var src = 'src/*.js';
 
@@ -86,7 +86,7 @@ gulp.task('js', function () {
     rename = rename || require('gulp-rename');
     concat = concat || require('gulp-concat');
     wrap = wrap || require('gulp-wrap');
-
+    stripCode = stripCode || require('gulp-strip-code');
 
     var moduleWrap =
         'var xDateCore = (function () {' +
@@ -99,8 +99,14 @@ gulp.task('js', function () {
 
     //TODO (S.Panfilov) add "changed" support
     return gulp.src(src)
-        .pipe(concat('x-date-core.js'))
+        .pipe(concat('x-date-core.test_only.js'))
         .pipe(wrap(moduleWrap))
+        .pipe(gulp.dest(dest.dist))
+        .pipe(stripCode({
+            start_comment: "START.TESTS_ONLY",
+            end_comment: "END.TESTS_ONLY"
+        }))
+        .pipe(rename({basename: 'x-date-core'}))
         .pipe(gulp.dest(dest.dist))
         .pipe(sourcemaps.init())
         .pipe(uglify())

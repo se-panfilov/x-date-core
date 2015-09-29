@@ -2,7 +2,7 @@ exports.DateUtils = (function (Config) {
     'use strict';
 
     function getVal(dt, method) {
-        var date = new Date(dt);
+        var date = new Date(+dt);
         return method.call(date);
     }
 
@@ -42,6 +42,11 @@ exports.DateUtils = (function (Config) {
             return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
         }
     };
+
+    /*START.TESTS_ONLY*/
+    exports._private = {};
+    exports._private.getVal = getVal;
+    /*END.TESTS_ONLY*/
 
     return exports;
 })(exports.Config);
