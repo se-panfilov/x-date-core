@@ -143,7 +143,55 @@ describe("Date Utils", function () {
             });
         });
 
+        describe("isValidModel", function () {
 
+            it("common case", function () {
+                var model = {dt: 1};
+                return expect(DateUtils.isValidModel(model)).to.be.true;
+            });
+
+            it("empty model", function () {
+                var model = {};
+                return expect(DateUtils.isValidModel(model)).to.be.false;
+            });
+
+            it("null model", function () {
+                var model = null;
+                return expect(DateUtils.isValidModel(model)).to.be.false;
+            });
+
+            it("array model", function () {
+                var model = [];
+                return expect(DateUtils.isValidModel(model)).to.be.false;
+            });
+
+            it("primitive model", function () {
+                var model = 123;
+                return expect(DateUtils.isValidModel(model)).to.be.false;
+            });
+
+            it("primitive model", function () {
+                var model = {dt: null};
+                return expect(DateUtils.isValidModel(model)).to.be.false;
+            });
+
+            it("infinity datetime", function () {
+                var model = {dt: Infinity};
+                return expect(DateUtils.isValidModel(model)).to.be.false;
+            });
+
+            it("string datetime model", function () {
+                var model = {dt: "123"};
+                return expect(DateUtils.isValidModel(model)).to.be.true;
+            });
+
+            it("model dt is 0", function () {
+                var model = {dt: 0};
+                return expect(DateUtils.isValidModel(model)).to.be.true;
+            });
+
+
+        });
     });
 
     describe("getVal", function () {
@@ -158,11 +206,12 @@ describe("Date Utils", function () {
 
         it("not date method", function () {
             var datetime = new Date(2015, 1, 1).getTime();
+            var expectVal = 123;
             var method = function () {
-                console.log('some');
+                return expectVal;
             };
 
-            return expect(DateUtils._private.getVal(datetime, method)).to.be.undefined;
+            return expect(DateUtils._private.getVal(datetime, method)).to.be.equal(expectVal);
         });
 
         it("no method", function () {

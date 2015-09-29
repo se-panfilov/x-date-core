@@ -28,7 +28,7 @@ exports.DateUtils = (function (Config) {
             return method.call(new Date(+year, (+month) + 1, 0));
         },
         isValidModel: function (model) {
-            return !!model && (!!model.dt || model.dt === 0);
+            return !!model && (!!model.dt || model.dt === 0) && (model.dt == +model.dt) && !Number.isNaN(+model.dt) && Number.isFinite(+model.dt);
         },
         isDateUpperStartLimit: function (dt, start) {
             if (!start) return true;
