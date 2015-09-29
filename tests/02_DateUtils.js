@@ -291,7 +291,94 @@ describe("Date Utils", function () {
     });
 
     describe("isDateLowerEndLimit", function () {
-        //TODO (S.Panfilov)
+
+        it("datetime > end limit", function () {
+            var dt = new Date(2015, 1, 2).getTime();
+            var end = new Date(2015, 1, 1).getTime();
+
+            return expect(DateUtils.isDateLowerEndLimit(dt, end)).to.be.false;
+        });
+
+        it("datetime < end limit", function () {
+            var dt = new Date(2015, 1, 1).getTime();
+            var end = new Date(2015, 1, 2).getTime();
+
+            return expect(DateUtils.isDateLowerEndLimit(dt, end)).to.be.true;
+        });
+
+        it("datetime equal end limit", function () {
+            var dt = new Date(2015, 1, 1).getTime();
+            var end = new Date(2015, 1, 1).getTime();
+
+            return expect(DateUtils.isDateLowerEndLimit(dt, end)).to.be.false;
+        });
+
+        it("no datetime", function () {
+            var end = new Date(2015, 1, 1).getTime();
+
+            //var spy = sinon.spy(DateUtils, 'isDateLowerEndLimit');
+            return expect(function () {
+                DateUtils.isDateLowerEndLimit(undefined, end);
+            }).to.throw('NaN or null');
+            //DateUtils.isDateLowerEndLimit.restore();
+        });
+
+        it("no end limit", function () {
+            var dt = new Date(2015, 1, 1).getTime();
+            return expect(DateUtils.isDateLowerEndLimit(dt, undefined)).to.be.true;
+        });
+
+        it("no args", function () {
+            return expect(DateUtils.isDateLowerEndLimit()).to.be.true;
+        });
+
+        it("string args and datetime < end limit", function () {
+            var dt = new Date(2015, 1, 1).getTime().toString();
+            var end = new Date(2015, 1, 2).getTime().toString();
+
+            return expect(DateUtils.isDateLowerEndLimit(dt, end)).to.be.true;
+        });
+
+        it("string args and datetime > end limit", function () {
+            var dt = new Date(2015, 1, 2).getTime().toString();
+            var end = new Date(2015, 1, 1).getTime().toString();
+
+            return expect(DateUtils.isDateLowerEndLimit(dt, end)).to.be.false;
+        });
+
+        it("string args and datetime equal to end limit", function () {
+            var dt = new Date(2015, 1, 1).getTime().toString();
+            var end = new Date(2015, 1, 1).getTime().toString();
+
+            return expect(DateUtils.isDateLowerEndLimit(dt, end)).to.be.false;
+        });
+
+        it("Infinity end", function () {
+            var dt = new Date(2015, 1, 1).getTime();
+            var end = Infinity;
+
+            return expect(DateUtils.isDateLowerEndLimit(dt, end)).to.be.true;
+        });
+
+        it("Infinity datetime", function () {
+            var dt = Infinity;
+            var end = new Date(2015, 1, 1).getTime();
+
+            return expect(DateUtils.isDateLowerEndLimit(dt, end)).to.be.false;
+        });
+
+        it("NaN datetime", function () {
+            var dt = 'Adasdsd';
+            var end = new Date(2015, 1, 1).getTime();
+
+            //var spy = sinon.spy(DateUtils, 'isDateLowerEndLimit');
+            return expect(function () {
+                DateUtils.isDateLowerEndLimit(dt, end);
+            }).to.throw('NaN or null');
+            //DateUtils.isDateLowerEndLimit.restore();
+
+        });
+
     });
 
     describe("isDateBetweenLimits", function () {
