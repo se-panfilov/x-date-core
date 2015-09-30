@@ -58,7 +58,7 @@ describe("LimitsModel", function () {
         expect(now.dt).to.be.a('Number');
     }
 
-    describe("limitsModel object creation tests", function () {
+    describe("LimitsModel object creation tests", function () {
         var dateStorage = {};
         var limitsModel;
 
