@@ -89,15 +89,20 @@ exports.DateUtils = (function (Config) {
         },
         isDateUpperStartLimit: function (dt, start) {
             if (!start) return true;
-            if ((!dt && dt !== 0) || Number.isNaN(+dt) || Number.isNaN(+start)) throw 'NaN or null';//TODO (S.Panfilov) should be a const
-            return (+dt > +start); //TODO (S.Panfilov) may be (+dt >= +end)
+            //TODO (S.Panfilov) should be a const
+            if ((!dt && dt !== 0) || Number.isNaN(+dt) || Number.isNaN(+start)) throw 'NaN or null';
+            //TODO (S.Panfilov) may be (+dt >= +end)
+            return (+dt > +start);
         },
         isDateLowerEndLimit: function (dt, end) {
             if (!end) return true;
-            if (Number.isNaN(+dt) || Number.isNaN(+end)) throw 'NaN or null';//TODO (S.Panfilov) should be a const
-            return (+dt < +end); //TODO (S.Panfilov) may be (+dt <= +end)
+            //TODO (S.Panfilov) should be a const
+            if (Number.isNaN(+dt) || Number.isNaN(+end)) throw 'NaN or null';
+            //TODO (S.Panfilov) may be (+dt <= +end)
+            return (+dt < +end);
         },
-        isDateBetweenLimits: function (dt, start, end) {//TODO (S.Panfilov) lowerAndEqual and UpperAndEqual?
+        isDateBetweenLimits: function (dt, start, end) {
+            //TODO (S.Panfilov) lowerAndEqual and UpperAndEqual?
             return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
         }
     };
@@ -121,19 +126,21 @@ exports.LimitsModel = (function (DateUtils) {
         };
 
         function _setStart(dt) {
-            exports.start.d = DateUtils.getDay(dt);
-            exports.start.m = DateUtils.getMonth(dt);
-            exports.start.y = DateUtils.getYear(dt);
-            exports.start.dt = dt;
-            return this;//TODO (S.Panfilov) Possible strict violation
+            exports.start.d = DateUtils.getDay(+dt);
+            exports.start.m = DateUtils.getMonth(+dt);
+            exports.start.y = DateUtils.getYear(+dt);
+            exports.start.dt = +dt;
+            //TODO (S.Panfilov) Possible strict violation
+            return this;
         }
 
         function _setEnd(dt) {
-            exports.end.d = DateUtils.getDay(dt);
-            exports.end.m = DateUtils.getMonth(dt);
-            exports.end.y = DateUtils.getYear(dt);
-            exports.end.dt = dt;
-            return this;//TODO (S.Panfilov) Possible strict violation
+            exports.end.d = DateUtils.getDay(+dt);
+            exports.end.m = DateUtils.getMonth(+dt);
+            exports.end.y = DateUtils.getYear(+dt);
+            exports.end.dt = +dt;
+            //TODO (S.Panfilov) Possible strict violation
+            return this;
         }
 
         function _setNow() {
@@ -142,12 +149,20 @@ exports.LimitsModel = (function (DateUtils) {
             exports.now.m = DateUtils.getMonth(dt);
             exports.now.y = DateUtils.getYear(dt);
             exports.now.dt = dt;
-            return this;//TODO (S.Panfilov) Possible strict violation
+            //TODO (S.Panfilov) Possible strict violation
+            return this;
         }
 
-        _setStart(start);
-        _setEnd(end);
+        if (start) _setStart(start);
+        if (end) _setEnd(end);
         _setNow();
+
+        /*START.TESTS_ONLY*/
+        exports._private = {};
+        exports._private._setStart = _setStart;
+        exports._private._setEnd = _setEnd;
+        exports._private._setNow = _setNow;
+        /*END.TESTS_ONLY*/
         
         return exports;
     }
@@ -313,7 +328,7 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
 
     return function (model, start, end) {
 
-        var _private = {
+        var _data = {
             _start: null,
             _end: null,
             _limitDates: null
@@ -327,18 +342,18 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
                 d: null
             },
             reloadYearsList: function () {
-                exports.list.y = YearsUtils.getYearsList(_private._start, _private._end);
+                exports.list.y = YearsUtils.getYearsList(_data._start, _data._end);
                 return this;
             },
             reloadMonthList: function () {
                 var selectedYear = DateUtils.getYear(exports.selected.dt);
-                exports.list.m = MonthUtils.getMonthList(_private._start, _private._end, selectedYear);
+                exports.list.m = MonthUtils.getMonthList(_data._start, _data._end, selectedYear);
                 return this;
             },
             reloadDaysList: function () {
                 var selectedYear = DateUtils.getYear(exports.selected.dt);
                 var selectedMonth = DateUtils.getMonth(exports.selected.dt);
-                exports.list.d = DaysUtils.getDaysList(_private._start, _private._end, selectedYear, selectedMonth);
+                exports.list.d = DaysUtils.getDaysList(_data._start, _data._end, selectedYear, selectedMonth);
                 return this;
             }
         };
@@ -351,13 +366,13 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
         var selectedYear = DateUtils.getYear(exports.selected.dt);
         var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
-        _private._limitDates = new LimitsModel(start, end);
-        _private._start = start;
-        _private._end = end;
+        _data._limitDates = new LimitsModel(start, end);
+        _data._start = start;
+        _data._end = end;
 
-        exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _private._limitDates);
-        exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _private._limitDates);
-        exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _private._limitDates);
+        exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _data._limitDates);
+        exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _data._limitDates);
+        exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _data._limitDates);
 
         return exports;
     };

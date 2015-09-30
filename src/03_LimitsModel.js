@@ -10,19 +10,19 @@ exports.LimitsModel = (function (DateUtils) {
         };
 
         function _setStart(dt) {
-            exports.start.d = DateUtils.getDay(dt);
-            exports.start.m = DateUtils.getMonth(dt);
-            exports.start.y = DateUtils.getYear(dt);
-            exports.start.dt = dt;
+            exports.start.d = DateUtils.getDay(+dt);
+            exports.start.m = DateUtils.getMonth(+dt);
+            exports.start.y = DateUtils.getYear(+dt);
+            exports.start.dt = +dt;
             //TODO (S.Panfilov) Possible strict violation
             return this;
         }
 
         function _setEnd(dt) {
-            exports.end.d = DateUtils.getDay(dt);
-            exports.end.m = DateUtils.getMonth(dt);
-            exports.end.y = DateUtils.getYear(dt);
-            exports.end.dt = dt;
+            exports.end.d = DateUtils.getDay(+dt);
+            exports.end.m = DateUtils.getMonth(+dt);
+            exports.end.y = DateUtils.getYear(+dt);
+            exports.end.dt = +dt;
             //TODO (S.Panfilov) Possible strict violation
             return this;
         }
@@ -37,9 +37,16 @@ exports.LimitsModel = (function (DateUtils) {
             return this;
         }
 
-        _setStart(start);
-        _setEnd(end);
+        if (start) _setStart(start);
+        if (end) _setEnd(end);
         _setNow();
+
+        /*START.TESTS_ONLY*/
+        exports._private = {};
+        exports._private._setStart = _setStart;
+        exports._private._setEnd = _setEnd;
+        exports._private._setNow = _setNow;
+        /*END.TESTS_ONLY*/
         
         return exports;
     }

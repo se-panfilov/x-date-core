@@ -25,7 +25,7 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
 
     return function (model, start, end) {
 
-        var _private = {
+        var _data = {
             _start: null,
             _end: null,
             _limitDates: null
@@ -39,18 +39,18 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
                 d: null
             },
             reloadYearsList: function () {
-                exports.list.y = YearsUtils.getYearsList(_private._start, _private._end);
+                exports.list.y = YearsUtils.getYearsList(_data._start, _data._end);
                 return this;
             },
             reloadMonthList: function () {
                 var selectedYear = DateUtils.getYear(exports.selected.dt);
-                exports.list.m = MonthUtils.getMonthList(_private._start, _private._end, selectedYear);
+                exports.list.m = MonthUtils.getMonthList(_data._start, _data._end, selectedYear);
                 return this;
             },
             reloadDaysList: function () {
                 var selectedYear = DateUtils.getYear(exports.selected.dt);
                 var selectedMonth = DateUtils.getMonth(exports.selected.dt);
-                exports.list.d = DaysUtils.getDaysList(_private._start, _private._end, selectedYear, selectedMonth);
+                exports.list.d = DaysUtils.getDaysList(_data._start, _data._end, selectedYear, selectedMonth);
                 return this;
             }
         };
@@ -63,13 +63,13 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
         var selectedYear = DateUtils.getYear(exports.selected.dt);
         var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
-        _private._limitDates = new LimitsModel(start, end);
-        _private._start = start;
-        _private._end = end;
+        _data._limitDates = new LimitsModel(start, end);
+        _data._start = start;
+        _data._end = end;
 
-        exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _private._limitDates);
-        exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _private._limitDates);
-        exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _private._limitDates);
+        exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _data._limitDates);
+        exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _data._limitDates);
+        exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _data._limitDates);
 
         return exports;
     };
