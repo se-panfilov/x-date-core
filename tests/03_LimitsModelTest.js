@@ -2,6 +2,7 @@ var expect = require('chai').expect;
 var LimitsModel = require('../dist/x-date-core.test_only.js').LimitsModel;
 
 describe("LimitsModel", function () {
+    'use strict';
 
     it("is module a function", function () {
         //TODO (S.Panfilov) didn't sure, may be it should be an object
@@ -34,36 +35,55 @@ describe("LimitsModel", function () {
         expect(Object.getPrototypeOf(limitsModel.now)).to.be.a('object');
     });
 
+    function checkStart(start, dateStorage) {
+        expect(start.d).to.be.equal(dateStorage.day);
+        expect(start.m).to.be.equal(dateStorage.month);
+        expect(start.y).to.be.equal(dateStorage.year);
+        expect(start.dt).to.be.equal(dateStorage.start);
+    }
+
+    function checkEnd(end, dateStorage) {
+        expect(end.d).to.be.equal(dateStorage.day + 1);
+        expect(end.m).to.be.equal(dateStorage.month + 1);
+        expect(end.y).to.be.equal(dateStorage.year + 1);
+        expect(end.dt).to.be.equal(dateStorage.end);
+    }
+
+    function checkNow(now) {
+        var expectedNow = new Date();
+
+        expect(now.d).to.be.equal(expectedNow.getDate());
+        expect(now.m).to.be.equal(expectedNow.getMonth());
+        expect(now.y).to.be.equal(expectedNow.getFullYear());
+        expect(now.dt).to.be.a('Number');
+    }
+
     describe("limitsModel object creation tests", function () {
-        var year;
-        var month;
-        var day;
-        var start;
-        var end;
+        var dateStorage = {};
         var limitsModel;
 
         beforeEach(function () {
-            year = 2015;
-            month = 2;
-            day = 3;
-            start = new Date(year, month, day).getTime();
-            end = new Date(year + 1, month + 1, day + 1).getTime();
-            limitsModel = new LimitsModel(start, end);
+            dateStorage.year = 2015;
+            dateStorage.month = 2;
+            dateStorage.day = 3;
+            dateStorage.start = new Date(dateStorage.year, dateStorage.month, dateStorage.day).getTime();
+            dateStorage.end = new Date(dateStorage.year + 1, dateStorage.month + 1, dateStorage.day + 1).getTime();
+            limitsModel = new LimitsModel(dateStorage.start, dateStorage.end);
         });
 
         afterEach(function () {
-            year = null;
-            month = null;
-            day = null;
-            start = null;
-            end = null;
+            dateStorage.year = null;
+            dateStorage.month = null;
+            dateStorage.day = null;
+            dateStorage.start = null;
+            dateStorage.end = null;
             limitsModel = null;
         });
 
         describe("Common Case", function () {
 
             beforeEach(function () {
-                limitsModel = new LimitsModel(start, end);
+                limitsModel = new LimitsModel(dateStorage.start, dateStorage.end);
             });
 
             afterEach(function () {
@@ -71,33 +91,22 @@ describe("LimitsModel", function () {
             });
 
             it("Common Case check start", function () {
-                expect(limitsModel.start.d).to.be.equal(day);
-                expect(limitsModel.start.m).to.be.equal(month);
-                expect(limitsModel.start.y).to.be.equal(year);
-                expect(limitsModel.start.dt).to.be.equal(start);
+                checkStart(limitsModel.start, dateStorage);
             });
 
             it("Common Case check end", function () {
-                expect(limitsModel.end.d).to.be.equal(day + 1);
-                expect(limitsModel.end.m).to.be.equal(month + 1);
-                expect(limitsModel.end.y).to.be.equal(year + 1);
-                expect(limitsModel.end.dt).to.be.equal(end);
+                checkEnd(limitsModel.end, dateStorage);
             });
 
             it("Common Case check now", function () {
-                var expectedNow = new Date();
-
-                expect(limitsModel.now.d).to.be.equal(expectedNow.getDate());
-                expect(limitsModel.now.m).to.be.equal(expectedNow.getMonth());
-                expect(limitsModel.now.y).to.be.equal(expectedNow.getFullYear());
-                expect(limitsModel.now.dt).to.be.a('Number');
+                checkNow(limitsModel.now);
             });
         });
 
         describe("No `new` keyword case", function () {
 
             beforeEach(function () {
-                limitsModel = LimitsModel(start, end);
+                limitsModel = LimitsModel(dateStorage.start, dateStorage.end);
             });
 
             afterEach(function () {
@@ -105,61 +114,38 @@ describe("LimitsModel", function () {
             });
 
             it("no `new` keyword check start", function () {
-                expect(limitsModel.start.d).to.be.equal(day);
-                expect(limitsModel.start.m).to.be.equal(month);
-                expect(limitsModel.start.y).to.be.equal(year);
-                expect(limitsModel.start.dt).to.be.equal(start);
+                checkStart(limitsModel.start, dateStorage);
             });
 
             it("no `new` keyword check end", function () {
-                expect(limitsModel.end.d).to.be.equal(day + 1);
-                expect(limitsModel.end.m).to.be.equal(month + 1);
-                expect(limitsModel.end.y).to.be.equal(year + 1);
-                expect(limitsModel.end.dt).to.be.equal(end);
+                checkEnd(limitsModel.end, dateStorage);
             });
 
             it("no `new` keyword check now", function () {
-                var expectedNow = new Date();
-
-                expect(limitsModel.now.d).to.be.equal(expectedNow.getDate());
-                expect(limitsModel.now.m).to.be.equal(expectedNow.getMonth());
-                expect(limitsModel.now.y).to.be.equal(expectedNow.getFullYear());
-                expect(limitsModel.now.dt).to.be.a('Number');
+                checkNow(limitsModel.now);
             });
         });
 
         describe("String number case", function () {
 
             beforeEach(function () {
-                limitsModel = LimitsModel(start.toString(), end.toString());
+                limitsModel = LimitsModel(dateStorage.start.toString(), dateStorage.end.toString());
             });
 
             afterEach(function () {
                 limitsModel = null;
             });
 
-
             it("no `new` keyword check start", function () {
-                expect(limitsModel.start.d).to.be.equal(day);
-                expect(limitsModel.start.m).to.be.equal(month);
-                expect(limitsModel.start.y).to.be.equal(year);
-                expect(limitsModel.start.dt).to.be.equal(start);
+                checkStart(limitsModel.start, dateStorage);
             });
 
             it("no `new` keyword check end", function () {
-                expect(limitsModel.end.d).to.be.equal(day + 1);
-                expect(limitsModel.end.m).to.be.equal(month + 1);
-                expect(limitsModel.end.y).to.be.equal(year + 1);
-                expect(limitsModel.end.dt).to.be.equal(end);
+                checkEnd(limitsModel.end, dateStorage);
             });
 
             it("no `new` keyword check now", function () {
-                var expectedNow = new Date();
-
-                expect(limitsModel.now.d).to.be.equal(expectedNow.getDate());
-                expect(limitsModel.now.m).to.be.equal(expectedNow.getMonth());
-                expect(limitsModel.now.y).to.be.equal(expectedNow.getFullYear());
-                expect(limitsModel.now.dt).to.be.a('Number');
+                checkNow(limitsModel.now);
             });
         });
 
