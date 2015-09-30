@@ -1,19 +1,34 @@
 exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
+    function _getValue(model, field) {
+        return (model) ? modal[field].y : null;
+    }
+
+    function _getLatestPossibleYear(yearsCount, selectedYear, now) {
+        var result = (selectedYear > now) ? selectedYear : now;
+        result += (yearsCount - 1);
+        return result;
+    }
+
+    function _getfirstPossibleYear(yearsCount, selectedYear, now) {
+        var result = (selectedYear < now) ? selectedYear : now;
+        result -= (yearsCount - 1);
+        return result;
+    }
+
     return {
         getYearsList: function (startDt, endDt, model, limitsModel) {
             var result = [];
             var DEFAULT_YEARS_COUNT = Config.defaultYearsCount;
 
-            var start = (limitsModel) ? limitsModel.start.y : null;
-            var end = (limitsModel) ? limitsModel.end.y : null;
-            var now = (limitsModel) ? limitsModel.now.y : null;
+            var start = _getValue(limitsModel, 'start');
+            var end = _getValue(limitsModel, 'end');
+            var now = _getValue(limitsModel, 'now');
+
             var selectedYear = DateUtils.getYear(model.dt);
-            var latestPossibleYear = (selectedYear > now) ? selectedYear : now;
-            var firstPossibleYear = (selectedYear < now) ? selectedYear : now;
-            latestPossibleYear += (DEFAULT_YEARS_COUNT - 1);
-            firstPossibleYear -= (DEFAULT_YEARS_COUNT - 1);
+            var latestPossibleYear = _getLatestPossibleYear(DEFAULT_YEARS_COUNT, selectedYear, now);
+            var firstPossibleYear = _getfirstPossibleYear(DEFAULT_YEARS_COUNT, selectedYear, now);
 
             //TODO (S.Panfilov) why we use here limitModel's start but not startDt?
             //TODO (S.Panfilov) Cur work point
