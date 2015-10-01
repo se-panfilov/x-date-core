@@ -1,10 +1,6 @@
 exports.YearsUtils = (function (CommonUtils, Config) {
     'use strict';
 
-    function _getValue(model, field) {
-        return (model) ? model[field].y : null;
-    }
-
     function _getLatestPossibleYear(yearsCount, selectedYear, now) {
         var result = (selectedYear > now) ? selectedYear : now;
         result += (yearsCount - 1);
@@ -23,37 +19,39 @@ exports.YearsUtils = (function (CommonUtils, Config) {
         var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, nowYear);
         var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, nowYear);
 
-        var isBoth = startYear && endYear;
-        var isOnlyStart = startYear && !endYear;
-        var isOnlyEnd = !startYear && endYear;
-        var isStartLower = startYear < endYear;
-        var isEndLower = startYear > endYear;
-        var isStartEqualEnd = startYear === endYear;
-        var isEndUpperNow = endYear > nowYear;
-        var isEndEqualNow = endYear === nowYear;
+        var statement = {
+            isBoth: startYear && endYear,
+            isOnlyStart: startYear && !endYear,
+            isOnlyEnd: !startYear && endYear,
+            isStartLower: startYear < endYear,
+            isEndLower: startYear > endYear,
+            isStartEqualEnd: startYear === endYear,
+            isEndUpperNow: endYear > nowYear,
+            isEndEqualNow: endYear === nowYear
+        };
 
         //start = 2011, end = 2014
-        if (isBoth && isStartLower) {
+        if (statement.isBoth && statement.isStartLower) {
             return {from: startYear, to: endYear};
         }
 
         //start = 2014, end = 2011
-        if (isBoth && isEndLower) {
+        if (statement.isBoth && statement.isEndLower) {
             return {from: endYear, to: startYear};
         }
 
         //start = 2011, end = 2011
-        if (isBoth && isStartEqualEnd) {
+        if (statement.isBoth && statement.isStartEqualEnd) {
             return {from: startYear, to: endYear};
         }
 
         //start = 2014, end = null
-        if (isOnlyStart) {
+        if (statement.isOnlyStart) {
             return {from: startYear, to: latestPossibleYear};
         }
 
         //start = null, now = 2013 (or 2014), end = 2014
-        if (isOnlyEnd && (isEndUpperNow || isEndEqualNow)) {
+        if (statement.isOnlyEnd && (statement.isEndUpperNow || statement.isEndEqualNow)) {
             //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
             if ((firstPossibleYear - yearsCount) > (endYear - yearsCount)) {
                 return {from: firstPossibleYear, to: endYear};
@@ -63,18 +61,18 @@ exports.YearsUtils = (function (CommonUtils, Config) {
         }
 
         //now = 2015,  end = 2014
-        if (isOnlyEnd && isEndUpperNow) {
+        if (statement.isOnlyEnd && statement.isEndUpperNow) {
             return {from: endYear - (yearsCount - 1), to: endYear};
         }
 
         //start = null, end = null
-        if (isOnlyStart) {
+        if (statement.isOnlyStart) {
             return {from: firstPossibleYear, to: latestPossibleYear};
         }
     }
 
     var exports = {
-        getYearsList: function (selectedYear, startYear, endYear, nowYear, model) {
+        getYearsList: function (selectedYear, startYear, endYear, nowYear) {
             var range = _getRangeValues(selectedYear, startYear, endYear, nowYear);
             var result = CommonUtils.getArrayOfNumbers(range.from, range.to);
 
@@ -84,11 +82,11 @@ exports.YearsUtils = (function (CommonUtils, Config) {
 
     /*START.TESTS_ONLY*/
     exports._private = {};
-    exports._private._getValue = _getValue;
     exports._private._getLatestPossibleYear = _getLatestPossibleYear;
     exports._private._getFirstPossibleYear = _getFirstPossibleYear;
     exports._private._getRangeValues = _getRangeValues;
     /*END.TESTS_ONLY*/
 
     return exports;
-})(exports.CommonUtils, exports.Config);
+})
+(exports.CommonUtils, exports.Config);

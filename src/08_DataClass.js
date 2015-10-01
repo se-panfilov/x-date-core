@@ -63,13 +63,14 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
         var selectedYear = DateUtils.getYear(exports.selected.dt);
         var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
-        _data._limitDates = new LimitsModel(start, end);
+        _data.limitsModel = new LimitsModel(start, end);
         _data._start = start;
         _data._end = end;
 
-        exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _data._limitDates);
-        exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _data._limitDates);
-        exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _data._limitDates);
+        exports.list.y = YearsUtils.getYearsList(selectedYear, _data.limitsModel.start.y, _data.limitsModel.start.y, _data.limitsModel.start.y)
+        //exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _data.limitsModel);
+        exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _data.limitsModel);
+        exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _data.limitsModel);
 
         return exports;
     };
