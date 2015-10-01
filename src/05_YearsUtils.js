@@ -1,4 +1,4 @@
-exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
+exports.YearsUtils = (function (CommonUtils, Config) {
     'use strict';
 
     function _getValue(model, field) {
@@ -17,72 +17,65 @@ exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
         return result;
     }
 
-    function _getRangeValues(startDt, endDt, firstPossibleYear, latestPossibleYear, limitsModel, yearsCount, nowDate) {
-        var start = _getValue(limitsModel, 'start');
-        var end = _getValue(limitsModel, 'end');
+    function _getRangeValues(selectedYear, startYear, endYear, nowYear, yearsCount) {
 
-        var isBothLimits = startDt && endDt;
-        var isOnlyStartLimit = startDt && !endDt;
-        var isOnlyEndLimit = !startDt && endDt;
-        var isStartLowerThanEnd = startDt < endDt;
-        var isStartUpperThanEnd = startDt > endDt;
-        var isStartEqualToEnd = startDt === endDt;
+        var YEARS_COUNT = Config.defaultYearsCount;
+        var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, nowYear);
+        var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, nowYear);
+
+        var isBoth = startYear && endYear;
+        var isOnlyStart = startYear && !endYear;
+        var isOnlyEnd = !startYear && endYear;
+        var isStartLower = startYear < endYear;
+        var isEndLower = startYear > endYear;
+        var isStartEqualEnd = startYear === endYear;
+        var isEndUpperNow = endYear > nowYear;
+        var isEndEqualNow = endYear === nowYear;
 
         //start = 2011, end = 2014
-        if (isBothLimits && isStartLowerThanEnd) {
-            return {from: start, to: end};
+        if (isBoth && isStartLower) {
+            return {from: startYear, to: endYear};
         }
 
         //start = 2014, end = 2011
-        if (isBothLimits && isStartUpperThanEnd) {
-            return {from: end, to: start};
+        if (isBoth && isEndLower) {
+            return {from: endYear, to: startYear};
         }
 
         //start = 2011, end = 2011
-        if (isBothLimits && isStartEqualToEnd) {
-            return {from: start, to: end};
+        if (isBoth && isStartEqualEnd) {
+            return {from: startYear, to: endYear};
         }
 
         //start = 2014, end = null
-        if (isOnlyStartLimit) {
-            return {from: start, to: latestPossibleYear};
+        if (isOnlyStart) {
+            return {from: startYear, to: latestPossibleYear};
         }
 
-        //start = null, end = 2014
-        if (isOnlyEndLimit) {
-
-            //TODO (S.Panfilov) why we use here limitModel's start but not startDt?
-            //TODO (S.Panfilov) Cur work point
-            //now = 2013 (or 2014),  end = 2014
-            if (limitsModel.end.y >= limitsModel.now.y) {
-                if ((firstPossibleYear - yearsCount) > (end - yearsCount)) {
-                    return {from: firstPossibleYear, to: end};
-                } else {
-                    return {from: end - (yearsCount - 1), to: end};
-                }
+        //start = null, now = 2013 (or 2014), end = 2014
+        if (isOnlyEnd && (isEndUpperNow || isEndEqualNow)) {
+            //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
+            if ((firstPossibleYear - yearsCount) > (endYear - yearsCount)) {
+                return {from: firstPossibleYear, to: endYear};
+            } else {
+                return {from: endYear - (yearsCount - 1), to: endYear};
             }
+        }
 
-            //now = 2015,  end = 2014
-            if (limitsModel.end.y > limitsModel.now.y) {
-                return {from: end - (yearsCount - 1), to: end};
-            }
+        //now = 2015,  end = 2014
+        if (isOnlyEnd && isEndUpperNow) {
+            return {from: endYear - (yearsCount - 1), to: endYear};
         }
 
         //start = null, end = null
-        if (isOnlyStartLimit) {
+        if (isOnlyStart) {
             return {from: firstPossibleYear, to: latestPossibleYear};
         }
     }
 
     var exports = {
-        getYearsList: function (startDt, endDt, model, limitsModel) {
-            var YEARS_COUNT = Config.defaultYearsCount;
-            var now = _getValue(limitsModel, 'now');
-
-            var selectedYear = DateUtils.getYear(model.dt);
-            var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, now);
-            var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, now);
-            var range = _getRangeValues(startDt, endDt, firstPossibleYear, latestPossibleYear, limitsModel, YEARS_COUNT, now);
+        getYearsList: function (selectedYear, startYear, endYear, nowYear, model) {
+            var range = _getRangeValues(selectedYear, startYear, endYear, nowYear);
             var result = CommonUtils.getArrayOfNumbers(range.from, range.to);
 
             return CommonUtils.intArraySort(result, Config.yearsDirection);
@@ -98,4 +91,4 @@ exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
     /*END.TESTS_ONLY*/
 
     return exports;
-})(exports.DateUtils, exports.CommonUtils, exports.Config);
+})(exports.CommonUtils, exports.Config);
