@@ -196,22 +196,22 @@ exports.YearsUtils = (function (CommonUtils, Config) {
         return result;
     }
 
-    function _getRangeValues(selectedYear, startYear, endYear, nowYear, yearsCount) {
+    function _getRangeValues(selectedYear, startYear, endYear, nowYear) {
 
         var YEARS_COUNT = Config.defaultYearsCount;
         var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, nowYear);
         var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, nowYear);
 
         var statement = {
-            isBoth: startYear && endYear,
-            isBothNot: !startYear && !endYear,
-            isOnlyStart: startYear && !endYear,
-            isOnlyEnd: !startYear && endYear,
-            isStartLower: startYear < endYear,
-            isEndLower: startYear > endYear,
-            isStartEqualEnd: startYear === endYear,
-            isEndUpperNow: endYear > nowYear,
-            isEndEqualNow: endYear === nowYear
+            isBoth: !!(startYear && endYear),
+            isBothNot: !!(!startYear && !endYear),
+            isOnlyStart: !!(startYear && !endYear),
+            isOnlyEnd: !!(!startYear && endYear),
+            isStartLower: (startYear < endYear),
+            isEndLower: (startYear > endYear),
+            isStartEqualEnd: (startYear === endYear),
+            isEndUpperNow: (endYear > nowYear),
+            isEndEqualNow: (endYear === nowYear)
         };
 
         //start = 2011, end = 2014
@@ -234,19 +234,22 @@ exports.YearsUtils = (function (CommonUtils, Config) {
             return {from: startYear, to: latestPossibleYear};
         }
 
-        //start = null, now = 2013 (or 2014), end = 2014
-        if (statement.isOnlyEnd && (statement.isEndUpperNow || statement.isEndEqualNow)) {
-            //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
-            if ((firstPossibleYear - yearsCount) > (endYear - yearsCount)) {
-                return {from: firstPossibleYear, to: endYear};
-            } else {
-                return {from: endYear - (yearsCount - 1), to: endYear};
+        //start = null, end = 2014
+        if (statement.isOnlyEnd) {
+            //start = null, now = 2013 (or 2014), end = 2014
+            if (statement.isEndUpperNow || statement.isEndEqualNow) {
+                //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
+                if ((firstPossibleYear - YEARS_COUNT) > (endYear - YEARS_COUNT)) {
+                    return {from: firstPossibleYear, to: endYear};
+                } else {
+                    return {from: endYear - (YEARS_COUNT - 1), to: endYear};
+                }
             }
-        }
 
-        //now = 2015,  end = 2014
-        if (statement.isOnlyEnd && statement.isEndUpperNow) {
-            return {from: endYear - (yearsCount - 1), to: endYear};
+            //start = null, now = 2015,  end = 2014
+            if (!statement.isEndUpperNow) {
+                return {from: endYear - (YEARS_COUNT - 1), to: endYear};
+            }
         }
 
         //start = null, end = null
