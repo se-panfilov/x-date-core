@@ -177,12 +177,8 @@ exports.DateModel = (function (DateUtils) {
 
     return DateModel;
 })(exports.DateUtils);
-exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
+exports.YearsUtils = (function (CommonUtils, Config) {
     'use strict';
-
-    function _getValue(model, field) {
-        return (model) ? model[field].y : null;
-    }
 
     function _getLatestPossibleYear(yearsCount, selectedYear, now) {
         var result = (selectedYear > now) ? selectedYear : now;
@@ -196,47 +192,77 @@ exports.YearsUtils = (function (DateUtils, CommonUtils, Config) {
         return result;
     }
 
-    return {
-        getYearsList: function (startDt, endDt, model, limitsModel) {
-            var result = [];
-            var YEARS_COUNT = Config.defaultYearsCount;
+    function _getRangeValues(selectedYear, startYear, endYear, nowYear, yearsCount) {
 
-            var start = _getValue(limitsModel, 'start');
-            var end = _getValue(limitsModel, 'end');
-            var now = _getValue(limitsModel, 'now');
+        var YEARS_COUNT = Config.defaultYearsCount;
+        var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, nowYear);
+        var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, nowYear);
 
-            var selectedYear = DateUtils.getYear(model.dt);
-            var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, now);
-            var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, now);
+        var statement = {
+            isBoth: startYear && endYear,
+            isOnlyStart: startYear && !endYear,
+            isOnlyEnd: !startYear && endYear,
+            isStartLower: startYear < endYear,
+            isEndLower: startYear > endYear,
+            isStartEqualEnd: startYear === endYear,
+            isEndUpperNow: endYear > nowYear,
+            isEndEqualNow: endYear === nowYear
+        };
 
-            //TODO (S.Panfilov) why we use here limitModel's start but not startDt?
-            //TODO (S.Panfilov) Cur work point
-            if ((startDt && endDt) && (startDt < endDt)) { //start = 2011, end = 2014
-                result = CommonUtils.getArrayOfNumbers(start, end);
-            } else if ((startDt && endDt) && (startDt > endDt)) { //start = 2014, end = 2011
-                result = CommonUtils.getArrayOfNumbers(end, start);
-            } else if ((startDt && endDt) && (startDt === endDt)) { //start = 2011, end = 2011
-                result = CommonUtils.getArrayOfNumbers(start, end);
-            } else if (startDt && !endDt) {  //start = 2014, end = null
-                result = CommonUtils.getArrayOfNumbers(start, latestPossibleYear);
-            } else if (!startDt && endDt) {  //start = null, end = 2014
-                if (limitsModel.end.y >= limitsModel.now.y) {  //now = 2013 (or 2014),  end = 2014
-                    if ((firstPossibleYear - YEARS_COUNT) > (end - YEARS_COUNT)) {
-                        result = CommonUtils.getArrayOfNumbers(firstPossibleYear, end);
-                    } else {
-                        result = CommonUtils.getArrayOfNumbers(end - (YEARS_COUNT - 1), end);
-                    }
-                } else if (limitsModel.end.y > limitsModel.now.y) {  //now = 2015,  end = 2014
-                    result = CommonUtils.getArrayOfNumbers(end - (YEARS_COUNT - 1), end);
-                }
-            } else if (!startDt && !endDt) {  //start = null, end = null
-                result = CommonUtils.getArrayOfNumbers(firstPossibleYear, latestPossibleYear);
+        //start = 2011, end = 2014
+        if (statement.isBoth && statement.isStartLower) {
+            return {from: startYear, to: endYear};
+        }
+
+        //start = 2014, end = 2011
+        if (statement.isBoth && statement.isEndLower) {
+            return {from: endYear, to: startYear};
+        }
+
+        //start = 2011, end = 2011
+        if (statement.isBoth && statement.isStartEqualEnd) {
+            return {from: startYear, to: endYear};
+        }
+
+        //start = 2014, end = null
+        if (statement.isOnlyStart) {
+            return {from: startYear, to: latestPossibleYear};
+        }
+
+        //start = null, now = 2013 (or 2014), end = 2014
+        if (statement.isOnlyEnd && (statement.isEndUpperNow || statement.isEndEqualNow)) {
+            //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
+            if ((firstPossibleYear - yearsCount) > (endYear - yearsCount)) {
+                return {from: firstPossibleYear, to: endYear};
+            } else {
+                return {from: endYear - (yearsCount - 1), to: endYear};
             }
+        }
+
+        //now = 2015,  end = 2014
+        if (statement.isOnlyEnd && statement.isEndUpperNow) {
+            return {from: endYear - (yearsCount - 1), to: endYear};
+        }
+
+        //start = null, end = null
+        if (statement.isOnlyStart) {
+            return {from: firstPossibleYear, to: latestPossibleYear};
+        }
+    }
+
+    var exports = {
+        getYearsList: function (selectedYear, startYear, endYear, nowYear) {
+            var range = _getRangeValues(selectedYear, startYear, endYear, nowYear);
+            var result = CommonUtils.getArrayOfNumbers(range.from, range.to);
 
             return CommonUtils.intArraySort(result, Config.yearsDirection);
         }
     };
-})(exports.DateUtils, exports.CommonUtils, exports.Config);
+
+
+    return exports;
+})
+(exports.CommonUtils, exports.Config);
 exports.MonthUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
@@ -373,13 +399,14 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
         var selectedYear = DateUtils.getYear(exports.selected.dt);
         var selectedMonth = DateUtils.getMonth(exports.selected.dt);
 
-        _data._limitDates = new LimitsModel(start, end);
+        _data.limitsModel = new LimitsModel(start, end);
         _data._start = start;
         _data._end = end;
 
-        exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _data._limitDates);
-        exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _data._limitDates);
-        exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _data._limitDates);
+        exports.list.y = YearsUtils.getYearsList(selectedYear, _data.limitsModel.start.y, _data.limitsModel.start.y, _data.limitsModel.start.y)
+        //exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _data.limitsModel);
+        exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _data.limitsModel);
+        exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _data.limitsModel);
 
         return exports;
     };
