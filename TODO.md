@@ -1,11 +1,11 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| 02_DateUtils.js | 35 | (S.Panfilov) should be a const
-| 02_DateUtils.js | 37 | (S.Panfilov) may be (+dt >= +end)
-| 02_DateUtils.js | 42 | (S.Panfilov) should be a const
-| 02_DateUtils.js | 44 | (S.Panfilov) may be (+dt <= +end)
-| 02_DateUtils.js | 48 | (S.Panfilov) lowerAndEqual and UpperAndEqual?
+| 02_DateUtils.js | 39 | (S.Panfilov) should be a const
+| 02_DateUtils.js | 41 | (S.Panfilov) may be (+dt >= +end)
+| 02_DateUtils.js | 46 | (S.Panfilov) should be a const
+| 02_DateUtils.js | 48 | (S.Panfilov) may be (+dt <= +end)
+| 02_DateUtils.js | 52 | (S.Panfilov) lowerAndEqual and UpperAndEqual?
 | 03_LimitsModel.js | 17 | (S.Panfilov) Possible strict violation
 | 03_LimitsModel.js | 26 | (S.Panfilov) Possible strict violation
 | 03_LimitsModel.js | 36 | (S.Panfilov) Possible strict violation

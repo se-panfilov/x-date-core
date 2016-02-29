@@ -8,18 +8,22 @@ exports.DateUtils = (function (Config) {
 
     var exports = {
         getDay: function (dt) {
+            if (!dt && dt !== 0) return null;
             var method = (Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
             return getVal(dt, method);
         },
         getDayOfWeek: function (dt) {
+            if (!dt && dt !== 0) return null;
             var method = (Config.isUtc) ? Date.prototype.getUTCDay : Date.prototype.getDay;
             return getVal(dt, method);
         },
         getYear: function (dt) {
+            if (!dt && dt !== 0) return null;
             var method = (Config.isUtc) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
             return getVal(dt, method);
         },
         getMonth: function (dt) {
+            if (!dt && dt !== 0) return null;
             var method = (Config.isUtc) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
             return getVal(dt, method);
         },
