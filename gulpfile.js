@@ -1,7 +1,20 @@
 'use strict';
 
-var gulp = require('gulp'), concat, rename, uglify, sourcemaps, watch, changed,
-    size, install, jshint, stylish, todo, wrap, mocha, istanbul, stripCode;
+var gulp = require('gulp');
+const size = require('gulp-filesize');
+const jshint = require('gulp-jshint');
+const stylish = require('jshint-stylish');
+const todo = require('gulp-todo');
+const mocha = require('gulp-mocha');
+const istanbul = require('gulp-istanbul');
+const install = require("gulp-install");
+const concat = require('gulp-concat');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const rename = require('gulp-rename');
+const wrap = require('gulp-wrap');
+const stripCode = require('gulp-strip-code');
+const watch = require('gulp-watch');
 
 var src = 'src/*.js';
 
@@ -11,16 +24,11 @@ var dest = {
 };
 
 gulp.task('install', function () {
-    install = install || require("gulp-install");
-
     gulp.src(['./bower.json', './package.json'])
         .pipe(install());
 });
 
 gulp.task('lint', function () {
-    jshint = jshint || require('gulp-jshint');
-    stylish = stylish || require('jshint-stylish');
-
     return gulp.src(src)
         .pipe(jshint({
             globalstrict: true,
@@ -33,10 +41,7 @@ gulp.task('lint', function () {
 });
 
 gulp.task('test', function (cb) {
-    istanbul = istanbul || require('gulp-istanbul');
-    mocha = mocha || require('gulp-mocha');
-
-    gulp.src('./dist/x-date-core.test_only.js')
+    return gulp.src('./dist/x-date-core.test_only.js')
         .pipe(istanbul()) // Covering files
         .pipe(istanbul.hookRequire()) // Force `require` to return covered files
         .on('finish', function () {
@@ -49,32 +54,20 @@ gulp.task('test', function (cb) {
 });
 
 gulp.task('todo', function () {
-    todo = require('gulp-todo');
-
     var sources = 'src/**/*.js';
     var tests = 'tests/**/*.js';
-    gulp.src([sources, tests])
+    return gulp.src([sources, tests])
         .pipe(todo())
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('sizes', function () {
-    size = size || require('gulp-filesize');
-
     return gulp.src([
         'dist/**/*.js'
     ]).pipe(size());
 });
 
 gulp.task('js', function () {
-    concat = concat || require('gulp-concat');
-    sourcemaps = sourcemaps || require('gulp-sourcemaps');
-    uglify = uglify || require('gulp-uglify');
-    rename = rename || require('gulp-rename');
-    concat = concat || require('gulp-concat');
-    wrap = wrap || require('gulp-wrap');
-    stripCode = stripCode || require('gulp-strip-code');
-
     var moduleWrap =
         'var xDateCore = (function () {' +
         '\n\r    var exports = {};' +
@@ -103,15 +96,14 @@ gulp.task('js', function () {
 });
 
 gulp.task('watch', function () {
-    watch = watch || require('gulp-watch');
-    gulp.watch(src, ['js', 'todo']);
+    return gulp.watch(src, ['js', 'todo']);
 });
 
 gulp.task('build', function () {
-    gulp.start('js');
+    return gulp.start('js');
 });
 
 gulp.task('default', function () {
     gulp.start('build');
-    gulp.start('watch');
+    return gulp.start('watch');
 });
