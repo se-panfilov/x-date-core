@@ -39,7 +39,8 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
                 d: null
             },
             reloadYearsList: function () {
-                exports.list.y = YearsUtils.getYearsList(_data._start, _data._end);
+                var selectedYear = DateUtils.getYear(exports.selected.dt);
+                exports.list.y = YearsUtils.getYearsList(selectedYear, _data._start, _data._end, _data.limitsModel.now.y);
                 return this;
             },
             reloadMonthList: function () {
@@ -68,7 +69,6 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
         _data._end = end;
 
         exports.list.y = YearsUtils.getYearsList(selectedYear, _data.limitsModel.start.y, _data.limitsModel.end.y, _data.limitsModel.now.y);
-        //exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _data.limitsModel);
         exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _data.limitsModel);
         exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _data.limitsModel);
 
