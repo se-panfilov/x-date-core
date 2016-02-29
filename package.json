@@ -1,6 +1,6 @@
 {
   "name": "x-date-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Business logic core for datepickers",
   "main": "x-date-corepicker.js",
   "scripts": {
