@@ -210,6 +210,7 @@ exports.YearsUtils = (function (CommonUtils, Config) {
 
         var statement = {
             isBoth: startYear && endYear,
+            isBothNot: !startYear && !endYear,
             isOnlyStart: startYear && !endYear,
             isOnlyEnd: !startYear && endYear,
             isStartLower: startYear < endYear,
@@ -255,7 +256,7 @@ exports.YearsUtils = (function (CommonUtils, Config) {
         }
 
         //start = null, end = null
-        if (statement.isOnlyStart) {
+        if (statement.isBothNot) {
             return {from: firstPossibleYear, to: latestPossibleYear};
         }
     }
@@ -419,7 +420,7 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
         _data._start = start;
         _data._end = end;
 
-        exports.list.y = YearsUtils.getYearsList(selectedYear, _data.limitsModel.start.y, _data.limitsModel.start.y, _data.limitsModel.start.y)
+        exports.list.y = YearsUtils.getYearsList(selectedYear, _data.limitsModel.start.y, _data.limitsModel.end.y, _data.limitsModel.now.y);
         //exports.list.y = YearsUtils.getYearsList(start, end, exports.selected, _data.limitsModel);
         exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _data.limitsModel);
         exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, exports.selected, _data.limitsModel);

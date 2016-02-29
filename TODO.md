@@ -10,8 +10,7 @@
 | 03_LimitsModel.js | 26 | (S.Panfilov) Possible strict violation
 | 03_LimitsModel.js | 36 | (S.Panfilov) Possible strict violation
 | 04_DateModel.js | 5 | (S.Panfilov) throwed error must be a const
-| 05_YearsUtils.js | 33 | (S.Panfilov) why we use here limitModel's start but not startDt?
-| 05_YearsUtils.js | 34 | (S.Panfilov) Cur work point
+| 05_YearsUtils.js | 56 | (S.Panfilov) wtf? I cannot remember wtf this statement check
 | 02_DateUtilsTest.js | 366 | (S.Panfilov) NaN or null should be a const
 | 02_DateUtilsTest.js | 422 | (S.Panfilov) NaN or null should be a const
 | 02_DateUtilsTest.js | 459 | (S.Panfilov) should be a const

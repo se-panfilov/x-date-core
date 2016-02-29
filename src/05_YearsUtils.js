@@ -21,6 +21,7 @@ exports.YearsUtils = (function (CommonUtils, Config) {
 
         var statement = {
             isBoth: startYear && endYear,
+            isBothNot: !startYear && !endYear,
             isOnlyStart: startYear && !endYear,
             isOnlyEnd: !startYear && endYear,
             isStartLower: startYear < endYear,
@@ -66,7 +67,7 @@ exports.YearsUtils = (function (CommonUtils, Config) {
         }
 
         //start = null, end = null
-        if (statement.isOnlyStart) {
+        if (statement.isBothNot) {
             return {from: firstPossibleYear, to: latestPossibleYear};
         }
     }
