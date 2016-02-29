@@ -1,11 +1,11 @@
 {
   "name": "x-date-core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "https://github.com/se-panfilov/x-date-core",
   "authors": [
     "S.Panfilov <se-panfilov@ya.ru> (https://se-panfilov.github.io)"
   ],
-  "description": "Business logic core for datepicker",
+  "description": "Business logic core for datepickers",
   "main": "x-date-core.js",
   "repository": {
     "type": "git",

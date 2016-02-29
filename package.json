@@ -1,7 +1,7 @@
 {
   "name": "x-date-core",
-  "version": "0.0.1",
-  "description": "Business logic core for datepicker",
+  "version": "0.1.0",
+  "description": "Business logic core for datepickers",
   "main": "x-date-corepicker.js",
   "scripts": {
     "test": "mocha -R spec ./tests/"
