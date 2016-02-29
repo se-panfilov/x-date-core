@@ -41,7 +41,7 @@ describe("Date Utils", function () {
             });
 
             it("no args case", function () {
-                return expect(DateUtils.getDay()).to.be.NaN;
+                return expect(DateUtils.getDay()).to.be.null;
             });
         });
 
@@ -64,7 +64,7 @@ describe("Date Utils", function () {
             });
 
             it("no args case", function () {
-                return expect(DateUtils.getDayOfWeek()).to.be.NaN;
+                return expect(DateUtils.getDayOfWeek()).to.be.null;
             });
         });
 
@@ -87,7 +87,7 @@ describe("Date Utils", function () {
             });
 
             it("no args case", function () {
-                return expect(DateUtils.getYear()).to.be.NaN;
+                return expect(DateUtils.getYear()).to.be.null;
             });
         });
 
@@ -110,7 +110,7 @@ describe("Date Utils", function () {
             });
 
             it("no args case", function () {
-                return expect(DateUtils.getMonth()).to.be.NaN;
+                return expect(DateUtils.getMonth()).to.be.null;
             });
         });
 
@@ -176,7 +176,7 @@ describe("Date Utils", function () {
             });
 
             it("no args case", function () {
-                return expect(DateUtils.getDay()).to.be.NaN;
+                return expect(DateUtils.getDay()).to.be.null;
             });
         });
 
@@ -199,7 +199,7 @@ describe("Date Utils", function () {
             });
 
             it("no args case", function () {
-                return expect(DateUtils.getDayOfWeek()).to.be.NaN;
+                return expect(DateUtils.getDayOfWeek()).to.be.null;
             });
         });
 
@@ -222,7 +222,7 @@ describe("Date Utils", function () {
             });
 
             it("no args case", function () {
-                return expect(DateUtils.getYear()).to.be.NaN;
+                return expect(DateUtils.getYear()).to.be.null;
             });
         });
 
@@ -245,7 +245,7 @@ describe("Date Utils", function () {
             });
 
             it("no args case", function () {
-                return expect(DateUtils.getMonth()).to.be.NaN;
+                return expect(DateUtils.getMonth()).to.be.null;
             });
         });
 
