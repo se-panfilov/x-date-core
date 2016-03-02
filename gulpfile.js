@@ -7,7 +7,6 @@ const stylish = require('jshint-stylish');
 const todo = require('gulp-todo');
 const mocha = require('gulp-mocha');
 const istanbul = require('gulp-istanbul');
-const install = require("gulp-install");
 const concat = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
@@ -22,11 +21,6 @@ var dest = {
     dist: 'dist',
     src: 'src'
 };
-
-gulp.task('install', function () {
-    gulp.src(['./bower.json', './package.json'])
-        .pipe(install());
-});
 
 gulp.task('lint', function () {
     return gulp.src(src)
