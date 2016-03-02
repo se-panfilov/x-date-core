@@ -2,10 +2,10 @@
   "ignore": [
     "**/node_modules/**",
     "/**/**.min.**",
-    "dist/**/**.**",
+    "dist/**/**.**"
   ],
   "test": [
-    "**/tests/**",
+    "**/tests/**"
   ],
   "critics": {
     "lint": {"engine": "jshint"}
