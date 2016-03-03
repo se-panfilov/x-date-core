@@ -1,6 +1,6 @@
 'use strict';
 
-var gulp = require('gulp');
+const gulp = require('gulp');
 const size = require('gulp-filesize');
 const jshint = require('gulp-jshint');
 const stylish = require('jshint-stylish');
@@ -63,32 +63,36 @@ gulp.task('sizes', function () {
     ]).pipe(size());
 });
 
-gulp.task('js', function () {
-    var moduleWrap =
-        'var xDateCore = (function () {' +
-        '\n\r    var exports = {};' +
-        '\n\r<%= contents %>' +
-        '\n\r    if (typeof module === \'object\' && module.exports) module.exports = exports;' +
-        '\n\r' +
-        '\n\r    return exports;' +
-        '})();';
+var moduleWrap =
+    'var xDateCore = (function () {' +
+    '\n\r    var exports = {};' +
+    '\n\r<%= contents %>' +
+    '\n\r    if (typeof module === \'object\' && module.exports) module.exports = exports;' +
+    '\n\r' +
+    '\n\r    return exports;' +
+    '})();';
 
-    //TODO (S.Panfilov) add "changed" support
+gulp.task('js', function () {
     return gulp.src(src)
-        .pipe(concat('x-date-core.test_only.js'))
+        .pipe(concat('x-date-core.js'))
         .pipe(wrap(moduleWrap))
-        .pipe(gulp.dest(dest.dist))
         .pipe(stripCode({
             start_comment: "START.TESTS_ONLY",
             end_comment: "END.TESTS_ONLY"
         }))
-        .pipe(rename({basename: 'x-date-core'}))
         .pipe(gulp.dest(dest.dist))
         .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(rename({basename: 'x-date-core.min'}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(dest.dist));
+});
+
+gulp.task('test_js', function () {
+    return gulp.src(src)
+        .pipe(concat('x-date-core.test_only.js'))
+        .pipe(wrap(moduleWrap))
+        .pipe(gulp.dest(dest.dist))
 });
 
 gulp.task('watch', function () {
