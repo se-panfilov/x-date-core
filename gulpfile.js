@@ -1,21 +1,21 @@
 'use strict';
 
-const gulp = require('gulp');
-const size = require('gulp-filesize');
-const jshint = require('gulp-jshint');
-const stylish = require('jshint-stylish');
-const todo = require('gulp-todo');
-const mocha = require('gulp-mocha');
-const istanbul = require('gulp-istanbul');
-const concat = require('gulp-concat');
-const sourcemaps = require('gulp-sourcemaps');
-const uglify = require('gulp-uglify');
-const rename = require('gulp-rename');
-const wrap = require('gulp-wrap');
-const stripCode = require('gulp-strip-code');
-const watch = require('gulp-watch');
-const codacy = require('gulp-codacy');
-const fs = require('fs');
+var gulp = require('gulp');
+var size = require('gulp-filesize');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
+var todo = require('gulp-todo');
+var mocha = require('gulp-mocha');
+var istanbul = require('gulp-istanbul');
+var concat = require('gulp-concat');
+var sourcemaps = require('gulp-sourcemaps');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var wrap = require('gulp-wrap');
+var stripCode = require('gulp-strip-code');
+var watch = require('gulp-watch');
+var codacy = require('gulp-codacy');
+var fs = require('fs');
 
 var src = 'src/*.js';
 
