@@ -30,4 +30,4 @@ exports.MonthUtils = (function (DateUtils, CommonUtils, Config) {
             return CommonUtils.intArraySort(result, Config.monthDirection);
         }
     };
-})(exports.DateUtils, exports.CommonUtils, exports.Config);
+}(exports.DateUtils, exports.CommonUtils, exports.Config));

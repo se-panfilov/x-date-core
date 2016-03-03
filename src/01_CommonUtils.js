@@ -39,4 +39,4 @@ exports.CommonUtils = (function () {
     };
 
     return exports;
-})();
+}());

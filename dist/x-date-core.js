@@ -54,7 +54,7 @@ exports.CommonUtils = (function () {
     };
 
     return exports;
-})();
+}());
 exports.DateUtils = (function (Config) {
     'use strict';
 
@@ -113,7 +113,7 @@ exports.DateUtils = (function (Config) {
 
 
     return exports;
-})(exports.Config);
+}(exports.Config));
 exports.LimitsModel = (function (DateUtils) {
     'use strict';
 
@@ -162,7 +162,7 @@ exports.LimitsModel = (function (DateUtils) {
     }
     
     return LimitsModel;
-})(exports.DateUtils);
+}(exports.DateUtils));
 exports.DateModel = (function (DateUtils) {
     'use strict';
 
@@ -269,8 +269,7 @@ exports.YearsUtils = (function (CommonUtils, Config) {
 
 
     return exports;
-})
-(exports.CommonUtils, exports.Config);
+}(exports.CommonUtils, exports.Config));
 exports.MonthUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
@@ -303,7 +302,7 @@ exports.MonthUtils = (function (DateUtils, CommonUtils, Config) {
             return CommonUtils.intArraySort(result, Config.monthDirection);
         }
     };
-})(exports.DateUtils, exports.CommonUtils, exports.Config);
+}(exports.DateUtils, exports.CommonUtils, exports.Config));
 exports.DaysUtils = (function (DateUtils, CommonUtils, Config) {
     'use strict';
 
@@ -341,7 +340,7 @@ exports.DaysUtils = (function (DateUtils, CommonUtils, Config) {
             return CommonUtils.intArraySort(result, Config.daysDirection);
         }
     };
-})(exports.DateUtils, exports.CommonUtils, exports.Config);
+}(exports.DateUtils, exports.CommonUtils, exports.Config));
 exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
     'use strict';
 
@@ -423,8 +422,7 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
 
         return exports;
     };
-
-})(exports.DateUtils, exports.CommonUtils, exports.YearsUtils, exports.MonthUtils, exports.DaysUtils, exports.DateModel, exports.LimitsModel);
+}(exports.DateUtils, exports.CommonUtils, exports.YearsUtils, exports.MonthUtils, exports.DaysUtils, exports.DateModel, exports.LimitsModel));
     if (typeof module === 'object' && module.exports) module.exports = exports;
 
     return exports;})();

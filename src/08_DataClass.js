@@ -79,5 +79,4 @@ exports.DataClass = (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, D
 
         return exports;
     };
-
-})(exports.DateUtils, exports.CommonUtils, exports.YearsUtils, exports.MonthUtils, exports.DaysUtils, exports.DateModel, exports.LimitsModel);
+}(exports.DateUtils, exports.CommonUtils, exports.YearsUtils, exports.MonthUtils, exports.DaysUtils, exports.DateModel, exports.LimitsModel));

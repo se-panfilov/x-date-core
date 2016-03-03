@@ -35,4 +35,4 @@ exports.DaysUtils = (function (DateUtils, CommonUtils, Config) {
             return CommonUtils.intArraySort(result, Config.daysDirection);
         }
     };
-})(exports.DateUtils, exports.CommonUtils, exports.Config);
+}(exports.DateUtils, exports.CommonUtils, exports.Config));

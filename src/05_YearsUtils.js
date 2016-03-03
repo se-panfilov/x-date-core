@@ -92,5 +92,4 @@ exports.YearsUtils = (function (CommonUtils, Config) {
     /*END.TESTS_ONLY*/
 
     return exports;
-})
-(exports.CommonUtils, exports.Config);
+}(exports.CommonUtils, exports.Config));

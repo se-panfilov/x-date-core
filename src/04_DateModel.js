@@ -15,4 +15,4 @@ exports.DateModel = (function (DateUtils) {
     }
 
     return DateModel;
-})(exports.DateUtils);
+}(exports.DateUtils));

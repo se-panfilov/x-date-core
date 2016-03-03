@@ -52,4 +52,4 @@ exports.LimitsModel = (function (DateUtils) {
     }
     
     return LimitsModel;
-})(exports.DateUtils);
+}(exports.DateUtils));
