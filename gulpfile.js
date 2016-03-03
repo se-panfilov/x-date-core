@@ -14,6 +14,8 @@ const rename = require('gulp-rename');
 const wrap = require('gulp-wrap');
 const stripCode = require('gulp-strip-code');
 const watch = require('gulp-watch');
+const codacy = require('gulp-codacy');
+const fs = require('fs');
 
 var src = 'src/*.js';
 
@@ -95,6 +97,14 @@ gulp.task('watch', function () {
 
 gulp.task('build', function () {
     return gulp.start('js');
+});
+
+gulp.task('codacy', function codacyTask() {
+    var token = fs.readFile('token.txt', 'utf-8');
+
+    return gulp.src(['coverage/coverage.lcov'])
+        .pipe(codacy({token: token}))
+        ;
 });
 
 gulp.task('default', function () {
