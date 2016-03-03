@@ -100,11 +100,12 @@ gulp.task('build', function () {
 });
 
 gulp.task('codacy', function codacyTask() {
-    var token = fs.readFile('token.txt', 'utf-8');
+    fs.readFile('token.txt', 'utf-8', function (e, data) {
+        return gulp.src(['coverage/coverage.lcov'])
+            .pipe(codacy({token: data}))
+            ;
+    });
 
-    return gulp.src(['coverage/coverage.lcov'])
-        .pipe(codacy({token: token}))
-        ;
 });
 
 gulp.task('default', function () {
