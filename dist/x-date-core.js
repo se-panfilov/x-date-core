@@ -180,7 +180,7 @@ exports.DateModel = (function (DateUtils) {
     }
 
     return DateModel;
-})(exports.DateUtils);
+}(exports.DateUtils));
 exports.YearsUtils = (function (CommonUtils, Config) {
     'use strict';
 

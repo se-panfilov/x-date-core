@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 var assert = require('chai').assert;
-var CommonUtils = require('../dist/x-date-core.test_only.js').CommonUtils;
+var CommonUtils = require('../src/01_CommonUtils.js').CommonUtils;
 
 describe("CommonUtils", function () {
 

@@ -88,12 +88,47 @@ gulp.task('js', function () {
         .pipe(gulp.dest(dest.dist));
 });
 
-gulp.task('test_js', function () {
+gulp.task('make_test_js', function () {
     return gulp.src(src)
         .pipe(concat('x-date-core.test_only.js'))
         .pipe(wrap(moduleWrap))
         .pipe(gulp.dest(dest.dist))
 });
+
+gulp.task('pre-test', function () {
+    return gulp.src(['./src/**/*.js'])
+        // Covering files
+        .pipe(istanbul())
+        // Force `require` to return covered files
+        .pipe(istanbul.hookRequire());
+});
+
+gulp.task('test', ['pre-test'], function () {
+    return gulp.src(['./tests/**/*.js'])
+        .pipe(mocha())
+        // Creating the reports after tests ran
+        .pipe(istanbul.writeReports({
+            dir: './coverage',
+            reporters: ['lcov'],
+            reportOpts: {dir: './coverage'}
+        }))
+        // Enforce a coverage of at least 90%
+        .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
+});
+
+//gulp.task('test2', function () {
+//    return gulp.src('./src/01_CommonUtils.js')
+//        .pipe(istanbul({includeUntested: true}))
+//        .on('finish', function () {
+//            gulp.src('./tests/01_CommonUtilsTest.js')
+//                .pipe(mocha({reporter: 'spec'}))
+//                .pipe(istanbul.writeReports({
+//                    dir: './coverage',
+//                    reporters: ['lcov'],
+//                    reportOpts: {dir: './coverage'}
+//                }));
+//        });
+//});
 
 gulp.task('watch', function () {
     return gulp.watch(src, ['js', 'todo']);
