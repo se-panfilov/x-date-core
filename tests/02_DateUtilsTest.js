@@ -1,6 +1,10 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
+var rewire = require("rewire");
+//var Config = require('../src/00_Config.js').Config;
+var Config = rewire('../src/00_Config.js').Config;
 var DateUtils = require('../src/02_DateUtils.js').DateUtils;
+
 
 describe("Date Utils", function () {
 
@@ -10,21 +14,21 @@ describe("Date Utils", function () {
     });
 
     describe("Check UTC functions", function () {
-        var isUtcBuffer = config.isUtc;
+        //var isUtcBuffer = Config.isUtc;
         var date = new Date(2015, 1, 1).getTime();
 
-        beforeEach(function () {
-            config.isUtc = true;
-        });
-
-        afterEach(function () {
-            config.isUtc = isUtcBuffer;
-        });
+        //beforeEach(function () {
+        //    Config.isUtc = true;
+        //});
+        //
+        //afterEach(function () {
+        //    Config.isUtc = isUtcBuffer;
+        //});
 
         describe("getDay", function () {
 
             it("common case", function () {
-                isUTC = sinon.stub(config, "isUtc").returns("something");
+                //isUTC = sinon.stub("Config", "isUtc").returns("something");
                 expect(DateUtils.getDay(date)).to.be.equal(new Date(date).getUTCDate());
             });
 

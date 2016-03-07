@@ -1,4 +1,4 @@
-exports.DateUtils = (function (Config) {
+DateUtils: function (Config) {
     'use strict';
 
     function getVal(dt, method) {
@@ -60,4 +60,4 @@ exports.DateUtils = (function (Config) {
     /*END.TESTS_ONLY*/
 
     return exports;
-}(exports.Config));
+},

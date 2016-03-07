@@ -1,4 +1,4 @@
-exports.LimitsModel = (function (DateUtils) {
+LimitsModel: function (DateUtils) {
     'use strict';
 
     function LimitsModel(start, end) {
@@ -52,4 +52,4 @@ exports.LimitsModel = (function (DateUtils) {
     }
     
     return LimitsModel;
-}(exports.DateUtils));
+},

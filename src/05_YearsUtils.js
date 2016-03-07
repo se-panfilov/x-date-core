@@ -1,4 +1,4 @@
-exports.YearsUtils = (function (CommonUtils, Config) {
+YearsUtils: function (CommonUtils, Config) {
     'use strict';
 
     function _getLatestPossibleYear(yearsCount, selectedYear, now) {
@@ -92,4 +92,4 @@ exports.YearsUtils = (function (CommonUtils, Config) {
     /*END.TESTS_ONLY*/
 
     return exports;
-}(exports.CommonUtils, exports.Config));
+},

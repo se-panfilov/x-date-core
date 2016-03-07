@@ -64,13 +64,9 @@ gulp.task('sizes', function () {
 });
 
 var moduleWrap =
-    'var xDateCore = (function () {' +
-    '\n\r    var exports = {};' +
+    'var xDateCore = {' +
     '\n\r<%= contents %>' +
-    '\n\r    if (typeof module === \'object\' && module.exports) module.exports = exports;' +
-    '\n\r' +
-    '\n\r    return exports;' +
-    '})();';
+    '};';
 
 gulp.task('js', function () {
     return gulp.src(src)
@@ -88,15 +84,15 @@ gulp.task('js', function () {
         .pipe(gulp.dest(dest.dist));
 });
 
-gulp.task('make_test_js', function () {
-    return gulp.src(src)
-        .pipe(concat('x-date-core.test_only.js'))
-        .pipe(wrap(moduleWrap))
-        .pipe(gulp.dest(dest.dist))
-});
+//gulp.task('make_test_js', function () {
+//    return gulp.src(src)
+//        .pipe(concat('x-date-core.test_only.js'))
+//        .pipe(wrap(moduleWrap))
+//        .pipe(gulp.dest(dest.dist))
+//});
 
 gulp.task('pre-test', function () {
-    return gulp.src(['./src/**/*.js'])
+    return gulp.src(['./src/**/02_DateUtils.js'])
         // Covering files
         .pipe(istanbul())
         // Force `require` to return covered files
@@ -104,7 +100,7 @@ gulp.task('pre-test', function () {
 });
 
 gulp.task('test', ['pre-test'], function () {
-    return gulp.src(['./tests/**/*.js'])
+    return gulp.src(['./tests/**/02_DateUtilsTest.js'])
         .pipe(mocha())
         // Creating the reports after tests ran
         .pipe(istanbul.writeReports({
