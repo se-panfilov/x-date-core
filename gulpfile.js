@@ -71,7 +71,81 @@ var moduleWrap =
     '};' +
     '})();';
 
+function makeModuleWrap() {
+  return getTemplateFromFile(function (data) {
+    for (var i = 0; i < data.length; i++) {
+      if (i !== 0 && i !== data.length - 1) {
+        data[i] += ',';
+      }
+    }
+
+    return data;
+
+  });
+}
+
+//var path = require("path");
+
+function readFiles(dirname, onFileContent, onError) {
+  return fs.readdir(dirname, function (err, filenames) {
+    if (err) {
+      onError(err);
+      return;
+    }
+
+    return filenames.forEach(function (filename) {
+      fs.readFileSync(dirname + filename, 'utf-8', function (err, content) {
+        if (err) {
+          onError(err);
+          return;
+        }
+
+        onFileContent(filename, content);
+      });
+    });
+  });
+}
+
+function getTemplateFromFile(cb) {
+
+
+  //fs.readdir('./src/', function (err, files) {
+  //  if (err) {
+  //    throw err;
+  //  }
+  //
+  //  files.map(function (file) {
+  //    return path.join('./src/', file);
+  //  }).filter(function (file) {
+  //    return fs.statSync(file).isFile();
+  //  }).forEach(function (file) {
+  //    var a = a || [];
+  //    a.push(path.parse(file).name + ': ' + file);
+  //    console.log(a);
+  //  });
+  //});
+
+  var data = [];
+
+  readFiles('src/', function (filename, content) {
+    data[filename] = filename + ': ' + ',';
+  }, function (error) {
+    throw error;
+  });
+  console.log(data);
+
+}
+
+
+gulp.task('some', function () {
+
+  getTemplateFromFile();
+
+});
+
 gulp.task('js', function () {
+
+
   return gulp.src(src)
       .pipe(concat('x-date-core.js'))
       .pipe(stripCode({
