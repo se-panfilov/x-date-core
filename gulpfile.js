@@ -90,7 +90,9 @@ gulp.task('js', function () {
         start_comment: "START.TESTS_ONLY",
         end_comment: "END.TESTS_ONLY"
       }))
-      .pipe(prettify())
+      .pipe(prettify({
+        indent_size: 2
+      }))
       .pipe(gulp.dest(dest.dist))
       .pipe(sourcemaps.init())
       .pipe(uglify())
