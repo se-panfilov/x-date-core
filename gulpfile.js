@@ -16,6 +16,7 @@ var stripCode = require('gulp-strip-code');
 var watch = require('gulp-watch');
 var codacy = require('gulp-codacy');
 var fs = require("fs");
+var prettify = require('gulp-jsbeautifier');
 
 var src = 'src/*.js';
 
@@ -50,28 +51,10 @@ gulp.task('sizes', function () {
   ]).pipe(size());
 });
 
-
-//var getFiles = function () {
-//  return fs.readdirAsync(directory);
-//};
 var getContent = function (path) {
-  //return fs.readFileAsync(directory + "/" + filename, "utf8");
   return fs.readFileSync(path, "utf8");
 };
-//
-//getFiles().map(function (filename) {
-//  return getContent(filename);
-//}).then(function (content) {
-//  console.log("so this is what we got: ", content)
-//});
 
-function getSrcFilesAsync(cb) {
-  return fs.readdirAsync(directory).map(function (filename) {
-    return fs.readFileAsync(directory + "/" + filename, "utf8");
-  }).then(function (content) {
-    //console.log("so this is what we got: ", content)
-  });
-}
 
 gulp.task('js', function () {
 
@@ -107,6 +90,7 @@ gulp.task('js', function () {
         start_comment: "START.TESTS_ONLY",
         end_comment: "END.TESTS_ONLY"
       }))
+      .pipe(prettify())
       .pipe(gulp.dest(dest.dist))
       .pipe(sourcemaps.init())
       .pipe(uglify())
