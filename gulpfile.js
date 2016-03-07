@@ -71,11 +71,15 @@ var moduleWrap =
 gulp.task('js', function () {
     return gulp.src(src)
         .pipe(concat('x-date-core.js'))
-        .pipe(wrap(moduleWrap))
         .pipe(stripCode({
-            start_comment: "START.TESTS_ONLY",
-            end_comment: "END.TESTS_ONLY"
+          start_comment: "START.DEV_ONLY",
+          end_comment: "END.DEV_ONLY"
         }))
+        .pipe(stripCode({
+          start_comment: "START.TESTS_ONLY",
+          end_comment: "END.TESTS_ONLY"
+        }))
+        .pipe(wrap(moduleWrap))
         .pipe(gulp.dest(dest.dist))
         .pipe(sourcemaps.init())
         .pipe(uglify())

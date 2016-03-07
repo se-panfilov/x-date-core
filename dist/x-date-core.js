@@ -1,4 +1,6 @@
 var xDateCore = {
+  //==============================================
+
   Config: function () {
     'use strict';
 
@@ -12,6 +14,11 @@ var xDateCore = {
       monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     };
   },
+
+
+  //==============================================
+  //==============================================
+
   CommonUtils: function () {
     'use strict';
 
@@ -54,6 +61,10 @@ var xDateCore = {
 
     return exports;
   },
+
+//==============================================
+  //==============================================
+
   DateUtils: function (Config) {
     'use strict';
 
@@ -113,6 +124,10 @@ var xDateCore = {
 
     return exports;
   },
+
+//==============================================
+  //==============================================
+
   LimitsModel: function (DateUtils) {
     'use strict';
 
@@ -162,6 +177,8 @@ var xDateCore = {
 
     return LimitsModel;
   },
+  //==============================================
+
   DateModel: function (DateUtils) {
     'use strict';
 
@@ -180,6 +197,10 @@ var xDateCore = {
 
     return DateModel;
   },
+
+//==============================================
+  //==============================================
+
   YearsUtils: function (CommonUtils, Config) {
     'use strict';
 
@@ -269,6 +290,11 @@ var xDateCore = {
 
     return exports;
   },
+
+//==============================================
+  //==============================================
+
+
   MonthUtils: function (DateUtils, CommonUtils, Config) {
     'use strict';
 
@@ -302,6 +328,10 @@ var xDateCore = {
       }
     };
   },
+
+//==============================================
+  //==============================================
+
   DaysUtils: function (DateUtils, CommonUtils, Config) {
     'use strict';
 
@@ -340,6 +370,10 @@ var xDateCore = {
       }
     };
   },
+
+//==============================================
+  //==============================================
+
   DataClass: function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
     'use strict';
 
@@ -422,4 +456,6 @@ var xDateCore = {
       return exports;
     };
   }
+
+//==============================================
 };
