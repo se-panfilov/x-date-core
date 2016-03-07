@@ -1,10 +1,8 @@
 /*START.DEV_ONLY*/
 var module = {
   /*END.DEV_ONLY*/
-  //==============================================
 
   Config: function () {
-    'use strict';
 
     return {
       isUtc: false,
@@ -17,8 +15,6 @@ var module = {
     };
   },
 
-
-  //==============================================
   /*START.DEV_ONLY*/
   dev: null
 };

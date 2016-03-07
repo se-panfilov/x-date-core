@@ -1,10 +1,11 @@
 /*START.DEV_ONLY*/
 var module = {
   /*END.DEV_ONLY*/
-  //==============================================
 
   YearsUtils: function (CommonUtils, Config) {
+    /*START.DEV_ONLY*/
     'use strict';
+    /*END.DEV_ONLY*/
 
     function _getLatestPossibleYear(yearsCount, selectedYear, now) {
       var result = (selectedYear > now) ? selectedYear : now;
@@ -99,7 +100,6 @@ var module = {
     return exports;
   },
 
-//==============================================
   /*START.DEV_ONLY*/
   dev: null
 };

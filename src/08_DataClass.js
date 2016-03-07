@@ -1,10 +1,11 @@
 /*START.DEV_ONLY*/
 var module = {
   /*END.DEV_ONLY*/
-  //==============================================
 
   DataClass: function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
+    /*START.DEV_ONLY*/
     'use strict';
+    /*END.DEV_ONLY*/
 
     function _getSelected(model, start, end) {
       var result;
@@ -86,7 +87,6 @@ var module = {
     };
   }
 
-//==============================================
   /*START.DEV_ONLY*/
 };
 /*END.DEV_ONLY*/

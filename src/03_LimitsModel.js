@@ -1,10 +1,12 @@
 /*START.DEV_ONLY*/
 var module = {
   /*END.DEV_ONLY*/
-  //==============================================
 
   LimitsModel: function (DateUtils) {
+
+    /*START.DEV_ONLY*/
     'use strict';
+    /*END.DEV_ONLY*/
 
     function LimitsModel(start, end) {
 
@@ -60,5 +62,5 @@ var module = {
   },
   /*START.DEV_ONLY*/
   dev: null
-}
+};
 /*END.DEV_ONLY*/

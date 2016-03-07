@@ -1,10 +1,11 @@
 /*START.DEV_ONLY*/
 var module = {
   /*END.DEV_ONLY*/
-  //==============================================
 
   DaysUtils: function (DateUtils, CommonUtils, Config) {
+    /*START.DEV_ONLY*/
     'use strict';
+    /*END.DEV_ONLY*/
 
     return {
       getDaysList: function (startDt, endDt, year, month, limitsModel) {
@@ -42,7 +43,6 @@ var module = {
     };
   },
 
-//==============================================
   /*START.DEV_ONLY*/
   dev: null
 };

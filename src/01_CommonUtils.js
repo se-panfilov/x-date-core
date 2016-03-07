@@ -1,10 +1,11 @@
 /*START.DEV_ONLY*/
 var module = {
   /*END.DEV_ONLY*/
-  //==============================================
 
   CommonUtils: function () {
+    /*START.DEV_ONLY*/
     'use strict';
+    /*END.DEV_ONLY*/
 
     var exports = {
       isValidNumber: function (num) {
@@ -46,7 +47,6 @@ var module = {
     return exports;
   },
 
-//==============================================
   /*START.DEV_ONLY*/
   dev: null
 };

@@ -1,10 +1,11 @@
 /*START.DEV_ONLY*/
 var module = {
   /*END.DEV_ONLY*/
-  //==============================================
 
   DateModel: function (DateUtils) {
+    /*START.DEV_ONLY*/
     'use strict';
+    /*END.DEV_ONLY*/
 
     function DateModel(dt) {
       //TODO (S.Panfilov) throwed error must be a const
@@ -22,7 +23,6 @@ var module = {
     return DateModel;
   },
 
-//==============================================
   /*START.DEV_ONLY*/
   dev: null
 };

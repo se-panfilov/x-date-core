@@ -1,11 +1,11 @@
 /*START.DEV_ONLY*/
 var module = {
   /*END.DEV_ONLY*/
-  //==============================================
-
 
   MonthUtils: function (DateUtils, CommonUtils, Config) {
+    /*START.DEV_ONLY*/
     'use strict';
+    /*END.DEV_ONLY*/
 
     return {
       getMonthList: function (startDt, endDt, selectedYear, limitsModel) {
@@ -38,7 +38,6 @@ var module = {
     };
   },
 
-//==============================================
   /*START.DEV_ONLY*/
   dev: null
 };
