@@ -36,18 +36,18 @@ gulp.task('lint', function () {
       .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('test', function (cb) {
-  return gulp.src('./dist/x-date-core.test_only.js')
-      .pipe(istanbul()) // Covering files
-      .pipe(istanbul.hookRequire()) // Force `require` to return covered files
-      .on('finish', function () {
-        gulp.src('./tests/*.js')
-            .pipe(mocha())
-            .pipe(istanbul.writeReports()) // Creating the reports after tests ran
-            //.pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } })) // Enforce a coverage of at least 90%
-            .on('end', cb);
-      });
-});
+//gulp.task('test', function (cb) {
+//  return gulp.src('./dist/x-date-core.test_only.js')
+//      .pipe(istanbul()) // Covering files
+//      .pipe(istanbul.hookRequire()) // Force `require` to return covered files
+//      .on('finish', function () {
+//        gulp.src('./tests/*.js')
+//            .pipe(mocha())
+//            .pipe(istanbul.writeReports()) // Creating the reports after tests ran
+//            //.pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } })) // Enforce a coverage of at least 90%
+//            .on('end', cb);
+//      });
+//});
 
 gulp.task('todo', function () {
   var sources = 'src/**/*.js';
