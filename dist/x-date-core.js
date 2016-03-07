@@ -1,6 +1,17 @@
 var xDateCore = (function () {'use strict';
-    return {
-
+    return {Config:
+function() {
+  return {
+    isUtc: false,
+    monthDirection: 'asc',
+    daysDirection: 'asc',
+    yearsDirection: 'desc',
+    defaultYearsCount: 50,
+    daysList: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  };
+}, 
+CommonUtils:
 function() {
 
   var exports = {
@@ -41,20 +52,8 @@ function() {
   };
 
   return exports;
-}
-
-function() {
-  return {
-    isUtc: false,
-    monthDirection: 'asc',
-    daysDirection: 'asc',
-    yearsDirection: 'desc',
-    defaultYearsCount: 50,
-    daysList: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-  };
-}
-
+},
+DataClass:
 function(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
 
   function _getSelected(model, start, end) {
@@ -135,8 +134,8 @@ function(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, L
 
     return exports;
   };
-}
-
+}, 
+DateModel:
 function(DateUtils) {
   function DateModel(dt) {
     //TODO (S.Panfilov) throwed error must be a const
@@ -152,8 +151,8 @@ function(DateUtils) {
   }
 
   return DateModel;
-}
-
+}, 
+DateUtils:
 function(Config) {
 
   function getVal(dt, method) {
@@ -211,8 +210,8 @@ function(Config) {
 
 
   return exports;
-}
-
+}, 
+DaysUtils:
 function(DateUtils, CommonUtils, Config) {
   return {
     getDaysList: function (startDt, endDt, year, month, limitsModel) {
@@ -248,8 +247,8 @@ function(DateUtils, CommonUtils, Config) {
       return CommonUtils.intArraySort(result, Config.daysDirection);
     }
   };
-}
-
+}, 
+LimitsModel:
 function(DateUtils) {
   return function LimitsModel(start, end) {
 
@@ -294,8 +293,8 @@ function(DateUtils) {
 
     return exports;
   };
-}
-
+}, 
+MonthUtils:
 function(CommonUtils, Config) {
   return {
     getMonthList: function (startDt, endDt, selectedYear, limitsModel) {
@@ -326,8 +325,8 @@ function(CommonUtils, Config) {
       return CommonUtils.intArraySort(result, Config.monthDirection);
     }
   };
-}
-
+}, 
+YearsUtils:
 function(CommonUtils, Config) {
 
   function _getLatestPossibleYear(yearsCount, selectedYear, now) {
