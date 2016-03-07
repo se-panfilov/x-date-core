@@ -64,9 +64,11 @@ gulp.task('sizes', function () {
 });
 
 var moduleWrap =
-    'var xDateCore = {' +
+    'var xDateCore = (function () {' +
+    '\n\r    return {' +
     '\n\r<%= contents %>' +
-    '};';
+    '};' +
+    '})();';
 
 gulp.task('js', function () {
     return gulp.src(src)
