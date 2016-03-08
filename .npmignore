@@ -1,4 +1,5 @@
 .travis.yml
+.bithoundrc
 dist/*test_only*
 token.txt
 coverage
