@@ -91,8 +91,6 @@ exports.DataClass = /*END.TESTS_ONLY*/ (function (DateUtils, CommonUtils, YearsU
 
     return exports;
   }
-})(this.DateUtils, this.CommonUtils, this.YearsUtils, this.MonthUtils, this.DaysUtils, this.DateModel, this.LimitsModel)
-
-  /*START.TESTS_ONLY*/;
+})(this.DateUtils, this.CommonUtils, this.YearsUtils, this.MonthUtils, this.DaysUtils, this.DateModel, this.LimitsModel)/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

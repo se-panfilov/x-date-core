@@ -17,8 +17,6 @@ exports.DateModel = /*END.TESTS_ONLY*/ (function (DateUtils) {
 
     return this;
   };
-})(this.DateUtils)
-
-  /*START.TESTS_ONLY*/;
+})(this.DateUtils)/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

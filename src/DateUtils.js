@@ -66,8 +66,6 @@ exports.DateUtils = /*END.TESTS_ONLY*/ (function (Config) {
   /*END.TESTS_ONLY*/
 
   return exports;
-})(this.Config)
-
-  /*START.TESTS_ONLY*/;
+})(this.Config)/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

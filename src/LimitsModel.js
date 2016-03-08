@@ -55,8 +55,6 @@ exports.LimitsModel = /*END.TESTS_ONLY*/ (function (DateUtils) {
 
     return exports;
   };
-})(this.DateUtils)
-
-  /*START.TESTS_ONLY*/;
+})(this.DateUtils)/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

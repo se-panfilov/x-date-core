@@ -3,7 +3,10 @@
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
-exports.YearsUtils = /*END.TESTS_ONLY*/ function (CommonUtils, Config) {
+this.DateUtils = require('../src/DateUtils.js');
+this.CommonUtils = require('../src/CommonUtils.js');
+
+exports.YearsUtils = /*END.TESTS_ONLY*/ (function (CommonUtils, Config) {
 
   function _getLatestPossibleYear(yearsCount, selectedYear, now) {
     var result = (selectedYear > now) ? selectedYear : now;
@@ -96,8 +99,6 @@ exports.YearsUtils = /*END.TESTS_ONLY*/ function (CommonUtils, Config) {
   /*END.TESTS_ONLY*/
 
   return exports;
-}
-
-  /*START.TESTS_ONLY*/;
+})(this.CommonUtils, this.Config)/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

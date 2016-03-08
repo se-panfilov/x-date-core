@@ -42,8 +42,6 @@ exports.DaysUtils = /*END.TESTS_ONLY*/ (function (DateUtils, CommonUtils, Config
       return CommonUtils.intArraySort(result, Config.daysDirection);
     }
   };
-})(this.DateUtils, this.CommonUtils, this.Config)
-
-  /*START.TESTS_ONLY*/;
+})(this.DateUtils, this.CommonUtils, this.Config)/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

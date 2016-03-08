@@ -10,9 +10,7 @@ var xDateCore = (function() {
       defaultYearsCount: 50,
       daysList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
       monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    }
-
-    ,
+    },
 
     CommonUtils: {
       isValidNumber: function(num) {
@@ -135,9 +133,7 @@ var xDateCore = (function() {
 
           return exports;
         }
-      })(this.DateUtils, this.CommonUtils, this.YearsUtils, this.MonthUtils, this.DaysUtils, this.DateModel, this.LimitsModel)
-
-    ,
+      })(this.DateUtils, this.CommonUtils, this.YearsUtils, this.MonthUtils, this.DaysUtils, this.DateModel, this.LimitsModel),
 
     DateModel:
       (function(DateUtils) {
@@ -152,9 +148,7 @@ var xDateCore = (function() {
 
           return this;
         };
-      })(this.DateUtils)
-
-    ,
+      })(this.DateUtils),
 
     DateUtils:
       (function(Config) {
@@ -214,9 +208,7 @@ var xDateCore = (function() {
 
 
         return exports;
-      })(this.Config)
-
-    ,
+      })(this.Config),
 
     DaysUtils:
       (function(DateUtils, CommonUtils, Config) {
@@ -254,9 +246,7 @@ var xDateCore = (function() {
             return CommonUtils.intArraySort(result, Config.daysDirection);
           }
         };
-      })(this.DateUtils, this.CommonUtils, this.Config)
-
-    ,
+      })(this.DateUtils, this.CommonUtils, this.Config),
 
     LimitsModel:
       (function(DateUtils) {
@@ -303,119 +293,126 @@ var xDateCore = (function() {
 
           return exports;
         };
-      })(this.DateUtils)
+      })(this.DateUtils),
 
-    ,
+    MonthUtils:
+      (function(CommonUtils, Config) {
+        return {
+          getMonthList: function(startDt, endDt, selectedYear, limitsModel) {
+            var result;
+            var START_MONTH = 0;
+            var END_MONTH = 11;
 
-    MonthUtils: function(CommonUtils, Config) {
-      return {
-        getMonthList: function(startDt, endDt, selectedYear, limitsModel) {
-          var result;
-          var START_MONTH = 0;
-          var END_MONTH = 11;
+            if (startDt || endDt) {
+              var isYearOfLowerLimit = (startDt) ? limitsModel.start.y === selectedYear : false;
+              var isYearOfUpperLimit = (endDt) ? limitsModel.end.y === selectedYear : false;
+              var start = (startDt) ? limitsModel.start.m : START_MONTH;
+              var end = (endDt) ? limitsModel.end.m : END_MONTH;
 
-          if (startDt || endDt) {
-            var isYearOfLowerLimit = (startDt) ? limitsModel.start.y === selectedYear : false;
-            var isYearOfUpperLimit = (endDt) ? limitsModel.end.y === selectedYear : false;
-            var start = (startDt) ? limitsModel.start.m : START_MONTH;
-            var end = (endDt) ? limitsModel.end.m : END_MONTH;
-
-            // startYear == 2015, nowYear == 2015, endYear == 2015
-            if (isYearOfLowerLimit && isYearOfUpperLimit) {
-              result = CommonUtils.getArrayOfNumbers(start, end);
-            } else if (isYearOfLowerLimit && !isYearOfUpperLimit) { // startYear == 2015, nowYear == 2015, endYear == 2016 (or null)
-              result = CommonUtils.getArrayOfNumbers(start, END_MONTH);
-            } else if (!isYearOfLowerLimit && isYearOfUpperLimit) { // startYear == 2014 (or null), nowYear == 2015, endYear == 2015
-              result = CommonUtils.getArrayOfNumbers(START_MONTH, end);
+              // startYear == 2015, nowYear == 2015, endYear == 2015
+              if (isYearOfLowerLimit && isYearOfUpperLimit) {
+                result = CommonUtils.getArrayOfNumbers(start, end);
+              } else if (isYearOfLowerLimit && !isYearOfUpperLimit) { // startYear == 2015, nowYear == 2015, endYear == 2016 (or null)
+                result = CommonUtils.getArrayOfNumbers(start, END_MONTH);
+              } else if (!isYearOfLowerLimit && isYearOfUpperLimit) { // startYear == 2014 (or null), nowYear == 2015, endYear == 2015
+                result = CommonUtils.getArrayOfNumbers(START_MONTH, end);
+              } else { // in all other cases return array of 12 month
+                result = CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
+              }
             } else { // in all other cases return array of 12 month
               result = CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
             }
-          } else { // in all other cases return array of 12 month
-            result = CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
+
+            return CommonUtils.intArraySort(result, Config.monthDirection);
+          }
+        };
+      })(this.CommonUtils, this.Config),
+
+    YearsUtils:
+      (function(CommonUtils, Config) {
+
+        function _getLatestPossibleYear(yearsCount, selectedYear, now) {
+          var result = (selectedYear > now) ? selectedYear : now;
+          result += (yearsCount - 1);
+          return result;
+        }
+
+        function _getFirstPossibleYear(yearsCount, selectedYear, now) {
+          var result = (selectedYear < now) ? selectedYear : now;
+          result -= (yearsCount - 1);
+          return result;
+        }
+
+        function _getRangeValues(selectedYear, startYear, endYear, nowYear) {
+
+          var YEARS_COUNT = Config.defaultYearsCount;
+          var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, nowYear);
+          var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, nowYear);
+
+          var statement = {
+            isBoth: !!(startYear && endYear),
+            isBothNot: !!(!startYear && !endYear),
+            isOnlyStart: !!(startYear && !endYear),
+            isOnlyEnd: !!(!startYear && endYear),
+            isStartLower: (startYear < endYear),
+            isEndLower: (startYear > endYear),
+            isStartEqualEnd: (startYear === endYear),
+            isEndUpperNow: (endYear > nowYear),
+            isEndEqualNow: (endYear === nowYear)
+          };
+
+          //start = 2011, end = 2014
+          if (statement.isBoth && statement.isStartLower) {
+            return {
+              from: startYear,
+              to: endYear
+            };
           }
 
-          return CommonUtils.intArraySort(result, Config.monthDirection);
-        }
-      };
-    }
+          //start = 2014, end = 2011
+          if (statement.isBoth && statement.isEndLower) {
+            return {
+              from: endYear,
+              to: startYear
+            };
+          }
 
-    ,
+          //start = 2011, end = 2011
+          if (statement.isBoth && statement.isStartEqualEnd) {
+            return {
+              from: startYear,
+              to: endYear
+            };
+          }
 
-    YearsUtils: function(CommonUtils, Config) {
+          //start = 2014, end = null
+          if (statement.isOnlyStart) {
+            return {
+              from: startYear,
+              to: latestPossibleYear
+            };
+          }
 
-      function _getLatestPossibleYear(yearsCount, selectedYear, now) {
-        var result = (selectedYear > now) ? selectedYear : now;
-        result += (yearsCount - 1);
-        return result;
-      }
+          //start = null, end = 2014
+          if (statement.isOnlyEnd) {
+            //start = null, now = 2013 (or 2014), end = 2014
+            if (statement.isEndUpperNow || statement.isEndEqualNow) {
+              //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
+              if ((firstPossibleYear - YEARS_COUNT) > (endYear - YEARS_COUNT)) {
+                return {
+                  from: firstPossibleYear,
+                  to: endYear
+                };
+              } else {
+                return {
+                  from: endYear - (YEARS_COUNT - 1),
+                  to: endYear
+                };
+              }
+            }
 
-      function _getFirstPossibleYear(yearsCount, selectedYear, now) {
-        var result = (selectedYear < now) ? selectedYear : now;
-        result -= (yearsCount - 1);
-        return result;
-      }
-
-      function _getRangeValues(selectedYear, startYear, endYear, nowYear) {
-
-        var YEARS_COUNT = Config.defaultYearsCount;
-        var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, nowYear);
-        var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, nowYear);
-
-        var statement = {
-          isBoth: !!(startYear && endYear),
-          isBothNot: !!(!startYear && !endYear),
-          isOnlyStart: !!(startYear && !endYear),
-          isOnlyEnd: !!(!startYear && endYear),
-          isStartLower: (startYear < endYear),
-          isEndLower: (startYear > endYear),
-          isStartEqualEnd: (startYear === endYear),
-          isEndUpperNow: (endYear > nowYear),
-          isEndEqualNow: (endYear === nowYear)
-        };
-
-        //start = 2011, end = 2014
-        if (statement.isBoth && statement.isStartLower) {
-          return {
-            from: startYear,
-            to: endYear
-          };
-        }
-
-        //start = 2014, end = 2011
-        if (statement.isBoth && statement.isEndLower) {
-          return {
-            from: endYear,
-            to: startYear
-          };
-        }
-
-        //start = 2011, end = 2011
-        if (statement.isBoth && statement.isStartEqualEnd) {
-          return {
-            from: startYear,
-            to: endYear
-          };
-        }
-
-        //start = 2014, end = null
-        if (statement.isOnlyStart) {
-          return {
-            from: startYear,
-            to: latestPossibleYear
-          };
-        }
-
-        //start = null, end = 2014
-        if (statement.isOnlyEnd) {
-          //start = null, now = 2013 (or 2014), end = 2014
-          if (statement.isEndUpperNow || statement.isEndEqualNow) {
-            //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
-            if ((firstPossibleYear - YEARS_COUNT) > (endYear - YEARS_COUNT)) {
-              return {
-                from: firstPossibleYear,
-                to: endYear
-              };
-            } else {
+            //start = null, now = 2015,  end = 2014
+            if (!statement.isEndUpperNow) {
               return {
                 from: endYear - (YEARS_COUNT - 1),
                 to: endYear
@@ -423,36 +420,26 @@ var xDateCore = (function() {
             }
           }
 
-          //start = null, now = 2015,  end = 2014
-          if (!statement.isEndUpperNow) {
+          //start = null, end = null
+          if (statement.isBothNot) {
             return {
-              from: endYear - (YEARS_COUNT - 1),
-              to: endYear
+              from: firstPossibleYear,
+              to: latestPossibleYear
             };
           }
         }
 
-        //start = null, end = null
-        if (statement.isBothNot) {
-          return {
-            from: firstPossibleYear,
-            to: latestPossibleYear
-          };
-        }
-      }
+        var exports = {
+          getYearsList: function(selectedYear, startYear, endYear, nowYear) {
+            var range = _getRangeValues(selectedYear, startYear, endYear, nowYear);
+            var result = CommonUtils.getArrayOfNumbers(range.from, range.to);
 
-      var exports = {
-        getYearsList: function(selectedYear, startYear, endYear, nowYear) {
-          var range = _getRangeValues(selectedYear, startYear, endYear, nowYear);
-          var result = CommonUtils.getArrayOfNumbers(range.from, range.to);
-
-          return CommonUtils.intArraySort(result, Config.yearsDirection);
-        }
-      };
+            return CommonUtils.intArraySort(result, Config.yearsDirection);
+          }
+        };
 
 
-      return exports;
-    }
-
+        return exports;
+      })(this.CommonUtils, this.Config)
   };
 })();

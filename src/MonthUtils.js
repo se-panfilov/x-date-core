@@ -3,7 +3,10 @@
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
-exports.MonthUtils = /*END.TESTS_ONLY*/ function (CommonUtils, Config) {
+this.DateUtils = require('../src/DateUtils.js');
+this.CommonUtils = require('../src/CommonUtils.js');
+
+exports.MonthUtils = /*END.TESTS_ONLY*/ (function (CommonUtils, Config) {
   return {
     getMonthList: function (startDt, endDt, selectedYear, limitsModel) {
       var result;
@@ -33,8 +36,6 @@ exports.MonthUtils = /*END.TESTS_ONLY*/ function (CommonUtils, Config) {
       return CommonUtils.intArraySort(result, Config.monthDirection);
     }
   };
-}
-
-  /*START.TESTS_ONLY*/;
+})(this.CommonUtils, this.Config)/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/
