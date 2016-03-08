@@ -3,9 +3,7 @@
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
-this.Config = require('../src/Config.js');
-
-exports.DateUtils = /*END.TESTS_ONLY*/ (function (Config) {
+exports.DateUtils = /*END.TESTS_ONLY*/ (function () {
 
   function getVal(dt, method) {
     var date = new Date(+dt);
@@ -15,26 +13,26 @@ exports.DateUtils = /*END.TESTS_ONLY*/ (function (Config) {
   var exports = {
     getDay: function (dt) {
       if (!dt && dt !== 0) return null;
-      var method = (Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+      var method = (x.Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
       return getVal(dt, method);
     },
     getDayOfWeek: function (dt) {
       if (!dt && dt !== 0) return null;
-      var method = (Config.isUtc) ? Date.prototype.getUTCDay : Date.prototype.getDay;
+      var method = (x.Config.isUtc) ? Date.prototype.getUTCDay : Date.prototype.getDay;
       return getVal(dt, method);
     },
     getYear: function (dt) {
       if (!dt && dt !== 0) return null;
-      var method = (Config.isUtc) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
+      var method = (x.Config.isUtc) ? Date.prototype.getUTCFullYear : Date.prototype.getFullYear;
       return getVal(dt, method);
     },
     getMonth: function (dt) {
       if (!dt && dt !== 0) return null;
-      var method = (Config.isUtc) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
+      var method = (x.Config.isUtc) ? Date.prototype.getUTCMonth : Date.prototype.getMonth;
       return getVal(dt, method);
     },
     getDaysInMonth: function (month, year) {
-      var method = (Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
+      var method = (x.Config.isUtc) ? Date.prototype.getUTCDate : Date.prototype.getDate;
       return method.call(new Date(+year, (+month) + 1, 0));
     },
     isValidModel: function (model) {
@@ -66,6 +64,6 @@ exports.DateUtils = /*END.TESTS_ONLY*/ (function (Config) {
   /*END.TESTS_ONLY*/
 
   return exports;
-})(this.Config)/*START.TESTS_ONLY*/;
+})()/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

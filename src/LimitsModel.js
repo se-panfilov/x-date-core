@@ -3,9 +3,7 @@
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
-this.DateUtils = require('../src/DateUtils.js').DateUtils;
-
-exports.LimitsModel = /*END.TESTS_ONLY*/ (function (DateUtils) {
+exports.LimitsModel = /*END.TESTS_ONLY*/ (function () {
   return function LimitsModel(start, end) {
 
     var exports = {
@@ -15,18 +13,18 @@ exports.LimitsModel = /*END.TESTS_ONLY*/ (function (DateUtils) {
     };
 
     function _setStart(dt) {
-      exports.start.d = DateUtils.getDay(+dt);
-      exports.start.m = DateUtils.getMonth(+dt);
-      exports.start.y = DateUtils.getYear(+dt);
+      exports.start.d = x.DateUtils.getDay(+dt);
+      exports.start.m = x.DateUtils.getMonth(+dt);
+      exports.start.y = x.DateUtils.getYear(+dt);
       exports.start.dt = +dt;
       //TODO (S.Panfilov) Possible strict violation
       return this;
     }
 
     function _setEnd(dt) {
-      exports.end.d = DateUtils.getDay(+dt);
-      exports.end.m = DateUtils.getMonth(+dt);
-      exports.end.y = DateUtils.getYear(+dt);
+      exports.end.d = x.DateUtils.getDay(+dt);
+      exports.end.m = x.DateUtils.getMonth(+dt);
+      exports.end.y = x.DateUtils.getYear(+dt);
       exports.end.dt = +dt;
       //TODO (S.Panfilov) Possible strict violation
       return this;
@@ -34,9 +32,9 @@ exports.LimitsModel = /*END.TESTS_ONLY*/ (function (DateUtils) {
 
     function _setNow() {
       var dt = new Date().getTime();
-      exports.now.d = DateUtils.getDay(dt);
-      exports.now.m = DateUtils.getMonth(dt);
-      exports.now.y = DateUtils.getYear(dt);
+      exports.now.d = x.DateUtils.getDay(dt);
+      exports.now.m = x.DateUtils.getMonth(dt);
+      exports.now.y = x.DateUtils.getYear(dt);
       exports.now.dt = dt;
       //TODO (S.Panfilov) Possible strict violation
       return this;
@@ -55,6 +53,6 @@ exports.LimitsModel = /*END.TESTS_ONLY*/ (function (DateUtils) {
 
     return exports;
   };
-})(this.DateUtils)/*START.TESTS_ONLY*/;
+})()/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

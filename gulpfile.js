@@ -72,10 +72,11 @@ gulp.task('js', function () {
   var moduleWrap =
       'var xDateCore = (function () {' +
       '\'use strict\';' +
-      '\n\r    return {' +
+      '\n\r    var x =  {' +
         //'\n\r<%= contents %>' +
       modules +
       '};' +
+      'return x;' +
       '})();';
 
   return gulp.src('src/Config.js')

@@ -3,10 +3,7 @@
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
-this.DateUtils = require('../src/DateUtils.js');
-this.CommonUtils = require('../src/CommonUtils.js');
-
-exports.YearsUtils = /*END.TESTS_ONLY*/ (function (CommonUtils, Config) {
+exports.YearsUtils = /*END.TESTS_ONLY*/ (function () {
 
   function _getLatestPossibleYear(yearsCount, selectedYear, now) {
     var result = (selectedYear > now) ? selectedYear : now;
@@ -22,7 +19,7 @@ exports.YearsUtils = /*END.TESTS_ONLY*/ (function (CommonUtils, Config) {
 
   function _getRangeValues(selectedYear, startYear, endYear, nowYear) {
 
-    var YEARS_COUNT = Config.defaultYearsCount;
+    var YEARS_COUNT = x.Config.defaultYearsCount;
     var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, nowYear);
     var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, nowYear);
 
@@ -85,9 +82,9 @@ exports.YearsUtils = /*END.TESTS_ONLY*/ (function (CommonUtils, Config) {
   var exports = {
     getYearsList: function (selectedYear, startYear, endYear, nowYear) {
       var range = _getRangeValues(selectedYear, startYear, endYear, nowYear);
-      var result = CommonUtils.getArrayOfNumbers(range.from, range.to);
+      var result = x.CommonUtils.getArrayOfNumbers(range.from, range.to);
 
-      return CommonUtils.intArraySort(result, Config.yearsDirection);
+      return x.CommonUtils.intArraySort(result, x.Config.yearsDirection);
     }
   };
 
@@ -99,6 +96,6 @@ exports.YearsUtils = /*END.TESTS_ONLY*/ (function (CommonUtils, Config) {
   /*END.TESTS_ONLY*/
 
   return exports;
-})(this.CommonUtils, this.Config)/*START.TESTS_ONLY*/;
+})()/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

@@ -3,15 +3,7 @@
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
-this.DateUtils = require('../src/DateUtils.js');
-this.CommonUtils = require('../src/CommonUtils.js');
-this.YearsUtils = require('../src/YearsUtils.js');
-this.MonthUtils = require('../src/MonthUtils.js');
-this.DaysUtils = require('../src/DaysUtils.js');
-this.DateModel = require('../src/DateModel.js');
-this.LimitsModel = require('../src/LimitsModel.js');
-
-exports.DataClass = /*END.TESTS_ONLY*/ (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
+exports.DataClass = /*END.TESTS_ONLY*/ (function () {
 
   function _getSelected(model, start, end) {
     var result;
@@ -23,13 +15,13 @@ exports.DataClass = /*END.TESTS_ONLY*/ (function (DateUtils, CommonUtils, YearsU
 
     //start == 1; model == 1 or 2 or 3; end == 3;
     if ((isUpperStart || isEqualStart) || (isLowerEnd || isEqualEnd)) {
-      result = new DateModel(model.dt);
+      result = new x.DateModel(model.dt);
     } else if (!isUpperStart) { //start == 1; model == 0
-      result = new DateModel(start);
+      result = new x.DateModel(start);
     } else if (!isUpperStart) { //model == 4; end == 3;
-      result = new DateModel(end);
+      result = new x.DateModel(end);
     } else {//paranoid case
-      result = new DateModel(new Date().getTime());
+      result = new x.DateModel(new Date().getTime());
     }
 
     return result;
@@ -51,46 +43,46 @@ exports.DataClass = /*END.TESTS_ONLY*/ (function (DateUtils, CommonUtils, YearsU
         d: null
       },
       reloadYearsList: function () {
-        var selectedYear = DateUtils.getYear(exports.selected.dt);
-        var startYear = DateUtils.getYear(_data._start);
-        var endYear = DateUtils.getYear(_data._end);
-        //exports.list.y = YearsUtils.getYearsList(selectedYear, _data._start, _data._end, _data.limitsModel.now.y);
-        exports.list.y = YearsUtils.getYearsList(selectedYear, startYear, endYear, _data.limitsModel.now.y);
+        var selectedYear = x.DateUtils.getYear(exports.selected.dt);
+        var startYear = x.DateUtils.getYear(_data._start);
+        var endYear = x.DateUtils.getYear(_data._end);
+        //exports.list.y = x.YearsUtils.getYearsList(selectedYear, _data._start, _data._end, _data.x.LimitsModel.now.y);
+        exports.list.y = x.YearsUtils.getYearsList(selectedYear, startYear, endYear, _data.x.LimitsModel.now.y);
         return this;
       },
       reloadMonthList: function () {
-        var selectedYear = DateUtils.getYear(exports.selected.dt);
-        var startMonth = DateUtils.getMonth(_data._start);
-        var endMonth = DateUtils.getMonth(_data._end);
-        exports.list.m = MonthUtils.getMonthList(startMonth, endMonth, selectedYear, _data.limitsModel);
+        var selectedYear = x.DateUtils.getYear(exports.selected.dt);
+        var startMonth = x.DateUtils.getMonth(_data._start);
+        var endMonth = x.DateUtils.getMonth(_data._end);
+        exports.list.m = x.MonthUtils.getMonthList(startMonth, endMonth, selectedYear, _data.x.LimitsModel);
         return this;
       },
       reloadDaysList: function () {
-        var selectedYear = DateUtils.getYear(exports.selected.dt);
-        var selectedMonth = DateUtils.getMonth(exports.selected.dt);
-        exports.list.d = DaysUtils.getDaysList(_data._start, _data._end, selectedYear, selectedMonth, _data.limitsModel);
+        var selectedYear = x.DateUtils.getYear(exports.selected.dt);
+        var selectedMonth = x.DateUtils.getMonth(exports.selected.dt);
+        exports.list.d = x.DaysUtils.getDaysList(_data._start, _data._end, selectedYear, selectedMonth, _data.x.LimitsModel);
         return this;
       }
     };
 
-    model.dt = CommonUtils.isValidNumber(model.dt) ? model.dt : null;
-    start = CommonUtils.isValidNumber(start) ? start : null;
-    end = CommonUtils.isValidNumber(end) ? end : null;
+    model.dt = x.CommonUtils.isValidNumber(model.dt) ? model.dt : null;
+    start = x.CommonUtils.isValidNumber(start) ? start : null;
+    end = x.CommonUtils.isValidNumber(end) ? end : null;
 
     exports.selected = _getSelected(model, start, end);
-    var selectedYear = DateUtils.getYear(exports.selected.dt);
-    var selectedMonth = DateUtils.getMonth(exports.selected.dt);
+    var selectedYear = x.DateUtils.getYear(exports.selected.dt);
+    var selectedMonth = x.DateUtils.getMonth(exports.selected.dt);
 
-    _data.limitsModel = new LimitsModel(start, end);
+    _data.x.LimitsModel = new x.LimitsModel(start, end);
     _data._start = start;
     _data._end = end;
 
-    exports.list.y = YearsUtils.getYearsList(selectedYear, _data.limitsModel.start.y, _data.limitsModel.end.y, _data.limitsModel.now.y);
-    exports.list.m = MonthUtils.getMonthList(start, end, selectedYear, _data.limitsModel);
-    exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, _data.limitsModel);
+    exports.list.y = x.YearsUtils.getYearsList(selectedYear, _data.x.LimitsModel.start.y, _data.x.LimitsModel.end.y, _data.x.LimitsModel.now.y);
+    exports.list.m = x.MonthUtils.getMonthList(start, end, selectedYear, _data.x.LimitsModel);
+    exports.list.d = x.DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, _data.x.LimitsModel);
 
     return exports;
   }
-})(this.DateUtils, this.CommonUtils, this.YearsUtils, this.MonthUtils, this.DaysUtils, this.DateModel, this.LimitsModel)/*START.TESTS_ONLY*/;
+})()/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/
