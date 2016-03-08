@@ -58,7 +58,6 @@ var getContent = function (path) {
 
 gulp.task('js', function () {
 
-
   var modules =
       'Config: ' + getContent('src/Config.js') + ', ' +
       '\n\rCommonUtils: ' + getContent('src/CommonUtils.js') + ',' +
@@ -86,10 +85,10 @@ gulp.task('js', function () {
         start_comment: "START.DEV_ONLY",
         end_comment: "END.DEV_ONLY"
       }))
-      .pipe(stripCode({
-        start_comment: "START.TESTS_ONLY",
-        end_comment: "END.TESTS_ONLY"
-      }))
+      //.pipe(stripCode({   //TODO (S.Panfilov) Revert this cahnge
+      //  start_comment: "START.TESTS_ONLY",
+      //  end_comment: "END.TESTS_ONLY"
+      //}))
       .pipe(prettify({
         indent_size: 2
       }))
@@ -103,7 +102,7 @@ gulp.task('js', function () {
 });
 
 gulp.task('pre-test', function () {
-  return gulp.src(['./src/**/02_DateUtils.js'])
+  return gulp.src(['./src/**/DateUtils.js'])
       // Covering files
       .pipe(istanbul())
       // Force `require` to return covered files
@@ -111,7 +110,7 @@ gulp.task('pre-test', function () {
 });
 
 gulp.task('test', ['pre-test'], function () {
-  return gulp.src(['./tests/**/02_DateUtilsTest.js'])
+  return gulp.src(['./tests/**/DateUtilsTest.js'])
       .pipe(mocha())
       // Creating the reports after tests ran
       .pipe(istanbul.writeReports({

@@ -2,7 +2,7 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-function /*START.DEV_ONLY*/ DataClass /*END.DEV_ONLY*/(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
+/*START.TESTS_ONLY*/ exports.DataClass = /*END.TESTS_ONLY*/ function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
 
   function _getSelected(model, start, end) {
     var result;
@@ -83,3 +83,5 @@ function /*START.DEV_ONLY*/ DataClass /*END.DEV_ONLY*/(DateUtils, CommonUtils, Y
     return exports;
   };
 }
+
+/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/

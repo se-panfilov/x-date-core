@@ -2,16 +2,16 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-function /*START.DEV_ONLY*/ CommonUtils /*END.DEV_ONLY*/ () {
-
-  var exports = {
+/*START.TESTS_ONLY*/ exports.CommonUtils = /*END.TESTS_ONLY*/ {
     isValidNumber: function (num) {
       var isNumber = !isNaN(parseFloat(num));
       var isNotInfinity = isFinite(num);
       return isNumber && isNotInfinity;
     },
     getArrayOfNumbers: function (start, end) {
-      if (!exports.isValidNumber(start) || !exports.isValidNumber(end)) return [];
+      //TODO (S.Panfilov) check this in after build
+      //if (!exports.isValidNumber(start) || !exports.isValidNumber(end)) return [];
+      if (!this.isValidNumber(start) || !this.isValidNumber(end)) return [];
 
       var isReverse = (start > end);
       var targetLength = isReverse ? (start - end) + 1 : (end - start ) + 1;
@@ -39,7 +39,6 @@ function /*START.DEV_ONLY*/ CommonUtils /*END.DEV_ONLY*/ () {
           return arr.sort(desc);
       }
     }
-  };
+  }
 
-  return exports;
-}
+/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/

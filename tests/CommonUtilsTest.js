@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 var assert = require('chai').assert;
-var CommonUtils = require('../src/01_CommonUtils.js').CommonUtils;
+var CommonUtils = require('../src/CommonUtils.js').CommonUtils;
 
 describe("CommonUtils", function () {
 
@@ -114,6 +114,5 @@ describe("CommonUtils", function () {
         });
 
     });
-
 
 });

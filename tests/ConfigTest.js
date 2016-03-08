@@ -1,16 +1,16 @@
 var expect = require('chai').expect;
-var config = require('../src/00_Config.js').Config;
+var Config = require('../src/Config.js');
 
-describe("Config", function() {
+describe("Config", function () {
 
-    it("is module an object", function() {
-        expect(config).to.be.a('object');
-        expect(Object.getPrototypeOf(config)).to.be.a('object');
-    });
+  it("is module an object", function () {
+    expect(Config).to.be.a('object');
+    expect(Object.getPrototypeOf(Config)).to.be.a('object');
+  });
 
 
-    it("is module not empty", function() {
-        expect(Object.keys(config)).to.have.length.greaterThan(0);
-    });
+  it("is module not empty", function () {
+    expect(Object.keys(Config)).to.have.length.greaterThan(0);
+  });
 
 });

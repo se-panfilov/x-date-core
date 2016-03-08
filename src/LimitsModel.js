@@ -2,7 +2,7 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-function /*START.DEV_ONLY*/ LimitsModel /*END.DEV_ONLY*/(DateUtils) {
+/*START.TESTS_ONLY*/ exports.LimitsModel = /*END.TESTS_ONLY*/ function (DateUtils) {
   return function LimitsModel(start, end) {
 
     var exports = {
@@ -53,3 +53,5 @@ function /*START.DEV_ONLY*/ LimitsModel /*END.DEV_ONLY*/(DateUtils) {
     return exports;
   };
 }
+
+/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/

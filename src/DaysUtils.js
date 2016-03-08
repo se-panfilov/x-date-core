@@ -2,7 +2,7 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-function /*START.DEV_ONLY*/ DaysUtils /*END.DEV_ONLY*/(DateUtils, CommonUtils, Config) {
+/*START.TESTS_ONLY*/ exports.DaysUtils = /*END.TESTS_ONLY*/ function (DateUtils, CommonUtils, Config) {
   return {
     getDaysList: function (startDt, endDt, year, month, limitsModel) {
       var result;
@@ -38,3 +38,5 @@ function /*START.DEV_ONLY*/ DaysUtils /*END.DEV_ONLY*/(DateUtils, CommonUtils, C
     }
   };
 }
+
+/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/

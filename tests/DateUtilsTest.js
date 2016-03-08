@@ -1,9 +1,9 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
 var rewire = require("rewire");
-//var Config = require('../src/00_Config.js').Config;
-var Config = rewire('../src/00_Config.js').Config;
-var DateUtils = require('../src/02_DateUtils.js').DateUtils;
+var Config = require('../src/Config.js');
+//var Config = rewire('../src/Config.js');
+var DateUtils = require('../src/DateUtils.js').DateUtils;
 
 
 describe("Date Utils", function () {

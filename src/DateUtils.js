@@ -2,7 +2,7 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-function /*START.DEV_ONLY*/ DateUtils /*END.DEV_ONLY*/(Config) {
+/*START.TESTS_ONLY*/ exports.DateUtils = /*END.TESTS_ONLY*/ (function (Config) {
 
   function getVal(dt, method) {
     var date = new Date(+dt);
@@ -63,4 +63,6 @@ function /*START.DEV_ONLY*/ DateUtils /*END.DEV_ONLY*/(Config) {
   /*END.TESTS_ONLY*/
 
   return exports;
-}
+})(this.Config)
+
+/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/

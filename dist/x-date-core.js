@@ -2,17 +2,23 @@ var xDateCore = (function() {
   'use strict';
 
   return {
-    Config: function() {
+    Config:
+    /*START.TESTS_ONLY*/
+      exports.Config = /*END.TESTS_ONLY*/ function() {
       return {
         isUtc: false,
         monthDirection: 'asc',
         daysDirection: 'asc',
         yearsDirection: 'desc',
         defaultYearsCount: 50,
-        daysList: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        daysList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
       };
-    },
+    }
+
+    /*START.TESTS_ONLY*/
+    ;
+    return exports; /*END.TESTS_ONLY*/ ,
 
     CommonUtils: function() {
 
@@ -209,6 +215,10 @@ var xDateCore = (function() {
         }
       };
 
+      /*START.TESTS_ONLY*/
+      exports._private = {};
+      exports._private.getVal = getVal;
+      /*END.TESTS_ONLY*/
 
       return exports;
     },
@@ -291,6 +301,12 @@ var xDateCore = (function() {
         if (end) _setEnd(end);
         _setNow();
 
+        /*START.TESTS_ONLY*/
+        exports._private = {};
+        exports._private._setStart = _setStart;
+        exports._private._setEnd = _setEnd;
+        exports._private._setNow = _setNow;
+        /*END.TESTS_ONLY*/
 
         return exports;
       };
@@ -437,6 +453,12 @@ var xDateCore = (function() {
         }
       };
 
+      /*START.TESTS_ONLY*/
+      exports._private = {};
+      exports._private._getLatestPossibleYear = _getLatestPossibleYear;
+      exports._private._getFirstPossibleYear = _getFirstPossibleYear;
+      exports._private._getRangeValues = _getRangeValues;
+      /*END.TESTS_ONLY*/
 
       return exports;
     }

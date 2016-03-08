@@ -6,7 +6,7 @@
     "S.Panfilov <se-panfilov@ya.ru> (https://se-panfilov.github.io)"
   ],
   "description": "Business logic core for datepickers",
-  "main": "x-date-core.js",
+  "main": "dist/x-date-core.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/se-panfilov/x-date-core.git"
@@ -25,6 +25,7 @@
     "bower_components",
     "tests",
     ".travis.yml",
+    "dist/index.js",
     "dist/*test_only*"
   ]
 }
