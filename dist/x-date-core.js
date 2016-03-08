@@ -48,9 +48,7 @@ var xDateCore = (function() {
               return arr.sort(desc);
         }
       }
-    }
-
-    ,
+    },
 
     DataClass:
       (function(DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {

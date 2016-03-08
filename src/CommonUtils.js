@@ -40,8 +40,6 @@ exports.CommonUtils = /*END.TESTS_ONLY*/ {
         return arr.sort(desc);
     }
   }
-}
-
-  /*START.TESTS_ONLY*/;
+}/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/
