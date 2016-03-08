@@ -2,7 +2,8 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-/*START.TESTS_ONLY*/ exports.Config = /*END.TESTS_ONLY*/ {
+/*START.TESTS_ONLY*/
+exports.Config = /*END.TESTS_ONLY*/ {
   isUtc: false,
   monthDirection: 'asc',
   daysDirection: 'asc',
@@ -12,4 +13,6 @@
   monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 }
 
-/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/
+  /*START.TESTS_ONLY*/;
+return exports;
+/*END.TESTS_ONLY*/

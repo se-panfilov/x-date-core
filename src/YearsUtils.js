@@ -2,7 +2,8 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-/*START.TESTS_ONLY*/ exports.YearsUtils = /*END.TESTS_ONLY*/ function (CommonUtils, Config) {
+/*START.TESTS_ONLY*/
+exports.YearsUtils = /*END.TESTS_ONLY*/ function (CommonUtils, Config) {
 
   function _getLatestPossibleYear(yearsCount, selectedYear, now) {
     var result = (selectedYear > now) ? selectedYear : now;
@@ -97,4 +98,6 @@
   return exports;
 }
 
-/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/
+  /*START.TESTS_ONLY*/;
+return exports;
+/*END.TESTS_ONLY*/

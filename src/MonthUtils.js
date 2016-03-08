@@ -2,7 +2,8 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-/*START.TESTS_ONLY*/ exports.MonthUtils = /*END.TESTS_ONLY*/ function (CommonUtils, Config) {
+/*START.TESTS_ONLY*/
+exports.MonthUtils = /*END.TESTS_ONLY*/ function (CommonUtils, Config) {
   return {
     getMonthList: function (startDt, endDt, selectedYear, limitsModel) {
       var result;
@@ -34,4 +35,6 @@
   };
 }
 
-/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/
+  /*START.TESTS_ONLY*/;
+return exports;
+/*END.TESTS_ONLY*/

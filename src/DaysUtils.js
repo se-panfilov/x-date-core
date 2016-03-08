@@ -44,4 +44,6 @@ exports.DaysUtils = /*END.TESTS_ONLY*/ (function (DateUtils, CommonUtils, Config
   };
 })(this.DateUtils, this.CommonUtils, this.Config)
 
-/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/
+  /*START.TESTS_ONLY*/;
+return exports;
+/*END.TESTS_ONLY*/
