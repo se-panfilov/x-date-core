@@ -2,7 +2,10 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-/*START.TESTS_ONLY*/ exports.LimitsModel = /*END.TESTS_ONLY*/ function (DateUtils) {
+/*START.TESTS_ONLY*/
+this.DateUtils = require('../src/DateUtils.js').DateUtils;
+
+exports.LimitsModel = /*END.TESTS_ONLY*/ (function (DateUtils) {
   return function LimitsModel(start, end) {
 
     var exports = {
@@ -52,6 +55,6 @@
 
     return exports;
   };
-}
+})(this.DateUtils)
 
 /*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/

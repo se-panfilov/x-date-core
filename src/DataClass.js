@@ -2,7 +2,16 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-/*START.TESTS_ONLY*/ exports.DataClass = /*END.TESTS_ONLY*/ function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
+/*START.TESTS_ONLY*/
+this.DateUtils = require('../src/DateUtils.js');
+this.CommonUtils = require('../src/CommonUtils.js');
+this.YearsUtils = require('../src/YearsUtils.js');
+this.MonthUtils = require('../src/MonthUtils.js');
+this.DaysUtils = require('../src/DaysUtils.js');
+this.DateModel = require('../src/DateModel.js');
+this.LimitsModel = require('../src/LimitsModel.js');
+
+exports.DataClass = /*END.TESTS_ONLY*/ (function (DateUtils, CommonUtils, YearsUtils, MonthUtils, DaysUtils, DateModel, LimitsModel) {
 
   function _getSelected(model, start, end) {
     var result;
@@ -81,7 +90,9 @@
     exports.list.d = DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, _data.limitsModel);
 
     return exports;
-  };
-}
+  }
+})(this.DateUtils, this.CommonUtils, this.YearsUtils, this.MonthUtils, this.DaysUtils, this.DateModel, this.LimitsModel)
 
-/*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/
+  /*START.TESTS_ONLY*/;
+return exports;
+/*END.TESTS_ONLY*/

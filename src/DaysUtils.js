@@ -2,7 +2,12 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-/*START.TESTS_ONLY*/ exports.DaysUtils = /*END.TESTS_ONLY*/ function (DateUtils, CommonUtils, Config) {
+/*START.TESTS_ONLY*/
+this.DateUtils = require('../src/DateUtils.js');
+this.CommonUtils = require('../src/CommonUtils.js');
+this.Config = require('../src/Config.js');
+
+exports.DaysUtils = /*END.TESTS_ONLY*/ (function (DateUtils, CommonUtils, Config) {
   return {
     getDaysList: function (startDt, endDt, year, month, limitsModel) {
       var result;
@@ -37,6 +42,6 @@
       return CommonUtils.intArraySort(result, Config.daysDirection);
     }
   };
-}
+})(this.DateUtils, this.CommonUtils, this.Config)
 
 /*START.TESTS_ONLY*/; return exports; /*END.TESTS_ONLY*/

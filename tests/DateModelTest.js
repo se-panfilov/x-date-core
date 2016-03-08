@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 var DateModel = require('../src/DateModel.js').DateModel;
-var DateUtils = require('../src/DaysUtils.js').DateUtils;
+var DateUtils = require('../src/DateUtils.js').DateUtils;
 
 describe("DateModel", function () {
     'use strict';
@@ -22,115 +22,113 @@ describe("DateModel", function () {
 
             it("Common case", function () {
                 var dateModel = new DateModel(dateTime);
-                console.log(DateUtils);
                 var expectedResult = DateUtils.getDay(dateTime);
                 expect(dateModel.d).to.be.equal(expectedResult);
             });
 
-            //it("String num", function () {
-            //    var dateModel = new DateModel(dateTime.toString());
-            //    var expectedResult = DateUtils.getDay(dateTime);
-            //    expect(dateModel.d).to.be.equal(expectedResult);
-            //});
+            it("String num", function () {
+                var dateModel = new DateModel(dateTime.toString());
+                var expectedResult = DateUtils.getDay(dateTime);
+                expect(dateModel.d).to.be.equal(expectedResult);
+            });
 
         });
 
-        //describe("Check day of week", function () {
-        //
-        //    it("Common case", function () {
-        //        var dateModel = new DateModel(dateTime);
-        //        var expectedResult = DateUtils.getDayOfWeek(dateTime);
-        //        expect(dateModel.dow).to.be.equal(expectedResult);
-        //    });
-        //
-        //    it("String num", function () {
-        //        var dateModel = new DateModel(dateTime.toString());
-        //        var expectedResult = DateUtils.getDayOfWeek(dateTime);
-        //        expect(dateModel.dow).to.be.equal(expectedResult);
-        //    });
-        //
-        //});
-        //
-        //describe("Check month", function () {
-        //
-        //    it("Common case", function () {
-        //        var dateModel = new DateModel(dateTime);
-        //        var expectedResult = DateUtils.getMonth(dateTime);
-        //        expect(dateModel.m).to.be.equal(expectedResult);
-        //    });
-        //
-        //    it("String num", function () {
-        //        var dateModel = new DateModel(dateTime.toString());
-        //        var expectedResult = DateUtils.getMonth(dateTime);
-        //        expect(dateModel.m).to.be.equal(expectedResult);
-        //    });
-        //
-        //});
-        //
-        //describe("Check year", function () {
-        //
-        //    it("Common case", function () {
-        //        var dateModel = new DateModel(dateTime);
-        //        var expectedResult = DateUtils.getYear(dateTime);
-        //        expect(dateModel.y).to.be.equal(expectedResult);
-        //    });
-        //
-        //    it("String num", function () {
-        //        var dateModel = new DateModel(dateTime.toString());
-        //        var expectedResult = DateUtils.getYear(dateTime);
-        //        expect(dateModel.y).to.be.equal(expectedResult);
-        //    });
-        //
-        //});
-        //
-        //describe("Check datetime", function () {
-        //
-        //    it("Common case", function () {
-        //        var dateModel = new DateModel(dateTime);
-        //        expect(dateModel.dt).to.be.equal(dateTime);
-        //    });
-        //
-        //    it("String num", function () {
-        //        var dateModel = new DateModel(dateTime.toString());
-        //        expect(dateModel.dt).to.be.equal(dateTime);
-        //    });
-        //
-        //});
-        //
-        //describe("Check timezone", function () {
-        //
-        //    it("Common case", function () {
-        //        var dateModel = new DateModel(dateTime);
-        //        var expectedResult = new Date(dateTime).getTimezoneOffset();
-        //        expect(dateModel.tz).to.be.equal(expectedResult);
-        //    });
-        //
-        //    it("String num", function () {
-        //        var dateModel = new DateModel(dateTime.toString());
-        //        var expectedResult = new Date(dateTime).getTimezoneOffset();
-        //        expect(dateModel.tz).to.be.equal(expectedResult);
-        //    });
-        //
-        //});
-        //
-        //describe("Check Day of week", function () {
-        //
-        //    it("Common case", function () {
-        //        var dateTime = new Date().getTime();
-        //        var dateModel = new DateModel(dateTime);
-        //        var expectedResult = DateUtils.getDay(dateTime);
-        //        expect(dateModel.d).to.be.equal(expectedResult);
-        //    });
-        //
-        //    it("String num", function () {
-        //        var dateTime = new Date().getTime();
-        //        var dateModel = new DateModel(dateTime.toString());
-        //        var expectedResult = DateUtils.getDay(dateTime);
-        //        expect(dateModel.d).to.be.equal(expectedResult);
-        //    });
-        //
-        //});
+        describe("Check day of week", function () {
 
+            it("Common case", function () {
+                var dateModel = new DateModel(dateTime);
+                var expectedResult = DateUtils.getDayOfWeek(dateTime);
+                expect(dateModel.dow).to.be.equal(expectedResult);
+            });
+
+            it("String num", function () {
+                var dateModel = new DateModel(dateTime.toString());
+                var expectedResult = DateUtils.getDayOfWeek(dateTime);
+                expect(dateModel.dow).to.be.equal(expectedResult);
+            });
+
+        });
+
+        describe("Check month", function () {
+
+            it("Common case", function () {
+                var dateModel = new DateModel(dateTime);
+                var expectedResult = DateUtils.getMonth(dateTime);
+                expect(dateModel.m).to.be.equal(expectedResult);
+            });
+
+            it("String num", function () {
+                var dateModel = new DateModel(dateTime.toString());
+                var expectedResult = DateUtils.getMonth(dateTime);
+                expect(dateModel.m).to.be.equal(expectedResult);
+            });
+
+        });
+
+        describe("Check year", function () {
+
+            it("Common case", function () {
+                var dateModel = new DateModel(dateTime);
+                var expectedResult = DateUtils.getYear(dateTime);
+                expect(dateModel.y).to.be.equal(expectedResult);
+            });
+
+            it("String num", function () {
+                var dateModel = new DateModel(dateTime.toString());
+                var expectedResult = DateUtils.getYear(dateTime);
+                expect(dateModel.y).to.be.equal(expectedResult);
+            });
+
+        });
+
+        describe("Check datetime", function () {
+
+            it("Common case", function () {
+                var dateModel = new DateModel(dateTime);
+                expect(dateModel.dt).to.be.equal(dateTime);
+            });
+
+            it("String num", function () {
+                var dateModel = new DateModel(dateTime.toString());
+                expect(dateModel.dt).to.be.equal(dateTime);
+            });
+
+        });
+
+        describe("Check timezone", function () {
+
+            it("Common case", function () {
+                var dateModel = new DateModel(dateTime);
+                var expectedResult = new Date(dateTime).getTimezoneOffset();
+                expect(dateModel.tz).to.be.equal(expectedResult);
+            });
+
+            it("String num", function () {
+                var dateModel = new DateModel(dateTime.toString());
+                var expectedResult = new Date(dateTime).getTimezoneOffset();
+                expect(dateModel.tz).to.be.equal(expectedResult);
+            });
+
+        });
+
+        describe("Check Day of week", function () {
+
+            it("Common case", function () {
+                var dateTime = new Date().getTime();
+                var dateModel = new DateModel(dateTime);
+                var expectedResult = DateUtils.getDay(dateTime);
+                expect(dateModel.d).to.be.equal(expectedResult);
+            });
+
+            it("String num", function () {
+                var dateTime = new Date().getTime();
+                var dateModel = new DateModel(dateTime.toString());
+                var expectedResult = DateUtils.getDay(dateTime);
+                expect(dateModel.d).to.be.equal(expectedResult);
+            });
+
+        });
 
     });
 

@@ -2,7 +2,10 @@
 'use strict';
 /*END.DEV_ONLY*/
 
-/*START.TESTS_ONLY*/ exports.DateUtils = /*END.TESTS_ONLY*/ (function (Config) {
+/*START.TESTS_ONLY*/
+this.Config = require('../src/Config.js');
+
+exports.DateUtils = /*END.TESTS_ONLY*/ (function (Config) {
 
   function getVal(dt, method) {
     var date = new Date(+dt);
