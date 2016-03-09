@@ -40,20 +40,15 @@ exports.DateUtils = /*END.TESTS_ONLY*/ (function () {
     },
     isDateUpperStartLimit: function (dt, start) {
       if (!start) return true;
-      //TODO (S.Panfilov) should be a const
       if ((!dt && dt !== 0) || Number.isNaN(+dt) || Number.isNaN(+start)) throw 'NaN or null';
-      //TODO (S.Panfilov) may be (+dt >= +end)
       return (+dt > +start);
     },
     isDateLowerEndLimit: function (dt, end) {
       if (!end) return true;
-      //TODO (S.Panfilov) should be a const
       if (Number.isNaN(+dt) || Number.isNaN(+end)) throw 'NaN or null';
-      //TODO (S.Panfilov) may be (+dt <= +end)
       return (+dt < +end);
     },
     isDateBetweenLimits: function (dt, start, end) {
-      //TODO (S.Panfilov) lowerAndEqual and UpperAndEqual?
       return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
     },
     makeDmyModel: function (dt) {

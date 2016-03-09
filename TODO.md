@@ -2,11 +2,6 @@
 | Filename | line # | TODO
 |:------|:------:|:------
 | CommonUtils.js | 13 | (S.Panfilov) check this in after build
-| DateUtils.js | 43 | (S.Panfilov) should be a const
-| DateUtils.js | 45 | (S.Panfilov) may be (+dt >= +end)
-| DateUtils.js | 50 | (S.Panfilov) should be a const
-| DateUtils.js | 52 | (S.Panfilov) may be (+dt <= +end)
-| DateUtils.js | 56 | (S.Panfilov) lowerAndEqual and UpperAndEqual?
 | YearsUtils.js | 62 | (S.Panfilov) wtf? I cannot remember wtf this statement check
 | DateModelTest.js | 9 | (S.Panfilov) didn't sure, may be it should be an object
 | DateModelTest.js | 138 | (S.Panfilov) NaN or null should be a const

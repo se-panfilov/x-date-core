@@ -4,22 +4,26 @@
 
 /*START.TESTS_ONLY*/
 exports.DaysUtils = /*END.TESTS_ONLY*/ {
-  getDaysList: function (startDt, endDt, year, month) {
+  getDaysList: function () {
     var result;
     var START_DAY = 1;
-    var lastDayInMonth = x.DateUtils.getDaysInMonth(month, year);
 
-    if (startDt || endDt) {
-      var isYearOfLowerLimit = (startDt) ? x.State.start.y === year : false;
-      var isYearOfUpperLimit = (endDt) ? x.State.end.y === year : false;
-      var isMonthOfLowerLimit = (startDt) ? x.State.start.m === month : false;
-      var isMonthOfUpperLimit = (endDt) ? x.State.end.m === month : false;
+    var lastDayInMonth = x.DateUtils.getDaysInMonth(x.State.selected.y, x.State.selected.y);
+
+    var isStart = x.State.start.isExist;
+    var isEnd = x.State.end.isExist;
+
+    if (isStart || isEnd) {
+      var isYearOfLowerLimit = (isStart) ? x.State.start.y === x.State.selected.y : false;
+      var isYearOfUpperLimit = (isEnd) ? x.State.end.y === x.State.selected.y : false;
+      var isMonthOfLowerLimit = (isStart) ? x.State.start.m === x.State.selected.y : false;
+      var isMonthOfUpperLimit = (isEnd) ? x.State.end.m === x.State.selected.y : false;
 
       var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
       var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
 
-      var start = (startDt) ? x.State.start.d : START_DAY;
-      var end = (endDt) ? x.State.end.d : lastDayInMonth;
+      var start = (isStart) ? x.State.start.d : START_DAY;
+      var end = (isEnd) ? x.State.end.d : lastDayInMonth;
 
       if (isLowerLimit && isUpperLimit) {
         result = x.CommonUtils.getArrayOfNumbers(start, end);

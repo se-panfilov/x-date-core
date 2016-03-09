@@ -10,7 +10,7 @@ exports.Config = /*END.TESTS_ONLY*/ {
     m: 'asc',
     y: 'desc'
   },
-  defaultYearsCount: 50,
+  defaultYearsCount: 30,
   daysList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 }/*START.TESTS_ONLY*/;

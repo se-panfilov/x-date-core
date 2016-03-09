@@ -42,23 +42,15 @@ exports.DataClass = /*END.TESTS_ONLY*/ (function () {
         d: null
       },
       reloadYearsList: function () {
-        var selectedYear = x.DateUtils.getYear(exports.selected.dt);
-        var startYear = x.DateUtils.getYear(_data._start);
-        var endYear = x.DateUtils.getYear(_data._end);
-        exports.list.y = x.YearsUtils.getYearsList(selectedYear, startYear, endYear);
+        exports.list.y = x.YearsUtils.getYearsList();
         return this;
       },
       reloadMonthList: function () {
-        var selectedYear = x.DateUtils.getYear(exports.selected.dt);
-        var startMonth = x.DateUtils.getMonth(_data._start);
-        var endMonth = x.DateUtils.getMonth(_data._end);
-        exports.list.m = x.MonthUtils.getMonthList(startMonth, endMonth, selectedYear);
+        exports.list.m = x.MonthUtils.getMonthList();
         return this;
       },
       reloadDaysList: function () {
-        var selectedYear = x.DateUtils.getYear(exports.selected.dt);
-        var selectedMonth = x.DateUtils.getMonth(exports.selected.dt);
-        exports.list.d = x.DaysUtils.getDaysList(_data._start, _data._end, selectedYear, selectedMonth);
+        exports.list.d = x.DaysUtils.getDaysList();
         return this;
       }
     };
@@ -68,16 +60,14 @@ exports.DataClass = /*END.TESTS_ONLY*/ (function () {
     end = x.CommonUtils.isValidNumber(end) ? end : null;
 
     exports.selected = _getSelected(model, start, end);
-    var selectedYear = x.DateUtils.getYear(exports.selected.dt);
-    var selectedMonth = x.DateUtils.getMonth(exports.selected.dt);
 
     x.State.setLimits(start, end);
     _data._start = start;
     _data._end = end;
 
-    exports.list.y = x.YearsUtils.getYearsList(selectedYear, x.State.start.y, x.State.end.y, x.State.now.y);
-    exports.list.m = x.MonthUtils.getMonthList(start, end, selectedYear);
-    exports.list.d = x.DaysUtils.getDaysList(start, end, selectedYear, selectedMonth);
+    exports.list.y = x.YearsUtils.getYearsList();
+    exports.list.m = x.MonthUtils.getMonthList();
+    exports.list.d = x.DaysUtils.getDaysList();
 
     return exports;
   }
