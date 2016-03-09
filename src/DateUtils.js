@@ -55,6 +55,14 @@ exports.DateUtils = /*END.TESTS_ONLY*/ (function () {
     isDateBetweenLimits: function (dt, start, end) {
       //TODO (S.Panfilov) lowerAndEqual and UpperAndEqual?
       return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
+    },
+    makeDmyModel: function (dt) {
+      return {
+        d: exports.getDay(dt),
+        m: exports.getMonth(dt),
+        y: exports.getYear(dt),
+        dt: +dt
+      };
     }
   };
 
