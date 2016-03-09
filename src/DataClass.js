@@ -31,8 +31,7 @@ exports.DataClass = /*END.TESTS_ONLY*/ (function () {
 
     var _data = {
       _start: null,
-      _end: null,
-      _limitDates: null
+      _end: null
     };
 
     var exports = {
@@ -46,21 +45,20 @@ exports.DataClass = /*END.TESTS_ONLY*/ (function () {
         var selectedYear = x.DateUtils.getYear(exports.selected.dt);
         var startYear = x.DateUtils.getYear(_data._start);
         var endYear = x.DateUtils.getYear(_data._end);
-        //exports.list.y = x.YearsUtils.getYearsList(selectedYear, _data._start, _data._end, _data.LimitsModel.now.y);
-        exports.list.y = x.YearsUtils.getYearsList(selectedYear, startYear, endYear, _data.LimitsModel.now.y);
+        exports.list.y = x.YearsUtils.getYearsList(selectedYear, startYear, endYear);
         return this;
       },
       reloadMonthList: function () {
         var selectedYear = x.DateUtils.getYear(exports.selected.dt);
         var startMonth = x.DateUtils.getMonth(_data._start);
         var endMonth = x.DateUtils.getMonth(_data._end);
-        exports.list.m = x.MonthUtils.getMonthList(startMonth, endMonth, selectedYear, _data.LimitsModel);
+        exports.list.m = x.MonthUtils.getMonthList(startMonth, endMonth, selectedYear);
         return this;
       },
       reloadDaysList: function () {
         var selectedYear = x.DateUtils.getYear(exports.selected.dt);
         var selectedMonth = x.DateUtils.getMonth(exports.selected.dt);
-        exports.list.d = x.DaysUtils.getDaysList(_data._start, _data._end, selectedYear, selectedMonth, _data.LimitsModel);
+        exports.list.d = x.DaysUtils.getDaysList(_data._start, _data._end, selectedYear, selectedMonth);
         return this;
       }
     };
@@ -73,13 +71,13 @@ exports.DataClass = /*END.TESTS_ONLY*/ (function () {
     var selectedYear = x.DateUtils.getYear(exports.selected.dt);
     var selectedMonth = x.DateUtils.getMonth(exports.selected.dt);
 
-    _data.LimitsModel = new x.LimitsModel(start, end);
+    x.Limits.setup(start, end);
     _data._start = start;
     _data._end = end;
 
-    exports.list.y = x.YearsUtils.getYearsList(selectedYear, _data.LimitsModel.start.y, _data.LimitsModel.end.y, _data.LimitsModel.now.y);
-    exports.list.m = x.MonthUtils.getMonthList(start, end, selectedYear, _data.LimitsModel);
-    exports.list.d = x.DaysUtils.getDaysList(start, end, selectedYear, selectedMonth, _data.LimitsModel);
+    exports.list.y = x.YearsUtils.getYearsList(selectedYear, x.Limits.start.y, x.Limits.end.y, x.Limits.now.y);
+    exports.list.m = x.MonthUtils.getMonthList(start, end, selectedYear);
+    exports.list.d = x.DaysUtils.getDaysList(start, end, selectedYear, selectedMonth);
 
     return exports;
   }

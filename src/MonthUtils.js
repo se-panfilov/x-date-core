@@ -5,16 +5,16 @@
 /*START.TESTS_ONLY*/
 exports.MonthUtils = /*END.TESTS_ONLY*/ (function () {
   return {
-    getMonthList: function (startDt, endDt, selectedYear, limitsModel) {
+    getMonthList: function (startDt, endDt, selectedYear) {
       var result;
       var START_MONTH = 0;
       var END_MONTH = 11;
 
       if (startDt || endDt) {
-        var isYearOfLowerLimit = (startDt) ? limitsModel.start.y === selectedYear : false;
-        var isYearOfUpperLimit = (endDt) ? limitsModel.end.y === selectedYear : false;
-        var start = (startDt) ? limitsModel.start.m : START_MONTH;
-        var end = (endDt) ? limitsModel.end.m : END_MONTH;
+        var isYearOfLowerLimit = (startDt) ? x.Limits.start.y === selectedYear : false;
+        var isYearOfUpperLimit = (endDt) ? x.Limits.end.y === selectedYear : false;
+        var start = (startDt) ? x.Limits.start.m : START_MONTH;
+        var end = (endDt) ? x.Limits.end.m : END_MONTH;
 
         // startYear == 2015, nowYear == 2015, endYear == 2015
         if (isYearOfLowerLimit && isYearOfUpperLimit) {

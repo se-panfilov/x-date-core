@@ -80,8 +80,8 @@ exports.YearsUtils = /*END.TESTS_ONLY*/ (function () {
   }
 
   var exports = {
-    getYearsList: function (selectedYear, startYear, endYear, nowYear) {
-      var range = _getRangeValues(selectedYear, startYear, endYear, nowYear);
+    getYearsList: function (selectedYear, startYear, endYear) {
+      var range = _getRangeValues(selectedYear, startYear, endYear, x.Limits.now.y);
       var result = x.CommonUtils.getArrayOfNumbers(range.from, range.to);
 
       return x.CommonUtils.intArraySort(result, x.Config.yearsDirection);
