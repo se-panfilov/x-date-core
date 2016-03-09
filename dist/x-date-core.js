@@ -79,11 +79,6 @@ var xDateCore = (function() {
 
         return function(model, start, end) {
 
-          var _data = {
-            _start: null,
-            _end: null
-          };
-
           var exports = {
             selected: {},
             list: {
@@ -112,8 +107,6 @@ var xDateCore = (function() {
           exports.selected = _getSelected(model, start, end);
 
           x.State.setLimits(start, end);
-          _data._start = start;
-          _data._end = end;
 
           exports.list.y = x.YearsUtils.getYearsList();
           exports.list.m = x.MonthUtils.getMonthList();
