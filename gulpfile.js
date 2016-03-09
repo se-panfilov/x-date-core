@@ -65,7 +65,7 @@ gulp.task('js', function () {
       '\n\rDateModel: ' + getContent('src/DateModel.js') + ', ' +
       '\n\rDateUtils: ' + getContent('src/DateUtils.js') + ', ' +
       '\n\rDaysUtils: ' + getContent('src/DaysUtils.js') + ', ' +
-      '\n\rLimitsModel: ' + getContent('src/LimitsModel.js') + ', ' +
+      '\n\rLimits: ' + getContent('src/Limits.js') + ', ' +
       '\n\rMonthUtils: ' + getContent('src/MonthUtils.js') + ', ' +
       '\n\rYearsUtils: ' + getContent('src/YearsUtils.js');
 
