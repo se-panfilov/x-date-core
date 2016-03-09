@@ -51,8 +51,7 @@ var xDateCore = function(selectedDt, startDt, endDt) {
         }
       }
     },
-
-    DataClass: function() {
+    ListsState: function() {
       var exports = {
         list: {
           y: null,
