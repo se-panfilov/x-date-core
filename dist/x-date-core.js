@@ -243,52 +243,34 @@ var xDateCore = (function() {
       }
     },
 
-    LimitsModel:
-      (function() {
-        return function LimitsModel(start, end) {
-
-          var exports = {
-            start: {},
-            end: {},
-            now: {}
-          };
-
-          function _setStart(dt) {
-            exports.start.d = x.DateUtils.getDay(+dt);
-            exports.start.m = x.DateUtils.getMonth(+dt);
-            exports.start.y = x.DateUtils.getYear(+dt);
-            exports.start.dt = +dt;
-            //TODO (S.Panfilov) Possible strict violation
-            return this;
-          }
-
-          function _setEnd(dt) {
-            exports.end.d = x.DateUtils.getDay(+dt);
-            exports.end.m = x.DateUtils.getMonth(+dt);
-            exports.end.y = x.DateUtils.getYear(+dt);
-            exports.end.dt = +dt;
-            //TODO (S.Panfilov) Possible strict violation
-            return this;
-          }
-
-          function _setNow() {
-            var dt = new Date().getTime();
-            exports.now.d = x.DateUtils.getDay(dt);
-            exports.now.m = x.DateUtils.getMonth(dt);
-            exports.now.y = x.DateUtils.getYear(dt);
-            exports.now.dt = dt;
-            //TODO (S.Panfilov) Possible strict violation
-            return this;
-          }
-
-          if (start) _setStart(start);
-          if (end) _setEnd(end);
-          _setNow();
-
-
-          return exports;
-        };
-      })(),
+    LimitsModel: {
+      _start: {},
+      get start() {
+        return this._start;
+      },
+      set start(dt) {
+        this._start.d = x.DateUtils.getDay(dt);
+        this._start.m = x.DateUtils.getMonth(dt);
+        this._start.y = x.DateUtils.getYear(dt);
+        this._start.dt = +dt;
+      },
+      _end: {},
+      get end() {
+        return this._end;
+      },
+      set end(dt) {
+        this._end.d = x.DateUtils.getDay(dt);
+        this._end.m = x.DateUtils.getMonth(dt);
+        this._end.y = x.DateUtils.getYear(dt);
+        this._end.dt = +dt;
+      },
+      now: {
+        d: x.DateUtils.getDay(dt),
+        m: x.DateUtils.getMonth(dt),
+        y: x.DateUtils.getYear(dt),
+        dt: +(new Date())
+      }
+    },
 
     MonthUtils:
       (function() {
