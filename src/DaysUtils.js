@@ -10,16 +10,16 @@ exports.DaysUtils = /*END.TESTS_ONLY*/ {
     var lastDayInMonth = x.DateUtils.getDaysInMonth(month, year);
 
     if (startDt || endDt) {
-      var isYearOfLowerLimit = (startDt) ? x.Limits.start.y === year : false;
-      var isYearOfUpperLimit = (endDt) ? x.Limits.end.y === year : false;
-      var isMonthOfLowerLimit = (startDt) ? x.Limits.start.m === month : false;
-      var isMonthOfUpperLimit = (endDt) ? x.Limits.end.m === month : false;
+      var isYearOfLowerLimit = (startDt) ? x.State.start.y === year : false;
+      var isYearOfUpperLimit = (endDt) ? x.State.end.y === year : false;
+      var isMonthOfLowerLimit = (startDt) ? x.State.start.m === month : false;
+      var isMonthOfUpperLimit = (endDt) ? x.State.end.m === month : false;
 
       var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
       var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
 
-      var start = (startDt) ? x.Limits.start.d : START_DAY;
-      var end = (endDt) ? x.Limits.end.d : lastDayInMonth;
+      var start = (startDt) ? x.State.start.d : START_DAY;
+      var end = (endDt) ? x.State.end.d : lastDayInMonth;
 
       if (isLowerLimit && isUpperLimit) {
         result = x.CommonUtils.getArrayOfNumbers(start, end);
@@ -34,7 +34,7 @@ exports.DaysUtils = /*END.TESTS_ONLY*/ {
       result = x.CommonUtils.getArrayOfNumbers(START_DAY, lastDayInMonth);
     }
 
-    return x.CommonUtils.intArraySort(result, x.Config.daysDirection);
+    return x.CommonUtils.intArraySort(result, x.Config.direction.d);
   }
 }/*START.TESTS_ONLY*/;
 return exports;

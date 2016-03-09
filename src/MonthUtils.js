@@ -11,10 +11,10 @@ exports.MonthUtils = /*END.TESTS_ONLY*/ (function () {
       var END_MONTH = 11;
 
       if (startDt || endDt) {
-        var isYearOfLowerLimit = (startDt) ? x.Limits.start.y === selectedYear : false;
-        var isYearOfUpperLimit = (endDt) ? x.Limits.end.y === selectedYear : false;
-        var start = (startDt) ? x.Limits.start.m : START_MONTH;
-        var end = (endDt) ? x.Limits.end.m : END_MONTH;
+        var isYearOfLowerLimit = (startDt) ? x.State.start.y === selectedYear : false;
+        var isYearOfUpperLimit = (endDt) ? x.State.end.y === selectedYear : false;
+        var start = (startDt) ? x.State.start.m : START_MONTH;
+        var end = (endDt) ? x.State.end.m : END_MONTH;
 
         // startYear == 2015, nowYear == 2015, endYear == 2015
         if (isYearOfLowerLimit && isYearOfUpperLimit) {
@@ -30,7 +30,7 @@ exports.MonthUtils = /*END.TESTS_ONLY*/ (function () {
         result = x.CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
       }
 
-      return x.CommonUtils.intArraySort(result, x.Config.monthDirection);
+      return x.CommonUtils.intArraySort(result, x.Config.direction.m);
     }
   };
 })()/*START.TESTS_ONLY*/;

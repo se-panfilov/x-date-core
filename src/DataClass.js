@@ -71,11 +71,11 @@ exports.DataClass = /*END.TESTS_ONLY*/ (function () {
     var selectedYear = x.DateUtils.getYear(exports.selected.dt);
     var selectedMonth = x.DateUtils.getMonth(exports.selected.dt);
 
-    x.Limits.setup(start, end);
+    x.State.setLimits(start, end);
     _data._start = start;
     _data._end = end;
 
-    exports.list.y = x.YearsUtils.getYearsList(selectedYear, x.Limits.start.y, x.Limits.end.y, x.Limits.now.y);
+    exports.list.y = x.YearsUtils.getYearsList(selectedYear, x.State.start.y, x.State.end.y, x.State.now.y);
     exports.list.m = x.MonthUtils.getMonthList(start, end, selectedYear);
     exports.list.d = x.DaysUtils.getDaysList(start, end, selectedYear, selectedMonth);
 

@@ -5,54 +5,54 @@
 /*START.TESTS_ONLY*/
 exports.YearsUtils = /*END.TESTS_ONLY*/ (function () {
 
-  function _getLatestPossibleYear(yearsCount, selectedYear, now) {
-    var result = (selectedYear > now) ? selectedYear : now;
+  function _getLatestPossibleYear(yearsCount, selectedY, nowY) {
+    var result = (selectedY > nowY) ? selectedY : nowY;
     result += (yearsCount - 1);
     return result;
   }
 
-  function _getFirstPossibleYear(yearsCount, selectedYear, now) {
-    var result = (selectedYear < now) ? selectedYear : now;
+  function _getFirstPossibleYear(yearsCount, selectedY, nowY) {
+    var result = (selectedY < nowY) ? selectedY : nowY;
     result -= (yearsCount - 1);
     return result;
   }
 
-  function _getRangeValues(selectedYear, startYear, endYear, nowYear) {
+  function _getRangeValues(selectedY, startY, endY, nowY) {
 
     var YEARS_COUNT = x.Config.defaultYearsCount;
-    var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedYear, nowYear);
-    var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedYear, nowYear);
+    var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedY, nowY);
+    var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedY, nowY);
 
     var statement = {
-      isBoth: !!(startYear && endYear),
-      isBothNot: !!(!startYear && !endYear),
-      isOnlyStart: !!(startYear && !endYear),
-      isOnlyEnd: !!(!startYear && endYear),
-      isStartLower: (startYear < endYear),
-      isEndLower: (startYear > endYear),
-      isStartEqualEnd: (startYear === endYear),
-      isEndUpperNow: (endYear > nowYear),
-      isEndEqualNow: (endYear === nowYear)
+      isBoth: !!(startY && endY),
+      isBothNot: !!(!startY && !endY),
+      isOnlyStart: !!(startY && !endY),
+      isOnlyEnd: !!(!startY && endY),
+      isStartLower: (startY < endY),
+      isEndLower: (startY > endY),
+      isStartEqualEnd: (startY === endY),
+      isEndUpperNow: (endY > nowY),
+      isEndEqualNow: (endY === nowY)
     };
 
     //start = 2011, end = 2014
     if (statement.isBoth && statement.isStartLower) {
-      return {from: startYear, to: endYear};
+      return {from: startY, to: endY};
     }
 
     //start = 2014, end = 2011
     if (statement.isBoth && statement.isEndLower) {
-      return {from: endYear, to: startYear};
+      return {from: endY, to: startY};
     }
 
     //start = 2011, end = 2011
     if (statement.isBoth && statement.isStartEqualEnd) {
-      return {from: startYear, to: endYear};
+      return {from: startY, to: endY};
     }
 
     //start = 2014, end = null
     if (statement.isOnlyStart) {
-      return {from: startYear, to: latestPossibleYear};
+      return {from: startY, to: latestPossibleYear};
     }
 
     //start = null, end = 2014
@@ -60,16 +60,16 @@ exports.YearsUtils = /*END.TESTS_ONLY*/ (function () {
       //start = null, now = 2013 (or 2014), end = 2014
       if (statement.isEndUpperNow || statement.isEndEqualNow) {
         //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
-        if ((firstPossibleYear - YEARS_COUNT) > (endYear - YEARS_COUNT)) {
-          return {from: firstPossibleYear, to: endYear};
+        if ((firstPossibleYear - YEARS_COUNT) > (endY - YEARS_COUNT)) {
+          return {from: firstPossibleYear, to: endY};
         } else {
-          return {from: endYear - (YEARS_COUNT - 1), to: endYear};
+          return {from: endY - (YEARS_COUNT - 1), to: endY};
         }
       }
 
       //start = null, now = 2015,  end = 2014
       if (!statement.isEndUpperNow) {
-        return {from: endYear - (YEARS_COUNT - 1), to: endYear};
+        return {from: endY - (YEARS_COUNT - 1), to: endY};
       }
     }
 
@@ -80,11 +80,11 @@ exports.YearsUtils = /*END.TESTS_ONLY*/ (function () {
   }
 
   var exports = {
-    getYearsList: function (selectedYear, startYear, endYear) {
-      var range = _getRangeValues(selectedYear, startYear, endYear, x.Limits.now.y);
+    getYearsList: function () {
+      var range = _getRangeValues(x.State.selected.y, x.State.start.y, x.State.end.y, x.State.now.y);
       var result = x.CommonUtils.getArrayOfNumbers(range.from, range.to);
 
-      return x.CommonUtils.intArraySort(result, x.Config.yearsDirection);
+      return x.CommonUtils.intArraySort(result, x.Config.direction.y);
     }
   };
 

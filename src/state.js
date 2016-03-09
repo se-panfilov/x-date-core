@@ -3,33 +3,28 @@
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
-exports.limits = /*END.TESTS_ONLY*/ {
-  _start: {},
-  get start() {
-    return this._start;
+exports.State = /*END.TESTS_ONLY*/ {
+  selected: {},
+  setSelected: function (dt) {
+    this.selected = x.DateUtils.makeDmyModel(dt);
   },
-  set start(dt) {
-    this._start.d = x.DateUtils.getDay(dt);
-    this._start.m = x.DateUtils.getMonth(dt);
-    this._start.y = x.DateUtils.getYear(dt);
-    this._start.dt = +dt;
+  start: {},
+  setStart: function (dt) {
+    this.start = x.DateUtils.makeDmyModel(dt);
   },
-  _end: {},
-  get end() {
-    return this._end;
+  end: {},
+  setEnd: function (dt) {
+    this.end = x.DateUtils.makeDmyModel(dt);
   },
-  set end(dt) {
-    this._end.d = x.DateUtils.getDay(dt);
-    this._end.m = x.DateUtils.getMonth(dt);
-    this._end.y = x.DateUtils.getYear(dt);
-    this._end.dt = +dt;
+  setLimits: function (start, end) {
+    this.setStart(start);
+    this.setEnd(end);
   },
-  now: {
-    d: x.DateUtils.getDay(dt),
-    m: x.DateUtils.getMonth(dt),
-    y: x.DateUtils.getYear(dt),
-    dt: +(new Date())
-  }
+  resetNow: function () {
+    this.now = x.DateUtils.makeDmyModel(+(new Date()));
+    return this.now;
+  },
+  now: this.resetNow()
 }
   /*START.TESTS_ONLY*/;
 return exports;

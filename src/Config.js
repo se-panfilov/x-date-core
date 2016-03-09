@@ -5,9 +5,11 @@
 /*START.TESTS_ONLY*/
 exports.Config = /*END.TESTS_ONLY*/ {
   isUtc: false,
-  monthDirection: 'asc',
-  daysDirection: 'asc',
-  yearsDirection: 'desc',
+  direction: {
+    d: 'asc',
+    m: 'asc',
+    y: 'desc'
+  },
   defaultYearsCount: 50,
   daysList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
