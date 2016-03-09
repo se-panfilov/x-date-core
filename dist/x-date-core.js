@@ -52,7 +52,7 @@ var xDateCore = function(selectedDt, startDt, endDt) {
       }
     },
 
-    DataClass: function(model, start, end) {
+    DataClass: function() {
       var exports = {
         list: {
           y: null,
@@ -70,19 +70,11 @@ var xDateCore = function(selectedDt, startDt, endDt) {
         }
       };
 
-      model.dt = x.CommonUtils.isValidNumber(model.dt) ? model.dt : null;
-      start = x.CommonUtils.isValidNumber(start) ? start : null;
-      end = x.CommonUtils.isValidNumber(end) ? end : null;
-
-      //x.State.setLimits(start, end);
-      //x.State.setSelected(model.dt);
-
       exports.list.y = x.YearsUtils.getYearsList();
       exports.list.m = x.MonthUtils.getMonthList();
       exports.list.d = x.DaysUtils.getDaysList();
 
       //TODO (S.Panfilov) perhaps we should watch model and limits value here and update them
-      //TODO (S.Panfilov) And perhaps rename module to "Lists" and move model.dt away
 
       return exports;
     },

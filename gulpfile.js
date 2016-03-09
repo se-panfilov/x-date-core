@@ -61,7 +61,7 @@ gulp.task('js', function () {
   var modules =
       'Config: ' + getContent('src/Config.js') + ', ' +
       '\n\rCommonUtils: ' + getContent('src/CommonUtils.js') + ',' +
-      '\n\rDataClass: ' + getContent('src/DataClass.js') + ', ' +
+      '\n\ListsState: ' + getContent('src/ListsState.js') + ', ' +
       '\n\rDateModel: ' + getContent('src/DateModel.js') + ', ' +
       '\n\rDateUtils: ' + getContent('src/DateUtils.js') + ', ' +
       '\n\rDaysUtils: ' + getContent('src/DaysUtils.js') + ', ' +
