@@ -51,31 +51,22 @@ var xDateCore = function(selectedDt, startDt, endDt) {
         }
       }
     },
-    ListsState: function() {
-      var exports = {
-        list: {
-          y: null,
-          m: null,
-          d: null
-        },
-        reloadYearsList: function() {
-          exports.list.y = x.YearsUtils.getYearsList();
-        },
-        reloadMonthList: function() {
-          exports.list.m = x.MonthUtils.getMonthList();
-        },
-        reloadDaysList: function() {
-          exports.list.d = x.DaysUtils.getDaysList();
-        }
-      };
-
-      exports.list.y = x.YearsUtils.getYearsList();
-      exports.list.m = x.MonthUtils.getMonthList();
-      exports.list.d = x.DaysUtils.getDaysList();
-
-      //TODO (S.Panfilov) perhaps we should watch model and limits value here and update them
-
-      return exports;
+    ListsState: {
+      list: {},
+      reloadDaysList: function() {
+        this.list.d = x.DaysUtils.getDaysList();
+      },
+      reloadMonthList: function() {
+        this.list.m = x.MonthUtils.getMonthList();
+      },
+      reloadYearsList: function() {
+        this.list.y = x.YearsUtils.getYearsList();
+      },
+      initList: function() {
+        this.reloadDaysList();
+        this.reloadMonthList();
+        this.reloadYearsList();
+      }
     },
 
     DateModel:
@@ -226,9 +217,9 @@ var xDateCore = function(selectedDt, startDt, endDt) {
 
         if ((isUpperStart || isEqualStart) || (isLowerEnd || isEqualEnd)) {
           result = dt;
-        } else if (!isUpperStart) { //start == 1; model == 0
+        } else if (!isUpperStart && this.start.isExist) { //start == 1; model == 0
           result = this.start;
-        } else if (!isUpperStart) { //model == 4; end == 3;
+        } else if (!isLowerEnd && this.end.isExist) { //model == 4; end == 3;
           result = this.end.dt;
         } else { //paranoid case
           result = +(new Date());
