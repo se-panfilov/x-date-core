@@ -70,14 +70,17 @@ gulp.task('js', function () {
       '\n\rYearsUtils: ' + getContent('src/YearsUtils.js');
 
   var moduleWrap =
-      'var xDateCore = (function () {' +
+      'var xDateCore = function (selectedDt, startDt, endDt) {' +
       '\'use strict\';' +
       '\n\r    var x =  {' +
         //'\n\r<%= contents %>' +
       modules +
       '};' +
+      'x.State.resetNow();' +
+      'x.State.setLimits(startDt, endDt);' +
+      'x.State.setSelected(selectedDt);' +
       'return x;' +
-      '})();';
+      '};';
 
   return gulp.src('src/Config.js')
       .pipe(concat('x-date-core.js'))

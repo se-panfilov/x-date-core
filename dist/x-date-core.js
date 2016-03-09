@@ -1,4 +1,4 @@
-var xDateCore = (function() {
+var xDateCore = function(selectedDt, startDt, endDt) {
   'use strict';
 
   var x = {
@@ -52,69 +52,40 @@ var xDateCore = (function() {
       }
     },
 
-    DataClass:
-      (function() {
-
-        function _getSelected(model, start, end) {
-          var result;
-
-          var isUpperStart = (model.dt > start);
-          var isEqualStart = (model.dt === start);
-          var isLowerEnd = (model.dt > end);
-          var isEqualEnd = (model.dt === end);
-
-          //start == 1; model == 1 or 2 or 3; end == 3;
-          if ((isUpperStart || isEqualStart) || (isLowerEnd || isEqualEnd)) {
-            result = new x.DateModel(model.dt);
-          } else if (!isUpperStart) { //start == 1; model == 0
-            result = new x.DateModel(start);
-          } else if (!isUpperStart) { //model == 4; end == 3;
-            result = new x.DateModel(end);
-          } else { //paranoid case
-            result = new x.DateModel(new Date().getTime());
-          }
-
-          return result;
-        }
-
-        return function(model, start, end) {
-
-          var exports = {
-            selected: {},
-            list: {
-              y: null,
-              m: null,
-              d: null
-            },
-            reloadYearsList: function() {
-              exports.list.y = x.YearsUtils.getYearsList();
-              return this;
-            },
-            reloadMonthList: function() {
-              exports.list.m = x.MonthUtils.getMonthList();
-              return this;
-            },
-            reloadDaysList: function() {
-              exports.list.d = x.DaysUtils.getDaysList();
-              return this;
-            }
-          };
-
-          model.dt = x.CommonUtils.isValidNumber(model.dt) ? model.dt : null;
-          start = x.CommonUtils.isValidNumber(start) ? start : null;
-          end = x.CommonUtils.isValidNumber(end) ? end : null;
-
-          exports.selected = _getSelected(model, start, end);
-
-          x.State.setLimits(start, end);
-
+    DataClass: function(model, start, end) {
+      var exports = {
+        list: {
+          y: null,
+          m: null,
+          d: null
+        },
+        reloadYearsList: function() {
           exports.list.y = x.YearsUtils.getYearsList();
+        },
+        reloadMonthList: function() {
           exports.list.m = x.MonthUtils.getMonthList();
+        },
+        reloadDaysList: function() {
           exports.list.d = x.DaysUtils.getDaysList();
-
-          return exports;
         }
-      })(),
+      };
+
+      model.dt = x.CommonUtils.isValidNumber(model.dt) ? model.dt : null;
+      start = x.CommonUtils.isValidNumber(start) ? start : null;
+      end = x.CommonUtils.isValidNumber(end) ? end : null;
+
+      //x.State.setLimits(start, end);
+      //x.State.setSelected(model.dt);
+
+      exports.list.y = x.YearsUtils.getYearsList();
+      exports.list.m = x.MonthUtils.getMonthList();
+      exports.list.d = x.DaysUtils.getDaysList();
+
+      //TODO (S.Panfilov) perhaps we should watch model and limits value here and update them
+      //TODO (S.Panfilov) And perhaps rename module to "Lists" and move model.dt away
+
+      return exports;
+    },
 
     DateModel:
       (function() {
@@ -179,14 +150,6 @@ var xDateCore = (function() {
           },
           isDateBetweenLimits: function(dt, start, end) {
             return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
-          },
-          makeDmyModel: function(dt) {
-            return {
-              d: exports.getDay(dt),
-              m: exports.getMonth(dt),
-              y: exports.getYear(dt),
-              dt: +dt
-            };
           }
         };
 
@@ -236,16 +199,34 @@ var xDateCore = (function() {
     State: {
       selected: {}, //TODO (S.Panfilov) refactor selected
       setSelected: function(dt) {
-        this.selected = x.DateUtils.makeDmyModel(dt);
+        var result;
+
+        var isUpperStart = (dt > this.start.dt);
+        var isEqualStart = (dt === this.start.dt);
+        var isLowerEnd = (dt > this.end.dt);
+        var isEqualEnd = (dt === this.end.dt);
+
+        //start == 1; model == 1 or 2 or 3; end == 3;
+        if ((isUpperStart || isEqualStart) || (isLowerEnd || isEqualEnd)) {
+          result = new x.DateModel(dt);
+        } else if (!isUpperStart) { //start == 1; model == 0
+          result = new x.DateModel(this.start);
+        } else if (!isUpperStart) { //model == 4; end == 3;
+          result = new x.DateModel(this.end.dt);
+        } else { //paranoid case
+          result = new x.DateModel(+(new Date()));
+        }
+
+        this.selected = result;
       },
       start: {},
       setStart: function(dt) {
-        this.start = x.DateUtils.makeDmyModel(dt);
+        this.start = new x.DateModel(dt);
         this.start.isExist = true;
       },
       end: {},
       setEnd: function(dt) {
-        this.end = x.DateUtils.makeDmyModel(dt);
+        this.end = new x.DateModel(dt);
         this.end.isExist = true;
       },
       setLimits: function(start, end) {
@@ -253,10 +234,9 @@ var xDateCore = (function() {
         this.setEnd(end);
       },
       resetNow: function() {
-        this.now = x.DateUtils.makeDmyModel(+(new Date()));
-        return this.now;
+        this.now = new x.DateModel(+(new Date()));
       },
-      now: this.resetNow()
+      now: null // new x.DateModel(+(new Date())) //TODO (S.Panfilov) FIX it - x is undefined
     },
 
     MonthUtils: {
@@ -406,5 +386,8 @@ var xDateCore = (function() {
         return exports;
       })()
   };
+  x.State.resetNow();
+  x.State.setLimits(startDt, endDt);
+  x.State.setSelected(selectedDt);
   return x;
-})();
+};
