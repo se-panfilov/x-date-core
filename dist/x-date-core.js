@@ -189,18 +189,16 @@ var xDateCore = function(selectedDt, startDt, endDt) {
           return;
         }
 
-        var c = {
-          isStart: self.start.isExist,
-          isEnd: self.end.isExist,
-          isDtBeyondStart: (dt > this.start.dt),
-          isDtBeyondEnd: (dt > this.end.dt)
-        };
+        var isStart = self.start.isExist;
+        var isEnd = self.end.isExist;
+        var isDtBeyondStart = (dt > this.start.dt);
+        var isDtBeyondEnd = (dt > this.end.dt);
 
 
-        if (c.isStart || c.isEnd) {
-          if (!c.isDtBeyondStart) { //start == 1; model == 0
+        if (isStart || isEnd) {
+          if (!isDtBeyondStart) {
             result = this.start.dt;
-          } else if (!c.isDtBeyondEnd) {
+          } else if (!isDtBeyondEnd) {
             result = this.end.dt;
           }
         } else {
@@ -213,13 +211,13 @@ var xDateCore = function(selectedDt, startDt, endDt) {
       setStart: function(dt) {
         if (!dt && dt !== 0) return;
         this.start = new x.DateModel(dt);
-        cases.isStart = true;
+        this.start.isStart = true;
       },
       end: {},
       setEnd: function(dt) {
         if (!dt && dt !== 0) return;
         this.end = new x.DateModel(dt);
-        cases.isEnd = true;
+        this.start.isEnd = true;
       },
       setLimits: function(start, end) {
         this.setStart(start);

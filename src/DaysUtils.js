@@ -1,5 +1,7 @@
 /*START.DEV_ONLY*/
 'use strict';
+var x = {};
+var exports = {};
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
