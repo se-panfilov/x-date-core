@@ -1,6 +1,5 @@
 /*START.DEV_ONLY*/
 'use strict';
-var x = {};
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
