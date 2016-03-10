@@ -193,18 +193,8 @@ var xDateCore = function(selectedDt, startDt, endDt) {
           isStart: self.start.isExist,
           isEnd: self.end.isExist,
           isDtBeyondStart: (dt > this.start.dt),
-          isDtEqualStart: (dt === this.start.dt),
-          isDtBeyondEnd: (dt > this.end.dt),
-          isDtEqualEnd: (dt === this.end.dt)
+          isDtBeyondEnd: (dt > this.end.dt)
         };
-        //
-        //if (c.isStart && !c.isEnd && !c.isDtBeyondStart) {//start == 1; model == 0
-        //  result = this.start.dt;
-        //} else if (!c.isStart && c.isEnd && !c.isDtBeyondEnd) {//model == 4; end == 3;
-        //  result = this.end.dt;
-        //} else {
-        //  result = dt;
-        //}
 
 
         if (c.isStart || c.isEnd) {
@@ -216,26 +206,6 @@ var xDateCore = function(selectedDt, startDt, endDt) {
         } else {
           result = dt;
         }
-
-        //if (!c.isStart && !c.isEnd) { //start == null; model == 1; end == null
-        //  result = dt;
-        //} else if (c.isStart && !c.isEnd) {//Start Limit
-        //  if (!c.isDtBeyondStart) { //start == 1; model == 0
-        //    result = this.start.dt;
-        //  } else {
-        //    result = dt;//start == 1; model == 1 or 2
-        //  }
-        //} else if (!c.isStart && c.isEnd) {//End Limit
-        //  if (!c.isDtBeyondEnd) { //model == 4; end == 3;
-        //    result = this.end.dt;
-        //  } else {
-        //    result = dt;//model == 2 or 3; end == 3;
-        //  }
-        //} else if (c.isStart && c.isEnd) {//Both Limits
-        //  if ((c.isDtBeyondStart || c.isDtEqualStart) || (c.isDtBeyondEnd || c.isDtEqualEnd)) {//start == 1; model == 1 or 2 or 3; end == 3;
-        //    result = dt;
-        //  }
-        //}
 
         this.selected = new x.DateModel(result);
       },

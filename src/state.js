@@ -5,51 +5,32 @@
 /*START.TESTS_ONLY*/
 exports.State = /*END.TESTS_ONLY*/ {
   selected: {},//TODO (S.Panfilov) refactor selected
-  setSelected: function (dt) {
+  setSelected: function (dt, isForce) {
     var result;
+    var self = this;
 
-    var cases = {
-      isDtUpperStart: (dt > this.start.dt),
-      isDtEqualStart: (dt === this.start.dt),
-      isDtLowerEnd: (dt > this.end.dt),
-      isDtEqualEnd: (dt === this.end.dt)
-    };
-
-    //if (!this.start.isExist && !this.end.isExist) { //start == null; model == 1; end == null
-    //  result = dt;
-    //} else if (this.start.isExist && this.end.isExist) {//Start Limit
-    //  if (!cases.isDtUpperStart) { //start == 1; model == 0
-    //    result = this.start.dt;
-    //  } else {
-    //    result = dt;//start == 1; model == 1 or 2
-    //  }
-    //} else if (!this.start.isExist && this.end.isExist) {//End Limit
-    //  if (!cases.isDtLowerEnd) { //model == 4; end == 3;
-    //    result = this.end.dt;
-    //  } else {
-    //    result = dt;//model == 2 or 3; end == 3;
-    //  }
-    //} else if (this.start.isExist && this.end.isExist) {//Both Limits
-    //  if ((cases.isDtUpperStart || cases.isDtEqualStart) || (cases.isDtLowerEnd || cases.isDtEqualEnd)) {//start == 1; model == 1 or 2 or 3; end == 3;
-    //    result = dt;
-    //  }
-    //}
-
-    var isUpperStart = (dt > this.start.dt);
-    var isEqualStart = (dt === this.start.dt);
-    var isLowerEnd = (dt > this.end.dt);
-    var isEqualEnd = (dt === this.end.dt);
-
-    if ((isUpperStart || isEqualStart) || (isLowerEnd || isEqualEnd)) {
-      result = dt;
-    } else if (!isUpperStart && this.start.isExist) { //start == 1; model == 0
-      result = this.start;
-    } else if (!isLowerEnd && this.end.isExist) { //model == 4; end == 3;
-      result = this.end.dt;
-    } else {//paranoid case
-      result = +(new Date());
+    if (isForce) {
+      this.selected = new x.DateModel(dt);
+      return;
     }
 
+    var c = {
+      isStart: self.start.isExist,
+      isEnd: self.end.isExist,
+      isDtBeyondStart: (dt > this.start.dt),
+      isDtBeyondEnd: (dt > this.end.dt)
+    };
+
+
+    if (c.isStart || c.isEnd) {
+      if (!c.isDtBeyondStart) {//start == 1; model == 0
+        result = this.start.dt;
+      } else if (!c.isDtBeyondEnd){
+        result = this.end.dt;
+      }
+    } else {
+      result = dt;
+    }
 
     this.selected = new x.DateModel(result);
   },
@@ -57,13 +38,13 @@ exports.State = /*END.TESTS_ONLY*/ {
   setStart: function (dt) {
     if (!dt && dt !== 0) return;
     this.start = new x.DateModel(dt);
-    this.start.isExist = true;
+    cases.isStart = true;
   },
   end: {},
   setEnd: function (dt) {
     if (!dt && dt !== 0) return;
     this.end = new x.DateModel(dt);
-    this.end.isExist = true;
+    cases.isEnd = true;
   },
   setLimits: function (start, end) {
     this.setStart(start);
