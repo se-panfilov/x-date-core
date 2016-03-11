@@ -10,7 +10,7 @@ exports.DateUtils = /*END.TESTS_ONLY*/ (function () {
     return (!dt && dt !== 0);
   }
 
-  function executeMethod(methodName) {
+  function executeMethod(dt, methodName) {
     if (isDtUndefined(dt)) return null;
     var str = (x.Config.isUtc) ? 'UTC' : '';
     return (new Date(+dt))['get' + str + methodName]();
