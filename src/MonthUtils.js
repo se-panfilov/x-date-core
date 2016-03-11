@@ -4,38 +4,46 @@ var x = {};
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
-exports.MonthUtils = /*END.TESTS_ONLY*/ {
-  getMonthList: function () {
-    var result;
-    var START_MONTH = 0;
-    var END_MONTH = 11;
+exports.MonthUtils = /*END.TESTS_ONLY*/ (function () {
 
-    var isStart = x.State.start.isExist;
-    var isEnd = x.State.end.isExist;
+  function getArrFromAndTo(isYearEqualStart, isYearEqualEnd, start, end) {
+    var from = x.Config.START_MONTH;
+    var to = x.Config.END_MONTH;
 
-    if (isStart || isEnd) {
-      var isYearOfLowerLimit = (isStart) ? x.State.start.y === x.State.selected.y : false;
-      var isYearOfUpperLimit = (isEnd) ? x.State.end.y === x.State.selected.y : false;
-      var start = (isStart) ? x.State.start.m : START_MONTH;
-      var end = (isEnd) ? x.State.end.m : END_MONTH;
-
-      // startYear == 2015, nowYear == 2015, endYear == 2015
-      if (isYearOfLowerLimit && isYearOfUpperLimit) {
-        result = x.CommonUtils.getArrayOfNumbers(start, end);
-      } else if (isYearOfLowerLimit && !isYearOfUpperLimit) {  // startYear == 2015, nowYear == 2015, endYear == 2016 (or null)
-        result = x.CommonUtils.getArrayOfNumbers(start, END_MONTH);
-      } else if (!isYearOfLowerLimit && isYearOfUpperLimit) {  // startYear == 2014 (or null), nowYear == 2015, endYear == 2015
-        result = x.CommonUtils.getArrayOfNumbers(START_MONTH, end);
-      } else {  // in all other cases return array of 12 month
-        result = x.CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
-      }
-    } else {  // in all other cases return array of 12 month
-      result = x.CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
+    // startYear == 2015, nowYear == 2015, endYear == 2015
+    if (isYearEqualStart && isYearEqualEnd) {
+      from = start;
+      to = end;
+    } else if (isYearEqualStart && !isYearEqualEnd) {  // startYear == 2015, nowYear == 2015, endYear == 2016 (or null)
+      from = start;
+      to = x.Config.END_MONTH;
+    } else if (!isYearEqualStart && isYearEqualEnd) {  // startYear == 2014 (or null), nowYear == 2015, endYear == 2015
+      from = x.Config.START_MONTH;
+      to = end;
     }
 
-    return x.CommonUtils.intArraySort(result, x.Config.direction.m);
+    return {from: from, to: to};
   }
-}
-  /*START.TESTS_ONLY*/;
+
+  return {
+    getMonthList: function () {
+      var result = {};
+      var isStart = x.State.start.isExist;
+      var isEnd = x.State.end.isExist;
+
+      if (isStart || isEnd) {
+        var isYearEqualStart = x.DateUtils.isYearEqualStart(x.State.selected.y);
+        var isYearEqualEnd = x.DateUtils.isYearEqualEnd(x.State.selected.y);
+        var start = (isStart) ? x.State.start.m : x.Config.START_MONTH;
+        var end = (isEnd) ? x.State.end.m : x.Config.END_MONTH;
+        result = getArrFromAndTo(isYearEqualStart, isYearEqualEnd, start, end);
+      } else {  // in all other cases return array of 12 month
+        result = {from: x.Config.START_MONTH, to: x.Config.END_MONTH};
+      }
+
+      return x.CommonUtils.intArraySort(x.CommonUtils.getArrayOfNumbers(result.from, result.to), x.Config.direction.m);
+    }
+  }
+})()/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

@@ -19,7 +19,7 @@ exports.DaysUtils = /*END.TESTS_ONLY*/ (function () {
   }
 
   function getArrFromAndTo(aStart, aEnd, lastDayInMonth) {
-    var from = x.Config.startDay;
+    var from = x.Config.START_DAY;
     var to = lastDayInMonth;
     var limit = getLimits();
 
@@ -30,7 +30,7 @@ exports.DaysUtils = /*END.TESTS_ONLY*/ (function () {
       from = aStart;
       to = lastDayInMonth;
     } else if (!limit.isLower && limit.isUpper) {
-      from = x.Config.startDay;
+      from = x.Config.START_DAY;
       to = aEnd;
     }
 
@@ -39,17 +39,17 @@ exports.DaysUtils = /*END.TESTS_ONLY*/ (function () {
 
   return {
     getDaysList: function () {
-      var result;
+      var result = {};
       var lastDayInMonth = x.DateUtils.getDaysInMonth(x.State.selected.y, x.State.selected.y);
       var isStart = x.State.start.isExist;
       var isEnd = x.State.end.isExist;
 
       if (isStart || isEnd) {
-        var start = (isStart) ? x.State.start.d : x.Config.startDay;
+        var start = (isStart) ? x.State.start.d : x.Config.START_DAY;
         var end = (isEnd) ? x.State.end.d : lastDayInMonth;
         result = getArrFromAndTo(start, end, lastDayInMonth);
       } else {  // in all other cases return array of 12 month
-        result = {from: x.Config.startDay, to: lastDayInMonth};
+        result = {from: x.Config.START_DAY, to: lastDayInMonth};
       }
 
       return x.CommonUtils.intArraySort(x.CommonUtils.getArrayOfNumbers(result.from, result.to), x.Config.direction.d);
