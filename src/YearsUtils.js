@@ -6,25 +6,20 @@ var x = {};
 /*START.TESTS_ONLY*/
 exports.YearsUtils = /*END.TESTS_ONLY*/ (function () {
 
-  function _getLatestPossibleYear(yearsCount, selectedY, nowY) {
+  function _getLatestPossibleYear(selectedY, nowY) {
     var result = (selectedY > nowY) ? selectedY : nowY;
-    result += (yearsCount - 1);
+    result += (x.Config.YEARS_COUNT - 1);
     return result;
   }
 
-  function _getFirstPossibleYear(yearsCount, selectedY, nowY) {
+  function _getFirstPossibleYear(selectedY, nowY) {
     var result = (selectedY < nowY) ? selectedY : nowY;
-    result -= (yearsCount - 1);
+    result -= (x.Config.YEARS_COUNT - 1);
     return result;
   }
 
-  function _getRangeValues(selectedY, startY, endY, nowY) {
-
-    var YEARS_COUNT = x.Config.defaultYearsCount;
-    var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedY, nowY);
-    var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedY, nowY);
-
-    var statement = {
+  function getCases(startY, endY, nowY) {
+    return {
       isBoth: !!(startY && endY),
       isBothNot: !!(!startY && !endY),
       isOnlyStart: !!(startY && !endY),
@@ -35,47 +30,65 @@ exports.YearsUtils = /*END.TESTS_ONLY*/ (function () {
       isEndUpperNow: (endY > nowY),
       isEndEqualNow: (endY === nowY)
     };
+  }
 
+  function _getRangeIfBothLimits(cases, startY, endY, latestPossibleYear) {
     //start = 2011, end = 2014
-    if (statement.isBoth && statement.isStartLower) {
+    if (cases.isStartLower) {
       return {from: startY, to: endY};
     }
 
     //start = 2014, end = 2011
-    if (statement.isBoth && statement.isEndLower) {
+    if (cases.isEndLower) {
       return {from: endY, to: startY};
     }
 
     //start = 2011, end = 2011
-    if (statement.isBoth && statement.isStartEqualEnd) {
+    if (cases.isStartEqualEnd) {
       return {from: startY, to: endY};
     }
 
     //start = 2014, end = null
-    if (statement.isOnlyStart) {
+    if (cases.isOnlyStart) {
       return {from: startY, to: latestPossibleYear};
+    }
+  }
+
+  function _getRangeIfOnlyEndLimits(cases, endY, firstPossibleYear) {
+    //start = null, now = 2013 (or 2014), end = 2014
+    if (cases.isEndUpperNow || cases.isEndEqualNow) {
+      //TODO (S.Panfilov) wtf? I cannot remember wtf this case check
+      if ((firstPossibleYear - x.Config.YEARS_COUNT) > (endY - x.Config.YEARS_COUNT)) {
+        return {from: firstPossibleYear, to: endY};
+      } else {
+        return {from: endY - (x.Config.YEARS_COUNT - 1), to: endY};
+      }
+    }
+
+    //start = null, now = 2015,  end = 2014
+    if (!cases.isEndUpperNow) {
+      return {from: endY - (x.Config.YEARS_COUNT - 1), to: endY};
+    }
+  }
+
+  function _getRangeValues(selectedY, startY, endY, nowY) {
+
+    var latestPossibleYear = _getLatestPossibleYear(selectedY, nowY);
+    var firstPossibleYear = _getFirstPossibleYear(selectedY, nowY);
+
+    var cases = getCases(startY, endY, nowY);
+
+    if (cases.isBoth) {
+      return _getRangeIfBothLimits(cases, startY, endY, latestPossibleYear);
     }
 
     //start = null, end = 2014
-    if (statement.isOnlyEnd) {
-      //start = null, now = 2013 (or 2014), end = 2014
-      if (statement.isEndUpperNow || statement.isEndEqualNow) {
-        //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
-        if ((firstPossibleYear - YEARS_COUNT) > (endY - YEARS_COUNT)) {
-          return {from: firstPossibleYear, to: endY};
-        } else {
-          return {from: endY - (YEARS_COUNT - 1), to: endY};
-        }
-      }
-
-      //start = null, now = 2015,  end = 2014
-      if (!statement.isEndUpperNow) {
-        return {from: endY - (YEARS_COUNT - 1), to: endY};
-      }
+    if (cases.isOnlyEnd) {
+      return _getRangeIfOnlyEndLimits(cases, endY, firstPossibleYear);
     }
 
     //start = null, end = null
-    if (statement.isBothNot) {
+    if (cases.isBothNot) {
       return {from: firstPossibleYear, to: latestPossibleYear};
     }
   }

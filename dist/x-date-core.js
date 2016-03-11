@@ -9,7 +9,10 @@ var xDateCore = function(selectedDt, startDt, endDt) {
         m: 'asc',
         y: 'desc'
       },
-      defaultYearsCount: 30,
+      YEARS_COUNT: 30,
+      START_DAY: 1,
+      START_MONTH: 0,
+      END_MONTH: 11,
       daysList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
       monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     },
@@ -132,51 +135,88 @@ var xDateCore = function(selectedDt, startDt, endDt) {
           },
           isDateBetweenLimits: function(dt, start, end) {
             return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
+          },
+          isYearEqualStart: function(year) {
+            return isYearEqualLimit('start', ['y'], year);
+          },
+          isYearEqualEnd: function(year) {
+            return isYearEqualLimit('end', ['y'], year);
+          },
+          isMonthEqualStart: function(month) {
+            return isYearEqualLimit('start', ['m'], month);
+          },
+          isMonthEqualEnd: function(month) {
+            return isYearEqualLimit('end', ['m'], month);
           }
         };
+
+        function isYearEqualLimit(limitName, unit, val) {
+          return (x.State[limitName].isExist) ? x.State[limitName][unit] === +val : false;
+        }
 
 
         return exports;
       })(),
 
-    DaysUtils: {
-      getDaysList: function() {
-        var result;
-        var START_DAY = 1;
+    DaysUtils:
+      (function() {
 
-        var lastDayInMonth = x.DateUtils.getDaysInMonth(x.State.selected.y, x.State.selected.y);
+        function getLimits() {
+          var isYearEqualStart = x.DateUtils.isYearEqualStart(x.State.selected.y);
+          var isYearEqualEnd = x.DateUtils.isYearEqualEnd(x.State.selected.y);
+          var isMonthEqualStart = x.DateUtils.isMonthEqualStart(x.State.selected.m);
+          var isMonthEqualEnd = x.DateUtils.isMonthEqualEnd(x.State.selected.m);
 
-        var isStart = x.State.start.isExist;
-        var isEnd = x.State.end.isExist;
-
-        if (isStart || isEnd) {
-          var isYearOfLowerLimit = (isStart) ? x.State.start.y === x.State.selected.y : false;
-          var isYearOfUpperLimit = (isEnd) ? x.State.end.y === x.State.selected.y : false;
-          var isMonthOfLowerLimit = (isStart) ? x.State.start.m === x.State.selected.y : false;
-          var isMonthOfUpperLimit = (isEnd) ? x.State.end.m === x.State.selected.y : false;
-
-          var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
-          var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
-
-          var start = (isStart) ? x.State.start.d : START_DAY;
-          var end = (isEnd) ? x.State.end.d : lastDayInMonth;
-
-          if (isLowerLimit && isUpperLimit) {
-            result = x.CommonUtils.getArrayOfNumbers(start, end);
-          } else if (isLowerLimit && !isUpperLimit) {
-            result = x.CommonUtils.getArrayOfNumbers(start, lastDayInMonth);
-          } else if (!isLowerLimit && isUpperLimit) {
-            result = x.CommonUtils.getArrayOfNumbers(START_DAY, end);
-          } else { // in all other cases return array of 12 month
-            result = x.CommonUtils.getArrayOfNumbers(START_DAY, lastDayInMonth);
+          return {
+            isLower: (isYearEqualStart && isMonthEqualStart),
+            isUpper: (isYearEqualEnd && isMonthEqualEnd)
           }
-        } else { // in all other cases return array of 12 month
-          result = x.CommonUtils.getArrayOfNumbers(START_DAY, lastDayInMonth);
         }
 
-        return x.CommonUtils.intArraySort(result, x.Config.direction.d);
-      }
-    },
+        function getArrFromAndTo(aStart, aEnd, lastDayInMonth) {
+          var from = x.Config.START_DAY;
+          var to = lastDayInMonth;
+          var limit = getLimits();
+
+          if (limit.isLower && limit.isUpper) {
+            from = aStart;
+            to = aEnd;
+          } else if (limit.isLower && !limit.isUpper) {
+            from = aStart;
+            to = lastDayInMonth;
+          } else if (!limit.isLower && limit.isUpper) {
+            from = x.Config.START_DAY;
+            to = aEnd;
+          }
+
+          return {
+            from: from,
+            to: to
+          };
+        }
+
+        return {
+          getDaysList: function() {
+            var result = {};
+            var lastDayInMonth = x.DateUtils.getDaysInMonth(x.State.selected.y, x.State.selected.y);
+            var isStart = x.State.start.isExist;
+            var isEnd = x.State.end.isExist;
+
+            if (isStart || isEnd) {
+              var start = (isStart) ? x.State.start.d : x.Config.START_DAY;
+              var end = (isEnd) ? x.State.end.d : lastDayInMonth;
+              result = getArrFromAndTo(start, end, lastDayInMonth);
+            } else { // in all other cases return array of 12 month
+              result = {
+                from: x.Config.START_DAY,
+                to: lastDayInMonth
+              };
+            }
+
+            return x.CommonUtils.intArraySort(x.CommonUtils.getArrayOfNumbers(result.from, result.to), x.Config.direction.d);
+          }
+        }
+      })(),
 
     State: {
       selected: {}, //TODO (S.Panfilov) refactor selected
@@ -229,61 +269,73 @@ var xDateCore = function(selectedDt, startDt, endDt) {
       now: null // new x.DateModel(+(new Date())) //TODO (S.Panfilov) FIX it - x is undefined
     },
 
-    MonthUtils: {
-      getMonthList: function() {
-        var result;
-        var START_MONTH = 0;
-        var END_MONTH = 11;
+    MonthUtils:
+      (function() {
 
-        var isStart = x.State.start.isExist;
-        var isEnd = x.State.end.isExist;
+        function getArrFromAndTo(start, end) {
+          var isYearEqualStart = x.DateUtils.isYearEqualStart(x.State.selected.y);
+          var isYearEqualEnd = x.DateUtils.isYearEqualEnd(x.State.selected.y);
 
-        if (isStart || isEnd) {
-          var isYearOfLowerLimit = (isStart) ? x.State.start.y === x.State.selected.y : false;
-          var isYearOfUpperLimit = (isEnd) ? x.State.end.y === x.State.selected.y : false;
-          var start = (isStart) ? x.State.start.m : START_MONTH;
-          var end = (isEnd) ? x.State.end.m : END_MONTH;
+          var from = x.Config.START_MONTH;
+          var to = x.Config.END_MONTH;
 
           // startYear == 2015, nowYear == 2015, endYear == 2015
-          if (isYearOfLowerLimit && isYearOfUpperLimit) {
-            result = x.CommonUtils.getArrayOfNumbers(start, end);
-          } else if (isYearOfLowerLimit && !isYearOfUpperLimit) { // startYear == 2015, nowYear == 2015, endYear == 2016 (or null)
-            result = x.CommonUtils.getArrayOfNumbers(start, END_MONTH);
-          } else if (!isYearOfLowerLimit && isYearOfUpperLimit) { // startYear == 2014 (or null), nowYear == 2015, endYear == 2015
-            result = x.CommonUtils.getArrayOfNumbers(START_MONTH, end);
-          } else { // in all other cases return array of 12 month
-            result = x.CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
+          if (isYearEqualStart && isYearEqualEnd) {
+            from = start;
+            to = end;
+          } else if (isYearEqualStart && !isYearEqualEnd) { // startYear == 2015, nowYear == 2015, endYear == 2016 (or null)
+            from = start;
+            to = x.Config.END_MONTH;
+          } else if (!isYearEqualStart && isYearEqualEnd) { // startYear == 2014 (or null), nowYear == 2015, endYear == 2015
+            from = x.Config.START_MONTH;
+            to = end;
           }
-        } else { // in all other cases return array of 12 month
-          result = x.CommonUtils.getArrayOfNumbers(START_MONTH, END_MONTH);
+
+          return {
+            from: from,
+            to: to
+          };
         }
 
-        return x.CommonUtils.intArraySort(result, x.Config.direction.m);
-      }
-    },
+        return {
+          getMonthList: function() {
+            var result = {};
+            var isStart = x.State.start.isExist;
+            var isEnd = x.State.end.isExist;
+
+            if (isStart || isEnd) {
+              var start = (isStart) ? x.State.start.m : x.Config.START_MONTH;
+              var end = (isEnd) ? x.State.end.m : x.Config.END_MONTH;
+              result = getArrFromAndTo(start, end);
+            } else { // in all other cases return array of 12 month
+              result = {
+                from: x.Config.START_MONTH,
+                to: x.Config.END_MONTH
+              };
+            }
+
+            return x.CommonUtils.intArraySort(x.CommonUtils.getArrayOfNumbers(result.from, result.to), x.Config.direction.m);
+          }
+        }
+      })(),
 
     YearsUtils:
       (function() {
 
-        function _getLatestPossibleYear(yearsCount, selectedY, nowY) {
+        function _getLatestPossibleYear(selectedY, nowY) {
           var result = (selectedY > nowY) ? selectedY : nowY;
-          result += (yearsCount - 1);
+          result += (x.Config.YEARS_COUNT - 1);
           return result;
         }
 
-        function _getFirstPossibleYear(yearsCount, selectedY, nowY) {
+        function _getFirstPossibleYear(selectedY, nowY) {
           var result = (selectedY < nowY) ? selectedY : nowY;
-          result -= (yearsCount - 1);
+          result -= (x.Config.YEARS_COUNT - 1);
           return result;
         }
 
-        function _getRangeValues(selectedY, startY, endY, nowY) {
-
-          var YEARS_COUNT = x.Config.defaultYearsCount;
-          var latestPossibleYear = _getLatestPossibleYear(YEARS_COUNT, selectedY, nowY);
-          var firstPossibleYear = _getFirstPossibleYear(YEARS_COUNT, selectedY, nowY);
-
-          var statement = {
+        function getCases(startY, endY, nowY) {
+          return {
             isBoth: !!(startY && endY),
             isBothNot: !!(!startY && !endY),
             isOnlyStart: !!(startY && !endY),
@@ -294,9 +346,11 @@ var xDateCore = function(selectedDt, startDt, endDt) {
             isEndUpperNow: (endY > nowY),
             isEndEqualNow: (endY === nowY)
           };
+        }
 
+        function _getRangeIfBothLimits(cases, startY, endY, latestPossibleYear) {
           //start = 2011, end = 2014
-          if (statement.isBoth && statement.isStartLower) {
+          if (cases.isStartLower) {
             return {
               from: startY,
               to: endY
@@ -304,7 +358,7 @@ var xDateCore = function(selectedDt, startDt, endDt) {
           }
 
           //start = 2014, end = 2011
-          if (statement.isBoth && statement.isEndLower) {
+          if (cases.isEndLower) {
             return {
               from: endY,
               to: startY
@@ -312,7 +366,7 @@ var xDateCore = function(selectedDt, startDt, endDt) {
           }
 
           //start = 2011, end = 2011
-          if (statement.isBoth && statement.isStartEqualEnd) {
+          if (cases.isStartEqualEnd) {
             return {
               from: startY,
               to: endY
@@ -320,42 +374,58 @@ var xDateCore = function(selectedDt, startDt, endDt) {
           }
 
           //start = 2014, end = null
-          if (statement.isOnlyStart) {
+          if (cases.isOnlyStart) {
             return {
               from: startY,
               to: latestPossibleYear
             };
           }
+        }
 
-          //start = null, end = 2014
-          if (statement.isOnlyEnd) {
-            //start = null, now = 2013 (or 2014), end = 2014
-            if (statement.isEndUpperNow || statement.isEndEqualNow) {
-              //TODO (S.Panfilov) wtf? I cannot remember wtf this statement check
-              if ((firstPossibleYear - YEARS_COUNT) > (endY - YEARS_COUNT)) {
-                return {
-                  from: firstPossibleYear,
-                  to: endY
-                };
-              } else {
-                return {
-                  from: endY - (YEARS_COUNT - 1),
-                  to: endY
-                };
-              }
-            }
-
-            //start = null, now = 2015,  end = 2014
-            if (!statement.isEndUpperNow) {
+        function _getRangeIfOnlyEndLimits(cases, endY, firstPossibleYear) {
+          //start = null, now = 2013 (or 2014), end = 2014
+          if (cases.isEndUpperNow || cases.isEndEqualNow) {
+            //TODO (S.Panfilov) wtf? I cannot remember wtf this case check
+            if ((firstPossibleYear - x.Config.YEARS_COUNT) > (endY - x.Config.YEARS_COUNT)) {
               return {
-                from: endY - (YEARS_COUNT - 1),
+                from: firstPossibleYear,
+                to: endY
+              };
+            } else {
+              return {
+                from: endY - (x.Config.YEARS_COUNT - 1),
                 to: endY
               };
             }
           }
 
+          //start = null, now = 2015,  end = 2014
+          if (!cases.isEndUpperNow) {
+            return {
+              from: endY - (x.Config.YEARS_COUNT - 1),
+              to: endY
+            };
+          }
+        }
+
+        function _getRangeValues(selectedY, startY, endY, nowY) {
+
+          var latestPossibleYear = _getLatestPossibleYear(selectedY, nowY);
+          var firstPossibleYear = _getFirstPossibleYear(selectedY, nowY);
+
+          var cases = getCases(startY, endY, nowY);
+
+          if (cases.isBoth) {
+            return _getRangeIfBothLimits(cases, startY, endY, latestPossibleYear);
+          }
+
+          //start = null, end = 2014
+          if (cases.isOnlyEnd) {
+            return _getRangeIfOnlyEndLimits(cases, endY, firstPossibleYear);
+          }
+
           //start = null, end = null
-          if (statement.isBothNot) {
+          if (cases.isBothNot) {
             return {
               from: firstPossibleYear,
               to: latestPossibleYear

@@ -10,7 +10,7 @@ exports.Config = /*END.TESTS_ONLY*/ {
     m: 'asc',
     y: 'desc'
   },
-  defaultYearsCount: 30,
+  YEARS_COUNT: 30,
   START_DAY: 1,
   START_MONTH: 0,
   END_MONTH: 11,
