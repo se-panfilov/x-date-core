@@ -11,6 +11,7 @@ exports.Config = /*END.TESTS_ONLY*/ {
     y: 'desc'
   },
   defaultYearsCount: 30,
+  startDay: 1,
   daysList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 }/*START.TESTS_ONLY*/;

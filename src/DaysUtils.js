@@ -4,43 +4,57 @@ var x = {};
 /*END.DEV_ONLY*/
 
 /*START.TESTS_ONLY*/
-exports.DaysUtils = /*END.TESTS_ONLY*/ {
-  getDaysList: function () {
-    var result;
-    var START_DAY = 1;
+exports.DaysUtils = /*END.TESTS_ONLY*/ (function () {
 
-    var lastDayInMonth = x.DateUtils.getDaysInMonth(x.State.selected.y, x.State.selected.y);
+  function getLimits() {
+    var isYearEqualStart = x.DateUtils.isYearEqualStart(x.State.selected.y);
+    var isYearEqualEnd = x.DateUtils.isYearEqualEnd(x.State.selected.y);
+    var isMonthEqualStart = x.DateUtils.isMonthEqualStart(x.State.selected.m);
+    var isMonthEqualEnd = x.DateUtils.isMonthEqualEnd(x.State.selected.m);
 
-    var isStart = x.State.start.isExist;
-    var isEnd = x.State.end.isExist;
+    return {
+      isLower: (isYearEqualStart && isMonthEqualStart),
+      isUpper: (isYearEqualEnd && isMonthEqualEnd)
+    }
+  }
 
-    if (isStart || isEnd) {
-      var isYearOfLowerLimit = (isStart) ? x.State.start.y === x.State.selected.y : false;
-      var isYearOfUpperLimit = (isEnd) ? x.State.end.y === x.State.selected.y : false;
-      var isMonthOfLowerLimit = (isStart) ? x.State.start.m === x.State.selected.y : false;
-      var isMonthOfUpperLimit = (isEnd) ? x.State.end.m === x.State.selected.y : false;
+  function getArrFromAndTo(aStart, aEnd, lastDayInMonth) {
+    var from = x.Config.startDay;
+    var to = lastDayInMonth;
+    var limit = getLimits();
 
-      var isLowerLimit = (isYearOfLowerLimit && isMonthOfLowerLimit);
-      var isUpperLimit = (isYearOfUpperLimit && isMonthOfUpperLimit);
-
-      var start = (isStart) ? x.State.start.d : START_DAY;
-      var end = (isEnd) ? x.State.end.d : lastDayInMonth;
-
-      if (isLowerLimit && isUpperLimit) {
-        result = x.CommonUtils.getArrayOfNumbers(start, end);
-      } else if (isLowerLimit && !isUpperLimit) {
-        result = x.CommonUtils.getArrayOfNumbers(start, lastDayInMonth);
-      } else if (!isLowerLimit && isUpperLimit) {
-        result = x.CommonUtils.getArrayOfNumbers(START_DAY, end);
-      } else {  // in all other cases return array of 12 month
-        result = x.CommonUtils.getArrayOfNumbers(START_DAY, lastDayInMonth);
-      }
-    } else {  // in all other cases return array of 12 month
-      result = x.CommonUtils.getArrayOfNumbers(START_DAY, lastDayInMonth);
+    if (limit.isLower && limit.isUpper) {
+      from = aStart;
+      to = aEnd;
+    } else if (limit.isLower && !limit.isUpper) {
+      from = aStart;
+      to = lastDayInMonth;
+    } else if (!limit.isLower && limit.isUpper) {
+      from = x.Config.startDay;
+      to = aEnd;
     }
 
-    return x.CommonUtils.intArraySort(result, x.Config.direction.d);
+    return {from: from, to: to};
   }
-}/*START.TESTS_ONLY*/;
+
+  return {
+    getDaysList: function () {
+      var result;
+      var lastDayInMonth = x.DateUtils.getDaysInMonth(x.State.selected.y, x.State.selected.y);
+      var isStart = x.State.start.isExist;
+      var isEnd = x.State.end.isExist;
+
+      if (isStart || isEnd) {
+        var start = (isStart) ? x.State.start.d : x.Config.startDay;
+        var end = (isEnd) ? x.State.end.d : lastDayInMonth;
+        result = getArrFromAndTo(start, end, lastDayInMonth);
+      } else {  // in all other cases return array of 12 month
+        result = {from: x.Config.startDay, to: lastDayInMonth};
+      }
+
+      return x.CommonUtils.intArraySort(x.CommonUtils.getArrayOfNumbers(result.from, result.to), x.Config.direction.d);
+    }
+  }
+})()/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

@@ -51,8 +51,24 @@ exports.DateUtils = /*END.TESTS_ONLY*/ (function () {
     },
     isDateBetweenLimits: function (dt, start, end) {
       return (exports.isDateUpperStartLimit(dt, start) && exports.isDateLowerEndLimit(dt, end));
+    },
+    isYearEqualStart: function (year) {
+      return isYearEqualLimit('start', ['y'], year);
+    },
+    isYearEqualEnd: function (year) {
+      return isYearEqualLimit('end', ['y'], year);
+    },
+    isMonthEqualStart: function (month) {
+      return isYearEqualLimit('start', ['m'], month);
+    },
+    isMonthEqualEnd: function (month) {
+      return isYearEqualLimit('end', ['m'], month);
     }
   };
+
+  function isYearEqualLimit(limitName, unit, val) {
+    return (x.State[limitName].isExist) ? x.State[limitName][unit] === +val : false;
+  }
 
   /*START.TESTS_ONLY*/
   exports._private = {};
