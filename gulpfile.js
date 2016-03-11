@@ -31,7 +31,7 @@ gulp.task('lint', function () {
         globalstrict: true,
         strict: false,
         globals: {
-          //console: true
+          exports: true
         }
       }))
       .pipe(jshint.reporter(stylish));

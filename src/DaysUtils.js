@@ -15,7 +15,7 @@ exports.DaysUtils = /*END.TESTS_ONLY*/ (function () {
     return {
       isLower: (isYearEqualStart && isMonthEqualStart),
       isUpper: (isYearEqualEnd && isMonthEqualEnd)
-    }
+    };
   }
 
   function getArrFromAndTo(aStart, aEnd, lastDayInMonth) {
@@ -54,7 +54,7 @@ exports.DaysUtils = /*END.TESTS_ONLY*/ (function () {
 
       return x.CommonUtils.intArraySort(x.CommonUtils.getArrayOfNumbers(result.from, result.to), x.Config.direction.d);
     }
-  }
+  };
 })()/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/

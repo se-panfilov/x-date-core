@@ -170,7 +170,7 @@ var xDateCore = function(selectedDt, startDt, endDt) {
           return {
             isLower: (isYearEqualStart && isMonthEqualStart),
             isUpper: (isYearEqualEnd && isMonthEqualEnd)
-          }
+          };
         }
 
         function getArrFromAndTo(aStart, aEnd, lastDayInMonth) {
@@ -215,7 +215,7 @@ var xDateCore = function(selectedDt, startDt, endDt) {
 
             return x.CommonUtils.intArraySort(x.CommonUtils.getArrayOfNumbers(result.from, result.to), x.Config.direction.d);
           }
-        }
+        };
       })(),
 
     State: {
@@ -316,7 +316,7 @@ var xDateCore = function(selectedDt, startDt, endDt) {
 
             return x.CommonUtils.intArraySort(x.CommonUtils.getArrayOfNumbers(result.from, result.to), x.Config.direction.m);
           }
-        }
+        };
       })(),
 
     YearsUtils:

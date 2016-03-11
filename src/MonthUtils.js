@@ -44,7 +44,7 @@ exports.MonthUtils = /*END.TESTS_ONLY*/ (function () {
 
       return x.CommonUtils.intArraySort(x.CommonUtils.getArrayOfNumbers(result.from, result.to), x.Config.direction.m);
     }
-  }
+  };
 })()/*START.TESTS_ONLY*/;
 return exports;
 /*END.TESTS_ONLY*/
