@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
-var LimitsModel = require('../src/LimitsModel.js').LimitsModel;
+var LimitsModel = require('../src/State.js').State;
 
-describe("LimitsModel", function () {
+describe("State", function () {
     'use strict';
 
     it("is module a function", function () {
