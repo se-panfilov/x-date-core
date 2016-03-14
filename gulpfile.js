@@ -70,7 +70,7 @@ gulp.task('js', function () {
       '\n\rYearsUtils: ' + getContent('src/YearsUtils.js');
 
   var moduleWrap =
-      'var xDateCore = function (selectedDt, startDt, endDt) {' +
+      'var XDateCore = function (selectedDt, startDt, endDt) {' +
       '\'use strict\';' +
       '\n\r    var x =  {' +
         //'\n\r<%= contents %>' +

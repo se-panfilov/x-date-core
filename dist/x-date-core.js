@@ -1,4 +1,4 @@
-var xDateCore = function(selectedDt, startDt, endDt) {
+var XDateCore = function(selectedDt, startDt, endDt) {
   'use strict';
 
   var x = {
