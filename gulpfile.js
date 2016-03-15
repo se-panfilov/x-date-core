@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
-var size = require('gulp-filesize');
+var size = require('gulp-size');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 var todo = require('gulp-todo');
@@ -16,7 +16,7 @@ var stripCode = require('gulp-strip-code');
 var watch = require('gulp-watch');
 var codacy = require('gulp-codacy');
 var fs = require("fs");
-var prettify = require('gulp-jsbeautifier');
+var beautify = require('gulp-beautify');
 
 var src = 'src/*.js';
 
@@ -48,7 +48,7 @@ gulp.task('todo', function () {
 gulp.task('sizes', function () {
   return gulp.src([
     'dist/**/*.js'
-  ]).pipe(size());
+  ]).pipe(size({showFiles: true, showTotal: true}));
 });
 
 var getContent = function (path) {
@@ -93,7 +93,7 @@ gulp.task('js', function () {
         start_comment: "START.TESTS_ONLY",
         end_comment: "END.TESTS_ONLY"
       }))
-      .pipe(prettify({
+      .pipe(beautify({
         indent_size: 2
       }))
       .pipe(gulp.dest(dest.dist))
