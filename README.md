@@ -1,16 +1,16 @@
-Code quality: [![Codacy Badge](https://api.codacy.com/project/badge/grade/0c8c1820a3a74d89b4a29a4064e14eb8)](https://www.codacy.com/app/se-panfilov/x-date-core) [![bitHound Overall Score](https://www.bithound.io/github/se-panfilov/x-date-core/badges/score.svg)](https://www.bithound.io/github/se-panfilov/x-date-core)
-[![bitHound Code](https://www.bithound.io/github/se-panfilov/x-date-core/badges/code.svg)](https://www.bithound.io/github/se-panfilov/x-date-core)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/0c8c1820a3a74d89b4a29a4064e14eb8)](https://www.codacy.com/app/se-panfilov/x-date-core) [![bitHound Overall Score](https://www.bithound.io/github/se-panfilov/x-date-core/badges/score.svg)](https://www.bithound.io/github/se-panfilov/x-date-core) [![bitHound Code](https://www.bithound.io/github/se-panfilov/x-date-core/badges/code.svg)](https://www.bithound.io/github/se-panfilov/x-date-core)
 
+[![Build Status](https://travis-ci.org/se-panfilov/x-date-core.svg?branch=master)](https://travis-ci.org/se-panfilov/x-date-core)
 
-Tests: [![Build Status](https://travis-ci.org/se-panfilov/x-date-core.svg?branch=master)](https://travis-ci.org/se-panfilov/x-date-core)
-
-Versions: [![Bower version](https://badge.fury.io/bo/x-date-core.svg)](http://badge.fury.io/bo/x-date-core)
+[![Bower version](https://badge.fury.io/bo/x-date-core.svg)](http://badge.fury.io/bo/x-date-core)
 [![npm version](https://badge.fury.io/js/x-date-core.svg)](http://badge.fury.io/js/x-date-core)
 
-Dependencies: [![Dependency Status](https://david-dm.org/se-panfilov/x-date-core.svg)](https://david-dm.org/se-panfilov/x-date-core)
+[![Dependency Status](https://david-dm.org/se-panfilov/x-date-core.svg)](https://david-dm.org/se-panfilov/x-date-core)
 [![devDependency Status](https://david-dm.org/se-panfilov/x-date-core/dev-status.svg)](https://david-dm.org/se-panfilov/x-date-core#info=devDependencies)
 
-License: [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/se-panfilov/x-date-core/blob/master/LICENSE)da
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/se-panfilov/x-date-core/blob/master/LICENSE)
+
+[![NPM](https://nodei.co/npm/x-date-core.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/x-date-core/)
 
 Overview
 ------
