@@ -1,4 +1,5 @@
-.travis.yml
+*.yml
+*.log
 .bithoundrc
 dist/*test_only*
 token.txt
