@@ -1,0 +1,12 @@
+engines:
+   eslint:
+    enabled: true
+exclude_paths:
+- ./*.md
+- ./gulpfile.js
+- ./*.yml
+- ./*.json
+ratings:
+   paths:
+   - "dist/x-date-core.js"
+   - "src/**/*.js"
